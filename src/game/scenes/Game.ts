@@ -1,5 +1,6 @@
 import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
+import { createPlayer, updatePlayer } from "../classes/Player";
 
 export class Game extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera;
@@ -11,34 +12,19 @@ export class Game extends Scene {
     }
 
     create() {
-        this.camera = this.cameras.main;
-        this.camera.setBackgroundColor(0x00ff00);
+        this.add.image(400, 300, "bg-bridge").setScrollFactor(1);
+        this.cameras.main.setZoom(1.5);
 
-        this.background = this.add.image(512, 384, "background");
-        this.background.setAlpha(0.5);
-
-        this.gameText = this.add
-            .text(
-                512,
-                384,
-                "Make something fun!\nand share it with us:\nsupport@phaser.io",
-                {
-                    fontFamily: "Arial Black",
-                    fontSize: 38,
-                    color: "#ffffff",
-                    stroke: "#000000",
-                    strokeThickness: 8,
-                    align: "center",
-                }
-            )
-            .setOrigin(0.5)
-            .setDepth(100);
+        createPlayer(this);
 
         EventBus.emit("current-scene-ready", this);
+    }
+
+    update() {
+        updatePlayer(this);
     }
 
     changeScene() {
         this.scene.start("GameOver");
     }
 }
-

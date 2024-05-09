@@ -1,12 +1,12 @@
-'use client';
-import dynamic from 'next/dynamic';
+"use client";
+import dynamic from "next/dynamic";
 
-const AppWithoutSSR = dynamic(() => import('./App'), { ssr: false });
+const AppWithoutSSR = dynamic(() => import("./App"), { ssr: false });
 
 export default function Home() {
-  return (
-    <main>
-        <AppWithoutSSR />
-    </main>
-  );
+    return (
+        <main>
+            <AppWithoutSSR />
+        </main>
+    );
 }

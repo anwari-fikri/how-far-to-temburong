@@ -16,4 +16,3 @@ export class Boot extends Scene {
         this.scene.start("Preloader");
     }
 }
-

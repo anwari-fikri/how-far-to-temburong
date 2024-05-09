@@ -1,27 +1,29 @@
 import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
-import { createPlayer, updatePlayer } from "../classes/Player";
+import Player from "../classes/Player";
 
 export class Game extends Scene {
-    camera: Phaser.Cameras.Scene2D.Camera;
-    background: Phaser.GameObjects.Image;
-    gameText: Phaser.GameObjects.Text;
+    private player: Player;
+    private background: Phaser.GameObjects.Image;
+    private gameText: Phaser.GameObjects.Text;
 
     constructor() {
         super("Game");
     }
 
     create() {
-        this.add.image(400, 300, "bg-bridge").setScrollFactor(1);
+        this.background = this.add
+            .image(400, 300, "bg-bridge")
+            .setScrollFactor(1);
         this.cameras.main.setZoom(1.5);
 
-        createPlayer(this);
+        this.player = new Player(this);
 
         EventBus.emit("current-scene-ready", this);
     }
 
     update() {
-        updatePlayer(this);
+        this.player.update();
     }
 
     changeScene() {

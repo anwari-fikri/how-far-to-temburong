@@ -29,7 +29,7 @@ export class Game extends Scene {
                     stroke: "#000000",
                     strokeThickness: 8,
                     align: "center",
-                }
+                },
             )
             .setOrigin(0.5)
             .setDepth(100);
@@ -41,4 +41,3 @@ export class Game extends Scene {
         this.scene.start("GameOver");
     }
 }
-

@@ -44,4 +44,3 @@ export class Preloader extends Scene {
         this.scene.start("Game");
     }
 }
-

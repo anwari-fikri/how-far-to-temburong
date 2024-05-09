@@ -1,40 +1,55 @@
 import { playerAnims } from "./CharAnims";
 
-const player = "dude";
-const velocity = 0;
-const playerSpeed = 300;
+export default class Player {
+    private player: Phaser.Physics.Arcade.Sprite;
+    private keyA!: Phaser.Input.Keyboard.Key;
+    private keyS!: Phaser.Input.Keyboard.Key;
+    private keyD!: Phaser.Input.Keyboard.Key;
+    private keyW!: Phaser.Input.Keyboard.Key;
 
-export function createPlayer(scene: any) {
-    scene.player = scene.physics.add.sprite(100, 450, player);
+    private playerSpeed = 300; // Move player speed to class level
 
-    if (scene.input && scene.input.keyboard) {
-        scene.cursors = scene.input.keyboard.createCursorKeys();
+    constructor(scene: Phaser.Scene) {
+        this.player = scene.physics.add.sprite(100, 450, "dude");
+
+        if (scene.input && scene.input.keyboard) {
+            this.keyA = scene.input.keyboard.addKey(
+                Phaser.Input.Keyboard.KeyCodes.A,
+            );
+            this.keyS = scene.input.keyboard.addKey(
+                Phaser.Input.Keyboard.KeyCodes.S,
+            );
+            this.keyD = scene.input.keyboard.addKey(
+                Phaser.Input.Keyboard.KeyCodes.D,
+            );
+            this.keyW = scene.input.keyboard.addKey(
+                Phaser.Input.Keyboard.KeyCodes.W,
+            );
+        }
+
+        scene.cameras.main.startFollow(this.player, true);
+
+        playerAnims(scene);
     }
 
-    scene.cameras.main.startFollow(scene.player, true);
+    update() {
+        const velocity = { x: 0, y: 0 };
 
-    playerAnims(scene);
+        if (this.keyA.isDown) {
+            velocity.x = -this.playerSpeed;
+            this.player.anims.play("left", true);
+        } else if (this.keyD.isDown) {
+            velocity.x = this.playerSpeed;
+            this.player.anims.play("right", true);
+        }
 
-    scene.escKey = scene.input.keyboard?.addKey(
-        Phaser.Input.Keyboard.KeyCodes.ESC
-    );
-}
+        if (this.keyW.isDown) {
+            velocity.y = -this.playerSpeed;
+        } else if (this.keyS.isDown) {
+            velocity.y = this.playerSpeed;
+            this.player.anims.play("turn");
+        }
 
-export function updatePlayer(scene: any) {
-    scene.player.setVelocity(velocity);
-
-    if (scene.cursors.left.isDown) {
-        scene.player.setVelocityX(-playerSpeed);
-        scene.player.anims.play("left", true);
-    } else if (scene.cursors.right.isDown) {
-        scene.player.setVelocityX(playerSpeed);
-        scene.player.anims.play("right", true);
-    }
-
-    if (scene.cursors.up.isDown) {
-        scene.player.setVelocityY(-playerSpeed);
-    } else if (scene.cursors.down.isDown) {
-        scene.player.setVelocityY(playerSpeed);
-        scene.player.anims.play("turn");
+        this.player.setVelocity(velocity.x, velocity.y);
     }
 }

@@ -4,12 +4,12 @@ import PlayerControls from "./PlayerControls";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     private controls: PlayerControls;
 
-    private basePlayerSpeed = 300; // Move player speed to class level
+    private basePlayerSpeed = 300;
     private playerSpeed = this.basePlayerSpeed;
 
     // Power Ups
     private isSpeedBoosted: boolean;
-    private speedBoostTimer: Phaser.Time.TimerEvent; // Define timer event variable
+    private speedBoostTimer: Phaser.Time.TimerEvent;
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
         super(scene, x, y, texture);

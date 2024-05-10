@@ -1,19 +1,20 @@
 import Player from "./Player";
+import playerStore from "../stores/PlayerStore";
+import { makeObservable } from "mobx";
 
-// PlayerControls.ts
 export default class PlayerControls {
     private keyA!: Phaser.Input.Keyboard.Key;
     private keyS!: Phaser.Input.Keyboard.Key;
     private keyD!: Phaser.Input.Keyboard.Key;
     private keyW!: Phaser.Input.Keyboard.Key;
 
-    private basePlayerSpeed = 300; // Move player speed to class level
-    private playerSpeed = this.basePlayerSpeed;
+    private playerSpeed = playerStore.baseSpeed;
 
     constructor(
         private scene: Phaser.Scene,
         private player: Player,
     ) {
+        makeObservable(this);
         if (scene.input && scene.input.keyboard) {
             this.keyA = scene.input.keyboard.addKey(
                 Phaser.Input.Keyboard.KeyCodes.A,

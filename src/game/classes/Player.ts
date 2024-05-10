@@ -29,34 +29,4 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     update() {
         this.controls.update();
     }
-
-    applySpeedBoost() {
-        /*
-            If the player picks up a speed boost:
-            - Increase the player's movement speed.
-            - If the speed boost is already active, resets the power-up timer.
-        */
-        if (!this.isSpeedBoosted) {
-            this.isSpeedBoosted = true;
-            this.playerSpeed += this.basePlayerSpeed;
-
-            if (this.speedBoostTimer) {
-                this.speedBoostTimer.remove();
-            }
-
-            this.speedBoostTimer = this.scene.time.delayedCall(5000, () => {
-                this.removeSpeedBoost();
-            });
-        } else {
-            this.speedBoostTimer.reset({
-                delay: 5000,
-                callback: () => this.removeSpeedBoost(),
-            });
-        }
-    }
-
-    private removeSpeedBoost() {
-        this.isSpeedBoosted = false;
-        this.playerSpeed -= this.basePlayerSpeed;
-    }
 }

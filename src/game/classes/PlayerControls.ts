@@ -8,10 +8,8 @@ export default class PlayerControls {
     private keyD!: Phaser.Input.Keyboard.Key;
     private keyW!: Phaser.Input.Keyboard.Key;
 
-    private playerSpeed = playerStore.baseSpeed;
-
     constructor(
-        private scene: Phaser.Scene,
+        scene: Phaser.Scene,
         private player: Player,
     ) {
         makeObservable(this);
@@ -36,17 +34,17 @@ export default class PlayerControls {
         const velocity = { x: 0, y: 0 };
 
         if (this.keyA.isDown) {
-            velocity.x = -this.playerSpeed;
+            velocity.x = -playerStore.currentMovementSpeed;
             this.player.anims.play("left", true);
         } else if (this.keyD.isDown) {
-            velocity.x = this.playerSpeed;
+            velocity.x = playerStore.currentMovementSpeed;
             this.player.anims.play("right", true);
         }
 
         if (this.keyW.isDown) {
-            velocity.y = -this.playerSpeed;
+            velocity.y = -playerStore.currentMovementSpeed;
         } else if (this.keyS.isDown) {
-            velocity.y = this.playerSpeed;
+            velocity.y = playerStore.currentMovementSpeed;
             this.player.anims.play("turn");
         }
 

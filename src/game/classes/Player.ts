@@ -8,10 +8,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     private playerSpeed = 300; // Move player speed to class level
 
+    // Power Ups
+    private isSpeedBoosted: boolean;
+
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
         super(scene, x, y, texture);
         scene.add.existing(this);
         scene.physics.add.existing(this);
+
+        // Power Up States
+        this.isSpeedBoosted = false;
 
         if (scene.input && scene.input.keyboard) {
             this.keyA = scene.input.keyboard.addKey(
@@ -34,6 +40,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
+        // Player Movement
         const velocity = { x: 0, y: 0 };
 
         if (this.keyA.isDown) {
@@ -52,5 +59,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.setVelocity(velocity.x, velocity.y);
+    }
+
+    applySpeedBoost() {
+        this.isSpeedBoosted = true;
+        this.playerSpeed *= 2;
+        console.log("SPEEEEEEED BOOST");
     }
 }

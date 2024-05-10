@@ -4,6 +4,7 @@ import Player from "../classes/Player";
 import { Weapon } from "../classes/Weapon";
 import PowerUps, { PowerUpType } from "../classes/PowerUps";
 import playerStore from "../stores/PlayerStore";
+import { PickUp } from "../classes/PickUp";
 
 export class Game extends Scene {
     private player: Player;
@@ -22,6 +23,7 @@ export class Game extends Scene {
         this.cameras.main.setZoom(1.5);
 
         Weapon(this);
+        PickUp(this, this.player);
 
         this.player = new Player(this, 100, 450, "dude");
         this.speedBoost = new PowerUps(

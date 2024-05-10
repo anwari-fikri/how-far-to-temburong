@@ -34,6 +34,12 @@ export class Preloader extends Scene {
             frameWidth: 32,
             frameHeight: 46,
         });
+
+        this.load.image("katana", "weapons/weapon1.png");
+        this.load.image("gun", "weapons/weapon2.png");
+        this.load.image("sword", "weapons/weapon3.png");
+        this.load.image("dagger", "weapons/weapon4.png");
+        this.load.image("spear", "weapons/weapon5.png");
     }
 
     create() {

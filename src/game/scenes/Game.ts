@@ -1,6 +1,7 @@
 import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
 import Player from "../classes/Player";
+import { Weapon } from "../classes/Weapon";
 
 export class Game extends Scene {
     private player: Player;
@@ -16,6 +17,8 @@ export class Game extends Scene {
             .image(400, 300, "bg-bridge")
             .setScrollFactor(1);
         this.cameras.main.setZoom(1.5);
+
+        Weapon(this);
 
         this.player = new Player(this);
 

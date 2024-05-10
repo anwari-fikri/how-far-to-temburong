@@ -6,6 +6,7 @@ import PowerUps, { PowerUpType } from "../classes/PowerUps";
 export class Game extends Scene {
     private player: Player;
     private speedBoost: PowerUps;
+    private speedBoost2: PowerUps;
     private background: Phaser.GameObjects.Image;
 
     constructor() {
@@ -26,9 +27,20 @@ export class Game extends Scene {
             "star",
             PowerUpType.SPEED_BOOST,
         );
+        this.speedBoost2 = new PowerUps(
+            this,
+            0,
+            450,
+            "star",
+            PowerUpType.SPEED_BOOST,
+        );
         this.physics.add.collider(this.player, this.speedBoost, () => {
             this.player.applySpeedBoost();
             this.speedBoost.destroy();
+        });
+        this.physics.add.collider(this.player, this.speedBoost2, () => {
+            this.player.applySpeedBoost();
+            this.speedBoost2.destroy();
         });
 
         EventBus.emit("current-scene-ready", this);

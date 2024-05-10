@@ -1,4 +1,5 @@
 import Player from "./Player";
+import playerStore from "../stores/PlayerStore";
 
 export enum PowerUpType {
     SPEED_BOOST = "speed_boost",
@@ -21,10 +22,10 @@ export default class PowerUps extends Phaser.Physics.Arcade.Sprite {
     }
 
     // Define method to apply power-up effects based on type
-    applyEffectToPlayer(player: Player) {
+    applyEffectToPlayer() {
         switch (this.powerUpType) {
             case PowerUpType.SPEED_BOOST:
-                player.applySpeedBoost();
+                playerStore.applySpeedBoost(this.scene);
                 break;
             default:
                 break;

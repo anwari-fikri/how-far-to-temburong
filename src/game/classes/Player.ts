@@ -1,10 +1,8 @@
 import { playerAnims } from "./CharAnims";
+import PlayerControls from "./PlayerControls";
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-    private keyA!: Phaser.Input.Keyboard.Key;
-    private keyS!: Phaser.Input.Keyboard.Key;
-    private keyD!: Phaser.Input.Keyboard.Key;
-    private keyW!: Phaser.Input.Keyboard.Key;
+    private controls: PlayerControls;
 
     private basePlayerSpeed = 300; // Move player speed to class level
     private playerSpeed = this.basePlayerSpeed;
@@ -21,20 +19,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         // Power Up States
         this.isSpeedBoosted = false;
 
-        if (scene.input && scene.input.keyboard) {
-            this.keyA = scene.input.keyboard.addKey(
-                Phaser.Input.Keyboard.KeyCodes.A,
-            );
-            this.keyS = scene.input.keyboard.addKey(
-                Phaser.Input.Keyboard.KeyCodes.S,
-            );
-            this.keyD = scene.input.keyboard.addKey(
-                Phaser.Input.Keyboard.KeyCodes.D,
-            );
-            this.keyW = scene.input.keyboard.addKey(
-                Phaser.Input.Keyboard.KeyCodes.W,
-            );
-        }
+        this.controls = new PlayerControls(scene, this);
 
         scene.cameras.main.startFollow(this, true);
 
@@ -42,25 +27,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        // Player Movement
-        const velocity = { x: 0, y: 0 };
-
-        if (this.keyA.isDown) {
-            velocity.x = -this.playerSpeed;
-            this.anims.play("left", true);
-        } else if (this.keyD.isDown) {
-            velocity.x = this.playerSpeed;
-            this.anims.play("right", true);
-        }
-
-        if (this.keyW.isDown) {
-            velocity.y = -this.playerSpeed;
-        } else if (this.keyS.isDown) {
-            velocity.y = this.playerSpeed;
-            this.anims.play("turn");
-        }
-
-        this.setVelocity(velocity.x, velocity.y);
+        this.controls.update();
     }
 
     applySpeedBoost() {

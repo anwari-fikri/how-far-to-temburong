@@ -1,7 +1,6 @@
 import { playerAnims } from "./CharAnims";
 
-export default class Player {
-    private player: Phaser.Physics.Arcade.Sprite;
+export default class Player extends Phaser.Physics.Arcade.Sprite {
     private keyA!: Phaser.Input.Keyboard.Key;
     private keyS!: Phaser.Input.Keyboard.Key;
     private keyD!: Phaser.Input.Keyboard.Key;
@@ -9,8 +8,10 @@ export default class Player {
 
     private playerSpeed = 300; // Move player speed to class level
 
-    constructor(scene: Phaser.Scene) {
-        this.player = scene.physics.add.sprite(100, 450, "dude");
+    constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
+        super(scene, x, y, texture);
+        scene.add.existing(this);
+        scene.physics.add.existing(this);
 
         if (scene.input && scene.input.keyboard) {
             this.keyA = scene.input.keyboard.addKey(
@@ -27,7 +28,7 @@ export default class Player {
             );
         }
 
-        scene.cameras.main.startFollow(this.player, true);
+        scene.cameras.main.startFollow(this, true);
 
         playerAnims(scene);
     }
@@ -37,19 +38,19 @@ export default class Player {
 
         if (this.keyA.isDown) {
             velocity.x = -this.playerSpeed;
-            this.player.anims.play("left", true);
+            this.anims.play("left", true);
         } else if (this.keyD.isDown) {
             velocity.x = this.playerSpeed;
-            this.player.anims.play("right", true);
+            this.anims.play("right", true);
         }
 
         if (this.keyW.isDown) {
             velocity.y = -this.playerSpeed;
         } else if (this.keyS.isDown) {
             velocity.y = this.playerSpeed;
-            this.player.anims.play("turn");
+            this.anims.play("turn");
         }
 
-        this.player.setVelocity(velocity.x, velocity.y);
+        this.setVelocity(velocity.x, velocity.y);
     }
 }

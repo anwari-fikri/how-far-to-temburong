@@ -5,7 +5,6 @@ import Player from "../classes/Player";
 export class Game extends Scene {
     private player: Player;
     private background: Phaser.GameObjects.Image;
-    private gameText: Phaser.GameObjects.Text;
 
     constructor() {
         super("Game");
@@ -17,7 +16,7 @@ export class Game extends Scene {
             .setScrollFactor(1);
         this.cameras.main.setZoom(1.5);
 
-        this.player = new Player(this);
+        this.player = new Player(this, 100, 450, "dude");
 
         EventBus.emit("current-scene-ready", this);
     }

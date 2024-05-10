@@ -2,11 +2,13 @@ import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
 import Player from "../classes/Player";
 import PowerUps, { PowerUpType } from "../classes/PowerUps";
-import playerStore from "../stores/PlayerStore";
+import { PickUp } from "../classes/PickUp";
+import Weapon from "../classes/Weapon";
 import { createPause } from "../classes/PauseResume";
 
 export class Game extends Scene {
     private player: Player;
+    private weapon: Weapon;
     private speedBoost: PowerUps;
     private speedBoost2: PowerUps;
     private background: Phaser.GameObjects.Image;
@@ -21,7 +23,10 @@ export class Game extends Scene {
             .setScrollFactor(1);
         this.cameras.main.setZoom(1.5);
 
+        this.weapon = new Weapon(this, 200, 200, "katana");
+
         this.player = new Player(this, 100, 450, "dude");
+
         this.speedBoost = new PowerUps(
             this,
             400,
@@ -36,16 +41,9 @@ export class Game extends Scene {
             "star",
             PowerUpType.SPEED_BOOST,
         );
-        this.physics.add.collider(this.player, this.speedBoost, () => {
-            playerStore.applySpeedBoost(this);
-            this.speedBoost.destroy();
-        });
-        this.physics.add.collider(this.player, this.speedBoost2, () => {
-            playerStore.applySpeedBoost(this);
-            this.speedBoost2.destroy();
-        });
-
-        createPause(this);
+        PickUp(this, this.player, this.weapon);
+        PickUp(this, this.player, this.speedBoost);
+        PickUp(this, this.player, this.speedBoost2);
 
         EventBus.emit("current-scene-ready", this);
     }

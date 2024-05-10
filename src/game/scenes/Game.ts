@@ -3,6 +3,7 @@ import { Scene } from "phaser";
 import Player from "../classes/Player";
 import PowerUps, { PowerUpType } from "../classes/PowerUps";
 import playerStore from "../stores/PlayerStore";
+import { createPause } from "../classes/PauseResume";
 
 export class Game extends Scene {
     private player: Player;
@@ -43,6 +44,8 @@ export class Game extends Scene {
             playerStore.applySpeedBoost(this);
             this.speedBoost2.destroy();
         });
+
+        createPause(this);
 
         EventBus.emit("current-scene-ready", this);
     }

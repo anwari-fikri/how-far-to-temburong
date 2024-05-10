@@ -1,17 +1,15 @@
 import { playerAnims } from "./CharAnims";
+import PlayerControls from "./PlayerControls";
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-    private keyA!: Phaser.Input.Keyboard.Key;
-    private keyS!: Phaser.Input.Keyboard.Key;
-    private keyD!: Phaser.Input.Keyboard.Key;
-    private keyW!: Phaser.Input.Keyboard.Key;
+    private controls: PlayerControls;
 
-    private basePlayerSpeed = 300; // Move player speed to class level
+    private basePlayerSpeed = 300;
     private playerSpeed = this.basePlayerSpeed;
 
     // Power Ups
     private isSpeedBoosted: boolean;
-    private speedBoostTimer: Phaser.Time.TimerEvent; // Define timer event variable
+    private speedBoostTimer: Phaser.Time.TimerEvent;
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
         super(scene, x, y, texture);
@@ -21,20 +19,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         // Power Up States
         this.isSpeedBoosted = false;
 
-        if (scene.input && scene.input.keyboard) {
-            this.keyA = scene.input.keyboard.addKey(
-                Phaser.Input.Keyboard.KeyCodes.A,
-            );
-            this.keyS = scene.input.keyboard.addKey(
-                Phaser.Input.Keyboard.KeyCodes.S,
-            );
-            this.keyD = scene.input.keyboard.addKey(
-                Phaser.Input.Keyboard.KeyCodes.D,
-            );
-            this.keyW = scene.input.keyboard.addKey(
-                Phaser.Input.Keyboard.KeyCodes.W,
-            );
-        }
+        this.controls = new PlayerControls(scene, this);
 
         scene.cameras.main.startFollow(this, true);
 
@@ -42,54 +27,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        // Player Movement
-        const velocity = { x: 0, y: 0 };
-
-        if (this.keyA.isDown) {
-            velocity.x = -this.playerSpeed;
-            this.anims.play("left", true);
-        } else if (this.keyD.isDown) {
-            velocity.x = this.playerSpeed;
-            this.anims.play("right", true);
-        }
-
-        if (this.keyW.isDown) {
-            velocity.y = -this.playerSpeed;
-        } else if (this.keyS.isDown) {
-            velocity.y = this.playerSpeed;
-            this.anims.play("turn");
-        }
-
-        this.setVelocity(velocity.x, velocity.y);
-    }
-
-    applySpeedBoost() {
-        /*
-            If the player picks up a speed boost:
-            - Increase the player's movement speed.
-            - If the speed boost is already active, resets the power-up timer.
-        */
-        if (!this.isSpeedBoosted) {
-            this.isSpeedBoosted = true;
-            this.playerSpeed += this.basePlayerSpeed;
-
-            if (this.speedBoostTimer) {
-                this.speedBoostTimer.remove();
-            }
-
-            this.speedBoostTimer = this.scene.time.delayedCall(5000, () => {
-                this.removeSpeedBoost();
-            });
-        } else {
-            this.speedBoostTimer.reset({
-                delay: 5000,
-                callback: () => this.removeSpeedBoost(),
-            });
-        }
-    }
-
-    private removeSpeedBoost() {
-        this.isSpeedBoosted = false;
-        this.playerSpeed -= this.basePlayerSpeed;
+        this.controls.update();
     }
 }

@@ -27,6 +27,7 @@
         "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\""
     },
     "dependencies": {
+        "mobx": "^6.12.3",
         "next": "14.1.4",
         "phaser": "^3.80.1",
         "prettier": "^3.2.5",

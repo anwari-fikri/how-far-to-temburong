@@ -3,6 +3,7 @@ import { Scene } from "phaser";
 import Player from "../classes/Player";
 import { Weapon } from "../classes/Weapon";
 import PowerUps, { PowerUpType } from "../classes/PowerUps";
+import playerStore from "../stores/PlayerStore";
 
 export class Game extends Scene {
     private player: Player;
@@ -38,11 +39,11 @@ export class Game extends Scene {
             PowerUpType.SPEED_BOOST,
         );
         this.physics.add.collider(this.player, this.speedBoost, () => {
-            this.player.applySpeedBoost();
+            playerStore.applySpeedBoost(this);
             this.speedBoost.destroy();
         });
         this.physics.add.collider(this.player, this.speedBoost2, () => {
-            this.player.applySpeedBoost();
+            playerStore.applySpeedBoost(this);
             this.speedBoost2.destroy();
         });
 

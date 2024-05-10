@@ -4,6 +4,7 @@ import Player from "../classes/Player";
 import PowerUps, { PowerUpType } from "../classes/PowerUps";
 import { PickUp } from "../classes/PickUp";
 import Weapon from "../classes/Weapon";
+import { createPause } from "../classes/PauseResume";
 
 export class Game extends Scene {
     private player: Player;

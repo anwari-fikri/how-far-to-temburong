@@ -1,6 +1,6 @@
 import playerStore from "../stores/PlayerStore";
 import Player from "./Player";
-import PowerUps from "./PowerUps";
+import PowerUps, { PowerUpType } from "./PowerUps";
 import Weapon from "./Weapon";
 
 export function PickUp(
@@ -23,8 +23,18 @@ export function PickUp(
 
     if (pickupItem instanceof PowerUps) {
         scene.physics.add.collider(player, pickupItem, () => {
-            playerStore.applySpeedBoost(scene);
+            switch (pickupItem.getPowerUpType()) {
+                case PowerUpType.SPEED_BOOST:
+                    playerStore.applySpeedBoost(scene);
+                    break;
+                case PowerUpType.ATTACK_BOOST:
+                    playerStore.applyAttackBoost(scene);
+                    break;
+                default:
+                    break;
+            }
             pickupItem.destroy();
         });
     }
 }
+

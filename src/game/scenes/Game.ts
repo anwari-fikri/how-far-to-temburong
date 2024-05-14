@@ -13,6 +13,7 @@ export class Game extends Scene {
     private weapon: Weapon;
     private speedBoost: PowerUps;
     private speedBoost2: PowerUps;
+    private attackUp: PowerUps;
     private background: Phaser.GameObjects.Image;
 
     constructor() {
@@ -44,9 +45,18 @@ export class Game extends Scene {
             "star",
             PowerUpType.SPEED_BOOST,
         );
+        this.attackUp = new PowerUps(
+            this,
+            700,
+            700,
+            "attack-up",
+            PowerUpType.ATTACK_BOOST,
+        );
+
         PickUp(this, this.player, this.weapon);
         PickUp(this, this.player, this.speedBoost);
         PickUp(this, this.player, this.speedBoost2);
+        PickUp(this, this.player, this.attackUp);
 
         EventBus.emit("current-scene-ready", this);
     }

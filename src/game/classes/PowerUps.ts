@@ -4,6 +4,7 @@ import playerStore from "../stores/PlayerStore";
 export enum PowerUpType {
     SPEED_BOOST = "speed_boost",
     ATTACK_BOOST = "attack_boost",
+    NUKE = "nuke",
 }
 
 export default class PowerUps extends Phaser.Physics.Arcade.Sprite {
@@ -35,6 +36,9 @@ export default class PowerUps extends Phaser.Physics.Arcade.Sprite {
                 playerStore.applySpeedBoost(this.scene);
                 break;
             case PowerUpType.ATTACK_BOOST:
+                playerStore.applyAttackBoost(this.scene);
+                break;
+            case PowerUpType.NUKE:
                 playerStore.applyAttackBoost(this.scene);
                 break;
             default:

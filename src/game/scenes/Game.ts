@@ -8,12 +8,13 @@ import { createPause } from "../classes/PauseResume";
 import Enemy from "../classes/Enemy";
 
 export class Game extends Scene {
+    private enemies: Phaser.GameObjects.Group;
     private player: Player;
-    private enemy1: Enemy;
     private weapon: Weapon;
     private speedBoost: PowerUps;
     private speedBoost2: PowerUps;
     private attackUp: PowerUps;
+    private nuke: PowerUps;
     private background: Phaser.GameObjects.Image;
 
     constructor() {
@@ -29,7 +30,10 @@ export class Game extends Scene {
         this.weapon = new Weapon(this, 200, 200, "katana");
 
         this.player = new Player(this, 100, 450, "dude");
-        this.enemy1 = new Enemy(this, 100, 650, "dude", 100.0, 5);
+
+        this.enemies = this.add.group();
+        this.enemies.add(new Enemy(this, 400, 400, "dude", 100, 100));
+        this.enemies.add(new Enemy(this, 400, 500, "dude", 100, 100));
 
         this.speedBoost = new PowerUps(
             this,
@@ -52,19 +56,24 @@ export class Game extends Scene {
             "attack-up",
             PowerUpType.ATTACK_BOOST,
         );
+        this.nuke = new PowerUps(this, 600, 600, "nuke", PowerUpType.NUKE);
 
         PickUp(this, this.player, this.weapon);
         PickUp(this, this.player, this.speedBoost);
         PickUp(this, this.player, this.speedBoost2);
         PickUp(this, this.player, this.attackUp);
+        PickUp(this, this.player, this.nuke);
 
         EventBus.emit("current-scene-ready", this);
     }
 
     update() {
         this.player.update();
-        this.enemy1.chase(this.player);
-        this.enemy1.performAttack(this.player);
+        this.enemies.getChildren().forEach((gameObject) => {
+            const enemy = gameObject as Enemy;
+            enemy.chase(this.player);
+            enemy.performAttack(this.player);
+        });
     }
 
     changeScene() {

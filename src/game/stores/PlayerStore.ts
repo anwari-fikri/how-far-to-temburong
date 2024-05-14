@@ -73,6 +73,8 @@ class PlayerStore {
         }
     }
 
+    async applyNuke(scene: Phaser.Scene) {}
+
     async removePowerUp(powerUpType: PowerUpType) {
         switch (powerUpType) {
             case PowerUpType.SPEED_BOOST:

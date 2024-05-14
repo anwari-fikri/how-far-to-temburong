@@ -28,7 +28,10 @@ export class Preloader extends Scene {
 
         this.load.image("logo", "logo.png");
         this.load.image("star", "star.png");
+
+        // Power Ups
         this.load.image("attack-up", "powerUps/attack-up.png");
+        this.load.image("nuke", "powerUps/nuke.png");
 
         this.load.image("bg-bridge", "bg-bridge.png");
         this.load.spritesheet("dude", "dude.png", {

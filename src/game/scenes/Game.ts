@@ -65,6 +65,11 @@ export class Game extends Scene {
         this.player.update();
         this.enemy1.chase(this.player);
         this.enemy1.performAttack(this.player);
+
+        if (this.player.getHealth() == 0) {
+            this.scene.pause();
+            this.scene.launch("GameOver");
+        }
     }
 
     changeScene() {

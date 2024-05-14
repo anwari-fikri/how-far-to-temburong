@@ -32,6 +32,15 @@ export class GameOver extends Scene {
         EventBus.emit("current-scene-ready", this);
     }
 
+    update() {
+        const spaceKey = this.input.keyboard?.addKey(
+            Phaser.Input.Keyboard.KeyCodes.SPACE,
+        );
+        spaceKey?.on("down", () => {
+            this.scene.start("Game");
+        });
+    }
+
     changeScene() {
         this.scene.start("MainMenu");
     }

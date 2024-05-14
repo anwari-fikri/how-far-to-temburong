@@ -5,9 +5,11 @@ import PowerUps, { PowerUpType } from "../classes/PowerUps";
 import { PickUp } from "../classes/PickUp";
 import Weapon from "../classes/Weapon";
 import { createPause } from "../classes/PauseResume";
+import Enemy from "../classes/Enemy";
 
 export class Game extends Scene {
     private player: Player;
+    private enemy1: Enemy;
     private weapon: Weapon;
     private speedBoost: PowerUps;
     private speedBoost2: PowerUps;
@@ -26,6 +28,7 @@ export class Game extends Scene {
         this.weapon = new Weapon(this, 200, 200, "katana");
 
         this.player = new Player(this, 100, 450, "dude");
+        this.enemy1 = new Enemy(this, 100, 650, "dude", 100.0, 5);
 
         this.speedBoost = new PowerUps(
             this,
@@ -50,6 +53,8 @@ export class Game extends Scene {
 
     update() {
         this.player.update();
+        this.enemy1.chase(this.player);
+        this.enemy1.performAttack(this.player);
     }
 
     changeScene() {

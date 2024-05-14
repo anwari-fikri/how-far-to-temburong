@@ -4,8 +4,10 @@ import PlayerControls from "./PlayerControls";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     private controls: PlayerControls;
 
-    private basePlayerSpeed = 300;
-    private playerSpeed = this.basePlayerSpeed;
+    private baseMovementSpeed = 300;
+    private movementSpeed = this.baseMovementSpeed;
+    private baseHealth = 100;
+    private health = this.baseHealth;
 
     // Power Ups
     private isSpeedBoosted: boolean;
@@ -28,5 +30,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         this.controls.update();
+    }
+
+    getHealth() {
+        return this.health;
+    }
+
+    receiveDamage(attack: number) {
+        this.health -= attack;
     }
 }

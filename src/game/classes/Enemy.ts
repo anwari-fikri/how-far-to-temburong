@@ -1,25 +1,23 @@
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
-    private player: Phaser.Physics.Arcade.Sprite;
+    private health: number;
 
     constructor(
         scene: Phaser.Scene,
-        x: number,
-        y: number,
+        xPos: number,
+        yPos: number,
         texture: string,
-        player: Phaser.Physics.Arcade.Sprite,
+        health: number,
     ) {
-        super(scene, x, y, texture);
-        this.player = player;
+        super(scene, xPos, yPos, texture);
+        this.health = health;
+
         scene.add.existing(this);
         scene.physics.add.existing(this);
     }
 
-    update() {
-        this.enemyFollows();
-    }
+    update() {}
 
-    private enemyFollows() {
-        // Move the enemy towards the player
-        this.scene.physics.moveToObject(this, this.player, 100);
+    chase(player: Phaser.Physics.Arcade.Sprite) {
+        this.scene.physics.moveToObject(this, player, 100);
     }
 }

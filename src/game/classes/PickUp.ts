@@ -7,6 +7,7 @@ export function PickUp(
     scene: Phaser.Scene,
     player: Player,
     pickupItem: PowerUps | Weapon,
+    enemies?: Phaser.GameObjects.Group,
 ) {
     if (pickupItem instanceof Weapon) {
         const pickupKey = scene.input?.keyboard?.addKey("E");
@@ -29,6 +30,9 @@ export function PickUp(
                     break;
                 case PowerUpType.ATTACK_BOOST:
                     playerStore.applyAttackBoost(scene);
+                    break;
+                case PowerUpType.NUKE:
+                    playerStore.applyNuke(enemies!);
                     break;
                 default:
                     break;

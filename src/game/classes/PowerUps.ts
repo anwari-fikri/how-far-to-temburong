@@ -34,9 +34,9 @@ export default class PowerUps extends Phaser.Physics.Arcade.Sprite {
             case PowerUpType.SPEED_BOOST:
                 playerStore.applySpeedBoost(this.scene);
                 break;
-            case PowerUpType.ATTACK_BOOST:
-                playerStore.applyAttackBoost(this.scene);
-                break;
+            // case PowerUpType.ATTACK_BOOST:
+            //     playerStore.applyAttackBoost(this.scene);
+            //     break;
             default:
                 break;
         }

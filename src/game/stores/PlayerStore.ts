@@ -1,4 +1,5 @@
 import { makeAutoObservable, action, observable } from "mobx";
+import { PowerUpType } from "../classes/PowerUps";
 
 class PlayerStore {
     baseMovementSpeed: number = 300;
@@ -30,19 +31,21 @@ class PlayerStore {
             }
 
             this.speedBoostTimer = scene.time.delayedCall(5000, () => {
-                this.removeSpeedBoost();
+                this.removePowerUp(PowerUpType.SPEED_BOOST);
             });
         } else {
             this.speedBoostTimer.reset({
                 delay: 5000,
-                callback: () => this.removeSpeedBoost(),
+                callback: () => this.removePowerUp(PowerUpType.SPEED_BOOST),
             });
         }
     }
 
-    async removeSpeedBoost() {
-        this.isSpeedBoosted = false;
-        this.currentMovementSpeed -= this.baseMovementSpeed;
+    async removePowerUp(powerUpType: PowerUpType) {
+        if (powerUpType === PowerUpType.SPEED_BOOST) {
+            this.isSpeedBoosted = false;
+            this.currentMovementSpeed -= this.baseMovementSpeed;
+        }
     }
 }
 

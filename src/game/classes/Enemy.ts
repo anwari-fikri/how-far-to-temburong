@@ -23,7 +23,10 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
     }
 
-    update() {}
+    update(player: Player) {
+        this.chase(player);
+        this.performAttack(player);
+    }
 
     chase(player: Player) {
         this.scene.physics.moveToObject(this, player, 100);

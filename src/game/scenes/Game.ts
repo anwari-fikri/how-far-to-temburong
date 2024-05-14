@@ -63,8 +63,7 @@ export class Game extends Scene {
 
     update() {
         this.player.update();
-        this.enemy1.chase(this.player);
-        this.enemy1.performAttack(this.player);
+        this.enemy1.update(this.player);
 
         if (this.player.getHealth() == 0) {
             this.scene.pause();

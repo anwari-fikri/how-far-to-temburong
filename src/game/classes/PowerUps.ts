@@ -39,7 +39,7 @@ export default class PowerUps extends Phaser.Physics.Arcade.Sprite {
                 playerStore.applyAttackBoost(this.scene);
                 break;
             case PowerUpType.NUKE:
-                playerStore.applyAttackBoost(this.scene);
+                playerStore.applyNuke(this.scene);
                 break;
             default:
                 break;

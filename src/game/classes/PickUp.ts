@@ -9,12 +9,12 @@ export function PickUp(
     scene: Phaser.Scene,
     player: Player,
     pickupItem: PowerUp | Weapon,
-    inventory: Inventory,
+    inventory?: Inventory,
     enemies?: Enemies,
 ) {
     if (pickupItem instanceof Weapon) {
         const pickupKey = scene.input?.keyboard?.addKey("E");
-        if (pickupKey) {
+        if (pickupKey && inventory) {
             pickupKey.on("down", () => {
                 if (scene.physics.overlap(player, pickupItem)) {
                     const weaponName = pickupItem.texture.key;

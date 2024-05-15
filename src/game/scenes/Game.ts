@@ -35,8 +35,10 @@ export class Game extends Scene {
 
         this.player = new Player(this, 100, 450, "dude");
 
-        this.weapon = new Weapon(this, 200, 200, "katana");
-        PickUp(this, this.player, this.weapon);
+        this.weapons.forEach((weapon) => {
+            PickUp(this, this.player, weapon);
+            this.inventory.addItem(weapon);
+        });
 
         this.enemies = new Enemies(this);
         for (let x = 0; x <= 1000; x += 100) {
@@ -52,7 +54,7 @@ export class Game extends Scene {
             new PowerUp(this, 0, 400, "time-stop", PowerUpType.TIME_STOP),
         );
         this.powerUps.forEach((powerUp: PowerUp) => {
-            PickUp(this, this.player, powerUp, this.enemies);
+            PickUp(this, this.player, powerUp, this.inventory, this.enemies);
         });
 
         EventBus.emit("current-scene-ready", this);

@@ -76,7 +76,6 @@ class PlayerStore {
         if (!this.isAttackBoosted) {
             this.isAttackBoosted = true;
             this.currentAttackPower += this.baseAttackPower;
-            console.log(this.currentAttackPower);
 
             if (this.attackBoostTimer) {
                 this.attackBoostTimer.remove();
@@ -84,7 +83,6 @@ class PlayerStore {
 
             this.attackBoostTimer = scene.time.delayedCall(5000, () => {
                 this.removePowerUp(PowerUpType.ATTACK_BOOST);
-                console.log(this.currentAttackPower);
             });
         } else {
             this.attackBoostTimer.reset({

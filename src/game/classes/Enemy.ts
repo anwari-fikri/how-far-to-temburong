@@ -37,7 +37,6 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.scene.physics.add.overlap(player, this, () => {
             if (this.canAttack) {
                 playerStore.receiveDamage(this.attackPower);
-                console.log(playerStore.currentHealth);
                 this.canAttack = false;
 
                 if (this.attackCoolDownTimer) {

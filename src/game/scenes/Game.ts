@@ -11,8 +11,6 @@ import Enemies from "../classes/Enemies";
 export class Game extends Scene {
     private player: Player;
     private enemies: Enemies;
-    private enemy1: Enemy;
-    private enemy2: Enemy;
     private weapon: Weapon;
     private speedBoost: PowerUps;
     private speedBoost2: PowerUps;
@@ -34,10 +32,9 @@ export class Game extends Scene {
         this.player = new Player(this, 100, 450, "dude");
 
         this.enemies = new Enemies(this);
-        this.enemy1 = new Enemy(this, 100, 650, "dude", 100.0, 5);
-        this.enemy2 = new Enemy(this, 100, 0, "dude", 100.0, 5);
-        this.enemies.createEnemy(this.enemy1);
-        this.enemies.createEnemy(this.enemy2);
+        for (let x = 0; x <= 1000; x += 100) {
+            this.enemies.createEnemy(new Enemy(this, x, 650, "dude", 100.0, 5));
+        }
 
         this.speedBoost = new PowerUps(
             this,

@@ -1,6 +1,6 @@
 import { makeAutoObservable, action, observable } from "mobx";
 import { PowerUpType } from "../classes/PowerUps";
-import Enemy from "../classes/Enemy";
+import Enemies from "../classes/Enemies";
 
 class PlayerStore {
     baseMovementSpeed: number = 300;
@@ -74,10 +74,8 @@ class PlayerStore {
         }
     }
 
-    async applyNuke(enemies: Phaser.GameObjects.Group) {
-        enemies.getChildren.apply((enemy: Enemy) => {
-            enemy.performGetNuked();
-        });
+    async applyNuke(enemies: Enemies) {
+        enemies.getNuked();
     }
 
     async removePowerUp(powerUpType: PowerUpType) {

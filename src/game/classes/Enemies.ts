@@ -27,6 +27,11 @@ export default class Enemies {
         );
     }
 
+    getNuked() {
+        console.log("BOOM");
+        this.enemies.clear(true, true);
+    }
+
     getGroup() {
         return this.enemies;
     }

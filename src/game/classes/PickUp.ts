@@ -1,4 +1,5 @@
 import playerStore from "../stores/PlayerStore";
+import Enemies from "./Enemies";
 import Player from "./Player";
 import PowerUps, { PowerUpType } from "./PowerUps";
 import Weapon from "./Weapon";
@@ -7,7 +8,7 @@ export function PickUp(
     scene: Phaser.Scene,
     player: Player,
     pickupItem: PowerUps | Weapon,
-    enemies?: Phaser.GameObjects.Group,
+    enemies?: Enemies,
 ) {
     if (pickupItem instanceof Weapon) {
         const pickupKey = scene.input?.keyboard?.addKey("E");

@@ -9,7 +9,6 @@ import Enemy from "../classes/Enemy";
 import Enemies from "../classes/Enemies";
 
 export class Game extends Scene {
-    private enemies: Phaser.GameObjects.Group;
     private player: Player;
     private enemies: Enemies;
     private weapon: Weapon;

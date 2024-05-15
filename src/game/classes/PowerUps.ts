@@ -1,5 +1,6 @@
 import Player from "./Player";
 import playerStore from "../stores/PlayerStore";
+import Enemies from "./Enemies";
 
 export enum PowerUpType {
     SPEED_BOOST = "speed_boost",
@@ -9,6 +10,7 @@ export enum PowerUpType {
 
 export default class PowerUps extends Phaser.Physics.Arcade.Sprite {
     private powerUpType: PowerUpType;
+    private enemies: Enemies;
 
     constructor(
         scene: Phaser.Scene,
@@ -16,11 +18,15 @@ export default class PowerUps extends Phaser.Physics.Arcade.Sprite {
         y: number,
         texture: string,
         powerUpType: PowerUpType,
+        enemies?: Enemies,
     ) {
         super(scene, x, y, texture);
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.powerUpType = powerUpType;
+        if (enemies) {
+            this.enemies = enemies;
+        }
 
         this.setDisplaySize(50, 50);
     }
@@ -39,7 +45,9 @@ export default class PowerUps extends Phaser.Physics.Arcade.Sprite {
                 playerStore.applyAttackBoost(this.scene);
                 break;
             case PowerUpType.NUKE:
-                playerStore.applyNuke(this.scene);
+                if (this.enemies) {
+                    playerStore.applyNuke(this.enemies);
+                }
                 break;
             default:
                 break;

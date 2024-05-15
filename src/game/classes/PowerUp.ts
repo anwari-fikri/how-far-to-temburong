@@ -8,7 +8,7 @@ export enum PowerUpType {
     NUKE = "nuke",
 }
 
-export default class PowerUps extends Phaser.Physics.Arcade.Sprite {
+export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
     private powerUpType: PowerUpType;
     private enemies: Enemies;
 

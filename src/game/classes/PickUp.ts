@@ -1,13 +1,13 @@
 import playerStore from "../stores/PlayerStore";
 import Enemies from "./Enemies";
 import Player from "./Player";
-import PowerUps, { PowerUpType } from "./PowerUps";
+import PowerUp, { PowerUpType } from "./PowerUp";
 import Weapon from "./Weapon";
 
 export function PickUp(
     scene: Phaser.Scene,
     player: Player,
-    pickupItem: PowerUps | Weapon,
+    pickupItem: PowerUp | Weapon,
     enemies?: Enemies,
 ) {
     if (pickupItem instanceof Weapon) {
@@ -23,7 +23,7 @@ export function PickUp(
         }
     }
 
-    if (pickupItem instanceof PowerUps) {
+    if (pickupItem instanceof PowerUp) {
         scene.physics.add.collider(player, pickupItem, () => {
             switch (pickupItem.getPowerUpType()) {
                 case PowerUpType.SPEED_BOOST:

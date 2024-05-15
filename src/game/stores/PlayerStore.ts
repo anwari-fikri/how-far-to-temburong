@@ -1,5 +1,5 @@
 import { makeAutoObservable, action, observable } from "mobx";
-import { PowerUpType } from "../classes/PowerUps";
+import { PowerUpType } from "../classes/PowerUp";
 import Enemies from "../classes/Enemies";
 
 class PlayerStore {

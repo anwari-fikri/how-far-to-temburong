@@ -1,7 +1,7 @@
 import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
 import Player from "../classes/Player";
-import PowerUps, { PowerUpType } from "../classes/PowerUps";
+import PowerUp, { PowerUpType } from "../classes/PowerUp";
 import { PickUp } from "../classes/PickUp";
 import Weapon from "../classes/Weapon";
 import { createPause } from "../classes/PauseResume";
@@ -12,10 +12,10 @@ export class Game extends Scene {
     private player: Player;
     private enemies: Enemies;
     private weapon: Weapon;
-    private speedBoost: PowerUps;
-    private speedBoost2: PowerUps;
-    private attackUp: PowerUps;
-    private nuke: PowerUps;
+    private speedBoost: PowerUp;
+    private speedBoost2: PowerUp;
+    private attackUp: PowerUp;
+    private nuke: PowerUp;
     private background: Phaser.GameObjects.Image;
 
     constructor() {
@@ -37,28 +37,28 @@ export class Game extends Scene {
             this.enemies.createEnemy(new Enemy(this, x, 650, "dude", 100.0, 5));
         }
 
-        this.speedBoost = new PowerUps(
+        this.speedBoost = new PowerUp(
             this,
             400,
             450,
             "star",
             PowerUpType.SPEED_BOOST,
         );
-        this.speedBoost2 = new PowerUps(
+        this.speedBoost2 = new PowerUp(
             this,
             0,
             450,
             "star",
             PowerUpType.SPEED_BOOST,
         );
-        this.attackUp = new PowerUps(
+        this.attackUp = new PowerUp(
             this,
             700,
             700,
             "attack-up",
             PowerUpType.ATTACK_BOOST,
         );
-        this.nuke = new PowerUps(this, 600, 600, "nuke", PowerUpType.NUKE);
+        this.nuke = new PowerUp(this, 600, 600, "nuke", PowerUpType.NUKE);
 
         PickUp(this, this.player, this.weapon);
         PickUp(this, this.player, this.speedBoost);

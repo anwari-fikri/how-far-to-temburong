@@ -32,6 +32,12 @@ class PlayerStore {
         });
     }
 
+    async resetAttributes() {
+        this.currentHealth = this.baseHealth;
+        this.currentMovementSpeed = this.baseMovementSpeed;
+        this.currentAttackPower = this.baseAttackPower;
+    }
+
     async receiveDamage(attack: number) {
         this.currentHealth -= attack;
     }

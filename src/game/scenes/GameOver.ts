@@ -1,5 +1,6 @@
 import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
+import playerStore from "../stores/PlayerStore";
 
 export class GameOver extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera;
@@ -37,6 +38,7 @@ export class GameOver extends Scene {
             Phaser.Input.Keyboard.KeyCodes.SPACE,
         );
         spaceKey?.on("down", () => {
+            playerStore.resetAttributes();
             this.scene.start("Game");
         });
     }

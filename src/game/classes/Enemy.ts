@@ -1,4 +1,5 @@
 import Player from "./Player";
+import playerStore from "../stores/PlayerStore";
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     private health: number;
@@ -35,8 +36,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     performAttack(player: Player) {
         this.scene.physics.add.overlap(player, this, () => {
             if (this.canAttack) {
-                player.receiveDamage(this.attackPower);
-                console.log(player.getHealth());
+                playerStore.receiveDamage(this.attackPower);
+                console.log(playerStore.currentHealth);
                 this.canAttack = false;
 
                 if (this.attackCoolDownTimer) {

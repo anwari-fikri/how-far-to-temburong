@@ -3,9 +3,14 @@ import { PowerUpType } from "../classes/PowerUp";
 import Enemies from "../classes/Enemies";
 
 class PlayerStore {
+    // Base Attributes
+    baseHealth: number = 100;
     baseMovementSpeed: number = 300;
-    currentMovementSpeed: number = this.baseMovementSpeed;
     baseAttackPower: number = 100;
+
+    // Attributes
+    currentHealth: number = this.baseHealth;
+    currentMovementSpeed: number = this.baseMovementSpeed;
     currentAttackPower: number = this.baseAttackPower;
 
     // Power Ups
@@ -17,9 +22,18 @@ class PlayerStore {
 
     constructor() {
         makeAutoObservable(this, {
+            currentHealth: observable,
             currentMovementSpeed: observable,
+            currentAttackPower: observable,
+            receiveDamage: action,
             applySpeedBoost: action,
+            applyAttackBoost: action,
+            applyNuke: action,
         });
+    }
+
+    async receiveDamage(attack: number) {
+        this.currentHealth -= attack;
     }
 
     async applySpeedBoost(scene: Phaser.Scene) {

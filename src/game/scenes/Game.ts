@@ -4,9 +4,9 @@ import Player from "../classes/Player";
 import PowerUp, { PowerUpType } from "../classes/PowerUp";
 import { PickUp } from "../classes/PickUp";
 import Weapon from "../classes/Weapon";
-import { createPause } from "../classes/PauseResume";
 import Enemy from "../classes/Enemy";
 import Enemies from "../classes/Enemies";
+import playerStore from "../stores/PlayerStore";
 
 export class Game extends Scene {
     private player: Player;
@@ -77,7 +77,7 @@ export class Game extends Scene {
         this.player.update();
         this.enemies.update(this.player);
 
-        if (this.player.getHealth() <= 0) {
+        if (playerStore.currentHealth <= 0) {
             this.scene.pause();
             this.scene.launch("GameOver");
         }

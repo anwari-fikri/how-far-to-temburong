@@ -7,6 +7,7 @@ import Weapon from "../classes/Weapon";
 import { createPause } from "../classes/PauseResume";
 import Enemy from "../classes/Enemy";
 import Enemies from "../classes/Enemies";
+import Inventory from "../classes/Inventory";
 
 export class Game extends Scene {
     private player: Player;
@@ -16,6 +17,7 @@ export class Game extends Scene {
     private speedBoost2: PowerUps;
     private attackUp: PowerUps;
     private background: Phaser.GameObjects.Image;
+    private inventory: Inventory;
 
     constructor() {
         super("Game");
@@ -27,8 +29,11 @@ export class Game extends Scene {
             .setScrollFactor(1);
         this.cameras.main.setZoom(1.5);
 
+        this.inventory = new Inventory(this.player);
+
         this.weapons.push(new Weapon(this, 200, 200, "katana"));
         this.weapons.push(new Weapon(this, 700, 350, "sword"));
+        this.weapons.push(new Weapon(this, 400, 400, "gun"));
 
         this.player = new Player(this, 100, 450, "dude");
 
@@ -51,21 +56,13 @@ export class Game extends Scene {
             "star",
             PowerUpType.SPEED_BOOST,
         );
-        this.attackUp = new PowerUps(
-            this,
-            700,
-            700,
-            "attack-up",
-            PowerUpType.ATTACK_BOOST,
-        );
-
         this.weapons.forEach((weapon) => {
-            PickUp(this, this.player, weapon);
+            PickUp(this, this.player, weapon, this.inventory);
         });
 
-        PickUp(this, this.player, this.speedBoost);
-        PickUp(this, this.player, this.speedBoost2);
-        PickUp(this, this.player, this.attackUp);
+        PickUp(this, this.player, this.speedBoost, this.inventory);
+        PickUp(this, this.player, this.speedBoost2, this.inventory);
+        PickUp(this, this.player, this.attackUp, this.inventory);
 
         EventBus.emit("current-scene-ready", this);
     }

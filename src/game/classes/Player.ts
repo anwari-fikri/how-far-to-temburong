@@ -5,10 +5,6 @@ import PlayerControls from "./PlayerControls";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     private controls: PlayerControls;
 
-    private baseMovementSpeed = 300;
-    private baseHealth = 100;
-    private health = this.baseHealth;
-
     private inventory: Inventory;
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
@@ -26,13 +22,5 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         this.controls.update();
-    }
-
-    getHealth() {
-        return this.health;
-    }
-
-    receiveDamage(attack: number) {
-        this.health -= attack;
     }
 }

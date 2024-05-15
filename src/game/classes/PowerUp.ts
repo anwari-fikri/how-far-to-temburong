@@ -1,12 +1,15 @@
 import Player from "./Player";
 import playerStore from "../stores/PlayerStore";
+import Enemies from "./Enemies";
 
 export enum PowerUpType {
     SPEED_BOOST = "speed_boost",
     ATTACK_BOOST = "attack_boost",
+    NUKE = "nuke",
+    TIME_STOP = "time_stop",
 }
 
-export default class PowerUps extends Phaser.Physics.Arcade.Sprite {
+export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
     private powerUpType: PowerUpType;
 
     constructor(
@@ -26,20 +29,6 @@ export default class PowerUps extends Phaser.Physics.Arcade.Sprite {
 
     getPowerUpType() {
         return this.powerUpType;
-    }
-
-    // Define method to apply power-up effects based on type
-    applyEffectToPlayer() {
-        switch (this.powerUpType) {
-            case PowerUpType.SPEED_BOOST:
-                playerStore.applySpeedBoost(this.scene);
-                break;
-            case PowerUpType.ATTACK_BOOST:
-                playerStore.applyAttackBoost(this.scene);
-                break;
-            default:
-                break;
-        }
     }
 }
 

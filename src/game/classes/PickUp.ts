@@ -1,14 +1,16 @@
 import playerStore from "../stores/PlayerStore";
+import Enemies from "./Enemies";
 import Player from "./Player";
-import PowerUps, { PowerUpType } from "./PowerUps";
+import PowerUp, { PowerUpType } from "./PowerUp";
 import Weapon from "./Weapon";
 import Inventory from "./Inventory";
 
 export function PickUp(
     scene: Phaser.Scene,
     player: Player,
-    pickupItem: PowerUps | Weapon,
+    pickupItem: PowerUp | Weapon,
     inventory: Inventory,
+    enemies?: Enemies,
 ) {
     if (pickupItem instanceof Weapon) {
         const pickupKey = scene.input?.keyboard?.addKey("E");
@@ -27,7 +29,7 @@ export function PickUp(
         }
     }
 
-    if (pickupItem instanceof PowerUps) {
+    if (pickupItem instanceof PowerUp) {
         scene.physics.add.collider(player, pickupItem, () => {
             switch (pickupItem.getPowerUpType()) {
                 case PowerUpType.SPEED_BOOST:
@@ -35,6 +37,12 @@ export function PickUp(
                     break;
                 case PowerUpType.ATTACK_BOOST:
                     playerStore.applyAttackBoost(scene);
+                    break;
+                case PowerUpType.NUKE:
+                    playerStore.applyNuke(enemies!);
+                    break;
+                case PowerUpType.TIME_STOP:
+                    playerStore.applyTimeStop(scene, enemies!);
                     break;
                 default:
                     break;

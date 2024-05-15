@@ -6,10 +6,13 @@ import { PickUp } from "../classes/PickUp";
 import Weapon from "../classes/Weapon";
 import { createPause } from "../classes/PauseResume";
 import Enemy from "../classes/Enemy";
+import Enemies from "../classes/Enemies";
 
 export class Game extends Scene {
     private player: Player;
+    private enemies: Enemies;
     private enemy1: Enemy;
+    private enemy2: Enemy;
     private weapon: Weapon;
     private speedBoost: PowerUps;
     private speedBoost2: PowerUps;
@@ -29,7 +32,12 @@ export class Game extends Scene {
         this.weapon = new Weapon(this, 200, 200, "katana");
 
         this.player = new Player(this, 100, 450, "dude");
+
+        this.enemies = new Enemies(this);
         this.enemy1 = new Enemy(this, 100, 650, "dude", 100.0, 5);
+        this.enemy2 = new Enemy(this, 100, 0, "dude", 100.0, 5);
+        this.enemies.createEnemy(this.enemy1);
+        this.enemies.createEnemy(this.enemy2);
 
         this.speedBoost = new PowerUps(
             this,
@@ -63,7 +71,7 @@ export class Game extends Scene {
 
     update() {
         this.player.update();
-        this.enemy1.update(this.player);
+        this.enemies.update(this.player);
 
         if (this.player.getHealth() == 0) {
             this.scene.pause();

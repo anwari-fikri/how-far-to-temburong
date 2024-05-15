@@ -20,6 +20,9 @@ class PlayerStore {
     isAttackBoosted: boolean = false;
     attackBoostTimer: Phaser.Time.TimerEvent;
 
+    isTimeStopped: boolean = false;
+    timeStopTimer: Phaser.Time.TimerEvent;
+
     constructor() {
         makeAutoObservable(this, {
             currentHealth: observable,
@@ -29,6 +32,7 @@ class PlayerStore {
             applySpeedBoost: action,
             applyAttackBoost: action,
             applyNuke: action,
+            applyTimeStop: action,
         });
     }
 
@@ -94,6 +98,34 @@ class PlayerStore {
 
     async applyNuke(enemies: Enemies) {
         enemies.getNuked();
+    }
+
+    async applyTimeStop(scene: Phaser.Scene, enemies: Enemies) {
+        /*
+            If the player picks up a time stop power-up:
+            - Stop enemies' movement for 5 seconds.
+            - If the time stop power-up is already active, refresh the duration back to 5 seconds.
+        */
+        if (!this.isTimeStopped) {
+            this.isTimeStopped = true;
+            enemies.getTimeStopped();
+
+            if (this.timeStopTimer) {
+                this.timeStopTimer.remove();
+            }
+            this.timeStopTimer = scene.time.delayedCall(5000, () => {
+                enemies.resumeMovement();
+                this.isTimeStopped = false;
+            });
+        } else {
+            this.timeStopTimer.reset({
+                delay: 5000,
+                callback: () => {
+                    enemies.resumeMovement();
+                    this.isTimeStopped = false;
+                },
+            });
+        }
     }
 
     async removePowerUp(powerUpType: PowerUpType) {

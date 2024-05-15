@@ -8,6 +8,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     private canAttack: boolean = true;
     private attackCoolDownTimer: Phaser.Time.TimerEvent | null = null;
 
+    private chaseSpeed: number = 100;
+
     constructor(
         scene: Phaser.Scene,
         xPos: number,
@@ -29,8 +31,13 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.performAttack(player);
     }
 
+    setChaseSpeed(chaseSpeed: number) {
+        this.chaseSpeed = chaseSpeed;
+    }
+
     chase(player: Player) {
-        this.scene.physics.moveToObject(this, player, 100);
+        // console.log(this.chaseSpeed);
+        this.scene.physics.moveToObject(this, player, this.chaseSpeed);
     }
 
     performAttack(player: Player) {

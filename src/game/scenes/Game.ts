@@ -40,6 +40,8 @@ export class Game extends Scene {
             new PowerUp(this, 0, 450, "star", PowerUpType.SPEED_BOOST),
             new PowerUp(this, 700, 700, "attack-up", PowerUpType.ATTACK_BOOST),
             new PowerUp(this, 600, 600, "nuke", PowerUpType.NUKE),
+            new PowerUp(this, 0, 200, "time-stop", PowerUpType.TIME_STOP),
+            new PowerUp(this, 0, 400, "time-stop", PowerUpType.TIME_STOP),
         );
         this.powerUps.forEach((powerUp: PowerUp) => {
             PickUp(this, this.player, powerUp, this.enemies);

@@ -31,6 +31,30 @@ export default class Enemies {
         this.enemies.clear(true, true);
     }
 
+    getTimeStopped() {
+        this.enemies.children.iterate(
+            (gameObject: Phaser.GameObjects.GameObject) => {
+                const enemy = gameObject as Enemy;
+                if (enemy && enemy instanceof Enemy) {
+                    enemy.setChaseSpeed(0);
+                }
+                return true;
+            },
+        );
+    }
+
+    resumeMovement() {
+        this.enemies.children.iterate(
+            (gameObject: Phaser.GameObjects.GameObject) => {
+                const enemy = gameObject as Enemy;
+                if (enemy && enemy instanceof Enemy) {
+                    enemy.setChaseSpeed(100);
+                }
+                return true;
+            },
+        );
+    }
+
     getGroup() {
         return this.enemies;
     }

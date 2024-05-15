@@ -35,6 +35,9 @@ export function PickUp(
                 case PowerUpType.NUKE:
                     playerStore.applyNuke(enemies!);
                     break;
+                case PowerUpType.TIME_STOP:
+                    playerStore.applyTimeStop(scene, enemies!);
+                    break;
                 default:
                     break;
             }

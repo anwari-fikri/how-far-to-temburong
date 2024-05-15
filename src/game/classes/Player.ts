@@ -1,4 +1,5 @@
 import { playerAnims } from "./CharAnims";
+import Inventory from "./Inventory";
 import PlayerControls from "./PlayerControls";
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
@@ -8,6 +9,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     private baseHealth = 100;
     private health = this.baseHealth;
 
+    private inventory: Inventory;
+
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
         super(scene, x, y, texture);
         scene.add.existing(this);
@@ -15,6 +18,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.controls = new PlayerControls(scene, this);
         scene.cameras.main.startFollow(this, true);
+
+        this.inventory = new Inventory(this);
 
         playerAnims(scene);
     }

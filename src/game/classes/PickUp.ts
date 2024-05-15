@@ -2,6 +2,7 @@ import playerStore from "../stores/PlayerStore";
 import Player from "./Player";
 import PowerUps, { PowerUpType } from "./PowerUps";
 import Weapon from "./Weapon";
+import Inventory from "./Inventory";
 
 export function PickUp(
     scene: Phaser.Scene,
@@ -13,9 +14,13 @@ export function PickUp(
         if (pickupKey) {
             pickupKey.on("down", () => {
                 if (scene.physics.overlap(player, pickupItem)) {
-                    const weaponName = pickupItem.name;
-                    console.log(`Picked up ${weaponName}`);
-                    return;
+                    const weaponName = pickupItem.texture.key;
+                    if (weaponName) {
+                        console.log(`Picked up ${weaponName}`);
+                        pickupItem.destroy();
+                    } else {
+                        console.log("Weapon name not set.");
+                    }
                 }
             });
         }
@@ -37,4 +42,3 @@ export function PickUp(
         });
     }
 }
-

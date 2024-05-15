@@ -10,7 +10,7 @@ import Enemy from "../classes/Enemy";
 export class Game extends Scene {
     private player: Player;
     private enemy1: Enemy;
-    private weapon: Weapon;
+    private weapons: Weapon[] = [];
     private speedBoost: PowerUps;
     private speedBoost2: PowerUps;
     private attackUp: PowerUps;
@@ -26,7 +26,8 @@ export class Game extends Scene {
             .setScrollFactor(1);
         this.cameras.main.setZoom(1.5);
 
-        this.weapon = new Weapon(this, 200, 200, "katana");
+        this.weapons.push(new Weapon(this, 200, 200, "katana"));
+        this.weapons.push(new Weapon(this, 700, 350, "sword"));
 
         this.player = new Player(this, 100, 450, "dude");
         this.enemy1 = new Enemy(this, 100, 650, "dude", 100.0, 5);
@@ -53,7 +54,10 @@ export class Game extends Scene {
             PowerUpType.ATTACK_BOOST,
         );
 
-        PickUp(this, this.player, this.weapon);
+        this.weapons.forEach((weapon) => {
+            PickUp(this, this.player, weapon);
+        });
+
         PickUp(this, this.player, this.speedBoost);
         PickUp(this, this.player, this.speedBoost2);
         PickUp(this, this.player, this.attackUp);

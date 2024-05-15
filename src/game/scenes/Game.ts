@@ -6,10 +6,12 @@ import { PickUp } from "../classes/PickUp";
 import Weapon from "../classes/Weapon";
 import { createPause } from "../classes/PauseResume";
 import Enemy from "../classes/Enemy";
+import Enemies from "../classes/Enemies";
 
 export class Game extends Scene {
     private enemies: Phaser.GameObjects.Group;
     private player: Player;
+    private enemies: Enemies;
     private weapon: Weapon;
     private speedBoost: PowerUps;
     private speedBoost2: PowerUps;
@@ -31,12 +33,10 @@ export class Game extends Scene {
 
         this.player = new Player(this, 100, 450, "dude");
 
-        this.enemies = this.physics.add.group({
-            classType: Enemy,
-            runChildUpdate: true,
-        });
-        this.enemies.add(new Enemy(this, 400, 400, "dude", 100, 10));
-        this.enemies.add(new Enemy(this, 400, 500, "dude", 100, 10));
+        this.enemies = new Enemies(this);
+        for (let x = 0; x <= 1000; x += 100) {
+            this.enemies.createEnemy(new Enemy(this, x, 650, "dude", 100.0, 5));
+        }
 
         this.speedBoost = new PowerUps(
             this,
@@ -76,11 +76,7 @@ export class Game extends Scene {
 
     update() {
         this.player.update();
-
-        this.enemies.getChildren().forEach((enemy) => {
-            (enemy as Enemy).chase(this.player);
-            (enemy as Enemy).performAttack(this.player);
-        });
+        this.enemies.update(this.player);
 
         if (this.player.getHealth() <= 0) {
             this.scene.pause();

@@ -1,4 +1,5 @@
 import Player from "./Player";
+import playerStore from "../stores/PlayerStore";
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     private health: number;
@@ -6,6 +7,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     private attackPower: number;
     private canAttack: boolean = true;
     private attackCoolDownTimer: Phaser.Time.TimerEvent | null = null;
+
+    private chaseSpeed: number = 100;
 
     constructor(
         scene: Phaser.Scene,
@@ -28,15 +31,19 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.performAttack(player);
     }
 
+    setChaseSpeed(chaseSpeed: number) {
+        this.chaseSpeed = chaseSpeed;
+    }
+
     chase(player: Player) {
-        this.scene.physics.moveToObject(this, player, 100);
+        // console.log(this.chaseSpeed);
+        this.scene.physics.moveToObject(this, player, this.chaseSpeed);
     }
 
     performAttack(player: Player) {
         this.scene.physics.add.overlap(player, this, () => {
             if (this.canAttack) {
-                player.receiveDamage(this.attackPower);
-                console.log(player.getHealth());
+                playerStore.receiveDamage(this.attackPower);
                 this.canAttack = false;
 
                 if (this.attackCoolDownTimer) {
@@ -51,5 +58,9 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
                 );
             }
         });
+    }
+
+    performGetNuked() {
+        this.destroy();
     }
 }

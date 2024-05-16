@@ -36,8 +36,7 @@ export class Game extends Scene {
         this.player = new Player(this, 100, 450, "dude");
 
         this.weapons.forEach((weapon) => {
-            PickUp(this, this.player, weapon);
-            this.inventory.addItem(weapon);
+            PickUp(this, this.player, weapon, this.inventory);
         });
 
         this.enemies = new Enemies(this);

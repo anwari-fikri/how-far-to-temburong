@@ -1,5 +1,5 @@
 import Player from "./Player";
-import Weapon from "./Weapon"; // Assuming Weapon class is defined in a separate file
+import Weapon from "./Weapon";
 
 export default class Inventory {
     private items: Weapon[];
@@ -12,8 +12,16 @@ export default class Inventory {
         this.items = [];
     }
 
+    private isFull(): boolean {
+        return this.items.length >= this.capacity;
+    }
+
+    private containsWeapon(weapon: Weapon): boolean {
+        return this.items.includes(weapon);
+    }
+
     addItem(item: Weapon): boolean {
-        if (this.items.length < this.capacity) {
+        if (!this.isFull()) {
             this.items.push(item);
             console.log(`Added ${item.texture.key} to inventory.`);
             return true;
@@ -21,6 +29,17 @@ export default class Inventory {
             console.log("Inventory is full.");
             return false;
         }
+    }
+
+    addWeapon(weapon: Weapon): boolean {
+        if (this.containsWeapon(weapon)) {
+            console.log(
+                `Weapon ${weapon.texture.key} is already in the inventory.`,
+            );
+            return false;
+        }
+
+        return this.addItem(weapon);
     }
 
     getItems(): Weapon[] {
@@ -32,28 +51,5 @@ export default class Inventory {
         this.items.forEach((item, index) => {
             console.log(`${index + 1}. ${item.texture.key}`);
         });
-    }
-
-    addWeapon(weapon: Weapon): boolean {
-        // Check if the weapon is already in the inventory
-        if (this.items.includes(weapon)) {
-            console.log(
-                `Weapon ${weapon.texture.key} is already in the inventory.`,
-            );
-            return false;
-        }
-
-        // Add the weapon to the inventory
-        if (this.addItem(weapon)) {
-            console.log(
-                `Picked up ${weapon.texture.key} and added to inventory.`,
-            );
-            return true;
-        } else {
-            console.log(
-                `Failed to pick up ${weapon.texture.key}. Inventory is full.`,
-            );
-            return false;
-        }
     }
 }

@@ -9,20 +9,20 @@ export function PickUp(
     scene: Phaser.Scene,
     player: Player,
     pickupItem: PowerUp | Weapon,
-    inventory?: Inventory,
+    inventory: Inventory,
     enemies?: Enemies,
 ) {
     if (pickupItem instanceof Weapon) {
-        const pickupKey = scene.input?.keyboard?.addKey("E");
-        if (pickupKey && inventory) {
+        const keyboardPlugin = scene.input.keyboard;
+
+        if (keyboardPlugin) {
+            const pickupKey = keyboardPlugin.addKey("E");
+
             pickupKey.on("down", () => {
                 if (scene.physics.overlap(player, pickupItem)) {
-                    const weaponName = pickupItem.texture.key;
-                    if (weaponName) {
-                        inventory.addWeapon(pickupItem);
+                    if (inventory.addWeapon(pickupItem)) {
+                        console.log(`Picked up ${pickupItem.texture.key}`);
                         pickupItem.destroy();
-                    } else {
-                        console.log("Weapon name not set.");
                     }
                 }
             });

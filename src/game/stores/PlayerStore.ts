@@ -4,24 +4,27 @@ import Enemies from "../classes/Enemies";
 
 class PlayerStore {
     // Base Attributes
-    baseHealth: number = 100;
-    baseMovementSpeed: number = 300;
-    baseAttackPower: number = 100;
+    baseHealth = 100;
+    baseMovementSpeed = 300;
+    baseAttackPower = 100;
 
     // Attributes
-    currentHealth: number = this.baseHealth;
-    currentMovementSpeed: number = this.baseMovementSpeed;
-    currentAttackPower: number = this.baseAttackPower;
+    currentHealth = this.baseHealth;
+    currentMovementSpeed = this.baseMovementSpeed;
+    currentAttackPower = this.baseAttackPower;
 
     // Power Ups
-    isSpeedBoosted: boolean = false;
-    speedBoostTimer: Phaser.Time.TimerEvent;
+    isSpeedBoosted = false;
+    speedBoostTimer: Phaser.Time.TimerEvent | null = null;
 
-    isAttackBoosted: boolean = false;
-    attackBoostTimer: Phaser.Time.TimerEvent;
+    isAttackBoosted = false;
+    attackBoostTimer: Phaser.Time.TimerEvent | null = null;
 
-    isTimeStopped: boolean = false;
-    timeStopTimer: Phaser.Time.TimerEvent;
+    isTimeStopped = false;
+    timeStopTimer: Phaser.Time.TimerEvent | null = null;
+
+    isInvincibility = false;
+    invincibilityTimer: Phaser.Time.TimerEvent | null = null;
 
     constructor() {
         makeAutoObservable(this, {
@@ -33,102 +36,95 @@ class PlayerStore {
             applyAttackBoost: action,
             applyNuke: action,
             applyTimeStop: action,
+            applyInvincibility: action,
+            removePowerUp: action,
+            resetAttributes: action,
         });
     }
 
-    async resetAttributes() {
+    resetAttributes() {
         this.currentHealth = this.baseHealth;
         this.currentMovementSpeed = this.baseMovementSpeed;
         this.currentAttackPower = this.baseAttackPower;
     }
 
-    async receiveDamage(attack: number) {
-        this.currentHealth -= attack;
+    receiveDamage(attack: number) {
+        if (!this.isInvincibility) {
+            this.currentHealth -= attack;
+        }
+        console.log(this.currentHealth);
     }
 
-    async applySpeedBoost(scene: Phaser.Scene) {
-        /*
-            If the player picks up a speed boost:
-            - Increase the player's movement speed.
-            - If the speed boost is already active, resets the power-up timer.
-        */
+    applySpeedBoost(scene: Phaser.Scene) {
         if (!this.isSpeedBoosted) {
             this.isSpeedBoosted = true;
             this.currentMovementSpeed += this.baseMovementSpeed;
 
-            if (this.speedBoostTimer) {
-                this.speedBoostTimer.remove();
-            }
-
+            this.resetTimer(this.speedBoostTimer);
             this.speedBoostTimer = scene.time.delayedCall(5000, () => {
                 this.removePowerUp(PowerUpType.SPEED_BOOST);
             });
         } else {
-            this.speedBoostTimer.reset({
-                delay: 5000,
-                callback: () => this.removePowerUp(PowerUpType.SPEED_BOOST),
-            });
+            this.resetTimer(this.speedBoostTimer, 5000, () =>
+                this.removePowerUp(PowerUpType.SPEED_BOOST),
+            );
         }
     }
 
-    async applyAttackBoost(scene: Phaser.Scene) {
-        /*
-            If the player picks up a attack boost:
-            - Increase the player's attack power.
-            - If the attack boost is already active, resets the power-up timer.
-        */
+    applyAttackBoost(scene: Phaser.Scene) {
         if (!this.isAttackBoosted) {
             this.isAttackBoosted = true;
             this.currentAttackPower += this.baseAttackPower;
 
-            if (this.attackBoostTimer) {
-                this.attackBoostTimer.remove();
-            }
-
+            this.resetTimer(this.attackBoostTimer);
             this.attackBoostTimer = scene.time.delayedCall(5000, () => {
                 this.removePowerUp(PowerUpType.ATTACK_BOOST);
             });
         } else {
-            this.attackBoostTimer.reset({
-                delay: 5000,
-                callback: () => this.removePowerUp(PowerUpType.ATTACK_BOOST),
-            });
+            this.resetTimer(this.attackBoostTimer, 5000, () =>
+                this.removePowerUp(PowerUpType.ATTACK_BOOST),
+            );
         }
     }
 
-    async applyNuke(enemies: Enemies) {
+    applyNuke(enemies: Enemies) {
         enemies.getNuked();
     }
 
-    async applyTimeStop(scene: Phaser.Scene, enemies: Enemies) {
-        /*
-            If the player picks up a time stop power-up:
-            - Stop enemies' movement for 5 seconds.
-            - If the time stop power-up is already active, refresh the duration back to 5 seconds.
-        */
+    applyTimeStop(scene: Phaser.Scene, enemies: Enemies) {
         if (!this.isTimeStopped) {
             this.isTimeStopped = true;
             enemies.getTimeStopped();
 
-            if (this.timeStopTimer) {
-                this.timeStopTimer.remove();
-            }
+            this.resetTimer(this.timeStopTimer);
             this.timeStopTimer = scene.time.delayedCall(5000, () => {
                 enemies.resumeMovement();
-                this.isTimeStopped = false;
+                this.removePowerUp(PowerUpType.TIME_STOP);
             });
         } else {
-            this.timeStopTimer.reset({
-                delay: 5000,
-                callback: () => {
-                    enemies.resumeMovement();
-                    this.isTimeStopped = false;
-                },
+            this.resetTimer(this.timeStopTimer, 5000, () => {
+                enemies.resumeMovement();
+                this.isTimeStopped = false;
             });
         }
     }
 
-    async removePowerUp(powerUpType: PowerUpType) {
+    applyInvincibility(scene: Phaser.Scene) {
+        if (!this.isInvincibility) {
+            this.isInvincibility = true;
+
+            this.resetTimer(this.invincibilityTimer);
+            this.invincibilityTimer = scene.time.delayedCall(5000, () => {
+                this.removePowerUp(PowerUpType.INVINCIBILITY);
+            });
+        } else {
+            this.resetTimer(this.invincibilityTimer, 5000, () =>
+                this.removePowerUp(PowerUpType.INVINCIBILITY),
+            );
+        }
+    }
+
+    removePowerUp(powerUpType: PowerUpType) {
         switch (powerUpType) {
             case PowerUpType.SPEED_BOOST:
                 this.isSpeedBoosted = false;
@@ -138,9 +134,30 @@ class PlayerStore {
                 this.isAttackBoosted = false;
                 this.currentAttackPower -= this.baseAttackPower;
                 break;
+            case PowerUpType.TIME_STOP:
+                this.isTimeStopped = false;
+                break;
+            case PowerUpType.INVINCIBILITY:
+                this.isInvincibility = false;
+                break;
             default:
                 break;
         }
+    }
+
+    private resetTimer(
+        timer: Phaser.Time.TimerEvent | null,
+        delay = 5000,
+        callback: () => void = () => {},
+    ) {
+        if (timer) {
+            timer.remove();
+        }
+        timer = new Phaser.Time.TimerEvent({
+            delay,
+            callback,
+            callbackScope: this,
+        });
     }
 }
 

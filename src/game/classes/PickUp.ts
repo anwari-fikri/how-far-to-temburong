@@ -38,6 +38,9 @@ export function PickUp(
                 case PowerUpType.TIME_STOP:
                     playerStore.applyTimeStop(scene, enemies!);
                     break;
+                case PowerUpType.INVINCIBILITY:
+                    playerStore.applyInvincibility(scene);
+                    break;
                 default:
                     break;
             }

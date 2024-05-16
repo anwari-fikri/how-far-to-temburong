@@ -3,21 +3,27 @@ import Enemies from "./Enemies";
 import Player from "./Player";
 import PowerUp, { PowerUpType } from "./PowerUp";
 import Weapon from "./Weapon";
+import Inventory from "./Inventory";
 
 export function PickUp(
     scene: Phaser.Scene,
     player: Player,
     pickupItem: PowerUp | Weapon,
+    inventory: Inventory,
     enemies?: Enemies,
 ) {
     if (pickupItem instanceof Weapon) {
-        const pickupKey = scene.input?.keyboard?.addKey("E");
-        if (pickupKey) {
+        const keyboardPlugin = scene.input.keyboard;
+
+        if (keyboardPlugin) {
+            const pickupKey = keyboardPlugin.addKey("E");
+
             pickupKey.on("down", () => {
                 if (scene.physics.overlap(player, pickupItem)) {
-                    const weaponName = pickupItem.name;
-                    console.log(`Picked up ${weaponName}`);
-                    return;
+                    if (inventory.addWeapon(pickupItem)) {
+                        console.log(`Picked up ${pickupItem.texture.key}`);
+                        pickupItem.destroy();
+                    }
                 }
             });
         }
@@ -48,4 +54,3 @@ export function PickUp(
         });
     }
 }
-

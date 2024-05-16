@@ -13,8 +13,10 @@ export default class Inventory {
         return this.items.length >= this.capacity;
     }
 
-    private containsWeapon(weapon: Weapon): boolean {
-        return this.items.includes(weapon);
+    private containsWeaponType(weapon: Weapon): boolean {
+        return this.items.some(
+            (item) => item.texture.key === weapon.texture.key,
+        );
     }
 
     addItem(item: Weapon): boolean {
@@ -29,10 +31,8 @@ export default class Inventory {
     }
 
     addWeapon(weapon: Weapon): boolean {
-        if (this.containsWeapon(weapon)) {
-            console.log(
-                `Weapon ${weapon.texture.key} is already in the inventory.`,
-            );
+        if (this.containsWeaponType(weapon)) {
+            console.log(`${weapon.texture.key} is already in the inventory.`);
             return false;
         }
 
@@ -50,4 +50,3 @@ export default class Inventory {
         });
     }
 }
-

@@ -45,6 +45,11 @@ export class Preloader extends Scene {
         this.load.image("sword", "weapons/weapon3.png");
         this.load.image("dagger", "weapons/weapon4.png");
         this.load.image("spear", "weapons/weapon5.png");
+
+        this.load.image("tiles_grass", "tiles/Texture/tile_grass.png");
+        this.load.image("tiles_wall", "tiles/Texture/tile_wall.png");
+        this.load.image("tiles_props", "tiles/Texture/tile_props.png");
+        this.load.tilemapTiledJSON("map", "tiles/tile-test.json");
     }
 
     create() {

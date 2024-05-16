@@ -7,6 +7,8 @@ export default class Inventory {
     constructor(capacity: number = 2) {
         this.capacity = capacity;
         this.items = [];
+
+        document.addEventListener("keydown", this.handleKeyDown.bind(this));
     }
 
     private isFull(): boolean {
@@ -44,9 +46,22 @@ export default class Inventory {
     }
 
     displayInventory(): void {
-        console.log("Inventory:");
+        console.log(this.getInventoryString());
+    }
+
+    private getInventoryString(): string {
+        let inventoryString = "Inventory:\n";
         this.items.forEach((item, index) => {
-            console.log(`${index + 1}. ${item.texture.key}`);
+            inventoryString += `${index + 1}. ${item.texture.key}\n`;
         });
+        return inventoryString;
+    }
+
+    private handleKeyDown(event: KeyboardEvent): void {
+        if (event.key === "Tab") {
+            event.preventDefault();
+
+            this.displayInventory();
+        }
     }
 }

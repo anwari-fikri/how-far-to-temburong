@@ -27,9 +27,10 @@ export class Game extends Scene {
             .setScrollFactor(1);
         this.cameras.main.setZoom(1.5);
 
-        this.inventory = new Inventory(this.player);
+        this.inventory = new Inventory();
 
         this.weapons.push(new Weapon(this, 200, 200, "katana"));
+        this.weapons.push(new Weapon(this, 200, 300, "katana"));
         this.weapons.push(new Weapon(this, 700, 350, "sword"));
         this.weapons.push(new Weapon(this, 400, 400, "gun"));
 

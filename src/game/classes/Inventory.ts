@@ -1,13 +1,10 @@
-import Player from "./Player";
 import Weapon from "./Weapon";
 
 export default class Inventory {
     private items: Weapon[];
     private capacity: number;
-    private player: Player;
 
-    constructor(player: Player, capacity: number = 2) {
-        this.player = player;
+    constructor(capacity: number = 2) {
         this.capacity = capacity;
         this.items = [];
     }
@@ -53,3 +50,4 @@ export default class Inventory {
         });
     }
 }
+

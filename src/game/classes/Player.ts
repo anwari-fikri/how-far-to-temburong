@@ -15,8 +15,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.controls = new PlayerControls(scene, this);
         scene.cameras.main.startFollow(this, true);
 
-        this.inventory = new Inventory(this);
-
         playerAnims(scene);
     }
 

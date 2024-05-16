@@ -6,6 +6,7 @@ import { PickUp } from "../classes/PickUp";
 import Weapon from "../classes/Weapon";
 import Enemy from "../classes/Enemy";
 import Enemies from "../classes/Enemies";
+import Inventory from "../classes/Inventory";
 import playerStore from "../stores/PlayerStore";
 import { debugGraphic } from "../classes/DebugTool";
 import { createPause } from "../classes/PauseResume";
@@ -13,9 +14,10 @@ import { createPause } from "../classes/PauseResume";
 export class Game extends Scene {
     private player: Player;
     private enemies: Enemies;
-    private weapon: Weapon;
+    private weapons: Weapon[] = [];
     private powerUps: PowerUp[] = [];
     private wallLayer!: any;
+    private inventory: Inventory;
 
     constructor() {
         super("Game");
@@ -42,10 +44,18 @@ export class Game extends Scene {
         this.wallLayer.setCollisionByProperty({ collides: true });
         map.createLayer("wall2", tiles_props);
 
+        this.inventory = new Inventory();
+
+        this.weapons.push(new Weapon(this, 200, 200, "katana"));
+        this.weapons.push(new Weapon(this, 200, 300, "katana"));
+        this.weapons.push(new Weapon(this, 700, 350, "sword"));
+        this.weapons.push(new Weapon(this, 400, 400, "gun"));
+
         this.player = new Player(this, 100, 450, "dude");
 
-        this.weapon = new Weapon(this, 200, 200, "katana");
-        PickUp(this, this.player, this.weapon);
+        this.weapons.forEach((weapon) => {
+            PickUp(this, this.player, weapon, this.inventory);
+        });
 
         this.enemies = new Enemies(this);
         for (let x = 0; x <= 1000; x += 100) {
@@ -64,7 +74,7 @@ export class Game extends Scene {
             new PowerUp(this, 0, 400, "time-stop", PowerUpType.TIME_STOP),
         );
         this.powerUps.forEach((powerUp: PowerUp) => {
-            PickUp(this, this.player, powerUp, this.enemies);
+            PickUp(this, this.player, powerUp, this.inventory, this.enemies);
         });
 
         if (this.player && this.wallLayer) {

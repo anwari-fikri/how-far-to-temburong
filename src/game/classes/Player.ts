@@ -1,8 +1,11 @@
 import { playerAnims } from "./CharAnims";
+import Inventory from "./Inventory";
 import PlayerControls from "./PlayerControls";
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     private controls: PlayerControls;
+
+    private inventory: Inventory;
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
         super(scene, x, y, texture);

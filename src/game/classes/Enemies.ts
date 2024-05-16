@@ -11,8 +11,11 @@ export default class Enemies {
         this.enemies = this.scene.physics.add.group();
     }
 
-    createEnemy(enemy: Enemy) {
+    createEnemy(enemy: Enemy, wallLayer: any) {
         this.enemies.add(enemy);
+        if (enemy && wallLayer) {
+            this.scene.physics.add.collider(enemy, wallLayer);
+        }
     }
 
     update(player: Player) {
@@ -59,4 +62,3 @@ export default class Enemies {
         return this.enemies;
     }
 }
-

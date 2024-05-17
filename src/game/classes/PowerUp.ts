@@ -7,6 +7,7 @@ export enum PowerUpType {
     ATTACK_BOOST = "attack_boost",
     NUKE = "nuke",
     TIME_STOP = "time_stop",
+    INVINCIBILITY = "invincibility",
 }
 
 export default class PowerUp extends Phaser.Physics.Arcade.Sprite {

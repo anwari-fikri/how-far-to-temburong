@@ -23,6 +23,9 @@ class PlayerStore {
     isTimeStopped: boolean = false;
     timeStopTimer: Phaser.Time.TimerEvent;
 
+    isInvincibility: boolean = false;
+    invincibilityTimer: Phaser.Time.TimerEvent;
+
     constructor() {
         makeAutoObservable(this, {
             currentHealth: observable,
@@ -43,7 +46,10 @@ class PlayerStore {
     }
 
     async receiveDamage(attack: number) {
-        this.currentHealth -= attack;
+        if (!this.isInvincibility) {
+            this.currentHealth -= attack;
+        }
+        console.log(this.currentHealth);
     }
 
     async applySpeedBoost(scene: Phaser.Scene) {
@@ -115,7 +121,7 @@ class PlayerStore {
             }
             this.timeStopTimer = scene.time.delayedCall(5000, () => {
                 enemies.resumeMovement();
-                this.isTimeStopped = false;
+                this.removePowerUp(PowerUpType.TIME_STOP);
             });
         } else {
             this.timeStopTimer.reset({
@@ -124,6 +130,30 @@ class PlayerStore {
                     enemies.resumeMovement();
                     this.isTimeStopped = false;
                 },
+            });
+        }
+    }
+
+    applyInvincibility(scene: Phaser.Scene) {
+        /*
+    If the player picks up a time stop power-up:
+    - Stop enemies' movement for 5 seconds.
+    - If the time stop power-up is already active, refresh the duration back to 5 seconds.
+*/
+        if (!this.isInvincibility) {
+            this.isInvincibility = true;
+
+            if (this.invincibilityTimer) {
+                this.invincibilityTimer.remove();
+            }
+
+            this.invincibilityTimer = scene.time.delayedCall(5000, () => {
+                this.removePowerUp(PowerUpType.INVINCIBILITY);
+            });
+        } else {
+            this.invincibilityTimer.reset({
+                delay: 5000,
+                callback: () => this.removePowerUp(PowerUpType.INVINCIBILITY),
             });
         }
     }
@@ -138,6 +168,12 @@ class PlayerStore {
                 this.isAttackBoosted = false;
                 this.currentAttackPower -= this.baseAttackPower;
                 break;
+            case PowerUpType.TIME_STOP:
+                this.isTimeStopped = false;
+            case PowerUpType.INVINCIBILITY:
+                this.isInvincibility = false;
+                break;
+
             default:
                 break;
         }
@@ -146,4 +182,3 @@ class PlayerStore {
 
 const playerStore = new PlayerStore();
 export default playerStore;
-

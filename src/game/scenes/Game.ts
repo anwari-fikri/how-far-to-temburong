@@ -39,10 +39,10 @@ export class Game extends Scene {
 
         this.inventory = new Inventory();
 
-        this.weapons.push(new Weapon(this, 200, 200, "katana"));
-        this.weapons.push(new Weapon(this, 200, 300, "katana"));
-        this.weapons.push(new Weapon(this, 700, 350, "sword"));
-        this.weapons.push(new Weapon(this, 400, 400, "gun"));
+        this.weapons.push(new Weapon(this, 500, 0, "katana"));
+        this.weapons.push(new Weapon(this, 600, 0, "katana"));
+        this.weapons.push(new Weapon(this, 700, 0, "sword"));
+        this.weapons.push(new Weapon(this, 800, 0, "gun"));
 
         this.player = new Player(this, 0, -100, "dude");
         if (this.player && this.wallLayer) {

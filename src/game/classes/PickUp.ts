@@ -22,12 +22,11 @@ export function PickUp(
 
             pickupKey.on("down", () => {
                 if (scene.physics.overlap(player, pickupItem)) {
-                    if (!inventory.isFull()) {
-                        if (inventory.addWeapon(pickupItem)) {
-                            console.log(`Picked up ${pickupItem.texture.key}`);
-                            pickupItem.destroy();
-                        }
-                    } else {
+                    if (inventory.addWeapon(pickupItem)) {
+                        console.log(`Picked up ${pickupItem.texture.key}`);
+                        pickupItem.destroy();
+                    }
+                    {
                         console.log("Inventory is full.");
                     }
                 }

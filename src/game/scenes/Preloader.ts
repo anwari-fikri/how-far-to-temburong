@@ -36,8 +36,10 @@ export class Preloader extends Scene {
         this.load.image("attack-up", "powerUps/attack-up.png");
         this.load.image("nuke", "powerUps/nuke.png");
         this.load.image("time-stop", "powerUps/time-stop.png");
+        this.load.image("invincibility", "powerUps/invincibility.png");
 
         this.load.image("bg-bridge", "bg-bridge.png");
+        this.load.image("corpse", "corpse.png");
         this.load.spritesheet("dude", "dude.png", {
             frameWidth: 32,
             frameHeight: 46,

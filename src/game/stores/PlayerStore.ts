@@ -47,9 +47,12 @@ class PlayerStore {
 
     async receiveDamage(attack: number) {
         if (!this.isInvincibility) {
-            this.currentHealth -= attack;
+            this.currentHealth = Math.max(0, this.currentHealth - attack);
         }
-        console.log(this.currentHealth);
+    }
+
+    async healPlayer(health: number) {
+        this.currentHealth += health;
     }
 
     async applySpeedBoost(scene: Phaser.Scene) {

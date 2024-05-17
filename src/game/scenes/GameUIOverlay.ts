@@ -35,11 +35,9 @@ export class GameUIOverlay extends Scene {
 
     createPlayerHealth() {
         healthAnims(this);
-        console.log(playerStore.currentHealth);
-        const numberOfHearts = Math.ceil(playerStore.currentHealth / 2);
         this.hearts = [];
 
-        for (let i = 0; i < numberOfHearts; i++) {
+        for (let i = 0; i < playerStore.currentHealth; i++) {
             const heart = this.add
                 .sprite(120 + i * 63, 20, "heart")
                 .setScale(8)
@@ -49,30 +47,17 @@ export class GameUIOverlay extends Scene {
     }
 
     updateHealthUI() {
-        if (playerStore.currentHealth === 0 || this.hearts.length === 0) {
+        if (this.hearts.length === 0) {
             return;
         }
 
-        // Reset all hearts to full
-        this.hearts.forEach((heart, index) => {
-            heart.setFrame(0); // Assuming 0 is the full heart frame
-        });
-
-        // Determine the number of full hearts and any remaining half heart
-        const fullHearts = Math.floor(playerStore.currentHealth / 2);
-        const isHalfHeart = playerStore.currentHealth % 2 === 1;
-
-        // Update hearts animations based on current health
         for (let i = 0; i < this.hearts.length; i++) {
-            if (i < fullHearts) {
-                // Full heart
-                this.hearts[i].setFrame(0); // Assuming 0 is the full heart frame
-            } else if (i === fullHearts && isHalfHeart) {
-                // Half heart
-                this.hearts[i].play(HEALTH_ANIMATIONS.LOSE_SECOND_HALF);
+            if (i < playerStore.currentHealth) {
+                this.hearts[i].setFrame(0);
             } else {
-                // Empty heart
-                this.hearts[i].play(HEALTH_ANIMATIONS.LOSE_FIRST_HALF);
+                this.hearts[playerStore.currentHealth].play(
+                    HEALTH_ANIMATIONS.LOSE_HEART,
+                );
             }
         }
     }

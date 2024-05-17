@@ -48,8 +48,6 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
 
             if (this.health <= 0) {
                 this.animateDeath();
-            } else {
-                this.health -= 1;
             }
         }
 

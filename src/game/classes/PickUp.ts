@@ -16,13 +16,19 @@ export function PickUp(
         const keyboardPlugin = scene.input.keyboard;
 
         if (keyboardPlugin) {
-            const pickupKey = keyboardPlugin.addKey("E");
+            const pickupKey = keyboardPlugin.addKey(
+                Phaser.Input.Keyboard.KeyCodes.E,
+            );
 
             pickupKey.on("down", () => {
                 if (scene.physics.overlap(player, pickupItem)) {
-                    if (inventory.addWeapon(pickupItem)) {
-                        console.log(`Picked up ${pickupItem.texture.key}`);
-                        pickupItem.destroy();
+                    if (!inventory.isFull()) {
+                        if (inventory.addWeapon(pickupItem)) {
+                            console.log(`Picked up ${pickupItem.texture.key}`);
+                            pickupItem.destroy();
+                        }
+                    } else {
+                        console.log("Inventory is full.");
                     }
                 }
             });

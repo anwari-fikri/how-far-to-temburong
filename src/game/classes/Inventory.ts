@@ -1,58 +1,70 @@
 import Weapon from "./Weapon";
 
 export default class Inventory {
-    private items: Weapon[];
+    private items: (Weapon | null)[];
     private capacity: number;
+    private handSlot: number;
 
     constructor(capacity: number = 2) {
         this.capacity = capacity;
-        this.items = [];
+        this.items = new Array(capacity).fill(null);
+        this.handSlot = 0;
 
         document.addEventListener("keydown", this.handleKeyDown.bind(this));
     }
 
-    private isFull(): boolean {
-        return this.items.length >= this.capacity;
+    public isFull(): boolean {
+        return this.items.every((item) => item !== null);
     }
 
     private containsWeaponType(weapon: Weapon): boolean {
         return this.items.some(
-            (item) => item.texture.key === weapon.texture.key,
+            (item) => item?.texture.key === weapon.texture.key,
         );
     }
 
-    addItem(item: Weapon): boolean {
-        if (!this.isFull()) {
-            this.items.push(item);
-            console.log(`Added ${item.texture.key} to inventory.`);
-            return true;
-        } else {
-            console.log("Inventory is full.");
-            return false;
-        }
-    }
-
-    addWeapon(weapon: Weapon): boolean {
+    public addWeapon(weapon: Weapon): boolean {
         if (this.containsWeaponType(weapon)) {
             console.log(`${weapon.texture.key} is already in the inventory.`);
             return false;
         }
 
-        return this.addItem(weapon);
+        if (this.items[this.handSlot] !== null) {
+            const currentWeapon = this.items[this.handSlot]!;
+            console.log(
+                `Swapping ${currentWeapon.texture.key} with ${weapon.texture.key} in hand slot (slot ${this.handSlot + 1}).`,
+            );
+        } else {
+            console.log(
+                `Added ${weapon.texture.key} to hand slot (slot ${this.handSlot + 1}).`,
+            );
+        }
+
+        this.items[this.handSlot] = weapon;
+        return true;
     }
 
-    getItems(): Weapon[] {
+    public swapHandSlot(newHandSlot: number): void {
+        if (newHandSlot >= 0 && newHandSlot < this.capacity) {
+            this.handSlot = newHandSlot;
+            console.log(`Set slot ${this.handSlot + 1} as the new hand slot.`);
+        } else {
+            console.log("Invalid slot index.");
+        }
+    }
+
+    public getItems(): (Weapon | null)[] {
         return this.items;
     }
 
-    displayInventory(): void {
+    public displayInventory(): void {
         console.log(this.getInventoryString());
     }
 
     private getInventoryString(): string {
         let inventoryString = "Inventory:\n";
         this.items.forEach((item, index) => {
-            inventoryString += `${index + 1}. ${item.texture.key}\n`;
+            inventoryString += `${index + 1}. ${item ? item.texture.key : "Empty"}\n`;
         });
         return inventoryString;
     }
@@ -60,8 +72,15 @@ export default class Inventory {
     private handleKeyDown(event: KeyboardEvent): void {
         if (event.key === "Tab") {
             event.preventDefault();
-
             this.displayInventory();
+        }
+
+        if (event.key === "1") {
+            this.swapHandSlot(0);
+        }
+
+        if (event.key === "2") {
+            this.swapHandSlot(1);
         }
     }
 }

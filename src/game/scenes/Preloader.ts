@@ -31,6 +31,10 @@ export class Preloader extends Scene {
 
         // UI
         this.load.image("calendar", "ui/calendar.png");
+        this.load.spritesheet("heart", "ui/heart.png", {
+            frameWidth: 7,
+            frameHeight: 7,
+        });
 
         // Power Ups
         this.load.image("attack-up", "powerUps/attack-up.png");

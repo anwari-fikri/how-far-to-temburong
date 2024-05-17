@@ -60,7 +60,7 @@ export class Game extends Scene {
         this.enemies = new Enemies(this);
         for (let x = 0; x <= 1000; x += 100) {
             this.enemies.createEnemy(
-                new Enemy(this, x, 650, "dude", 100.0, 5),
+                new Enemy(this, x, 650, "dude", 100.0, 1),
                 this.wallLayer,
             );
         }

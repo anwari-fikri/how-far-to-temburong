@@ -4,7 +4,7 @@ import Enemies from "../classes/Enemies";
 
 class PlayerStore {
     // Base Attributes
-    baseHealth: number = 100;
+    baseHealth: number = 10;
     baseMovementSpeed: number = 300;
     baseAttackPower: number = 100;
 
@@ -182,3 +182,4 @@ class PlayerStore {
 
 const playerStore = new PlayerStore();
 export default playerStore;
+

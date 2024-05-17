@@ -18,31 +18,24 @@ export class Game extends Scene {
     private powerUps: PowerUp[] = [];
     private wallLayer!: any;
     private inventory: Inventory;
+    private map: Phaser.Tilemaps.Tilemap;
+    private camera: Phaser.Cameras.Scene2D.Camera;
 
     constructor() {
         super("Game");
     }
 
     create() {
-        this.cameras.main.setZoom(1.5);
-
-        const map = this.make.tilemap({ key: "map" });
-        const tiles_grass = map.addTilesetImage(
-            "tiles_grass",
-            "tiles_grass",
+        this.map = this.make.tilemap({ key: "bridgeStage" });
+        const tileset = this.map.addTilesetImage(
+            "bridgeStage", //nama image set dalam tiled and json
+            "bridgeimage", //key gambar di preload
         ) as Phaser.Tilemaps.Tileset;
-        const tiles_wall = map.addTilesetImage(
-            "tiles_wall",
-            "tiles_wall",
-        ) as Phaser.Tilemaps.Tileset;
-        const tiles_props = map.addTilesetImage(
-            "tiles_props",
-            "tiles_props",
-        ) as Phaser.Tilemaps.Tileset;
-        map.createLayer("ground", tiles_grass);
-        this.wallLayer = map.createLayer("wall", tiles_wall);
+        ["bridge", "wood", "light", "light2"].map((layerName) =>
+            this.map.createLayer(layerName, tileset),
+        );
+        this.wallLayer = this.map.createLayer("barricade", tileset);
         this.wallLayer.setCollisionByProperty({ collides: true });
-        map.createLayer("wall2", tiles_props);
 
         this.inventory = new Inventory();
 
@@ -51,7 +44,10 @@ export class Game extends Scene {
         this.weapons.push(new Weapon(this, 700, 350, "sword"));
         this.weapons.push(new Weapon(this, 400, 400, "gun"));
 
-        this.player = new Player(this, 100, 450, "dude");
+        this.player = new Player(this, 0, -100, "dude");
+        if (this.player && this.wallLayer) {
+            this.physics.add.collider(this.player, this.wallLayer);
+        }
 
         this.weapons.forEach((weapon) => {
             PickUp(this, this.player, weapon, this.inventory);
@@ -60,7 +56,7 @@ export class Game extends Scene {
         this.enemies = new Enemies(this);
         for (let x = 0; x <= 1000; x += 100) {
             this.enemies.createEnemy(
-                new Enemy(this, x, 650, "dude", 100.0, 5),
+                new Enemy(this, x, 200, "dude", 100.0, 5),
                 this.wallLayer,
             );
         }
@@ -94,6 +90,11 @@ export class Game extends Scene {
         if (this.player && this.wallLayer) {
             this.physics.add.collider(this.player, this.wallLayer);
         }
+
+        this.camera = this.cameras.main;
+        this.camera.setBounds(0, -650, 10000, this.map.heightInPixels);
+        this.camera.setZoom(0.75);
+        this.camera.startFollow(this.player);
 
         // uncomment to check collider
         // debugGraphic(this);

@@ -1,7 +1,6 @@
 export function playerAnims(scene: Phaser.Scene) {
     const player = "dude";
 
-    // Check if the animation already exists before creating it
     if (!scene.anims.exists("left")) {
         scene.anims.create({
             key: "left",
@@ -14,7 +13,6 @@ export function playerAnims(scene: Phaser.Scene) {
         });
     }
 
-    // Check if the animation already exists before creating it
     if (!scene.anims.exists("turn")) {
         scene.anims.create({
             key: "turn",
@@ -23,7 +21,6 @@ export function playerAnims(scene: Phaser.Scene) {
         });
     }
 
-    // Check if the animation already exists before creating it
     if (!scene.anims.exists("right")) {
         scene.anims.create({
             key: "right",

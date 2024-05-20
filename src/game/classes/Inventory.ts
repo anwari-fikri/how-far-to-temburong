@@ -29,18 +29,27 @@ export default class Inventory {
             return false;
         }
 
-        if (this.items[this.handSlot] !== null) {
-            const currentWeapon = this.items[this.handSlot]!;
+        const emptyIndex = this.items.findIndex((item) => item === null);
+
+        if (emptyIndex !== -1) {
+            this.items[emptyIndex] = weapon;
             console.log(
-                `Swapping ${currentWeapon.texture.key} with ${weapon.texture.key} in hand slot (slot ${this.handSlot + 1}).`,
+                `Added ${weapon.texture.key} to inventory slot ${emptyIndex + 1}.`,
             );
         } else {
-            console.log(
-                `Added ${weapon.texture.key} to hand slot (slot ${this.handSlot + 1}).`,
-            );
+            if (this.items[this.handSlot] !== null) {
+                const currentWeapon = this.items[this.handSlot]!;
+                console.log(
+                    `Swapping ${currentWeapon.texture.key} with ${weapon.texture.key} in hand slot (slot ${this.handSlot + 1}).`,
+                );
+            } else {
+                console.log(
+                    `Added ${weapon.texture.key} to hand slot (slot ${this.handSlot + 1}).`,
+                );
+            }
+            this.items[this.handSlot] = weapon;
         }
 
-        this.items[this.handSlot] = weapon;
         return true;
     }
 

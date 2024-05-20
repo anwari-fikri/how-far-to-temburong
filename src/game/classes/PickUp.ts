@@ -25,8 +25,7 @@ export function PickUp(
                     if (inventory.addWeapon(pickupItem)) {
                         console.log(`Picked up ${pickupItem.texture.key}`);
                         pickupItem.destroy();
-                    }
-                    {
+                    } else if (inventory.isFull()) {
                         console.log("Inventory is full.");
                     }
                 }
@@ -59,3 +58,4 @@ export function PickUp(
         });
     }
 }
+

@@ -4,7 +4,7 @@ import Enemies from "../classes/Enemies";
 
 class PlayerStore {
     // Base Attributes
-    baseHealth: number = 100;
+    baseHealth: number = 10;
     baseMovementSpeed: number = 300;
     baseAttackPower: number = 100;
 
@@ -47,9 +47,12 @@ class PlayerStore {
 
     async receiveDamage(attack: number) {
         if (!this.isInvincibility) {
-            this.currentHealth -= attack;
+            this.currentHealth = Math.max(0, this.currentHealth - attack);
         }
-        console.log(this.currentHealth);
+    }
+
+    async healPlayer(health: number) {
+        this.currentHealth += health;
     }
 
     async applySpeedBoost(scene: Phaser.Scene) {
@@ -182,3 +185,4 @@ class PlayerStore {
 
 const playerStore = new PlayerStore();
 export default playerStore;
+

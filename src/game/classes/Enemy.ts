@@ -13,7 +13,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     private canAttack: boolean = true;
     private attackCoolDownTimer: Phaser.Time.TimerEvent | null = null;
 
-    private chaseSpeed: number = 100;
+    private chaseSpeed: number = Math.random() * 50 + 50;
 
     constructor(
         scene: Phaser.Scene,
@@ -57,7 +57,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
                     dropItem(this.scene, this.x, this.y);
                 }
             } else {
-                this.health -= Math.random();
+                // this.health -= Math.random();
             }
         }
 

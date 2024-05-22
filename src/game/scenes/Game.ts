@@ -46,17 +46,16 @@ export class Game extends Scene {
         this.weapons.push(new Weapon(this, 800, 0, "gun", false));
 
         this.player = new Player(this, 0, -100, "dude");
+
         if (this.player && this.wallLayer) {
             this.physics.add.collider(this.player, this.wallLayer);
         }
 
         this.weapons.forEach((weapon) => {
             PickUp(this, this.player, weapon, this.inventory);
-
-            if (weapon.getIsMelee()) {
-                AttackWeapon(this, this.player, this.inventory);
-            }
         });
+
+        AttackWeapon(this, this.player, this.inventory);
 
         this.enemies = new Enemies(this);
         for (let x = 0; x <= 1000; x += 100) {

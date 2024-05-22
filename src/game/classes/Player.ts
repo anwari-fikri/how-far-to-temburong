@@ -1,6 +1,7 @@
 import { playerAnims } from "./CharAnims";
 import Inventory from "./Inventory";
 import PlayerControls from "./PlayerControls";
+import { ZombieGroup } from "./ZombieGroup";
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     private controls: PlayerControls;
@@ -16,6 +17,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         scene.cameras.main.startFollow(this, true);
 
         playerAnims(scene);
+    }
+
+    // Power Ups
+    applyNuke(enemies: ZombieGroup) {
+        enemies.getNuked();
     }
 
     update() {

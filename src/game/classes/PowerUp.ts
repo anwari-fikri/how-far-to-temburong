@@ -1,6 +1,8 @@
 import Player from "./Player";
 import playerStore from "../stores/PlayerStore";
 import Enemies from "./Enemies";
+import { Physics } from "phaser";
+import { ZombieGroup } from "./ZombieGroup";
 
 export enum PowerUpType {
     SPEED_BOOST = "speed_boost",
@@ -10,8 +12,8 @@ export enum PowerUpType {
     INVINCIBILITY = "invincibility",
 }
 
-export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
-    private powerUpType: PowerUpType;
+export default class PowerUp extends Physics.Arcade.Sprite {
+    powerUpType: PowerUpType;
 
     constructor(
         scene: Phaser.Scene,
@@ -21,15 +23,32 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
         powerUpType: PowerUpType,
     ) {
         super(scene, x, y, texture);
+
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        this.powerUpType = powerUpType;
 
-        this.setDisplaySize(50, 50);
+        this.powerUpType = powerUpType;
+        this.setDisplaySize(25, 25);
+
+        this.setActive(false);
+        this.setVisible(false);
+    }
+
+    activatePowerUp(x: number, y: number) {
+        this.setPosition(x, y);
+        this.setActive(true);
+        this.setVisible(true);
     }
 
     getPowerUpType() {
         return this.powerUpType;
     }
-}
 
+    update(player: Player, enemies: ZombieGroup) {
+        if (this.active && this.scene.physics.overlap(this, player)) {
+            this.setActive(false);
+            this.setVisible(false);
+            player.applyNuke(enemies);
+        }
+    }
+}

@@ -8,7 +8,13 @@ export class Zombie extends Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        this.setCircle(10);
+        var radius = this.width / 3;
+        this.setCircle(
+            radius,
+            -radius + 0.5 * this.width,
+            -radius + 0.5 * this.height + 5,
+        );
+
         this.setActive(false);
         this.setVisible(false);
     }
@@ -23,6 +29,11 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.setTint(Phaser.Display.Color.RandomRGB().color);
     }
 
+    die() {
+        this.setActive(false);
+        this.setVisible(false);
+    }
+
     update(player: Player) {
         if (this.active) {
             this.scene.physics.moveToObject(this, player, 40);
@@ -30,12 +41,6 @@ export class Zombie extends Physics.Arcade.Sprite {
                 this.setActive(false);
                 this.setVisible(false);
             }
-            // this.y += this.speed * 0.016; // Move the zombie downwards
-            // if (this.y > this.scene.scale.height) {
-            //     this.setActive(false);
-            //     this.setVisible(false);
-            // }
         }
     }
 }
-

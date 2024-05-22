@@ -4,17 +4,16 @@ import Player from "../classes/Player";
 import PowerUp, { PowerUpType } from "../classes/PowerUp";
 import { PickUp } from "../classes/PickUp";
 import Weapon from "../classes/Weapon";
-import Enemy from "../classes/Enemy";
-import Enemies from "../classes/Enemies";
 import Inventory from "../classes/Inventory";
 import playerStore from "../stores/PlayerStore";
 import { debugGraphic } from "../classes/DebugTool";
 import { createPause } from "../classes/PauseResume";
 import { AttackWeapon } from "../classes/AttackWeapon";
+import { ZombieGroup } from "../classes/ZombieGroup";
 
 export class Game extends Scene {
     private player: Player;
-    private enemies: Enemies;
+    zombies: ZombieGroup;
     private weapons: Weapon[] = [];
     private powerUps: PowerUp[] = [];
     private wallLayer!: any;
@@ -47,6 +46,18 @@ export class Game extends Scene {
         this.weapons.push(new Weapon(this, 900, 0, "spear", true));
 
         this.player = new Player(this, 0, -100, "dude");
+        this.zombies = new ZombieGroup(this);
+        this.physics.add.collider(this.zombies, this.zombies);
+        this.physics.add.collider(this.zombies, this.wallLayer);
+
+        this.time.addEvent({
+            delay: 50,
+            loop: true,
+            callback: () => {
+                this.zombies.addZombie();
+            },
+            callbackScope: this,
+        });
 
         if (this.player && this.wallLayer) {
             this.physics.add.collider(this.player, this.wallLayer);
@@ -57,14 +68,6 @@ export class Game extends Scene {
         });
 
         AttackWeapon(this, this.player, this.inventory);
-
-        this.enemies = new Enemies(this);
-        for (let x = 0; x <= 1000; x += 100) {
-            this.enemies.createEnemy(
-                new Enemy(this, x, 200, "dude", 100.0, 1),
-                this.wallLayer,
-            );
-        }
 
         this.powerUps.push(
             new PowerUp(this, 400, 450, "star", PowerUpType.SPEED_BOOST),
@@ -88,9 +91,9 @@ export class Game extends Scene {
                 PowerUpType.INVINCIBILITY,
             ),
         );
-        this.powerUps.forEach((powerUp: PowerUp) => {
-            PickUp(this, this.player, powerUp, this.inventory, this.enemies);
-        });
+        // this.powerUps.forEach((powerUp: PowerUp) => {
+        //     PickUp(this, this.player, powerUp, this.inventory, this.enemies);
+        // });
 
         if (this.player && this.wallLayer) {
             this.physics.add.collider(this.player, this.wallLayer);
@@ -108,13 +111,9 @@ export class Game extends Scene {
         EventBus.emit("current-scene-ready", this);
     }
 
-    getEnemies() {
-        return this.enemies;
-    }
-
     update() {
         this.player.update();
-        this.enemies.update(this.player);
+        this.zombies.update(this.player);
 
         if (playerStore.currentHealth <= 0) {
             this.scene.pause();

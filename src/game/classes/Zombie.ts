@@ -25,7 +25,7 @@ export class Zombie extends Physics.Arcade.Sprite {
 
     update(player: Player) {
         if (this.active) {
-            this.scene.physics.moveToObject(this, player, 20);
+            this.scene.physics.moveToObject(this, player, 40);
             if (this.scene.physics.overlap(this, player)) {
                 this.setActive(false);
                 this.setVisible(false);

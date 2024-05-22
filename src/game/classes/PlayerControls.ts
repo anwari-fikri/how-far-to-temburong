@@ -51,4 +51,3 @@ export default class PlayerControls {
         this.player.setVelocity(velocity.x, velocity.y);
     }
 }
-

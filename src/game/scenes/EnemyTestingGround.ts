@@ -1,10 +1,10 @@
 import { Scene } from "phaser";
 import Player from "../classes/Player";
-import { Zombie } from "../classes/Zombie";
+import { ZombieGroup } from "../classes/ZombieGroup";
 
 export class EnemyTestingGround extends Scene {
     player: Player;
-    zombies: Phaser.GameObjects.Group;
+    zombies: ZombieGroup;
 
     constructor() {
         super("EnemyTestingGround");
@@ -13,15 +13,11 @@ export class EnemyTestingGround extends Scene {
     create() {
         this.player = new Player(this, 50, 50, "dude");
 
-        this.zombies = this.add.group({
-            classType: Zombie,
-            defaultKey: "zombie",
-            maxSize: 100,
-        });
+        this.zombies = new ZombieGroup(this);
         this.physics.add.collider(this.zombies, this.zombies);
 
         this.time.addEvent({
-            delay: 100, // Adjusted delay to 1000ms for better visualization
+            delay: 10, // Adjusted delay to 1000ms for better visualization
             loop: true,
             callback: this.addZombie,
             callbackScope: this,
@@ -29,27 +25,12 @@ export class EnemyTestingGround extends Scene {
     }
 
     addZombie() {
-        const zombie = this.zombies.get() as Zombie;
-        if (zombie) {
-            zombie.activateZombie();
-        }
+        this.zombies.addZombie();
     }
 
     update() {
         this.player.update();
-        // this.zombies.children.iterate(
-        //     (zombie: Phaser.GameObjects.GameObject) => {
-        //         (zombie as Zombie).update();
-        //     },
-        // );
-        this.zombies.children.iterate(
-            (zombie: Phaser.GameObjects.GameObject) => {
-                if (zombie instanceof Zombie) {
-                    zombie.update(this.player);
-                }
-                return true; // or return null;
-            },
-        );
+        this.zombies.update(this.player);
     }
 }
 

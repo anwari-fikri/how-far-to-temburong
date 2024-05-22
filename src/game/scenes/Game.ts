@@ -44,6 +44,7 @@ export class Game extends Scene {
         this.weapons.push(new Weapon(this, 600, 0, "katana", true));
         this.weapons.push(new Weapon(this, 700, 0, "sword", true));
         this.weapons.push(new Weapon(this, 800, 0, "gun", false));
+        this.weapons.push(new Weapon(this, 900, 0, "spear", true));
 
         this.player = new Player(this, 0, -100, "dude");
 

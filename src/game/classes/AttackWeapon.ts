@@ -1,4 +1,5 @@
-import Phaser from "phaser";
+// AttackWeapon.ts
+
 import Player from "./Player";
 import Inventory from "./Inventory";
 import Weapon from "./Weapon";
@@ -19,12 +20,37 @@ export function AttackWeapon(
             equippedWeapon instanceof Weapon &&
             equippedWeapon.getIsMelee()
         ) {
-            // Example: Trigger melee attack logic here
+            if (!player || !player.body) {
+                console.error("Player or player body is undefined.");
+                return;
+            }
+
             console.log(
                 "Performing melee attack with",
                 equippedWeapon.texture.key,
             );
-            // Example: player.attack(equippedWeapon); // Replace with actual attack logic
+
+            equippedWeapon.setPosition(player.x, player.y);
+            equippedWeapon.setVisible(true);
+
+            if (!scene.children.list.includes(equippedWeapon)) {
+                scene.add.existing(equippedWeapon);
+            }
+
+            const targetX = player.x + 20;
+            const targetY = player.y - 20;
+
+            scene.tweens.add({
+                targets: equippedWeapon,
+                x: targetX,
+                y: targetY,
+                duration: 200,
+                yoyo: true,
+                ease: "power1",
+                onComplete: () => {
+                    equippedWeapon.setVisible(false);
+                },
+            });
         } else {
             console.log("No valid melee weapon equipped.");
         }

@@ -32,7 +32,8 @@
         "phaser": "^3.80.1",
         "prettier": "^3.2.5",
         "react": "^18",
-        "react-dom": "^18"
+        "react-dom": "^18",
+        "typed.js": "^2.1.0"
     },
     "devDependencies": {
         "@types/node": "^20",

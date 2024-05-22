@@ -1,0 +1,19 @@
+/* Page.module.css */
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: black;
+}
+
+.image {
+  position: absolute;
+  transform: scale(1);
+  transition: transform 2s ease;
+}
+
+.image.zoom-out {
+  transform: scale(0.6) translateY(-250px); /* Adjust translateY value as needed */
+}

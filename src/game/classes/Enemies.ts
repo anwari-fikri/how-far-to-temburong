@@ -13,8 +13,18 @@ export default class Enemies {
 
     createEnemy(enemy: Enemy, wallLayer: any) {
         this.enemies.add(enemy);
+
+        if (enemy.body && enemy.body instanceof Phaser.Physics.Arcade.Body) {
+            enemy.body.setCircle((enemy.width / 2) * 0.7);
+        }
+
+        // Create a separate collider group for each enemy
+        const enemyCollider = this.scene.physics.add.group();
+        enemyCollider.add(enemy);
+        this.scene.physics.add.collider(enemyCollider, this.enemies);
+
         if (enemy && wallLayer) {
-            this.scene.physics.add.collider(enemy, wallLayer);
+            this.scene.physics.add.collider(enemyCollider, wallLayer);
         }
     }
 
@@ -62,3 +72,4 @@ export default class Enemies {
         return this.enemies;
     }
 }
+

@@ -26,6 +26,9 @@ class PlayerStore {
     isInvincibility: boolean = false;
     invincibilityTimer: Phaser.Time.TimerEvent;
 
+    // Loot
+    killCount: number = 0;
+
     constructor() {
         makeAutoObservable(this, {
             currentHealth: observable,

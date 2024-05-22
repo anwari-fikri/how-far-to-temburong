@@ -10,6 +10,7 @@ import Inventory from "../classes/Inventory";
 import playerStore from "../stores/PlayerStore";
 import { debugGraphic } from "../classes/DebugTool";
 import { createPause } from "../classes/PauseResume";
+import { AttackWeapon } from "../classes/AttackWeapon";
 
 export class Game extends Scene {
     private player: Player;
@@ -39,12 +40,14 @@ export class Game extends Scene {
 
         this.inventory = new Inventory();
 
-        this.weapons.push(new Weapon(this, 500, 0, "katana"));
-        this.weapons.push(new Weapon(this, 600, 0, "katana"));
-        this.weapons.push(new Weapon(this, 700, 0, "sword"));
-        this.weapons.push(new Weapon(this, 800, 0, "gun"));
+        this.weapons.push(new Weapon(this, 500, 0, "katana", true));
+        this.weapons.push(new Weapon(this, 600, 0, "katana", true));
+        this.weapons.push(new Weapon(this, 700, 0, "sword", true));
+        this.weapons.push(new Weapon(this, 800, 0, "gun", false));
+        this.weapons.push(new Weapon(this, 900, 0, "spear", true));
 
         this.player = new Player(this, 0, -100, "dude");
+
         if (this.player && this.wallLayer) {
             this.physics.add.collider(this.player, this.wallLayer);
         }
@@ -52,6 +55,8 @@ export class Game extends Scene {
         this.weapons.forEach((weapon) => {
             PickUp(this, this.player, weapon, this.inventory);
         });
+
+        AttackWeapon(this, this.player, this.inventory);
 
         this.enemies = new Enemies(this);
         for (let x = 0; x <= 1000; x += 100) {
@@ -65,7 +70,7 @@ export class Game extends Scene {
             new PowerUp(this, 400, 450, "star", PowerUpType.SPEED_BOOST),
             new PowerUp(this, 0, 450, "star", PowerUpType.SPEED_BOOST),
             new PowerUp(this, 700, 700, "attack-up", PowerUpType.ATTACK_BOOST),
-            new PowerUp(this, 600, 600, "nuke", PowerUpType.NUKE),
+            new PowerUp(this, 400, 0, "nuke", PowerUpType.NUKE),
             new PowerUp(this, 0, 200, "time-stop", PowerUpType.TIME_STOP),
             new PowerUp(this, 0, 400, "time-stop", PowerUpType.TIME_STOP),
             new PowerUp(

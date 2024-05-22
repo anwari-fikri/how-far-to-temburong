@@ -78,6 +78,14 @@ export default class Inventory {
         return inventoryString;
     }
 
+    public getEquippedWeapon(): Weapon | null {
+        return this.items[this.handSlot];
+    }
+
+    public getHandSlot(): number {
+        return this.handSlot;
+    }
+
     private handleKeyDown(event: KeyboardEvent): void {
         if (event.key === "Tab") {
             event.preventDefault();

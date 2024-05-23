@@ -9,12 +9,18 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     private inventory: Inventory;
 
     // Stats
-    currentMovementSpeed: number;
     baseMovementSpeed: number;
+    currentMovementSpeed: number;
+    baseAttackPower: number;
+    currentAttackPower: number;
 
     // PowerUps
     isSpeedBoosted: boolean;
     speedBoostTimer: Phaser.Time.TimerEvent;
+    isAttackBoosted: boolean;
+    attackBoostTimer: Phaser.Time.TimerEvent;
+    isTimeStopped: boolean;
+    timeStopTimer: Phaser.Time.TimerEvent;
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
         super(scene, x, y, texture);
@@ -27,9 +33,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         // Stats
         this.baseMovementSpeed = 200;
         this.currentMovementSpeed = this.baseMovementSpeed;
+        this.baseAttackPower = 10;
+        this.currentAttackPower = this.baseAttackPower;
 
         // PowerUps
         this.isSpeedBoosted = false;
+        this.isAttackBoosted = false;
+        this.isTimeStopped = false;
 
         playerAnims(scene);
     }
@@ -40,19 +50,20 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             case PowerUpType.SPEED_BOOST:
                 this.applySpeedBoost();
                 break;
-            // case PowerUpType.ATTACK_BOOST:
-            //     this.applyAttackBoost();
-            //     break;
+            case PowerUpType.ATTACK_BOOST:
+                this.applyAttackBoost();
+                break;
             case PowerUpType.NUKE:
                 this.applyNuke(enemies);
                 break;
-            // case PowerUpType.TIME_STOP:
-            //     this.applyTimeStop();
-            //     break;
+            case PowerUpType.TIME_STOP:
+                this.applyTimeStop(enemies);
+                break;
             // case PowerUpType.INVINCIBILITY:
             //     this.applyInvincibility();
             //     break;
         }
+        console.log(this.currentAttackPower);
     }
 
     removePowerUp(powerUpType: PowerUpType) {
@@ -97,6 +108,59 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.speedBoostTimer.reset({
                 delay: 5000,
                 callback: () => this.removePowerUp(PowerUpType.SPEED_BOOST),
+            });
+        }
+    }
+
+    async applyAttackBoost() {
+        /*
+            If the player picks up a attack boost:
+            - Increase the player's attack power.
+            - If the attack boost is already active, resets the power-up timer.
+        */
+        if (!this.isAttackBoosted) {
+            this.isAttackBoosted = true;
+            this.currentAttackPower += this.baseAttackPower;
+
+            if (this.attackBoostTimer) {
+                this.attackBoostTimer.remove();
+            }
+
+            this.attackBoostTimer = this.scene.time.delayedCall(5000, () => {
+                this.removePowerUp(PowerUpType.ATTACK_BOOST);
+            });
+        } else {
+            this.attackBoostTimer.reset({
+                delay: 5000,
+                callback: () => this.removePowerUp(PowerUpType.ATTACK_BOOST),
+            });
+        }
+    }
+
+    applyTimeStop(enemies: ZombieGroup) {
+        /*
+            If the player picks up a time stop power-up:
+            - Stop enemies' movement for 5 seconds.
+            - If the time stop power-up is already active, refresh the duration back to 5 seconds.
+        */
+        if (!this.isTimeStopped) {
+            this.isTimeStopped = true;
+            enemies.getFreezed();
+
+            if (this.timeStopTimer) {
+                this.timeStopTimer.remove();
+            }
+            this.timeStopTimer = this.scene.time.delayedCall(5000, () => {
+                enemies.getUnFreezed();
+                this.removePowerUp(PowerUpType.TIME_STOP);
+            });
+        } else {
+            this.timeStopTimer.reset({
+                delay: 5000,
+                callback: () => {
+                    enemies.getUnFreezed();
+                    this.isTimeStopped = false;
+                },
             });
         }
     }

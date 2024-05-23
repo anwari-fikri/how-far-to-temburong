@@ -72,12 +72,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 this.isSpeedBoosted = false;
                 this.currentMovementSpeed -= this.baseMovementSpeed;
                 break;
-            // case PowerUpType.ATTACK_BOOST:
-            //     this.isAttackBoosted = false;
-            //     this.currentAttackPower -= this.baseAttackPower;
-            //     break;
-            // case PowerUpType.TIME_STOP:
-            //     this.isTimeStopped = false;
+            case PowerUpType.ATTACK_BOOST:
+                this.isAttackBoosted = false;
+                this.currentAttackPower -= this.baseAttackPower;
+                break;
+            case PowerUpType.TIME_STOP:
+                this.isTimeStopped = false;
             // case PowerUpType.INVINCIBILITY:
             //     this.isInvincibility = false;
             //     break;
@@ -145,20 +145,20 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         */
         if (!this.isTimeStopped) {
             this.isTimeStopped = true;
-            enemies.getFreezed();
+            enemies.getFreezed(this.isTimeStopped);
 
             if (this.timeStopTimer) {
                 this.timeStopTimer.remove();
             }
             this.timeStopTimer = this.scene.time.delayedCall(5000, () => {
-                enemies.getUnFreezed();
                 this.removePowerUp(PowerUpType.TIME_STOP);
+                enemies.getFreezed(this.isTimeStopped); // isTimeStopped = false here
             });
         } else {
             this.timeStopTimer.reset({
                 delay: 5000,
                 callback: () => {
-                    enemies.getUnFreezed();
+                    enemies.getFreezed(this.isTimeStopped);
                     this.isTimeStopped = false;
                 },
             });

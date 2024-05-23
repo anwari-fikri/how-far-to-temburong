@@ -46,19 +46,12 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         });
     }
 
-    getFreezed() {
-        this.children.iterate((zombie: Phaser.GameObjects.GameObject) => {
-            if (zombie instanceof Zombie) {
-                zombie.freeze();
-            }
-            return true;
-        });
-    }
+    getFreezed(isTimeStopped: boolean) {
+        const action = isTimeStopped ? "freeze" : "unfreeze";
 
-    getUnFreezed() {
         this.children.iterate((zombie: Phaser.GameObjects.GameObject) => {
             if (zombie instanceof Zombie) {
-                zombie.unfreeze();
+                (zombie as Zombie)[action]();
             }
             return true;
         });

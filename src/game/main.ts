@@ -11,11 +11,10 @@ import { GameUIOverlay } from "./scenes/GameUIOverlay";
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: window.innerWidth / 2,
+    height: window.innerHeight / 2,
     scale: {
-        mode: Phaser.Scale.RESIZE,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
+        mode: Phaser.Scale.FIT,
     },
     physics: {
         default: "arcade",

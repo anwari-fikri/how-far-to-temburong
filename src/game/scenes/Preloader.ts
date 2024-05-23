@@ -54,6 +54,9 @@ export class Preloader extends Scene {
         this.load.image("sword", "weapons/weapon3.png");
         this.load.image("dagger", "weapons/weapon4.png");
         this.load.image("spear", "weapons/weapon5.png");
+        this.load.image("seliparJepun", "weapons/weapon6.png");
+        this.load.image("projectileTexture", "weapons/bullet.png");
+        this.load.image("slash", "weapons/slash.png");
 
         this.load.image("bridgeimage", "tiles/Texture/bridgetilesetv2.png");
         this.load.tilemapTiledJSON("bridgeStage", "tiles/bridgeStage1.1.json");

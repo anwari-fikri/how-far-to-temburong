@@ -3,16 +3,13 @@ import playerStore from "../stores/PlayerStore";
 import { makeObservable } from "mobx";
 
 export default class PlayerControls {
-    private keyA!: Phaser.Input.Keyboard.Key;
-    private keyS!: Phaser.Input.Keyboard.Key;
-    private keyD!: Phaser.Input.Keyboard.Key;
-    private keyW!: Phaser.Input.Keyboard.Key;
+    keyA!: Phaser.Input.Keyboard.Key;
+    keyS!: Phaser.Input.Keyboard.Key;
+    keyD!: Phaser.Input.Keyboard.Key;
+    keyW!: Phaser.Input.Keyboard.Key;
+    player: Player;
 
-    constructor(
-        scene: Phaser.Scene,
-        private player: Player,
-    ) {
-        makeObservable(this);
+    constructor(scene: Phaser.Scene, player: Player) {
         if (scene.input && scene.input.keyboard) {
             this.keyA = scene.input.keyboard.addKey(
                 Phaser.Input.Keyboard.KeyCodes.A,
@@ -27,6 +24,8 @@ export default class PlayerControls {
                 Phaser.Input.Keyboard.KeyCodes.W,
             );
         }
+
+        this.player = player;
     }
 
     update() {
@@ -34,20 +33,21 @@ export default class PlayerControls {
         const velocity = { x: 0, y: 0 };
 
         if (this.keyA.isDown) {
-            velocity.x = -playerStore.currentMovementSpeed;
+            velocity.x = -this.player.currentMovementSpeed;
             this.player.anims.play("left", true);
         } else if (this.keyD.isDown) {
-            velocity.x = playerStore.currentMovementSpeed;
+            velocity.x = this.player.currentMovementSpeed;
             this.player.anims.play("right", true);
         }
 
         if (this.keyW.isDown) {
-            velocity.y = -playerStore.currentMovementSpeed;
+            velocity.y = -this.player.currentMovementSpeed;
         } else if (this.keyS.isDown) {
-            velocity.y = playerStore.currentMovementSpeed;
+            velocity.y = this.player.currentMovementSpeed;
             this.player.anims.play("turn");
         }
 
         this.player.setVelocity(velocity.x, velocity.y);
     }
 }
+

@@ -4,19 +4,19 @@ import Player from "../classes/Player";
 import PowerUp, { PowerUpType } from "../classes/PowerUp";
 import { PickUp } from "../classes/PickUp";
 import Weapon from "../classes/Weapon";
-import Enemy from "../classes/Enemy";
-import Enemies from "../classes/Enemies";
 import Inventory from "../classes/Inventory";
 import playerStore from "../stores/PlayerStore";
 import { debugGraphic } from "../classes/DebugTool";
 import { createPause } from "../classes/PauseResume";
 import { AttackWeapon } from "../classes/AttackWeapon";
+import { ZombieGroup } from "../classes/ZombieGroup";
+import { PowerUpManager } from "../classes/PowerUpManager";
 
 export class Game extends Scene {
     private player: Player;
-    private enemies: Enemies;
+    zombies: ZombieGroup;
+    private powerUps: PowerUpManager;
     private weapons: Weapon[] = [];
-    private powerUps: PowerUp[] = [];
     private wallLayer!: any;
     private inventory: Inventory;
     private map: Phaser.Tilemaps.Tilemap;
@@ -46,11 +46,24 @@ export class Game extends Scene {
         this.weapons.push(new Weapon(this, 800, 0, "gun", false));
         this.weapons.push(new Weapon(this, 900, 0, "spear", true));
 
-        this.player = new Player(this, 0, -100, "dude");
+        // Player
+        this.player = new Player(this, 0, 0, "dude");
 
-        if (this.player && this.wallLayer) {
-            this.physics.add.collider(this.player, this.wallLayer);
-        }
+        // Zombies
+        this.zombies = new ZombieGroup(this);
+        this.zombies.exampleInfiniteZombie();
+
+        // PowerUps
+        this.powerUps = new PowerUpManager(this);
+        this.powerUps.exampleSpawnPowerUps();
+
+        // this.powerUps.forEach((powerUp: PowerUp) => {
+        //     PickUp(this, this.player, powerUp, this.inventory, this.enemies);
+        // });
+
+        this.physics.add.collider(this.zombies, this.zombies);
+        this.physics.add.collider(this.player, this.wallLayer);
+        // this.physics.add.collider(this.zombies, this.wallLayer);
 
         this.weapons.forEach((weapon) => {
             PickUp(this, this.player, weapon, this.inventory);
@@ -58,63 +71,26 @@ export class Game extends Scene {
 
         AttackWeapon(this, this.player, this.inventory);
 
-        this.enemies = new Enemies(this);
-        for (let x = 0; x <= 1000; x += 100) {
-            this.enemies.createEnemy(
-                new Enemy(this, x, 200, "dude", 100.0, 1),
-                this.wallLayer,
-            );
-        }
-
-        this.powerUps.push(
-            new PowerUp(this, 400, 450, "star", PowerUpType.SPEED_BOOST),
-            new PowerUp(this, 0, 450, "star", PowerUpType.SPEED_BOOST),
-            new PowerUp(this, 700, 700, "attack-up", PowerUpType.ATTACK_BOOST),
-            new PowerUp(this, 400, 0, "nuke", PowerUpType.NUKE),
-            new PowerUp(this, 0, 200, "time-stop", PowerUpType.TIME_STOP),
-            new PowerUp(this, 0, 400, "time-stop", PowerUpType.TIME_STOP),
-            new PowerUp(
-                this,
-                200,
-                150,
-                "invincibility",
-                PowerUpType.INVINCIBILITY,
-            ),
-            new PowerUp(
-                this,
-                100,
-                200,
-                "invincibility",
-                PowerUpType.INVINCIBILITY,
-            ),
-        );
-        this.powerUps.forEach((powerUp: PowerUp) => {
-            PickUp(this, this.player, powerUp, this.inventory, this.enemies);
-        });
-
         if (this.player && this.wallLayer) {
             this.physics.add.collider(this.player, this.wallLayer);
         }
 
         this.camera = this.cameras.main;
-        this.camera.setBounds(0, -650, 10000, this.map.heightInPixels);
-        this.camera.setZoom(0.75);
+        // this.camera.setBounds(0, -650, 1000d0, this.map.heightInPixels);
+        this.camera.setZoom(1);
         this.camera.startFollow(this.player);
 
         // uncomment to check collider
-        // debugGraphic(this);
+        debugGraphic(this);
         createPause(this);
 
         EventBus.emit("current-scene-ready", this);
     }
 
-    getEnemies() {
-        return this.enemies;
-    }
-
     update() {
         this.player.update();
-        this.enemies.update(this.player);
+        this.zombies.update(this.player);
+        this.powerUps.update(this.player, this.zombies);
 
         if (playerStore.currentHealth <= 0) {
             this.scene.pause();

@@ -1,6 +1,4 @@
 import Player from "./Player";
-import playerStore from "../stores/PlayerStore";
-import Enemies from "./Enemies";
 import { Physics } from "phaser";
 import { ZombieGroup } from "./ZombieGroup";
 
@@ -40,10 +38,6 @@ export default class PowerUp extends Physics.Arcade.Sprite {
         this.setVisible(true);
     }
 
-    getPowerUpType() {
-        return this.powerUpType;
-    }
-
     update(player: Player, enemies: ZombieGroup) {
         if (this.active && this.scene.physics.overlap(this, player)) {
             this.setActive(false);
@@ -52,4 +46,3 @@ export default class PowerUp extends Physics.Arcade.Sprite {
         }
     }
 }
-

@@ -33,4 +33,3 @@ export class EnemyTestingGround extends Scene {
         this.zombies.update(this.player);
     }
 }
-

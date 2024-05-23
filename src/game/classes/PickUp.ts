@@ -1,5 +1,3 @@
-import playerStore from "../stores/PlayerStore";
-import Enemies from "./Enemies";
 import Player from "./Player";
 import PowerUp, { PowerUpType } from "./PowerUp";
 import Weapon from "./Weapon";
@@ -10,7 +8,6 @@ export function PickUp(
     player: Player,
     pickupItem: PowerUp | Weapon,
     inventory: Inventory,
-    enemies?: Enemies,
 ) {
     if (pickupItem instanceof Weapon) {
         const keyboardPlugin = scene.input.keyboard;
@@ -31,30 +28,5 @@ export function PickUp(
                 }
             });
         }
-    }
-
-    if (pickupItem instanceof PowerUp) {
-        scene.physics.add.collider(player, pickupItem, () => {
-            switch (pickupItem.getPowerUpType()) {
-                case PowerUpType.SPEED_BOOST:
-                    playerStore.applySpeedBoost(scene);
-                    break;
-                case PowerUpType.ATTACK_BOOST:
-                    playerStore.applyAttackBoost(scene);
-                    break;
-                case PowerUpType.NUKE:
-                    playerStore.applyNuke(enemies!);
-                    break;
-                case PowerUpType.TIME_STOP:
-                    playerStore.applyTimeStop(scene, enemies!);
-                    break;
-                case PowerUpType.INVINCIBILITY:
-                    playerStore.applyInvincibility(scene);
-                    break;
-                default:
-                    break;
-            }
-            pickupItem.destroy();
-        });
     }
 }

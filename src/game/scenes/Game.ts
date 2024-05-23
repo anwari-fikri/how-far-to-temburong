@@ -55,7 +55,7 @@ export class Game extends Scene {
 
         // PowerUps
         this.powerUps = new PowerUpManager(this);
-        this.powerUps.exampleSpawnPowerups();
+        this.powerUps.exampleSpawnPowerUps();
 
         // this.powerUps.forEach((powerUp: PowerUp) => {
         //     PickUp(this, this.player, powerUp, this.inventory, this.enemies);

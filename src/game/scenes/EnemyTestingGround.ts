@@ -17,7 +17,7 @@ export class EnemyTestingGround extends Scene {
         this.physics.add.collider(this.zombies, this.zombies);
 
         this.time.addEvent({
-            delay: 10, // Adjusted delay to 1000ms for better visualization
+            delay: 10,
             loop: true,
             callback: this.addZombie,
             callbackScope: this,

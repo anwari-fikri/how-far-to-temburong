@@ -48,7 +48,8 @@ export default class PowerUp extends Physics.Arcade.Sprite {
         if (this.active && this.scene.physics.overlap(this, player)) {
             this.setActive(false);
             this.setVisible(false);
-            player.applyNuke(enemies);
+            player.applyPowerUp(this.powerUpType, enemies);
         }
     }
 }
+

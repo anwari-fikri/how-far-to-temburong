@@ -14,15 +14,16 @@ export class PowerUpManager extends Phaser.GameObjects.Group {
         scene.add.existing(this);
     }
 
-    exampleSpawnPowerups() {
-        this.addPowerUp(100, 50, PowerUpType.NUKE, "nuke");
+    exampleSpawnPowerUps() {
+        this.addPowerUp(100, 50, "nuke", PowerUpType.NUKE);
+        this.addPowerUp(100, 100, "star", PowerUpType.SPEED_BOOST);
     }
 
     addPowerUp(
         x: number,
         y: number,
-        powerUpType: PowerUpType,
         texture: string,
+        powerUpType: PowerUpType,
     ) {
         // Create a new PowerUp if the pool is empty
         let powerUp = this.getFirstDead(false) as PowerUp;
@@ -44,3 +45,4 @@ export class PowerUpManager extends Phaser.GameObjects.Group {
         });
     }
 }
+

@@ -1,6 +1,8 @@
+// THIS FILE WILL BE DELETED AND BE REPLACED BY ZOMBIEGROUP.TS
+
 import Phaser from "phaser";
-import Enemy from "../classes/Enemy";
-import Player from "../classes/Player";
+import Enemy from "./Enemy";
+import Player from "./Player";
 
 export default class Enemies {
     private scene: Phaser.Scene;
@@ -13,8 +15,18 @@ export default class Enemies {
 
     createEnemy(enemy: Enemy, wallLayer: any) {
         this.enemies.add(enemy);
+
+        if (enemy.body && enemy.body instanceof Phaser.Physics.Arcade.Body) {
+            enemy.body.setCircle((enemy.width / 2) * 0.7);
+        }
+
+        // Create a separate collider group for each enemy
+        const enemyCollider = this.scene.physics.add.group();
+        enemyCollider.add(enemy);
+        this.scene.physics.add.collider(enemyCollider, this.enemies);
+
         if (enemy && wallLayer) {
-            this.scene.physics.add.collider(enemy, wallLayer);
+            this.scene.physics.add.collider(enemyCollider, wallLayer);
         }
     }
 

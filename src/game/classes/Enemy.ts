@@ -1,5 +1,9 @@
+// THIS FILE WILL BE DELETED AND BE REPLACED BY ZOMBIE.TS
+
 import Player from "./Player";
 import playerStore from "../stores/PlayerStore";
+import Weapon from "./Weapon";
+import { dropItem } from "./ItemDrop";
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     private isAlive: boolean = true;
@@ -11,7 +15,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     private canAttack: boolean = true;
     private attackCoolDownTimer: Phaser.Time.TimerEvent | null = null;
 
-    private chaseSpeed: number = 100;
+    private chaseSpeed: number = Math.random() * 50 + 50;
 
     constructor(
         scene: Phaser.Scene,
@@ -47,13 +51,23 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.performAttack(player);
 
             if (this.health <= 0) {
+                playerStore.killCount += 1;
                 this.animateDeath();
+
+                if (playerStore.killCount % 5 === 0) {
+                    console.log("ITEM!!");
+                    dropItem(this.scene, this.x, this.y);
+                }
+            } else {
+                // this.health -= Math.random();
             }
         }
 
         this.label.setPosition(this.x, this.y - this.height / 2 - 10);
         this.label.setText(String(this.health));
     }
+
+    dropItem() {}
 
     animateDeath() {
         const DEATH_ANIMATION_TIMER = 0.5;
@@ -95,7 +109,6 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     chase(player: Player) {
-        // console.log(this.chaseSpeed);
         this.scene.physics.moveToObject(this, player, this.chaseSpeed);
     }
 

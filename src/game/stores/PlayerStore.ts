@@ -1,6 +1,7 @@
 import { makeAutoObservable, action, observable } from "mobx";
 import { PowerUpType } from "../classes/PowerUp";
 import Enemies from "../classes/Enemies";
+import { ZombieGroup } from "../classes/ZombieGroup";
 
 class PlayerStore {
     // Base Attributes
@@ -25,6 +26,9 @@ class PlayerStore {
 
     isInvincibility: boolean = false;
     invincibilityTimer: Phaser.Time.TimerEvent;
+
+    // Loot
+    killCount: number = 0;
 
     constructor() {
         makeAutoObservable(this, {
@@ -105,7 +109,7 @@ class PlayerStore {
         }
     }
 
-    async applyNuke(enemies: Enemies) {
+    async applyNuke(enemies: ZombieGroup) {
         enemies.getNuked();
     }
 
@@ -185,4 +189,3 @@ class PlayerStore {
 
 const playerStore = new PlayerStore();
 export default playerStore;
-

@@ -1,6 +1,4 @@
 import Player from "./Player";
-import playerStore from "../stores/PlayerStore";
-import { makeObservable } from "mobx";
 
 export default class PlayerControls {
     keyA!: Phaser.Input.Keyboard.Key;
@@ -50,4 +48,3 @@ export default class PlayerControls {
         this.player.setVelocity(velocity.x, velocity.y);
     }
 }
-

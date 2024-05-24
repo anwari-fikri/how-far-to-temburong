@@ -56,4 +56,3 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
     }
 }
-

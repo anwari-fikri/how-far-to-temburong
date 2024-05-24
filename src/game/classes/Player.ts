@@ -4,14 +4,25 @@ import PlayerControls from "./PlayerControls";
 import { PowerUpType } from "./PowerUp";
 import { ZombieGroup } from "./ZombieGroup";
 
+enum PLAYER_CONST {
+    BASE_HEALTH = 100,
+    BASE_MOVEMENT_SPEED = 200,
+    BASE_ATTACK = 10,
+}
+
+enum POWERUP_DURATION {
+    SECOND = 1000,
+    SPEED_BOOST = 5 * SECOND,
+    ATTACK_BOOST = 5 * SECOND,
+    TIME_STOP = 5 * SECOND,
+}
+
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     private controls: PlayerControls;
-    private inventory: Inventory;
 
     // Stats
-    baseMovementSpeed: number;
+    currentHealth: number;
     currentMovementSpeed: number;
-    baseAttackPower: number;
     currentAttackPower: number;
 
     // PowerUps
@@ -21,6 +32,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     attackBoostTimer: Phaser.Time.TimerEvent;
     isTimeStopped: boolean;
     timeStopTimer: Phaser.Time.TimerEvent;
+    isInvincibility: boolean;
+    invincibilityTimer: Phaser.Time.TimerEvent;
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
         super(scene, x, y, texture);
@@ -30,28 +43,45 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.controls = new PlayerControls(scene, this);
         scene.cameras.main.startFollow(this, true);
 
-        // Stats
-        this.baseMovementSpeed = 200;
-        this.currentMovementSpeed = this.baseMovementSpeed;
-        this.baseAttackPower = 10;
-        this.currentAttackPower = this.baseAttackPower;
+        // Stats Init
+        this.resetAttributes();
 
         // PowerUps
         this.isSpeedBoosted = false;
         this.isAttackBoosted = false;
         this.isTimeStopped = false;
+        this.isInvincibility = false;
 
         playerAnims(scene);
     }
+
+    receiveDamage(attack: number) {
+        if (!this.isInvincibility) {
+            this.currentHealth = Math.max(0, this.currentHealth - attack);
+        }
+    }
+
+    resetAttributes() {
+        this.currentHealth = PLAYER_CONST.BASE_HEALTH;
+        this.currentMovementSpeed = PLAYER_CONST.BASE_MOVEMENT_SPEED;
+        this.currentAttackPower = PLAYER_CONST.BASE_ATTACK;
+    }
+
+    // Power Ups
+    /* STATUS EFFECT
+        If the player picks up a power-up:
+        - apply effect for 5 seconds.
+        - while the effect of the power-up is already active, refresh the duration back to 5 seconds.
+    */
 
     applyPowerUp(powerUpType: PowerUpType, enemies: ZombieGroup): void {
         console.log(powerUpType);
         switch (powerUpType) {
             case PowerUpType.SPEED_BOOST:
-                this.applySpeedBoost();
+                this.applySpeedBoost(PLAYER_CONST.BASE_MOVEMENT_SPEED);
                 break;
             case PowerUpType.ATTACK_BOOST:
-                this.applyAttackBoost();
+                this.applyAttackBoost(PLAYER_CONST.BASE_ATTACK);
                 break;
             case PowerUpType.NUKE:
                 this.applyNuke(enemies);
@@ -59,90 +89,72 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             case PowerUpType.TIME_STOP:
                 this.applyTimeStop(enemies);
                 break;
-            // case PowerUpType.INVINCIBILITY:
-            //     this.applyInvincibility();
-            //     break;
+            case PowerUpType.INVINCIBILITY:
+                this.applyInvincibility();
+                break;
         }
         console.log(this.currentAttackPower);
     }
 
-    removePowerUp(powerUpType: PowerUpType) {
-        switch (powerUpType) {
-            case PowerUpType.SPEED_BOOST:
-                this.isSpeedBoosted = false;
-                this.currentMovementSpeed -= this.baseMovementSpeed;
-                break;
-            case PowerUpType.ATTACK_BOOST:
-                this.isAttackBoosted = false;
-                this.currentAttackPower -= this.baseAttackPower;
-                break;
-            case PowerUpType.TIME_STOP:
-                this.isTimeStopped = false;
-            // case PowerUpType.INVINCIBILITY:
-            //     this.isInvincibility = false;
-            //     break;
-
-            default:
-                break;
-        }
-    }
-
-    // Power Ups
     applyNuke(enemies: ZombieGroup) {
         enemies.getNuked();
     }
 
-    applySpeedBoost() {
+    applySpeedBoost(value: number) {
         if (!this.isSpeedBoosted) {
             this.isSpeedBoosted = true;
-            this.currentMovementSpeed += this.baseMovementSpeed;
+            this.currentMovementSpeed += value;
 
             if (this.speedBoostTimer) {
                 this.speedBoostTimer.remove();
             }
 
-            this.speedBoostTimer = this.scene.time.delayedCall(5000, () => {
-                this.removePowerUp(PowerUpType.SPEED_BOOST);
-            });
+            this.speedBoostTimer = this.scene.time.delayedCall(
+                POWERUP_DURATION.SPEED_BOOST,
+                () => {
+                    this.isSpeedBoosted = false;
+                    this.currentMovementSpeed -= value!;
+                },
+            );
         } else {
             this.speedBoostTimer.reset({
-                delay: 5000,
-                callback: () => this.removePowerUp(PowerUpType.SPEED_BOOST),
+                delay: POWERUP_DURATION.SPEED_BOOST,
+                callback: () => {
+                    this.isSpeedBoosted = false;
+                    this.currentMovementSpeed -= value!;
+                },
             });
         }
     }
 
-    async applyAttackBoost() {
-        /*
-            If the player picks up a attack boost:
-            - Increase the player's attack power.
-            - If the attack boost is already active, resets the power-up timer.
-        */
+    async applyAttackBoost(value: number) {
         if (!this.isAttackBoosted) {
             this.isAttackBoosted = true;
-            this.currentAttackPower += this.baseAttackPower;
+            this.currentAttackPower += value;
 
             if (this.attackBoostTimer) {
                 this.attackBoostTimer.remove();
             }
 
-            this.attackBoostTimer = this.scene.time.delayedCall(5000, () => {
-                this.removePowerUp(PowerUpType.ATTACK_BOOST);
-            });
+            this.attackBoostTimer = this.scene.time.delayedCall(
+                POWERUP_DURATION.ATTACK_BOOST,
+                () => {
+                    this.isAttackBoosted = false;
+                    this.currentAttackPower -= value!;
+                },
+            );
         } else {
             this.attackBoostTimer.reset({
-                delay: 5000,
-                callback: () => this.removePowerUp(PowerUpType.ATTACK_BOOST),
+                delay: POWERUP_DURATION.ATTACK_BOOST,
+                callback: () => {
+                    this.isAttackBoosted = false;
+                    this.currentAttackPower -= value!;
+                },
             });
         }
     }
 
     applyTimeStop(enemies: ZombieGroup) {
-        /*
-            If the player picks up a time stop power-up:
-            - Stop enemies' movement for 5 seconds.
-            - If the time stop power-up is already active, refresh the duration back to 5 seconds.
-        */
         if (!this.isTimeStopped) {
             this.isTimeStopped = true;
             enemies.getFreezed(this.isTimeStopped);
@@ -150,17 +162,39 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.timeStopTimer) {
                 this.timeStopTimer.remove();
             }
-            this.timeStopTimer = this.scene.time.delayedCall(5000, () => {
-                this.removePowerUp(PowerUpType.TIME_STOP);
-                enemies.getFreezed(this.isTimeStopped); // isTimeStopped = false here
-            });
+            this.timeStopTimer = this.scene.time.delayedCall(
+                POWERUP_DURATION.TIME_STOP,
+                () => {
+                    this.isTimeStopped = false;
+                    enemies!.getFreezed(this.isTimeStopped);
+                },
+            );
         } else {
             this.timeStopTimer.reset({
-                delay: 5000,
+                delay: POWERUP_DURATION.TIME_STOP,
                 callback: () => {
-                    enemies.getFreezed(this.isTimeStopped);
                     this.isTimeStopped = false;
+                    enemies!.getFreezed(this.isTimeStopped);
                 },
+            });
+        }
+    }
+
+    applyInvincibility() {
+        if (!this.isInvincibility) {
+            this.isInvincibility = true;
+
+            if (this.invincibilityTimer) {
+                this.invincibilityTimer.remove();
+            }
+
+            this.invincibilityTimer = this.scene.time.delayedCall(5000, () => {
+                this.isInvincibility = false;
+            });
+        } else {
+            this.invincibilityTimer.reset({
+                delay: 5000,
+                callback: () => (this.isInvincibility = false),
             });
         }
     }

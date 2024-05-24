@@ -66,4 +66,3 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         });
     }
 }
-

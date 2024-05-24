@@ -64,7 +64,7 @@ export class Game extends Scene {
 
         this.physics.add.collider(this.zombies, this.zombies);
         this.physics.add.collider(this.player, this.wallLayer);
-        // this.physics.add.collider(this.zombies, this.wallLayer);
+        this.physics.add.collider(this.zombies, this.wallLayer);
 
         this.weapons.forEach((weapon) => {
             PickUp(this, this.player, weapon, this.inventory);

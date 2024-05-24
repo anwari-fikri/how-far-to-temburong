@@ -11,10 +11,12 @@ import { createPause } from "../classes/PauseResume";
 import { AttackWeapon } from "../classes/AttackWeapon";
 import { ZombieGroup } from "../classes/ZombieGroup";
 import { PowerUpManager } from "../classes/PowerUpManager";
+import { GameUI } from "../classes/GameUI";
 
 export class Game extends Scene {
-    private player: Player;
+    player: Player;
     zombies: ZombieGroup;
+    gameUI: GameUI;
     private powerUps: PowerUpManager;
     private weapons: Weapon[] = [];
     private wallLayer!: any;
@@ -58,6 +60,7 @@ export class Game extends Scene {
         this.powerUps = new PowerUpManager(this);
         this.powerUps.exampleSpawnPowerUps();
 
+        this.gameUI = new GameUI(this, this.player);
         // this.powerUps.forEach((powerUp: PowerUp) => {
         //     PickUp(this, this.player, powerUp, this.inventory, this.enemies);
         // });
@@ -86,12 +89,17 @@ export class Game extends Scene {
         createPause(this);
 
         EventBus.emit("current-scene-ready", this);
+
+        this.player.on("health-changed", () => {
+            this.gameUI.updateHealthBar();
+        });
     }
 
     update() {
         this.player.update();
         this.zombies.update(this.player);
         this.powerUps.update(this.player, this.zombies);
+        this.gameUI.update();
 
         if (playerStore.currentHealth <= 0) {
             this.scene.pause();

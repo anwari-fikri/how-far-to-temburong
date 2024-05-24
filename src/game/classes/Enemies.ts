@@ -1,6 +1,8 @@
+// THIS FILE WILL BE DELETED AND BE REPLACED BY ZOMBIEGROUP.TS
+
 import Phaser from "phaser";
-import Enemy from "../classes/Enemy";
-import Player from "../classes/Player";
+import Enemy from "./Enemy";
+import Player from "./Player";
 
 export default class Enemies {
     private scene: Phaser.Scene;
@@ -72,4 +74,3 @@ export default class Enemies {
         return this.enemies;
     }
 }
-

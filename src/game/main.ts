@@ -24,6 +24,7 @@ const config: Phaser.Types.Core.GameConfig = {
             debug: true,
         },
     },
+    pixelArt: true,
     parent: "game-container",
     backgroundColor: "#028af8",
     scene: [

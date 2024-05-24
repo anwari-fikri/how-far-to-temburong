@@ -2,6 +2,8 @@ import Player from "./Player";
 import { Physics, Scene } from "phaser";
 
 export class Zombie extends Physics.Arcade.Sprite {
+    chaseSpeed: number;
+
     constructor(scene: Scene) {
         super(scene, 0, 0, "dude");
 
@@ -17,6 +19,8 @@ export class Zombie extends Physics.Arcade.Sprite {
 
         this.setActive(false);
         this.setVisible(false);
+
+        this.chaseSpeed = 40;
     }
 
     activateZombie() {
@@ -34,9 +38,17 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.setVisible(false);
     }
 
+    freeze() {
+        this.chaseSpeed = 0;
+    }
+
+    unfreeze() {
+        this.chaseSpeed = 40;
+    }
+
     update(player: Player) {
         if (this.active) {
-            this.scene.physics.moveToObject(this, player, 40);
+            this.scene.physics.moveToObject(this, player, this.chaseSpeed);
             if (this.scene.physics.overlap(this, player)) {
                 this.setActive(false);
                 this.setVisible(false);

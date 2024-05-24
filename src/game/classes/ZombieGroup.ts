@@ -10,6 +10,12 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         });
 
         scene.add.existing(this);
+
+        // Initialize 100 zombies and make them inactive
+        for (let i = 0; i < 100; i++) {
+            const zombie = new Zombie(scene);
+            this.add(zombie, true);
+        }
     }
 
     exampleInfiniteZombie() {
@@ -35,6 +41,17 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         this.children.iterate((zombie: Phaser.GameObjects.GameObject) => {
             if (zombie instanceof Zombie) {
                 zombie.die();
+            }
+            return true;
+        });
+    }
+
+    getFreezed(isTimeStopped: boolean) {
+        const action = isTimeStopped ? "freeze" : "unfreeze";
+
+        this.children.iterate((zombie: Phaser.GameObjects.GameObject) => {
+            if (zombie instanceof Zombie) {
+                (zombie as Zombie)[action]();
             }
             return true;
         });

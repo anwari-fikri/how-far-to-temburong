@@ -1,3 +1,5 @@
+// THIS FILE WILL BE DELETED AND BE REPLACED BY ZOMBIE.TS
+
 import Player from "./Player";
 import playerStore from "../stores/PlayerStore";
 import Weapon from "./Weapon";

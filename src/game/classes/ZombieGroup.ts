@@ -3,6 +3,10 @@ import { Zombie } from "./Zombie";
 import Player from "./Player";
 
 export class ZombieGroup extends Phaser.GameObjects.Group {
+    private spawnRate: number;
+    private enemiesPerSpawn: number;
+    private elapsedMinutes: number;
+
     constructor(scene: Scene) {
         super(scene, {
             classType: Zombie,
@@ -11,10 +15,53 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
 
         scene.add.existing(this);
 
-        // Initialize 100 zombies and make them inactive
-        for (let i = 0; i < 100; i++) {
-            const zombie = new Zombie(scene);
-            this.add(zombie, true);
+        this.spawnRate = 1000;
+        this.enemiesPerSpawn = 10;
+        this.elapsedMinutes = 0;
+
+        this.startSpawnTimer();
+        this.startMinuteTracker();
+
+        // for (let i = 0; i < 100; i++) {
+        //     const zombie = this.get() as Zombie;
+        //     if (zombie) {
+        //         zombie.activateZombie();
+        //     }
+        // }
+    }
+
+    private startSpawnTimer() {
+        this.scene.time.addEvent({
+            delay: this.spawnRate,
+            loop: true,
+            callback: () => {
+                this.spawnEnemies();
+            },
+            callbackScope: this,
+        });
+    }
+
+    private startMinuteTracker() {
+        this.scene.time.addEvent({
+            delay: 60000,
+            loop: true,
+            callback: () => {
+                this.elapsedMinutes++;
+                this.adjustSpawnRate();
+            },
+            callbackScope: this,
+        });
+    }
+
+    private adjustSpawnRate() {
+        // Adjust spawn rate and enemies per spawn based on elapsed minutes
+        this.enemiesPerSpawn = this.elapsedMinutes + 1; // Increase enemies per spawn each minute
+        this.spawnRate = 2000 / (this.elapsedMinutes + 1); // Decrease spawn interval
+    }
+
+    private spawnEnemies() {
+        for (let i = 0; i < this.enemiesPerSpawn; i++) {
+            this.addZombie();
         }
     }
 
@@ -66,3 +113,4 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         });
     }
 }
+

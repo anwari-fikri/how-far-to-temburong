@@ -17,7 +17,7 @@ export class Game extends Scene {
     player: Player;
     zombies: ZombieGroup;
     gameUI: GameUI;
-    private powerUps: PowerUpManager;
+    powerUps: PowerUpManager;
     private weapons: Weapon[] = [];
     private wallLayer!: any;
     private inventory: Inventory;
@@ -50,34 +50,32 @@ export class Game extends Scene {
         this.weapons.push(new Weapon(this, 200, -200, "seliparJepun", false));
 
         // Player
-        this.player = new Player(this, 0, 0, "dude");
+        this.player = new Player(
+            this,
+            this.scale.width / 2,
+            this.scale.height / 2,
+            "dude",
+        );
 
         // Zombies
         this.zombies = new ZombieGroup(this);
-        this.zombies.exampleInfiniteZombie();
+        // this.zombies.exampleInfiniteZombie();
 
         // PowerUps
         this.powerUps = new PowerUpManager(this);
         this.powerUps.exampleSpawnPowerUps();
 
         this.gameUI = new GameUI(this, this.player);
-        // this.powerUps.forEach((powerUp: PowerUp) => {
-        //     PickUp(this, this.player, powerUp, this.inventory, this.enemies);
-        // });
 
         this.physics.add.collider(this.zombies, this.zombies);
         this.physics.add.collider(this.player, this.wallLayer);
-        this.physics.add.collider(this.zombies, this.wallLayer);
+        // this.physics.add.collider(this.zombies, this.wallLayer);
 
         this.weapons.forEach((weapon) => {
             PickUp(this, this.player, weapon, this.inventory);
         });
 
         AttackWeapon(this, this.player, this.inventory);
-
-        if (this.player && this.wallLayer) {
-            this.physics.add.collider(this.player, this.wallLayer);
-        }
 
         this.camera = this.cameras.main;
         // this.camera.setBounds(0, -650, 1000d0, this.map.heightInPixels);
@@ -89,10 +87,6 @@ export class Game extends Scene {
         createPause(this);
 
         EventBus.emit("current-scene-ready", this);
-
-        this.player.on("health-changed", () => {
-            this.gameUI.updateHealthBar();
-        });
     }
 
     update() {

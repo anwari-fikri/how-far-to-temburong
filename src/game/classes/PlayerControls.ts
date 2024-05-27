@@ -33,9 +33,11 @@ export default class PlayerControls {
         if (this.keyA.isDown) {
             velocity.x = -this.player.currentMovementSpeed;
             this.player.anims.play("left", true);
+            this.player.facing = "left";
         } else if (this.keyD.isDown) {
             velocity.x = this.player.currentMovementSpeed;
             this.player.anims.play("right", true);
+            this.player.facing = "right";
         }
 
         if (this.keyW.isDown) {

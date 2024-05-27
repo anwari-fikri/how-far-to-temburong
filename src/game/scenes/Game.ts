@@ -58,7 +58,7 @@ export class Game extends Scene {
         );
 
         // Zombies
-        this.zombies = new ZombieGroup(this);
+        this.zombies = new ZombieGroup(this, this.player);
         // this.zombies.exampleInfiniteZombie();
 
         // PowerUps

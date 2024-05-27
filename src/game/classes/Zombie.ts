@@ -20,28 +20,44 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.setActive(false);
         this.setVisible(false);
 
-        this.chaseSpeed = 40;
+        this.chaseSpeed = 20;
     }
 
-    activateZombie() {
-        const spawnArea = {
-            left: 0,
-            right: this.scene.cameras.main.width,
-            top: 0,
-            bottom: this.scene.cameras.main.height,
-        };
+    activateZombie(player: Player) {
+        const spawnMargin = 50; // Margin to ensure spawning outside the visible area
+        const playerX = player.x;
+        const playerY = player.y;
+        const camera = this.scene.cameras.main;
 
-        const spawnSide = Phaser.Math.Between(0, 1); // return 0 or 1
+        let spawnX: number = 0;
+        let spawnY: number = 0;
 
-        let spawnX: number;
-        if (spawnSide === 0) {
-            spawnX = spawnArea.left - this.displayWidth;
-        } else {
-            spawnX = spawnArea.right;
+        // Randomly choose a side to spawn (left, right, top, bottom)
+        const spawnSide = Phaser.Math.Between(0, 1);
+
+        switch (spawnSide) {
+            case 0: // Left side
+                spawnX = playerX - camera.width / 2 - spawnMargin;
+                spawnY = Phaser.Math.Between(
+                    playerY - camera.height / 2,
+                    playerY + camera.height / 2,
+                );
+                break;
+            case 1: // Right side
+                spawnX = playerX + camera.width / 2 + spawnMargin;
+                spawnY = Phaser.Math.Between(
+                    playerY - camera.height / 2,
+                    playerY + camera.height / 2,
+                );
+                break;
         }
-        const spawnY = Phaser.Math.Between(spawnArea.top, spawnArea.bottom);
 
-        this.alive(spawnX, spawnY);
+        // Set the zombie's position and activate it
+        this.setPosition(spawnX, spawnY);
+        this.setActive(true);
+        this.setVisible(true);
+        this.setTint(Phaser.Display.Color.RandomRGB().color);
+        this.enableBody();
     }
 
     alive(spawnX: number, spawnY: number) {

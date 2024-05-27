@@ -3,15 +3,17 @@ import { Zombie } from "./Zombie";
 import Player from "./Player";
 
 export class ZombieGroup extends Phaser.GameObjects.Group {
-    private spawnRate: number;
-    private enemiesPerSpawn: number;
-    private elapsedMinutes: number;
+    spawnRate: number;
+    enemiesPerSpawn: number;
+    elapsedMinutes: number;
+    player: Player;
 
-    constructor(scene: Scene) {
+    constructor(scene: Scene, player: Player) {
         super(scene, {
             classType: Zombie,
             maxSize: 100,
         });
+        this.player = player;
 
         scene.add.existing(this);
 
@@ -79,7 +81,7 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
     addZombie() {
         const zombie = this.get() as Zombie;
         if (zombie) {
-            zombie.activateZombie();
+            zombie.activateZombie(this.player);
         }
     }
 

@@ -4,7 +4,7 @@ import PlayerControls from "./PlayerControls";
 import { PowerUpType } from "./PowerUp";
 import { ZombieGroup } from "./ZombieGroup";
 
-enum PLAYER_CONST {
+export enum PLAYER_CONST {
     BASE_HEALTH = 100,
     BASE_MOVEMENT_SPEED = 200,
     BASE_ATTACK = 10,
@@ -59,6 +59,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (!this.isInvincibility) {
             this.currentHealth = Math.max(0, this.currentHealth - attack);
         }
+        console.log(this.currentHealth);
+        this.currentHealth -= attack;
+        this.emit("health-changed");
     }
 
     resetAttributes() {

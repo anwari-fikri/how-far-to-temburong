@@ -11,11 +11,13 @@ import { createPause } from "../classes/PauseResume";
 import { AttackWeapon } from "../classes/AttackWeapon";
 import { ZombieGroup } from "../classes/ZombieGroup";
 import { PowerUpManager } from "../classes/PowerUpManager";
+import { GameUI } from "../classes/GameUI";
 
 export class Game extends Scene {
-    private player: Player;
+    player: Player;
     zombies: ZombieGroup;
-    private powerUps: PowerUpManager;
+    gameUI: GameUI;
+    powerUps: PowerUpManager;
     private weapons: Weapon[] = [];
     private wallLayer!: any;
     private inventory: Inventory;
@@ -48,33 +50,32 @@ export class Game extends Scene {
         this.weapons.push(new Weapon(this, 200, -200, "seliparJepun", false));
 
         // Player
-        this.player = new Player(this, 0, 0, "dude");
+        this.player = new Player(
+            this,
+            this.scale.width / 2,
+            this.scale.height / 2,
+            "dude",
+        );
 
         // Zombies
         this.zombies = new ZombieGroup(this);
-        this.zombies.exampleInfiniteZombie();
+        // this.zombies.exampleInfiniteZombie();
 
         // PowerUps
         this.powerUps = new PowerUpManager(this);
         this.powerUps.exampleSpawnPowerUps();
 
-        // this.powerUps.forEach((powerUp: PowerUp) => {
-        //     PickUp(this, this.player, powerUp, this.inventory, this.enemies);
-        // });
+        this.gameUI = new GameUI(this, this.player);
 
         this.physics.add.collider(this.zombies, this.zombies);
         this.physics.add.collider(this.player, this.wallLayer);
-        this.physics.add.collider(this.zombies, this.wallLayer);
+        // this.physics.add.collider(this.zombies, this.wallLayer);
 
         this.weapons.forEach((weapon) => {
             PickUp(this, this.player, weapon, this.inventory);
         });
 
         AttackWeapon(this, this.player, this.inventory);
-
-        if (this.player && this.wallLayer) {
-            this.physics.add.collider(this.player, this.wallLayer);
-        }
 
         this.camera = this.cameras.main;
         // this.camera.setBounds(0, -650, 1000d0, this.map.heightInPixels);
@@ -92,6 +93,7 @@ export class Game extends Scene {
         this.player.update();
         this.zombies.update(this.player);
         this.powerUps.update(this.player, this.zombies);
+        this.gameUI.update();
 
         if (playerStore.currentHealth <= 0) {
             this.scene.pause();

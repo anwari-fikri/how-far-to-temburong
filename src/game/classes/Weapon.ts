@@ -1,3 +1,23 @@
+export const WeaponName = {
+    SWORD: {
+        texture: "sword",
+        range: "medium",
+        melee: true,
+    } as WeaponProperties,
+    DAGGER: {
+        texture: "dagger",
+        range: "short",
+        melee: true,
+    } as WeaponProperties,
+    SPEAR: { texture: "spear", range: "long", melee: true } as WeaponProperties,
+};
+
+type WeaponProperties = {
+    texture: string;
+    range: string;
+    melee: boolean;
+};
+
 export default class Weapon extends Phaser.Physics.Arcade.Sprite {
     private isMelee: boolean;
     private meleeRange: string;
@@ -9,6 +29,7 @@ export default class Weapon extends Phaser.Physics.Arcade.Sprite {
         texture: string,
         isMelee: boolean,
         meleeRange: string,
+        // weaponName: WeaponName,
     ) {
         super(scene, x, y, texture);
         this.setScale(0.5);

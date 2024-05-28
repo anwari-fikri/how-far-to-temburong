@@ -22,7 +22,9 @@ export class WeaponTest extends Scene {
 
         this.inventory = new Inventory();
         this.inventory.addWeapon(
-            new Weapon(this, 800, -300, "spear", true, "long"),
+            // new Weapon(this, 800, -300, "dagger", true, "short"),
+            new Weapon(this, 800, -300, "sword", true, "medium"),
+            // new Weapon(this, 800, -300, "spear", true, "long"),
         );
 
         AttackWeapon(this, this.player, this.inventory);
@@ -32,4 +34,3 @@ export class WeaponTest extends Scene {
         this.player.update();
     }
 }
-

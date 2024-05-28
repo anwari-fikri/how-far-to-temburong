@@ -64,6 +64,7 @@ export function AttackWeapon(
 
             const handleShortRangeAttack = () => {
                 const thrustDistance = 10;
+                equippedWeapon.setOrigin(0.5, 1);
                 let targetX: number;
                 let targetY: number;
 
@@ -95,19 +96,19 @@ export function AttackWeapon(
             const handleMediumRangeAttack = () => {
                 const rotationAngle = 90;
                 const rotationDuration = 300;
-                const swingDistance = 30;
+                const swingDistance = 5;
 
                 let initialX =
                     player.facing === "left"
                         ? player.x - swingDistance
                         : player.x + swingDistance;
-                let initialY = player.y;
+                let initialY = player.y + 15;
 
                 equippedWeapon.setPosition(initialX, initialY);
                 equippedWeapon.setAngle(player.facing === "left" ? -45 : 45);
-                equippedWeapon.setOrigin(0.5, 0.5);
+                equippedWeapon.setOrigin(0.5, 1);
 
-                createHitbox(equippedWeapon, 150, 100); // Example hitbox size for medium range
+                createHitbox(equippedWeapon, 150, 100, 0.5, 0.5); // Example hitbox size for medium range
                 if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
                     equippedWeapon.body.enable = true;
                 }
@@ -126,7 +127,6 @@ export function AttackWeapon(
             const handleLongRangeAttack = () => {
                 const rotationAngle = 180;
                 const rotationDuration = 500;
-                const offsetDistance = 20;
 
                 // Adjust the initial position based on the player's facing direction
                 let initialX = player.x;
@@ -138,14 +138,14 @@ export function AttackWeapon(
                 equippedWeapon.setOrigin(0.5, 1);
 
                 if (player.facing === "left") {
-                    initialX -= offsetDistance;
+                    initialX;
                     initialAngle = 0;
                 } else {
-                    initialX += offsetDistance;
+                    initialX;
                     initialAngle = 0;
                 }
 
-                createHitbox(equippedWeapon, 200, 200, 0.5, 0.5);
+                createHitbox(equippedWeapon, 150, 300, 0.5, 0.01);
                 if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
                     equippedWeapon.body.enable = true;
                 }

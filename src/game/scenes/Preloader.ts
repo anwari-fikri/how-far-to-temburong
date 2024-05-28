@@ -42,7 +42,6 @@ export class Preloader extends Scene {
         this.load.image("time-stop", "powerUps/time-stop.png");
         this.load.image("invincibility", "powerUps/invincibility.png");
 
-        this.load.image("bg-bridge", "bg-bridge.png");
         this.load.image("corpse", "corpse.png");
         this.load.spritesheet("dude", "dude.png", {
             frameWidth: 32,
@@ -58,8 +57,19 @@ export class Preloader extends Scene {
         this.load.image("projectileTexture", "weapons/bullet.png");
         this.load.image("slash", "weapons/slash.png");
 
-        this.load.image("bridgeimage", "tiles/Texture/bridgetilesetv2.png");
-        this.load.tilemapTiledJSON("bridgeStage", "tiles/bridgeStage1.1.json");
+        this.load.image("bridgeImage", "tiles/Texture/bridgetilesetv2.png");
+
+        this.load.image("ocean", "bg-ocean.png");
+        this.load.image("sky", "bg-sky.jpg");
+        this.load.image("objectImage", "tiles/Texture/enviromentalhazards.png");
+        this.load.spritesheet(
+            "objectImageS",
+            "tiles/Texture/enviromentalhazards.png",
+            {
+                frameWidth: 32,
+                frameHeight: 32,
+            },
+        );
     }
 
     create() {

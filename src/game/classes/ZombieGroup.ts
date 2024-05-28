@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { Zombie } from "./Zombie";
+import { ZOMBIE_TYPE, Zombie } from "./Zombie";
 import Player from "./Player";
 
 export class ZombieGroup extends Phaser.GameObjects.Group {
@@ -18,7 +18,7 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         scene.add.existing(this);
 
         this.spawnRate = 1000;
-        this.enemiesPerSpawn = 10;
+        this.enemiesPerSpawn = 1;
         this.elapsedMinutes = 0;
 
         this.startSpawnTimer();
@@ -81,7 +81,14 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
     addZombie() {
         const zombie = this.get() as Zombie;
         if (zombie) {
-            zombie.activateZombie(this.player);
+            const randomType = Math.random();
+            if (randomType < 0.5) {
+                console.log("NORMAL");
+                zombie.activateZombie(this.player, ZOMBIE_TYPE.NORMAL);
+            } else {
+                console.log("STRONG");
+                zombie.activateZombie(this.player, ZOMBIE_TYPE.STRONG);
+            }
         }
     }
 

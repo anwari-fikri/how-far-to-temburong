@@ -1,8 +1,15 @@
 import Player from "./Player";
 import { Physics, Scene } from "phaser";
 
+export const ZOMBIE_TYPE = {
+    NORMAL: { texture: "dude", chaseSpeed: 10 },
+    STRONG: { texture: "dude", chaseSpeed: 20 },
+} as const;
+
+type ZombieType = (typeof ZOMBIE_TYPE)[keyof typeof ZOMBIE_TYPE];
+
 export class Zombie extends Physics.Arcade.Sprite {
-    chaseSpeed: number;
+    chaseSpeed: number = 20;
 
     constructor(scene: Scene) {
         super(scene, 0, 0, "dude");
@@ -19,11 +26,9 @@ export class Zombie extends Physics.Arcade.Sprite {
 
         this.setActive(false);
         this.setVisible(false);
-
-        this.chaseSpeed = 20;
     }
 
-    activateZombie(player: Player) {
+    activateZombie(player: Player, zombieType: ZombieType) {
         const spawnMargin = 50; // Margin to ensure spawning outside the visible area
         const playerX = player.x;
         const playerY = player.y;
@@ -32,9 +37,7 @@ export class Zombie extends Physics.Arcade.Sprite {
         let spawnX: number = 0;
         let spawnY: number = 0;
 
-        // Randomly choose a side to spawn (left, right, top, bottom)
         const spawnSide = Phaser.Math.Between(0, 1);
-
         switch (spawnSide) {
             case 0: // Left side
                 spawnX = playerX - camera.width / 2 - spawnMargin;
@@ -53,10 +56,21 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
 
         // Set the zombie's position and activate it
+        switch (zombieType) {
+            case ZOMBIE_TYPE.NORMAL:
+                this.setTexture(ZOMBIE_TYPE.NORMAL.texture);
+                this.chaseSpeed = 10;
+                this.setTint(0xff0000); // Normal zombies tinted red
+                break;
+            case ZOMBIE_TYPE.STRONG:
+                this.setTexture(ZOMBIE_TYPE.STRONG.texture);
+                this.chaseSpeed = 20;
+                this.setTint(0x00ff00); // Strong zombies tinted green
+                break;
+        }
         this.setPosition(spawnX, spawnY);
         this.setActive(true);
         this.setVisible(true);
-        this.setTint(Phaser.Display.Color.RandomRGB().color);
         this.enableBody();
     }
 

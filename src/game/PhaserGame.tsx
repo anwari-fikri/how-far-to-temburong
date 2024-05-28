@@ -65,7 +65,7 @@ export const PhaserGame = forwardRef<IRefPhaserGame, IProps>(
         return (
             <div
                 id="game-container"
-                className="h-screen flex flex-col mx-auto justify-center items-center"
+                className="h-dvh flex flex-col mx-auto justify-center items-center"
             ></div>
         );
     },

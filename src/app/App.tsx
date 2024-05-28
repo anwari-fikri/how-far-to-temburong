@@ -65,7 +65,7 @@ function App() {
     };
 
     return (
-        <div id="app">
+        <div id="app" className="h-dvh w-dvw justify-center items-center">
             <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
         </div>
     );

@@ -70,6 +70,18 @@ export class Preloader extends Scene {
                 frameHeight: 32,
             },
         );
+
+        // Random Encounter
+        this.load.image('random1', 'randomEncounter/random1.png');
+        this.load.image('random2', 'randomEncounter/random2.png');
+        this.load.image('random3', 'randomEncounter/random3.png');
+        this.load.image('random4', 'randomEncounter/random4.png');
+        this.load.image('random5', 'randomEncounter/random5.png');
+        this.load.image('random6', 'randomEncounter/random6.png');
+        this.load.image('random7', 'randomEncounter/random7.png');
+        this.load.image('random8', 'randomEncounter/random8.png');
+        this.load.image('random9', 'randomEncounter/random9.png');
+        this.load.image('random10', 'randomEncounter/random10.png');
     }
 
     create() {
@@ -77,7 +89,7 @@ export class Preloader extends Scene {
         //  For example, you can define global animations here, so we can use them in other scenes.
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start("Game");
+        this.scene.start("RandomEncounterTest");
         // this.scene.start("GameUIOverlay");
     }
 }

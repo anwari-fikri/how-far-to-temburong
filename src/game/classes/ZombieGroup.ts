@@ -83,10 +83,8 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         if (zombie) {
             const randomType = Math.random();
             if (randomType < 0.5) {
-                console.log("NORMAL");
                 zombie.activateZombie(this.player, ZOMBIE_TYPE.NORMAL);
             } else {
-                console.log("STRONG");
                 zombie.activateZombie(this.player, ZOMBIE_TYPE.STRONG);
             }
         }

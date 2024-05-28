@@ -26,6 +26,7 @@ export class Zombie extends Physics.Arcade.Sprite {
 
         this.setActive(false);
         this.setVisible(false);
+        this.disableBody();
     }
 
     activateZombie(player: Player, zombieType: ZombieType) {
@@ -40,20 +41,14 @@ export class Zombie extends Physics.Arcade.Sprite {
         const spawnSide = Phaser.Math.Between(0, 1);
         switch (spawnSide) {
             case 0: // Left side
-                spawnX = playerX - camera.width / 2 - spawnMargin;
-                spawnY = Phaser.Math.Between(
-                    playerY - camera.height / 2,
-                    playerY + camera.height / 2,
-                );
+                spawnX = playerX - camera.width - spawnMargin;
                 break;
             case 1: // Right side
-                spawnX = playerX + camera.width / 2 + spawnMargin;
-                spawnY = Phaser.Math.Between(
-                    playerY - camera.height / 2,
-                    playerY + camera.height / 2,
-                );
+                spawnX = playerX + camera.width + spawnMargin;
                 break;
         }
+
+        spawnY = Phaser.Math.Between(-300, 250);
 
         // Set the zombie's position and activate it
         switch (zombieType) {
@@ -68,24 +63,38 @@ export class Zombie extends Physics.Arcade.Sprite {
                 this.setTint(0x00ff00); // Strong zombies tinted green
                 break;
         }
-        this.setPosition(spawnX, spawnY);
-        this.setActive(true);
-        this.setVisible(true);
-        this.enableBody();
+        this.alive(spawnX, spawnY);
     }
 
     alive(spawnX: number, spawnY: number) {
         this.setPosition(spawnX, spawnY);
         this.setActive(true);
         this.setVisible(true);
-        this.setTint(Phaser.Display.Color.RandomRGB().color);
         this.enableBody();
     }
 
-    die() {
+    die(isDeSpawn: boolean = false) {
+        if (isDeSpawn) {
+            // don't count towards kill count
+        }
         this.setActive(false);
         this.setVisible(false);
         this.disableBody(true, true);
+    }
+
+    checkDistanceToPlayer(player: Player) {
+        const deSpawnDistance: number = this.scene.cameras.main.width * 4;
+        if (player) {
+            const distance = Phaser.Math.Distance.Between(
+                this.x,
+                this.y,
+                player.x,
+                player.y,
+            );
+            if (distance > deSpawnDistance) {
+                this.die(true);
+            }
+        }
     }
 
     freeze() {
@@ -99,6 +108,7 @@ export class Zombie extends Physics.Arcade.Sprite {
     update(player: Player) {
         if (this.active) {
             this.scene.physics.moveToObject(this, player, this.chaseSpeed);
+            this.checkDistanceToPlayer(player);
             if (this.scene.physics.overlap(this, player)) {
                 this.die();
                 player.receiveDamage(0.1);

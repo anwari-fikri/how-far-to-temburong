@@ -9,11 +9,26 @@ export function AttackWeapon(
 ) {
     const keyboardPlugin = scene.input.keyboard;
     const attackKey = keyboardPlugin?.addKey(Phaser.Input.Keyboard.KeyCodes.J);
-    let isAttacking = false; // To prevent attack spamming
+    let isAttacking = false;
+
+    // Function to define custom hitboxes
+    const createHitbox = (
+        weapon: Weapon,
+        width: number,
+        height: number,
+        originX: number = 0,
+        originY: number = 0,
+    ) => {
+        if (weapon.body instanceof Phaser.Physics.Arcade.Body) {
+            weapon.body.setSize(width, height);
+            const offsetX = (weapon.width - width) * originX;
+            const offsetY = (weapon.height - height) * originY;
+            weapon.body.setOffset(offsetX, offsetY);
+        }
+    };
 
     attackKey?.on("down", () => {
-        if (isAttacking) return; // Prevent attacking again until the current attack is finished
-
+        if (isAttacking) return;
         const equippedWeapon = inventory.getEquippedWeapon();
         if (!equippedWeapon) {
             console.log("No weapon equipped.");
@@ -26,6 +41,10 @@ export function AttackWeapon(
 
             if (!scene.children.list.includes(equippedWeapon)) {
                 scene.add.existing(equippedWeapon);
+                scene.physics.add.existing(equippedWeapon);
+                if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
+                    equippedWeapon.body.enable = false; // Initially disable physics body
+                }
             }
 
             console.log(
@@ -40,13 +59,11 @@ export function AttackWeapon(
                     equippedWeapon.body.setVelocity(0);
                     equippedWeapon.body.rotation = 0;
                 }
-                isAttacking = false; // Reset attack state
+                isAttacking = false;
             };
 
             const handleShortRangeAttack = () => {
-                console.log("Short range melee weapon equipped.");
-
-                const thrustDistance = 10; // Adjust this value for desired thrust distance
+                const thrustDistance = 10;
                 let targetX: number;
                 let targetY: number;
 
@@ -60,6 +77,11 @@ export function AttackWeapon(
 
                 targetY = player.y;
 
+                createHitbox(equippedWeapon, 150, 50); // Example hitbox size for short range
+                if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
+                    equippedWeapon.body.enable = true;
+                }
+
                 scene.tweens.add({
                     targets: equippedWeapon,
                     x: targetX,
@@ -71,8 +93,6 @@ export function AttackWeapon(
             };
 
             const handleMediumRangeAttack = () => {
-                console.log("Medium range melee weapon equipped.");
-
                 const rotationAngle = 90;
                 const rotationDuration = 300;
                 const swingDistance = 30;
@@ -87,6 +107,11 @@ export function AttackWeapon(
                 equippedWeapon.setAngle(player.facing === "left" ? -45 : 45);
                 equippedWeapon.setOrigin(0.5, 0.5);
 
+                createHitbox(equippedWeapon, 150, 100); // Example hitbox size for medium range
+                if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
+                    equippedWeapon.body.enable = true;
+                }
+
                 scene.tweens.add({
                     targets: equippedWeapon,
                     x: initialX,
@@ -99,33 +124,50 @@ export function AttackWeapon(
             };
 
             const handleLongRangeAttack = () => {
-                console.log("Long range melee weapon equipped.");
-
                 const rotationAngle = 180;
                 const rotationDuration = 500;
+                const offsetDistance = 20;
 
-                let targetX = player.x;
-                let targetY = player.y;
+                // Adjust the initial position based on the player's facing direction
+                let initialX = player.x;
+                let initialY = player.y;
+                let initialAngle = 0;
+                let flipX = false;
 
-                equippedWeapon.setOrigin(0, 1);
+                // Set the origin to bottom center
+                equippedWeapon.setOrigin(0.5, 1);
+
+                if (player.facing === "left") {
+                    initialX -= offsetDistance;
+                    initialAngle = 0;
+                } else {
+                    initialX += offsetDistance;
+                    initialAngle = 0;
+                }
+
+                createHitbox(equippedWeapon, 200, 200, 0.5, 0.5);
+                if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
+                    equippedWeapon.body.enable = true;
+                }
+
+                equippedWeapon.setPosition(initialX, initialY);
+                equippedWeapon.setAngle(initialAngle);
+                equippedWeapon.setFlipX(flipX);
 
                 scene.tweens.add({
                     targets: equippedWeapon,
-                    x: targetX,
-                    y: targetY,
                     angle:
-                        player.facing === "left"
+                        initialAngle +
+                        (player.facing === "left"
                             ? -rotationAngle
-                            : rotationAngle,
+                            : rotationAngle),
                     duration: rotationDuration,
                     ease: "linear",
                     onComplete: handleAttackComplete,
                 });
-
-                equippedWeapon.setAngle(player.facing === "left" ? -0 : 0);
             };
 
-            isAttacking = true; // Set attack state
+            isAttacking = true;
 
             if (equippedWeapon.getIsMelee()) {
                 switch (equippedWeapon.getMeleeRange()) {
@@ -142,7 +184,7 @@ export function AttackWeapon(
                         console.log("Unknown melee range.");
                 }
             } else {
-                // Handle ranged weapon logic if necessary
+                // Handle ranged weapon logic here if needed
             }
         } else {
             console.log("Equipped item is not a valid weapon.");

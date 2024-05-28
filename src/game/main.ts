@@ -5,7 +5,6 @@ import { MainMenu } from "./scenes/MainMenu";
 import { Game } from "phaser";
 import { Preloader } from "./scenes/Preloader";
 import { PauseMenu } from "./scenes/PauseMenu";
-import { EnemyTestingGround } from "./scenes/EnemyTestingGround";
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -26,15 +25,7 @@ const config: Phaser.Types.Core.GameConfig = {
     pixelArt: true,
     parent: "game-container",
     backgroundColor: "#028af8",
-    scene: [
-        Boot,
-        Preloader,
-        MainMenu,
-        MainGame,
-        GameOver,
-        PauseMenu,
-        EnemyTestingGround,
-    ],
+    scene: [Boot, Preloader, MainMenu, MainGame, GameOver, PauseMenu],
 };
 
 const StartGame = (parent: string) => {

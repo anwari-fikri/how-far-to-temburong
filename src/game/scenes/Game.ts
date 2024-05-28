@@ -58,7 +58,7 @@ export class Game extends Scene {
         );
 
         // Zombies
-        this.zombies = new ZombieGroup(this);
+        this.zombies = new ZombieGroup(this, this.player);
         // this.zombies.exampleInfiniteZombie();
 
         // PowerUps
@@ -77,9 +77,23 @@ export class Game extends Scene {
 
         AttackWeapon(this, this.player, this.inventory);
 
+        const graphics = this.add.graphics();
+        graphics.lineStyle(2, 0xffffff, 1.0);
+        for (let y = -500; y < 500; y += 100) {
+            graphics.moveTo(0, y);
+            graphics.lineTo(this.scale.width, y);
+            // Add text label for each line
+            const text = this.add.text(10, y, `${y}`, {
+                fontSize: "16px",
+                color: "#ffffff",
+            });
+            text.setOrigin(0, 0.5);
+        }
+        graphics.strokePath();
+
         this.camera = this.cameras.main;
         // this.camera.setBounds(0, -650, 1000d0, this.map.heightInPixels);
-        this.camera.setZoom(1);
+        this.camera.setZoom(0.5);
         this.camera.startFollow(this.player);
 
         // uncomment to check collider

@@ -2,8 +2,13 @@ import Player from "./Player";
 import { Physics, Scene } from "phaser";
 
 export const ZOMBIE_TYPE = {
-    NORMAL: { texture: "dude", chaseSpeed: 10 },
-    STRONG: { texture: "dude", chaseSpeed: 20 },
+    NORMAL: { texture: "dude", chaseSpeed: 10, tint: 0xff0000 },
+    STRONG: { texture: "dude", chaseSpeed: 20, tint: 0x00ff00 },
+    MINI_BOSS: {
+        texture: "dude",
+        chaseSpeed: 30,
+        tint: 0xffff00,
+    },
 } as const;
 
 type ZombieType = (typeof ZOMBIE_TYPE)[keyof typeof ZOMBIE_TYPE];
@@ -54,13 +59,18 @@ export class Zombie extends Physics.Arcade.Sprite {
         switch (zombieType) {
             case ZOMBIE_TYPE.NORMAL:
                 this.setTexture(ZOMBIE_TYPE.NORMAL.texture);
-                this.chaseSpeed = 10;
-                this.setTint(0xff0000); // Normal zombies tinted red
+                this.chaseSpeed = ZOMBIE_TYPE.NORMAL.chaseSpeed;
+                this.setTint(ZOMBIE_TYPE.NORMAL.tint); // Normal zombies tinted red
                 break;
             case ZOMBIE_TYPE.STRONG:
                 this.setTexture(ZOMBIE_TYPE.STRONG.texture);
-                this.chaseSpeed = 20;
-                this.setTint(0x00ff00); // Strong zombies tinted green
+                this.chaseSpeed = ZOMBIE_TYPE.STRONG.chaseSpeed;
+                this.setTint(ZOMBIE_TYPE.STRONG.tint); // Strong zombies tinted green
+                break;
+            case ZOMBIE_TYPE.MINI_BOSS:
+                this.setTexture(ZOMBIE_TYPE.MINI_BOSS.texture);
+                this.chaseSpeed = ZOMBIE_TYPE.MINI_BOSS.chaseSpeed;
+                this.setTint(ZOMBIE_TYPE.MINI_BOSS.tint); // Mini-boss zombies tinted yellow
                 break;
         }
         this.alive(spawnX, spawnY);

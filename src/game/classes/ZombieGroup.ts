@@ -50,18 +50,26 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
             callback: () => {
                 this.elapsedMinutes++;
                 this.adjustSpawnRate();
+                this.addMiniBoss();
             },
             callbackScope: this,
         });
     }
 
-    private adjustSpawnRate() {
+    addMiniBoss() {
+        const zombie = this.get() as Zombie;
+        if (zombie) {
+            zombie.activateZombie(this.player, ZOMBIE_TYPE.MINI_BOSS);
+        }
+    }
+
+    adjustSpawnRate() {
         // Adjust spawn rate and enemies per spawn based on elapsed minutes
         this.enemiesPerSpawn = this.elapsedMinutes + 1; // Increase enemies per spawn each minute
         this.spawnRate = 2000 / (this.elapsedMinutes + 1); // Decrease spawn interval
     }
 
-    private spawnEnemies() {
+    spawnEnemies() {
         for (let i = 0; i < this.enemiesPerSpawn; i++) {
             this.addZombie();
         }

@@ -84,7 +84,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     */
 
     applyPowerUp(powerUpType: PowerUpType, enemies: ZombieGroup): void {
-        console.log(powerUpType);
         switch (powerUpType) {
             case PowerUpType.SPEED_BOOST:
                 this.applySpeedBoost(PLAYER_CONST.BASE_MOVEMENT_SPEED);
@@ -102,7 +101,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 this.applyInvincibility();
                 break;
         }
-        console.log(this.currentAttackPower);
     }
 
     applyNuke(enemies: ZombieGroup) {

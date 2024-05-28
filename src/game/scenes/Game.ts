@@ -12,6 +12,7 @@ import { AttackWeapon } from "../classes/AttackWeapon";
 import { ZombieGroup } from "../classes/ZombieGroup";
 import { PowerUpManager } from "../classes/PowerUpManager";
 import { GameUI } from "../classes/GameUI";
+import { bridgeMap, generateMapContinuation } from "../classes/Map";
 
 export class Game extends Scene {
     player: Player;
@@ -20,25 +21,18 @@ export class Game extends Scene {
     powerUps: PowerUpManager;
     private weapons: Weapon[] = [];
     private wallLayer!: any;
+    private objectLayer!: any;
     private inventory: Inventory;
     private map: Phaser.Tilemaps.Tilemap;
     private camera: Phaser.Cameras.Scene2D.Camera;
+    private falling: any;
 
     constructor() {
         super("Game");
     }
 
     create() {
-        this.map = this.make.tilemap({ key: "bridgeStage" });
-        const tileset = this.map.addTilesetImage(
-            "bridgeStage", //nama image set dalam tiled and json
-            "bridgeimage", //key gambar di preload
-        ) as Phaser.Tilemaps.Tileset;
-        ["bridge", "wood", "light", "light2"].map((layerName) =>
-            this.map.createLayer(layerName, tileset),
-        );
-        this.wallLayer = this.map.createLayer("barricade", tileset);
-        this.wallLayer.setCollisionByProperty({ collides: true });
+        bridgeMap(this);
 
         this.inventory = new Inventory();
 
@@ -92,12 +86,11 @@ export class Game extends Scene {
         graphics.strokePath();
 
         this.camera = this.cameras.main;
-        // this.camera.setBounds(0, -650, 1000d0, this.map.heightInPixels);
-        this.camera.setZoom(0.5);
+        this.camera.setZoom(1);
         this.camera.startFollow(this.player);
+        this.camera.followOffset.set(0, 50);
+        this.camera.setBounds(0, 0, 10000, 700);
 
-        // uncomment to check collider
-        debugGraphic(this);
         createPause(this);
 
         EventBus.emit("current-scene-ready", this);
@@ -113,6 +106,47 @@ export class Game extends Scene {
             this.scene.pause();
             this.scene.launch("GameOver");
         }
+
+        if (this.player.x > this.map.widthInPixels - 800) {
+            generateMapContinuation(this);
+            this.collider();
+        }
+    }
+
+    collider() {
+        this.physics.add.collider(this.player, this.wallLayer);
+        this.physics.add.collider(this.player, this.objectLayer);
+        this.physics.add.collider(this.player, this.falling);
+        this.physics.add.collider(this.zombies, this.wallLayer);
+        this.physics.add.collider(this.zombies, this.objectLayer);
+        // uncomment to check collider
+        // debugGraphic(this);
+    }
+
+    fallingObject(
+        startX: number,
+        startY: number,
+        targetX: number,
+        targetY: number,
+        duration: number,
+    ) {
+        this.falling = this.physics.add.sprite(
+            startX,
+            startY,
+            "objectImageS",
+            2,
+        );
+
+        this.tweens.add({
+            targets: this.falling,
+            y: targetY,
+            x: targetX,
+            duration: duration,
+            ease: "Linear",
+            onComplete: () => {
+                this.falling.setTexture("objectImageS", 1);
+            },
+        });
     }
 
     changeScene() {

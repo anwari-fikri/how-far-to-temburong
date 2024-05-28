@@ -127,40 +127,28 @@ export function AttackWeapon(
             const handleLongRangeAttack = () => {
                 const rotationAngle = 180;
                 const rotationDuration = 500;
+                const swingDistance = 5;
 
-                // Adjust the initial position based on the player's facing direction
-                let initialX = player.x;
-                let initialY = player.y;
-                let initialAngle = 0;
-                let flipX = false;
+                let initialX =
+                    player.facing === "left"
+                        ? player.x - swingDistance
+                        : player.x + swingDistance;
+                let initialY = player.y + 15;
 
-                // Set the origin to bottom center
+                equippedWeapon.setPosition(initialX, initialY);
+                equippedWeapon.setAngle(player.facing === "left" ? 0 : 0);
                 equippedWeapon.setOrigin(0.5, 1);
 
-                if (player.facing === "left") {
-                    initialX;
-                    initialAngle = 0;
-                } else {
-                    initialX;
-                    initialAngle = 0;
-                }
-
-                createHitbox(equippedWeapon, 150, 300, 0.5, 0.01);
+                createHitbox(equippedWeapon, 150, 300, 0.5, 0.01); // Example hitbox size for medium range
                 if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
                     equippedWeapon.body.enable = true;
                 }
 
-                equippedWeapon.setPosition(initialX, initialY);
-                equippedWeapon.setAngle(initialAngle);
-                equippedWeapon.setFlipX(flipX);
-
                 scene.tweens.add({
                     targets: equippedWeapon,
-                    angle:
-                        initialAngle +
-                        (player.facing === "left"
-                            ? -rotationAngle
-                            : rotationAngle),
+                    x: initialX,
+                    y: initialY,
+                    angle: player.facing === "left" ? -180 : 180,
                     duration: rotationDuration,
                     ease: "linear",
                     onComplete: handleAttackComplete,

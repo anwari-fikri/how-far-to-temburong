@@ -34,6 +34,9 @@ export default class Weapon extends Phaser.Physics.Arcade.Sprite {
         this.setOrigin(0.5, 0.5);
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        this.setActive(false);
+        this.setVisible(false);
+        this.disableBody(true, true);
 
         this.isMelee = weaponType.isMelee;
         this.meleeRange = weaponType.meleeRange;
@@ -94,3 +97,4 @@ export default class Weapon extends Phaser.Physics.Arcade.Sprite {
     //     return projectile;
     // }
 }
+

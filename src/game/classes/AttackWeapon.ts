@@ -1,18 +1,20 @@
 import Player from "./Player";
 import Inventory from "./Inventory";
 import Weapon from "./Weapon";
+import { ZombieGroup } from "./ZombieGroup";
 
 export function AttackWeapon(
     scene: Phaser.Scene,
     player: Player,
     inventory: Inventory,
+    zombies: ZombieGroup,
 ) {
     const keyboardPlugin = scene.input.keyboard;
     const attackKey = keyboardPlugin?.addKey(Phaser.Input.Keyboard.KeyCodes.J);
     let isAttacking = false;
 
     // Function to define custom hitboxes
-    const createHitbox = (
+    const createHitBox = (
         weapon: Weapon,
         width: number,
         height: number,
@@ -38,6 +40,8 @@ export function AttackWeapon(
         if (equippedWeapon instanceof Weapon) {
             equippedWeapon.setPosition(player.x, player.y);
             equippedWeapon.setVisible(true);
+            equippedWeapon.setActive(true);
+            equippedWeapon.enableBody();
 
             if (!scene.children.list.includes(equippedWeapon)) {
                 scene.add.existing(equippedWeapon);
@@ -53,7 +57,12 @@ export function AttackWeapon(
             );
 
             const handleAttackComplete = () => {
+                if (scene.physics.overlap(equippedWeapon, zombies)) {
+                    console.log("OOF");
+                }
                 equippedWeapon.setVisible(false);
+                equippedWeapon.setActive(false);
+                equippedWeapon.disableBody(true, true);
                 if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
                     equippedWeapon.body.enable = false;
                     equippedWeapon.body.setVelocity(0);
@@ -78,7 +87,7 @@ export function AttackWeapon(
 
                 targetY = player.y;
 
-                createHitbox(equippedWeapon, 150, 50); // Example hitbox size for short range
+                createHitBox(equippedWeapon, 150, 50); // Example hit box size for short range
                 if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
                     equippedWeapon.body.enable = true;
                 }
@@ -108,7 +117,7 @@ export function AttackWeapon(
                 equippedWeapon.setAngle(player.facing === "left" ? -45 : 45);
                 equippedWeapon.setOrigin(0.5, 1);
 
-                createHitbox(equippedWeapon, 150, 100, 0.5, 0.5); // Example hitbox size for medium range
+                createHitBox(equippedWeapon, 150, 100, 0.5, 0.5); // Example hitbox size for medium range
                 if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
                     equippedWeapon.body.enable = true;
                 }
@@ -139,7 +148,7 @@ export function AttackWeapon(
                 equippedWeapon.setAngle(player.facing === "left" ? 0 : 0);
                 equippedWeapon.setOrigin(0.5, 1);
 
-                createHitbox(equippedWeapon, 150, 300, 0.5, 0.01); // Example hitbox size for medium range
+                createHitBox(equippedWeapon, 150, 300, 0.5, 0.01); // Example hitbox size for medium range
                 if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
                     equippedWeapon.body.enable = true;
                 }

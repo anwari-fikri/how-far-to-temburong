@@ -67,7 +67,7 @@ export class Game extends Scene {
             PickUp(this, this.player, weapon, this.inventory);
         });
 
-        AttackWeapon(this, this.player, this.inventory);
+        // AttackWeapon(this, this.player, this.inventory);
 
         const graphics = this.add.graphics();
         graphics.lineStyle(2, 0xffffff, 1.0);

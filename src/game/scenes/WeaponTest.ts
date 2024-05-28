@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import Player from "../classes/Player";
 import Inventory from "../classes/Inventory";
-import Weapon from "../classes/Weapon";
+import Weapon, { WEAPON_TYPE } from "../classes/Weapon";
 import { AttackWeapon } from "../classes/AttackWeapon";
 
 export class WeaponTest extends Scene {
@@ -22,7 +22,7 @@ export class WeaponTest extends Scene {
 
         this.inventory = new Inventory();
         this.inventory.addWeapon(
-            new Weapon(this, 800, -300, "spear", true, "long"),
+            new Weapon(this, 800, -300, WEAPON_TYPE.SPEAR),
         );
 
         AttackWeapon(this, this.player, this.inventory);

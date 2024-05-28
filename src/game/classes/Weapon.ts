@@ -1,29 +1,50 @@
-export default class Weapon extends Phaser.Physics.Arcade.Sprite {
-    private isMelee: boolean;
-    private meleeRange: string;
+import { Scene } from "phaser";
 
-    constructor(
-        scene: Phaser.Scene,
-        x: number,
-        y: number,
-        texture: string,
-        isMelee: boolean,
-        meleeRange: string,
-    ) {
-        super(scene, x, y, texture);
+export const WEAPON_TYPE = {
+    DAGGER: {
+        name: "dagger",
+        texture: "dagger",
+        meleeRange: "short",
+        isMelee: true,
+    },
+    SWORD: {
+        name: "sword",
+        texture: "sword",
+        meleeRange: "medium",
+        isMelee: true,
+    },
+    SPEAR: {
+        name: "spear",
+        texture: "spear",
+        meleeRange: "long",
+        isMelee: true,
+    },
+} as const;
+
+type WEAPON_TYPE = (typeof WEAPON_TYPE)[keyof typeof WEAPON_TYPE];
+
+export default class Weapon extends Phaser.Physics.Arcade.Sprite {
+    isMelee: boolean;
+    meleeRange: string;
+    weaponType: WEAPON_TYPE;
+
+    constructor(scene: Scene, x: number, y: number, weaponType: WEAPON_TYPE) {
+        super(scene, x, y, weaponType.texture);
         this.setScale(0.5);
         this.setOrigin(0.5, 0.5);
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        this.isMelee = isMelee;
-        this.meleeRange = meleeRange;
+
+        this.isMelee = weaponType.isMelee;
+        this.meleeRange = weaponType.meleeRange;
+        this.weaponType = weaponType;
     }
 
-    public getMeleeRange(): string {
+    getMeleeRange(): string {
         return this.meleeRange;
     }
 
-    public getIsMelee(): boolean {
+    getIsMelee(): boolean {
         return this.isMelee;
     }
 
@@ -73,3 +94,4 @@ export default class Weapon extends Phaser.Physics.Arcade.Sprite {
     //     return projectile;
     // }
 }
+

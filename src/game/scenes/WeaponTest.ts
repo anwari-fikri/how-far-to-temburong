@@ -2,8 +2,8 @@ import { Scene } from "phaser";
 import Player from "../classes/Player";
 import Inventory from "../classes/Inventory";
 import Weapon, { WEAPON_TYPE } from "../classes/Weapon";
-import { AttackWeapon } from "../classes/AttackWeapon";
 import { ZombieGroup } from "../classes/ZombieGroup";
+import AttackWeapon from "../classes/AttackWeapon";
 
 export class WeaponTest extends Scene {
     player: Player;
@@ -31,7 +31,7 @@ export class WeaponTest extends Scene {
             new Weapon(this, 800, -300, WEAPON_TYPE.DAGGER),
         );
 
-        AttackWeapon(this, this.player, this.inventory, this.zombies);
+        new AttackWeapon(this, this.player, this.inventory, this.zombies);
     }
 
     update() {

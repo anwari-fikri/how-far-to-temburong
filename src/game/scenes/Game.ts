@@ -148,6 +148,6 @@ export class Game extends Scene {
     }
 
     changeScene() {
-        this.scene.start("Game");
+        this.scene.start("RandomEncounterTest");
     }
 }

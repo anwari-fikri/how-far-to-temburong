@@ -13,20 +13,93 @@ export function AttackWeapon(
     const attackKey = keyboardPlugin?.addKey(Phaser.Input.Keyboard.KeyCodes.J);
     let isAttacking = false;
 
-    // Function to define custom hitboxes
-    const createHitBox = (
-        weapon: Weapon,
-        width: number,
-        height: number,
-        originX: number = 0,
-        originY: number = 0,
-    ) => {
+    const createHitBox = (weapon: Weapon, width: number, height: number) => {
         if (weapon.body instanceof Phaser.Physics.Arcade.Body) {
+            weapon.body.enable = true;
             weapon.body.setSize(width, height);
-            const offsetX = (weapon.width - width) * originX;
-            const offsetY = (weapon.height - height) * originY;
-            weapon.body.setOffset(offsetX, offsetY);
         }
+    };
+
+    const handleAttackComplete = (equippedWeapon: Weapon) => {
+        equippedWeapon.setVisible(false);
+        equippedWeapon.setActive(false);
+        equippedWeapon.disableBody(true, true);
+        if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
+            equippedWeapon.body.enable = false;
+            equippedWeapon.body.setVelocity(0);
+            equippedWeapon.body.rotation = 0;
+        }
+        isAttacking = false;
+    };
+
+    const handleShortRangeAttack = (equippedWeapon: Weapon) => {
+        const thrustDistance = 40;
+        const targetX =
+            player.facing === "left"
+                ? player.x - thrustDistance
+                : player.x + thrustDistance;
+        const targetY = player.y;
+
+        equippedWeapon.setAngle(player.facing === "left" ? -90 : 90);
+        createHitBox(equippedWeapon, 100, 50);
+
+        scene.tweens.add({
+            targets: equippedWeapon,
+            x: targetX,
+            y: targetY,
+            duration: 200,
+            ease: "power1",
+            onComplete: () => handleAttackComplete(equippedWeapon),
+        });
+    };
+
+    const handleMediumRangeAttack = (equippedWeapon: Weapon) => {
+        const rotationAngle = 90;
+        const rotationDuration = 300;
+        const swingDistance = 40;
+        const initialX =
+            player.facing === "left"
+                ? player.x - swingDistance
+                : player.x + swingDistance;
+        const initialY = player.y + 10;
+
+        equippedWeapon.setPosition(initialX, initialY);
+        equippedWeapon.setAngle(player.facing === "left" ? -45 : 45);
+        createHitBox(equippedWeapon, 150, 150);
+
+        scene.tweens.add({
+            targets: equippedWeapon,
+            x: initialX,
+            y: initialY,
+            angle: player.facing === "left" ? -135 : 135,
+            duration: rotationDuration,
+            ease: "linear",
+            onComplete: () => handleAttackComplete(equippedWeapon),
+        });
+    };
+
+    const handleLongRangeAttack = (equippedWeapon: Weapon) => {
+        const rotationAngle = 180;
+        const rotationDuration = 500;
+        const swingDistance = 40;
+        const initialX =
+            player.x +
+            (player.facing === "left" ? -swingDistance : swingDistance);
+        const initialY = player.y + 15;
+
+        equippedWeapon.setPosition(initialX, initialY);
+        equippedWeapon.setAngle(0);
+        createHitBox(equippedWeapon, 150, 300);
+
+        scene.tweens.add({
+            targets: equippedWeapon,
+            x: initialX,
+            y: initialY,
+            angle: player.facing === "left" ? -rotationAngle : rotationAngle,
+            duration: rotationDuration,
+            ease: "linear",
+            onComplete: () => handleAttackComplete(equippedWeapon),
+        });
     };
 
     attackKey?.on("down", () => {
@@ -42,12 +115,15 @@ export function AttackWeapon(
             equippedWeapon.setVisible(true);
             equippedWeapon.setActive(true);
             equippedWeapon.enableBody();
+            if (scene.physics.overlap(equippedWeapon, zombies)) {
+                console.log("OOF");
+            }
 
             if (!scene.children.list.includes(equippedWeapon)) {
                 scene.add.existing(equippedWeapon);
                 scene.physics.add.existing(equippedWeapon);
                 if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
-                    equippedWeapon.body.enable = false; // Initially disable physics body
+                    equippedWeapon.body.enable = false;
                 }
             }
 
@@ -56,126 +132,18 @@ export function AttackWeapon(
                 equippedWeapon.texture.key,
             );
 
-            const handleAttackComplete = () => {
-                if (scene.physics.overlap(equippedWeapon, zombies)) {
-                    console.log("OOF");
-                }
-                equippedWeapon.setVisible(false);
-                equippedWeapon.setActive(false);
-                equippedWeapon.disableBody(true, true);
-                if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
-                    equippedWeapon.body.enable = false;
-                    equippedWeapon.body.setVelocity(0);
-                    equippedWeapon.body.rotation = 0;
-                }
-                isAttacking = false;
-            };
-
-            const handleShortRangeAttack = () => {
-                const thrustDistance = 10;
-                equippedWeapon.setOrigin(0.5, 1);
-                let targetX: number;
-                let targetY: number;
-
-                if (player.facing === "left") {
-                    equippedWeapon.setAngle(-90);
-                    targetX = player.x - thrustDistance;
-                } else {
-                    equippedWeapon.setAngle(90);
-                    targetX = player.x + thrustDistance;
-                }
-
-                targetY = player.y;
-
-                createHitBox(equippedWeapon, 150, 50); // Example hit box size for short range
-                if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
-                    equippedWeapon.body.enable = true;
-                }
-
-                scene.tweens.add({
-                    targets: equippedWeapon,
-                    x: targetX,
-                    y: targetY,
-                    duration: 100,
-                    ease: "power1",
-                    onComplete: handleAttackComplete,
-                });
-            };
-
-            const handleMediumRangeAttack = () => {
-                const rotationAngle = 90;
-                const rotationDuration = 300;
-                const swingDistance = 5;
-
-                let initialX =
-                    player.facing === "left"
-                        ? player.x - swingDistance
-                        : player.x + swingDistance;
-                let initialY = player.y + 15;
-
-                equippedWeapon.setPosition(initialX, initialY);
-                equippedWeapon.setAngle(player.facing === "left" ? -45 : 45);
-                equippedWeapon.setOrigin(0.5, 1);
-
-                createHitBox(equippedWeapon, 150, 100, 0.5, 0.5); // Example hitbox size for medium range
-                if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
-                    equippedWeapon.body.enable = true;
-                }
-
-                scene.tweens.add({
-                    targets: equippedWeapon,
-                    x: initialX,
-                    y: initialY,
-                    angle: player.facing === "left" ? -135 : 135,
-                    duration: rotationDuration,
-                    ease: "linear",
-                    onComplete: handleAttackComplete,
-                });
-            };
-
-            const handleLongRangeAttack = () => {
-                const rotationAngle = 180;
-                const rotationDuration = 500;
-                const swingDistance = 5;
-
-                let initialX =
-                    player.facing === "left"
-                        ? player.x - swingDistance
-                        : player.x + swingDistance;
-                let initialY = player.y + 15;
-
-                equippedWeapon.setPosition(initialX, initialY);
-                equippedWeapon.setAngle(player.facing === "left" ? 0 : 0);
-                equippedWeapon.setOrigin(0.5, 1);
-
-                createHitBox(equippedWeapon, 150, 300, 0.5, 0.01); // Example hitbox size for medium range
-                if (equippedWeapon.body instanceof Phaser.Physics.Arcade.Body) {
-                    equippedWeapon.body.enable = true;
-                }
-
-                scene.tweens.add({
-                    targets: equippedWeapon,
-                    x: initialX,
-                    y: initialY,
-                    angle: player.facing === "left" ? -180 : 180,
-                    duration: rotationDuration,
-                    ease: "linear",
-                    onComplete: handleAttackComplete,
-                });
-            };
-
             isAttacking = true;
 
             if (equippedWeapon.getIsMelee()) {
                 switch (equippedWeapon.getMeleeRange()) {
                     case "short":
-                        handleShortRangeAttack();
+                        handleShortRangeAttack(equippedWeapon);
                         break;
                     case "medium":
-                        handleMediumRangeAttack();
+                        handleMediumRangeAttack(equippedWeapon);
                         break;
                     case "long":
-                        handleLongRangeAttack();
+                        handleLongRangeAttack(equippedWeapon);
                         break;
                     default:
                         console.log("Unknown melee range.");
@@ -188,7 +156,6 @@ export function AttackWeapon(
         }
     });
 
-    // Update the weapon's position to follow the player
     scene.events.on("update", () => {
         const equippedWeapon = inventory.getEquippedWeapon();
         if (equippedWeapon && !isAttacking) {

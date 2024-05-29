@@ -3,7 +3,7 @@ import { Scene } from "phaser";
 import Player from "../classes/Player";
 import PowerUp, { PowerUpType } from "../classes/PowerUp";
 import { PickUp } from "../classes/PickUp";
-import Weapon from "../classes/Weapon";
+import Weapon, { WEAPON_TYPE } from "../classes/Weapon";
 import Inventory from "../classes/Inventory";
 import playerStore from "../stores/PlayerStore";
 import { debugGraphic } from "../classes/DebugTool";
@@ -35,11 +35,11 @@ export class Game extends Scene {
         bridgeMap(this);
 
         this.inventory = new Inventory();
+        this.inventory.addWeapon(
+            new Weapon(this, 800, -300, WEAPON_TYPE.SPEAR),
+        );
 
-        // this.weapons.push(new Weapon(this, 500, -300, "dagger", true, "short"));
-        // this.weapons.push(new Weapon(this, 600, -300, "dagger", true, "short"));
-        // this.weapons.push(new Weapon(this, 700, -300, "sword", true, "medium"));
-        // this.weapons.push(new Weapon(this, 800, -300, "spear", true, "long"));
+        AttackWeapon(this, this.player, this.inventory, this.zombies);
 
         // Player
         this.player = new Player(
@@ -148,6 +148,6 @@ export class Game extends Scene {
     }
 
     changeScene() {
-        this.scene.start("WeaponTest");
+        this.scene.start("Game");
     }
 }

@@ -25,7 +25,9 @@ export class WeaponTest extends Scene {
 
         this.inventory = new Inventory();
         this.inventory.addWeapon(
-            new Weapon(this, 800, -300, WEAPON_TYPE.SPEAR),
+            // new Weapon(this, 800, -300, WEAPON_TYPE.SPEAR),
+            // new Weapon(this, 800, -300, WEAPON_TYPE.SWORD),
+            new Weapon(this, 800, -300, WEAPON_TYPE.DAGGER),
         );
 
         AttackWeapon(this, this.player, this.inventory, this.zombies);
@@ -36,4 +38,3 @@ export class WeaponTest extends Scene {
         this.zombies.update(this.player);
     }
 }
-

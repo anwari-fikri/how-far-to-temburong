@@ -32,7 +32,7 @@ export class Zombie extends Physics.Arcade.Sprite {
 
         this.setActive(false);
         this.setVisible(false);
-        this.disableBody();
+        this.disableBody(true, true);
     }
 
     activateZombie(player: Player, zombieType: ZombieType) {

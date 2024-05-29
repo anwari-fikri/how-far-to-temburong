@@ -36,12 +36,10 @@ export class Game extends Scene {
 
         this.inventory = new Inventory();
 
-        this.weapons.push(new Weapon(this, 500, -300, "katana", true));
-        this.weapons.push(new Weapon(this, 600, -300, "katana", true));
-        this.weapons.push(new Weapon(this, 700, -300, "sword", true));
-        this.weapons.push(new Weapon(this, 800, -300, "gun", false));
-        this.weapons.push(new Weapon(this, 900, -300, "spear", true));
-        this.weapons.push(new Weapon(this, 200, -200, "seliparJepun", false));
+        // this.weapons.push(new Weapon(this, 500, -300, "dagger", true, "short"));
+        // this.weapons.push(new Weapon(this, 600, -300, "dagger", true, "short"));
+        // this.weapons.push(new Weapon(this, 700, -300, "sword", true, "medium"));
+        // this.weapons.push(new Weapon(this, 800, -300, "spear", true, "long"));
 
         // Player
         this.player = new Player(
@@ -69,7 +67,7 @@ export class Game extends Scene {
             PickUp(this, this.player, weapon, this.inventory);
         });
 
-        AttackWeapon(this, this.player, this.inventory);
+        // AttackWeapon(this, this.player, this.inventory);
 
         const graphics = this.add.graphics();
         graphics.lineStyle(2, 0xffffff, 1.0);
@@ -150,6 +148,6 @@ export class Game extends Scene {
     }
 
     changeScene() {
-        this.scene.start("RandomEncounterTest");
+        this.scene.start("WeaponTest");
     }
 }

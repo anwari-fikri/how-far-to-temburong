@@ -35,6 +35,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     isInvincibility: boolean;
     invincibilityTimer: Phaser.Time.TimerEvent;
 
+    //facing direction
+    facing: "left" | "right";
+
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
         super(scene, x, y, texture);
         scene.add.existing(this);
@@ -42,6 +45,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.controls = new PlayerControls(scene, this);
         scene.cameras.main.startFollow(this, true);
+
+        //facing direction
+        this.facing = "left";
 
         // Stats Init
         this.resetAttributes();

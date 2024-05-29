@@ -34,13 +34,6 @@ export class Game extends Scene {
     create() {
         bridgeMap(this);
 
-        this.inventory = new Inventory();
-        this.inventory.addWeapon(
-            new Weapon(this, 800, -300, WEAPON_TYPE.SPEAR),
-        );
-
-        AttackWeapon(this, this.player, this.inventory, this.zombies);
-
         // Player
         this.player = new Player(
             this,
@@ -48,6 +41,15 @@ export class Game extends Scene {
             this.scale.height / 2,
             "dude",
         );
+
+        this.inventory = new Inventory();
+        this.inventory.addWeapon(
+            // new Weapon(this, 800, -300, WEAPON_TYPE.SPEAR),
+            // new Weapon(this, 800, -300, WEAPON_TYPE.SWORD),
+            new Weapon(this, 800, -300, WEAPON_TYPE.DAGGER),
+        );
+
+        AttackWeapon(this, this.player, this.inventory, this.zombies);
 
         // Zombies
         this.zombies = new ZombieGroup(this, this.player);
@@ -148,6 +150,6 @@ export class Game extends Scene {
     }
 
     changeScene() {
-        this.scene.start("RandomEncounterTest");
+        this.scene.start("Game");
     }
 }

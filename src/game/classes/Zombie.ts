@@ -15,6 +15,7 @@ type ZombieType = (typeof ZOMBIE_TYPE)[keyof typeof ZOMBIE_TYPE];
 
 export class Zombie extends Physics.Arcade.Sprite {
     chaseSpeed: number = 20;
+    hitBySlowSkill: boolean = false;
 
     constructor(scene: Scene) {
         super(scene, 0, 0, "dude");
@@ -124,6 +125,30 @@ export class Zombie extends Physics.Arcade.Sprite {
                 player.receiveDamage(0.1);
             }
         }
+    }
+
+    /**
+     * Modify the chase speed of the zombie if not hit by a slow skill.
+     *
+     * @param {number} value - The value to add to the chase speed.
+     * @param {boolean} [percentage=false] - Whether to treat the value as a percentage.
+     */
+    modifyChaseSpeed(
+        value: number,
+        percentage: boolean = false,
+        source?: string,
+    ) {
+        if (((source = "SlowSkill"), this.hitBySlowSkill)) {
+            return;
+        }
+
+        if (percentage) {
+            this.chaseSpeed += this.chaseSpeed * (value / 100);
+        } else {
+            this.chaseSpeed += value;
+        }
+
+        this.hitBySlowSkill = true;
     }
 }
 

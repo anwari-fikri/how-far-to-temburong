@@ -97,4 +97,3 @@ export default class Weapon extends Phaser.Physics.Arcade.Sprite {
     //     return projectile;
     // }
 }
-

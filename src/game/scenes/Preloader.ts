@@ -82,6 +82,8 @@ export class Preloader extends Scene {
         this.load.image("random8", "randomEncounter/random8.png");
         this.load.image("random9", "randomEncounter/random9.png");
         this.load.image("random10", "randomEncounter/random10.png");
+
+        this.load.audio("attack", "audio/attack_zombie.mp3");
     }
 
     create() {
@@ -89,8 +91,8 @@ export class Preloader extends Scene {
         //  For example, you can define global animations here, so we can use them in other scenes.
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start("Game");
-        // this.scene.start("WeaponTest");
+        // this.scene.start("Game");
+        this.scene.start("WeaponTest");
         // this.scene.start("GameUIOverlay");
     }
 }

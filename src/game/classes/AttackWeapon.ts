@@ -13,6 +13,8 @@ export function AttackWeapon(
     const attackKey = keyboardPlugin?.addKey(Phaser.Input.Keyboard.KeyCodes.J);
     let isAttacking = false;
 
+    const attackSound = scene.sound.add("attack"); // Ensure 'attackSoundKey' matches the key used when loading the sound
+
     const createHitBox = (weapon: Weapon, width: number, height: number) => {
         if (weapon.body instanceof Phaser.Physics.Arcade.Body) {
             weapon.body.enable = true;
@@ -29,6 +31,7 @@ export function AttackWeapon(
             equippedWeapon.body.setVelocity(0);
             equippedWeapon.body.rotation = 0;
         }
+
         isAttacking = false;
     };
 
@@ -115,9 +118,6 @@ export function AttackWeapon(
             equippedWeapon.setVisible(true);
             equippedWeapon.setActive(true);
             equippedWeapon.enableBody();
-            if (scene.physics.overlap(equippedWeapon, zombies)) {
-                console.log("OOF");
-            }
 
             if (!scene.children.list.includes(equippedWeapon)) {
                 scene.add.existing(equippedWeapon);
@@ -127,6 +127,10 @@ export function AttackWeapon(
                 }
             }
 
+            if (scene.physics.overlap(equippedWeapon, zombies)) {
+                console.log("OOF");
+                attackSound.play();
+            }
             console.log(
                 "Performing melee attack with",
                 equippedWeapon.texture.key,

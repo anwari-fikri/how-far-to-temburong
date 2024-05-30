@@ -42,7 +42,7 @@ export class Game extends Scene {
         );
 
         this.inventory = new Inventory(
-            new Weapon(this, 800, -300, WEAPON_TYPE.SPEAR),
+            new Weapon(this, this.player, WEAPON_TYPE.SWORD),
         );
 
         AttackWeapon(this, this.player, this.inventory, this.zombies);

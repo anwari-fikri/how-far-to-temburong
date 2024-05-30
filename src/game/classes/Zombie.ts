@@ -1,14 +1,16 @@
 import Player from "./Player";
 import { Physics, Scene } from "phaser";
 
-export const ZOMBIE_TYPE = {
+interface ZombieProperties {
+    texture: string;
+    chaseSpeed: number;
+    tint: number;
+}
+
+export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
     NORMAL: { texture: "dude", chaseSpeed: 10, tint: 0xff0000 },
     STRONG: { texture: "dude", chaseSpeed: 20, tint: 0x00ff00 },
-    MINI_BOSS: {
-        texture: "dude",
-        chaseSpeed: 30,
-        tint: 0xffff00,
-    },
+    MINI_BOSS: { texture: "dude", chaseSpeed: 30, tint: 0xffff00 },
 } as const;
 
 type ZombieType = (typeof ZOMBIE_TYPE)[keyof typeof ZOMBIE_TYPE];

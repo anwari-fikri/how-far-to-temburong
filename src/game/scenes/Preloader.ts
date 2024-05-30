@@ -47,10 +47,14 @@ export class Preloader extends Scene {
             frameWidth: 32,
             frameHeight: 46,
         });
+        this.load.spritesheet("sword", "weapons/sword.png", {
+            frameWidth: 192,
+            frameHeight: 192,
+        });
 
         this.load.image("katana", "weapons/weapon1.png");
         this.load.image("gun", "weapons/weapon2.png");
-        this.load.image("sword", "weapons/weapon3.png");
+        // this.load.image("sword", "weapons/weapon3.png");
         this.load.image("dagger", "weapons/weapon4.png");
         this.load.image("spear", "weapons/weapon5.png");
         this.load.image("seliparJepun", "weapons/weapon6.png");
@@ -89,8 +93,8 @@ export class Preloader extends Scene {
         //  For example, you can define global animations here, so we can use them in other scenes.
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start("Game");
-        // this.scene.start("WeaponTest");
+        // this.scene.start("Game");
+        this.scene.start("WeaponTest");
         // this.scene.start("GameUIOverlay");
     }
 }

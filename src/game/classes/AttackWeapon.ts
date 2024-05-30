@@ -104,7 +104,7 @@ export function AttackWeapon(
 
     attackKey?.on("down", () => {
         if (isAttacking) return;
-        const equippedWeapon = inventory.getEquippedWeapon();
+        const equippedWeapon = inventory.meleeWeapon;
         if (!equippedWeapon) {
             console.log("No weapon equipped.");
             return;
@@ -157,9 +157,10 @@ export function AttackWeapon(
     });
 
     scene.events.on("update", () => {
-        const equippedWeapon = inventory.getEquippedWeapon();
+        const equippedWeapon = inventory.meleeWeapon;
         if (equippedWeapon && !isAttacking) {
             equippedWeapon.setPosition(player.x, player.y);
         }
     });
 }
+

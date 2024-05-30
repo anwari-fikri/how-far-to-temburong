@@ -22,12 +22,8 @@ export class WeaponTest extends Scene {
             "dude",
         );
         this.zombies = new ZombieGroup(this, this.player);
-
-        this.inventory = new Inventory();
-        this.inventory.addWeapon(
-            // new Weapon(this, 800, -300, WEAPON_TYPE.SPEAR),
-            // new Weapon(this, 800, -300, WEAPON_TYPE.SWORD),
-            new Weapon(this, 800, -300, WEAPON_TYPE.DAGGER),
+        this.inventory = new Inventory(
+            new Weapon(this, 800, -300, WEAPON_TYPE.SPEAR),
         );
 
         AttackWeapon(this, this.player, this.inventory, this.zombies);
@@ -38,3 +34,4 @@ export class WeaponTest extends Scene {
         this.zombies.update(this.player);
     }
 }
+

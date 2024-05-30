@@ -86,6 +86,8 @@ export class Preloader extends Scene {
         this.load.image("random8", "randomEncounter/random8.png");
         this.load.image("random9", "randomEncounter/random9.png");
         this.load.image("random10", "randomEncounter/random10.png");
+
+        this.load.audio("attack", "audio/attack_zombie.mp3");
     }
 
     create() {

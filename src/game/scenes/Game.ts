@@ -2,7 +2,6 @@ import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
 import Player from "../classes/Player";
 import PowerUp, { PowerUpType } from "../classes/PowerUp";
-import { PickUp } from "../classes/PickUp";
 import Weapon, { WEAPON_TYPE } from "../classes/Weapon";
 import Inventory from "../classes/Inventory";
 import playerStore from "../stores/PlayerStore";
@@ -64,10 +63,6 @@ export class Game extends Scene {
         this.physics.add.collider(this.zombies, this.zombies);
         this.physics.add.collider(this.player, this.wallLayer);
         // this.physics.add.collider(this.zombies, this.wallLayer);
-
-        this.weapons.forEach((weapon) => {
-            PickUp(this, this.player, weapon, this.inventory);
-        });
 
         // AttackWeapon(this, this.player, this.inventory);
 

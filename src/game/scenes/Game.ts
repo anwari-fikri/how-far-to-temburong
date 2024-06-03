@@ -32,7 +32,7 @@ export class Game extends Scene {
             this,
             this.scale.width / 2,
             this.scale.height / 2,
-            "dude",
+            "soldier",
         );
 
         // Zombies

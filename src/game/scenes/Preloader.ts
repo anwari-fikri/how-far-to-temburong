@@ -42,10 +42,16 @@ export class Preloader extends Scene {
         this.load.image("time-stop", "powerUps/time-stop.png");
         this.load.image("invincibility", "powerUps/invincibility.png");
 
-        this.load.image("corpse", "corpse.png");
-        this.load.spritesheet("dude", "dude.png", {
-            frameWidth: 32,
-            frameHeight: 46,
+        // Characters
+        this.load.spritesheet("soldier", "characters/soldier.png", {
+            frameWidth: 96,
+            frameHeight: 64,
+        });
+
+        // Weapons
+        this.load.spritesheet("sword_attack", "weapons/sword_attack.png", {
+            frameWidth: 96,
+            frameHeight: 64,
         });
         this.load.spritesheet("sword", "weapons/sword.png", {
             frameWidth: 192,
@@ -56,6 +62,12 @@ export class Preloader extends Scene {
             frameHeight: 16,
         });
 
+        this.load.image("corpse", "corpse.png");
+        this.load.spritesheet("dude", "dude.png", {
+            frameWidth: 32,
+            frameHeight: 46,
+        });
+
         this.load.image("katana", "weapons/weapon1.png");
         this.load.image("gun", "weapons/weapon2.png");
         // this.load.image("sword", "weapons/weapon3.png");
@@ -63,7 +75,6 @@ export class Preloader extends Scene {
         this.load.image("spear", "weapons/weapon5.png");
         this.load.image("seliparJepun", "weapons/weapon6.png");
         this.load.image("projectileTexture", "weapons/bullet.png");
-        this.load.image("slash", "weapons/slash.png");
 
         this.load.image("bridgeImage", "tiles/Texture/bridgetilesetv2.png");
 

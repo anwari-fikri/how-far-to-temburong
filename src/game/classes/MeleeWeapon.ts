@@ -11,9 +11,9 @@ interface WeaponProperties {
 export const WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> = {
     SWORD: {
         name: "sword",
-        texture: "sword",
+        texture: "sword_attack",
         attackRange: "medium",
-        attackCooldown: 1000,
+        attackCooldown: 800,
     },
 } as const;
 
@@ -52,10 +52,10 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
         scene.anims.create({
             key: "sword-attack",
             frames: scene.anims.generateFrameNumbers(this.weaponType.texture, {
-                start: 15,
-                end: 17,
+                start: 1,
+                end: 6,
             }),
-            frameRate: 10,
+            frameRate: 16,
             repeat: 0,
         });
     }
@@ -66,6 +66,7 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
                 const currentTime = scene.time.now;
                 if (currentTime - this.lastAttackTime >= this.attackCooldown) {
                     this.lastAttackTime = currentTime;
+                    this.player.isAttacking = true;
                     this.playAttackAnimation();
                 }
             }
@@ -85,6 +86,7 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
             this.setActive(false);
             this.setVisible(false);
             this.disableBody(true, true);
+            this.player.isAttacking = false;
         });
     }
 
@@ -95,11 +97,10 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
         if (this.isSelected) {
             if (this.active) {
                 const offsetX =
-                    this.player.controls.facing === "left" ? -30 : 30;
-                this.setPosition(this.player.x + offsetX, this.player.y);
-                this.flipX = this.player.controls.facing === "left";
+                    this.player.controls.facing === "right" ? -30 : 30;
+                this.setPosition(this.player.x - offsetX, this.player.y);
+                this.flipX = this.player.controls.facing === "right";
             }
         }
     }
 }
-

@@ -22,6 +22,7 @@ enum POWERUP_DURATION {
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     controls: PlayerControls;
     inventory: Inventory;
+    isAttacking: boolean = false;
 
     // Stats
     currentHealth: number;
@@ -45,6 +46,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.controls = new PlayerControls(scene, this);
         playerAnims(scene);
+        this.setOrigin(0.5, 0.5);
         this.inventory = new Inventory();
         this.inventory.replaceMeleeWeapon(
             new MeleeWeapon(scene, this, WEAPON_TYPE.SWORD),

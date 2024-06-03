@@ -2,6 +2,7 @@ import { playerAnims } from "./CharAnims";
 import Inventory from "./Inventory";
 import PlayerControls from "./PlayerControls";
 import { PowerUpType } from "./PowerUp";
+import Weapon, { WEAPON_TYPE } from "./Weapon";
 import { ZombieGroup } from "./ZombieGroup";
 
 export enum PLAYER_CONST {
@@ -18,7 +19,8 @@ enum POWERUP_DURATION {
 }
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-    private controls: PlayerControls;
+    controls: PlayerControls;
+    inventory: Inventory;
 
     // Stats
     currentHealth: number;
@@ -44,6 +46,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         this.controls = new PlayerControls(scene, this);
+        this.inventory = new Inventory(
+            new Weapon(scene, this, WEAPON_TYPE.SWORD),
+        );
         scene.cameras.main.startFollow(this, true);
 
         //facing direction
@@ -208,5 +213,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         this.controls.update();
+        this.inventory.meleeWeapon.update();
     }
 }

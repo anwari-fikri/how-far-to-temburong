@@ -22,17 +22,11 @@ export class WeaponTest extends Scene {
             "dude",
         );
         this.zombies = new ZombieGroup(this, this.player);
-        this.inventory = new Inventory(
-            new Weapon(this, this.player, WEAPON_TYPE.SWORD),
-        );
-
-        // AttackWeapon(this, this.player, this.inventory, this.zombies);
     }
 
     update() {
         this.player.update();
         this.zombies.update(this.player);
-        this.inventory.meleeWeapon.update();
     }
 }
 

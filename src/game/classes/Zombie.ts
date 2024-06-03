@@ -125,6 +125,11 @@ export class Zombie extends Physics.Arcade.Sprite {
                 this.die();
                 player.receiveDamage(0.1);
             }
+            if (
+                this.scene.physics.overlap(this, player.inventory.meleeWeapon)
+            ) {
+                this.die();
+            }
         }
     }
 }

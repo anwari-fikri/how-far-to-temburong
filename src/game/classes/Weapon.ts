@@ -36,7 +36,6 @@ export default class Weapon extends Physics.Arcade.Sprite {
     meleeRange: string;
     weaponType: WEAPON_TYPE;
     player: Player;
-    facingLeft: boolean;
 
     constructor(scene: Scene, player: Player, weaponType: WEAPON_TYPE) {
         super(scene, player.x, player.y, weaponType.texture);
@@ -50,7 +49,6 @@ export default class Weapon extends Physics.Arcade.Sprite {
         this.meleeRange = weaponType.meleeRange;
         this.weaponType = weaponType;
         this.player = player;
-        this.facingLeft = true;
 
         this.setActive(false);
         this.setVisible(false);
@@ -76,15 +74,9 @@ export default class Weapon extends Physics.Arcade.Sprite {
     setupInput(scene: Scene) {
         scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
             if (pointer.leftButtonDown()) {
-                this.toggleDirection();
                 this.playAttackAnimation();
             }
         });
-    }
-
-    toggleDirection() {
-        this.facingLeft = !this.facingLeft;
-        this.flipX = this.facingLeft; // Flip the weapon sprite based on the facing direction
     }
 
     playAttackAnimation() {
@@ -103,10 +95,10 @@ export default class Weapon extends Physics.Arcade.Sprite {
 
     update() {
         if (this.active) {
-            const offsetX = this.facingLeft ? -30 : 30; // Adjust the offset value as needed
+            const offsetX = this.player.controls.facing === "left" ? -30 : 30;
             this.setPosition(this.player.x + offsetX, this.player.y);
+            this.flipX = this.player.controls.facing === "left";
         }
-        this.flipX;
     }
 }
 

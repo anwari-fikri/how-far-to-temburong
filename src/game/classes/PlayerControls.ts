@@ -6,6 +6,7 @@ export default class PlayerControls {
     keyD!: Phaser.Input.Keyboard.Key;
     keyW!: Phaser.Input.Keyboard.Key;
     player: Player;
+    facing: "left" | "right";
 
     constructor(scene: Phaser.Scene, player: Player) {
         if (scene.input && scene.input.keyboard) {
@@ -24,6 +25,7 @@ export default class PlayerControls {
         }
 
         this.player = player;
+        this.facing = "left";
     }
 
     update() {
@@ -33,11 +35,11 @@ export default class PlayerControls {
         if (this.keyA.isDown) {
             velocity.x = -this.player.currentMovementSpeed;
             this.player.anims.play("left", true);
-            this.player.facing = "left";
+            this.facing = "left";
         } else if (this.keyD.isDown) {
             velocity.x = this.player.currentMovementSpeed;
             this.player.anims.play("right", true);
-            this.player.facing = "right";
+            this.facing = "right";
         }
 
         if (this.keyW.isDown) {
@@ -50,3 +52,4 @@ export default class PlayerControls {
         this.player.setVelocity(velocity.x, velocity.y);
     }
 }
+

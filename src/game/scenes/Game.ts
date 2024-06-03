@@ -7,7 +7,6 @@ import Inventory from "../classes/Inventory";
 import playerStore from "../stores/PlayerStore";
 import { debugGraphic } from "../classes/DebugTool";
 import { createPause } from "../classes/PauseResume";
-import { AttackWeapon } from "../classes/AttackWeapon";
 import { ZombieGroup } from "../classes/ZombieGroup";
 import { PowerUpManager } from "../classes/PowerUpManager";
 import { GameUI } from "../classes/GameUI";
@@ -40,12 +39,6 @@ export class Game extends Scene {
             this.scale.height / 2,
             "dude",
         );
-
-        this.inventory = new Inventory(
-            new Weapon(this, this.player, WEAPON_TYPE.SWORD),
-        );
-
-        AttackWeapon(this, this.player, this.inventory, this.zombies);
 
         // Zombies
         this.zombies = new ZombieGroup(this, this.player);

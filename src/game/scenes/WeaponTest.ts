@@ -1,8 +1,6 @@
 import { Scene } from "phaser";
 import Player from "../classes/Player";
 import Inventory from "../classes/Inventory";
-import Weapon, { WEAPON_TYPE } from "../classes/Weapon";
-import { AttackWeapon } from "../classes/AttackWeapon";
 import { ZombieGroup } from "../classes/ZombieGroup";
 
 export class WeaponTest extends Scene {

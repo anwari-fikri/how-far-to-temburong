@@ -1,18 +1,30 @@
-// weapon/bullet.ts
 import { Physics } from "phaser";
+import Player from "./Player";
 
 export default class Bullet extends Physics.Arcade.Sprite {
+    bulletSpeed: number = 1000;
+
     constructor(scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y, "projectileTexture"); // Assuming "bullet" is the key for your bullet texture
+        super(scene, x, y, "projectileTexture");
         this.setActive(false);
         this.setVisible(false);
     }
 
-    fire(x: number, y: number) {
-        this.setPosition(x, y);
+    fire(player: Player) {
+        this.setPosition(player.x, player.y);
         this.setActive(true);
         this.setVisible(true);
-        this.setVelocityX(-300);
+        this.enableBody();
+
+        player.controls.facing === "left"
+            ? this.setVelocityX(-this.bulletSpeed)
+            : this.setVelocityX(this.bulletSpeed);
+    }
+
+    die() {
+        this.setActive(false);
+        this.setVisible(false);
+        this.disableBody(true, true);
     }
 
     preUpdate(time: number, delta: number) {
@@ -24,4 +36,3 @@ export default class Bullet extends Physics.Arcade.Sprite {
         }
     }
 }
-

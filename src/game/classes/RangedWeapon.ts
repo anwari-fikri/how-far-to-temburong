@@ -78,6 +78,7 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
                 const currentTime = scene.time.now;
                 if (currentTime - this.lastAttackTime >= this.attackCooldown) {
                     this.lastAttackTime = currentTime;
+                    this.player.isAttacking = true;
                     this.playAttackAnimation();
                 }
             }
@@ -98,6 +99,7 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
             this.setActive(false);
             this.setVisible(false);
             this.disableBody(true, true);
+            this.player.isAttacking = false;
         });
     }
 
@@ -105,7 +107,7 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         const bullet = this.bullets.get() as Bullet;
 
         if (bullet) {
-            bullet.fire(this.x, this.y); // Adjust the coordinates based on where the bullet should be fired from
+            bullet.fire(this.player);
         }
     }
 
@@ -137,4 +139,3 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         }
     }
 }
-

@@ -1,9 +1,6 @@
 import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
 import Player from "../classes/Player";
-import PowerUp, { PowerUpType } from "../classes/PowerUp";
-import Weapon, { WEAPON_TYPE } from "../classes/Weapon";
-import Inventory from "../classes/Inventory";
 import playerStore from "../stores/PlayerStore";
 import { debugGraphic } from "../classes/DebugTool";
 import { createPause } from "../classes/PauseResume";
@@ -17,10 +14,8 @@ export class Game extends Scene {
     zombies: ZombieGroup;
     gameUI: GameUI;
     powerUps: PowerUpManager;
-    private weapons: Weapon[] = [];
     private wallLayer!: any;
     private objectLayer!: any;
-    private inventory: Inventory;
     private map: Phaser.Tilemaps.Tilemap;
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;

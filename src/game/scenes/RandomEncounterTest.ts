@@ -135,7 +135,7 @@ export class RandomEncounterTest extends Scene {
             typeSpeed: 20,
             showCursor: false,
             onComplete: () => {
- 
+                this.scene.start("Game");
             }
         });
     }

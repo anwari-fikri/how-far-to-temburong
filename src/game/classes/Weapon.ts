@@ -6,6 +6,7 @@ interface WeaponProperties {
     texture: string;
     isMelee: boolean;
     meleeRange: "short" | "medium" | "long";
+    attackCooldown: number; // Millisecond
 }
 
 export const WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> = {
@@ -20,6 +21,7 @@ export const WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> = {
         texture: "sword",
         isMelee: true,
         meleeRange: "medium",
+        attackCooldown: 1000,
     },
     // SPEAR: {
     //     name: "spear",
@@ -36,6 +38,8 @@ export default class Weapon extends Physics.Arcade.Sprite {
     meleeRange: string;
     weaponType: WEAPON_TYPE;
     player: Player;
+    attackCooldown: number;
+    lastAttackTime: number;
 
     constructor(scene: Scene, player: Player, weaponType: WEAPON_TYPE) {
         super(scene, player.x, player.y, weaponType.texture);
@@ -49,6 +53,8 @@ export default class Weapon extends Physics.Arcade.Sprite {
         this.meleeRange = weaponType.meleeRange;
         this.weaponType = weaponType;
         this.player = player;
+        this.attackCooldown = weaponType.attackCooldown;
+        this.lastAttackTime = 0;
 
         this.setActive(false);
         this.setVisible(false);
@@ -74,7 +80,11 @@ export default class Weapon extends Physics.Arcade.Sprite {
     setupInput(scene: Scene) {
         scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
             if (pointer.leftButtonDown()) {
-                this.playAttackAnimation();
+                const currentTime = scene.time.now;
+                if (currentTime - this.lastAttackTime >= this.attackCooldown) {
+                    this.lastAttackTime = currentTime;
+                    this.playAttackAnimation();
+                }
             }
         });
     }
@@ -101,50 +111,4 @@ export default class Weapon extends Physics.Arcade.Sprite {
         }
     }
 }
-
-// public fireProjectile(
-//     scene: Phaser.Scene,
-//     targetX: number,
-//     targetY: number,
-// ): Phaser.Physics.Arcade.Sprite | null {
-//     // Create a new projectile sprite
-//     const projectile = scene.physics.add.sprite(
-//         this.x,
-//         this.y,
-//         "projectileTexture",
-//     );
-
-//     // Set projectile properties
-//     projectile.setDepth(1); // Adjust depth as needed
-
-//     // Calculate direction vector
-//     const directionX = targetX - this.x;
-//     const directionY = targetY - this.y;
-
-//     // Calculate distance to normalize the direction vector
-//     const distance = Phaser.Math.Distance.Between(
-//         this.x,
-//         this.y,
-//         targetX,
-//         targetY,
-//     );
-
-//     // Define the speed of the projectile
-//     const speed = 600; // Adjust this value to increase or decrease speed
-
-//     // Normalize the direction vector and scale by speed
-//     const velocityX = (directionX / distance) * speed;
-//     const velocityY = (directionY / distance) * speed;
-
-//     // Set the velocity of the projectile
-//     projectile.setVelocity(velocityX, velocityY);
-
-//     // Store target position in projectile's data
-//     projectile.setData("targetX", targetX);
-//     projectile.setData("targetY", targetY);
-
-//     // Optionally, add collision logic or other behavior
-
-//     return projectile;
-// }
 

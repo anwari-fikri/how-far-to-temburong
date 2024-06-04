@@ -1,8 +1,9 @@
 import { playerAnims } from "./CharAnims";
 import Inventory from "./Inventory";
+import MeleeWeapon, { WEAPON_TYPE } from "./MeleeWeapon";
 import PlayerControls from "./PlayerControls";
 import { PowerUpType } from "./PowerUp";
-import Weapon, { WEAPON_TYPE } from "./Weapon";
+import RangedWeapon, { RANGED_WEAPON_TYPE } from "./RangedWeapon";
 import { ZombieGroup } from "./ZombieGroup";
 
 export enum PLAYER_CONST {
@@ -21,6 +22,7 @@ enum POWERUP_DURATION {
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     controls: PlayerControls;
     inventory: Inventory;
+    isAttacking: boolean = false;
 
     // Stats
     currentHealth: number;
@@ -43,8 +45,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         this.controls = new PlayerControls(scene, this);
-        this.inventory = new Inventory(
-            new Weapon(scene, this, WEAPON_TYPE.SWORD),
+        playerAnims(scene);
+        this.setOrigin(0.5, 0.5);
+        this.inventory = new Inventory();
+        this.inventory.replaceMeleeWeapon(
+            new MeleeWeapon(scene, this, WEAPON_TYPE.SWORD),
+        );
+        this.inventory.replaceRangedWeapon(
+            new RangedWeapon(scene, this, RANGED_WEAPON_TYPE.GUN),
         );
         scene.cameras.main.startFollow(this, true);
 
@@ -56,8 +64,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.isAttackBoosted = false;
         this.isTimeStopped = false;
         this.isInvincibility = false;
-
-        playerAnims(scene);
     }
 
     receiveDamage(attack: number) {
@@ -207,6 +213,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         this.controls.update();
-        this.inventory.meleeWeapon.update();
+        this.inventory.update();
     }
 }

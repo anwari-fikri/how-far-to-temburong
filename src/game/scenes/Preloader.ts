@@ -42,14 +42,30 @@ export class Preloader extends Scene {
         this.load.image("time-stop", "powerUps/time-stop.png");
         this.load.image("invincibility", "powerUps/invincibility.png");
 
-        this.load.image("corpse", "corpse.png");
-        this.load.spritesheet("dude", "dude.png", {
-            frameWidth: 32,
-            frameHeight: 46,
+        // Characters
+        this.load.spritesheet("soldier", "characters/soldier.png", {
+            frameWidth: 96,
+            frameHeight: 64,
+        });
+
+        // Weapons
+        this.load.spritesheet("sword_attack", "weapons/sword_attack.png", {
+            frameWidth: 96,
+            frameHeight: 64,
         });
         this.load.spritesheet("sword", "weapons/sword.png", {
             frameWidth: 192,
             frameHeight: 192,
+        });
+        this.load.spritesheet("guns_sheet", "weapons/guns_sheet.png", {
+            frameWidth: 48,
+            frameHeight: 16,
+        });
+
+        this.load.image("corpse", "corpse.png");
+        this.load.spritesheet("dude", "dude.png", {
+            frameWidth: 32,
+            frameHeight: 46,
         });
 
         this.load.image("katana", "weapons/weapon1.png");
@@ -59,7 +75,6 @@ export class Preloader extends Scene {
         this.load.image("spear", "weapons/weapon5.png");
         this.load.image("seliparJepun", "weapons/weapon6.png");
         this.load.image("projectileTexture", "weapons/bullet.png");
-        this.load.image("slash", "weapons/slash.png");
 
         this.load.image("bridgeImage", "tiles/Texture/bridgetilesetv2.png");
 
@@ -95,7 +110,7 @@ export class Preloader extends Scene {
         //  For example, you can define global animations here, so we can use them in other scenes.
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start("Intro");
+        this.scene.start("Game");
         // this.scene.start("GameUIOverlay");
     }
 }

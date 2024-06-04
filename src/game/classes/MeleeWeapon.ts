@@ -4,40 +4,26 @@ import Player from "./Player";
 interface WeaponProperties {
     name: string;
     texture: string;
-    isMelee: boolean;
-    meleeRange: "short" | "medium" | "long";
-    attackCooldown: number; // Millisecond
+    attackRange: "short" | "medium" | "long";
+    attackCooldown: number; // Milliseconds
 }
 
 export const WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> = {
-    // DAGGER: {
-    //     name: "dagger",
-    //     texture: "dagger",
-    //     isMelee: true,
-    //     meleeRange: "short",
-    // },
     SWORD: {
         name: "sword",
-        texture: "sword",
-        isMelee: true,
-        meleeRange: "medium",
-        attackCooldown: 1000,
+        texture: "sword_attack",
+        attackRange: "medium",
+        attackCooldown: 800,
     },
-    // SPEAR: {
-    //     name: "spear",
-    //     texture: "spear",
-    //     isMelee: true,
-    //     meleeRange: "long",
-    // },
 } as const;
 
 type WEAPON_TYPE = (typeof WEAPON_TYPE)[keyof typeof WEAPON_TYPE];
 
-export default class Weapon extends Physics.Arcade.Sprite {
-    isMelee: boolean;
-    meleeRange: string;
-    weaponType: WEAPON_TYPE;
+export default class MeleeWeapon extends Physics.Arcade.Sprite {
+    isSelected: boolean = false;
     player: Player;
+    weaponType: WEAPON_TYPE;
+    attackRange: string;
     attackCooldown: number;
     lastAttackTime: number;
 
@@ -46,13 +32,10 @@ export default class Weapon extends Physics.Arcade.Sprite {
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        // this.setScale(0.5);
-        // this.setOrigin(0.5, 0.5);
 
-        this.isMelee = weaponType.isMelee;
-        this.meleeRange = weaponType.meleeRange;
-        this.weaponType = weaponType;
         this.player = player;
+        this.weaponType = weaponType;
+        this.attackRange = weaponType.attackRange;
         this.attackCooldown = weaponType.attackCooldown;
         this.lastAttackTime = 0;
 
@@ -69,20 +52,21 @@ export default class Weapon extends Physics.Arcade.Sprite {
         scene.anims.create({
             key: "sword-attack",
             frames: scene.anims.generateFrameNumbers(this.weaponType.texture, {
-                start: 15,
-                end: 17,
+                start: 1,
+                end: 6,
             }),
-            frameRate: 10,
+            frameRate: 16,
             repeat: 0,
         });
     }
 
     setupInput(scene: Scene) {
         scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
-            if (pointer.leftButtonDown()) {
+            if (pointer.leftButtonDown() && this.isSelected) {
                 const currentTime = scene.time.now;
                 if (currentTime - this.lastAttackTime >= this.attackCooldown) {
                     this.lastAttackTime = currentTime;
+                    this.player.isAttacking = true;
                     this.playAttackAnimation();
                 }
             }
@@ -94,21 +78,41 @@ export default class Weapon extends Physics.Arcade.Sprite {
         this.setVisible(true);
         this.enableBody(true, this.player.x, this.player.y, true, true);
 
-        this.anims.play("sword-attack", true);
+        if (this.weaponType === WEAPON_TYPE.SWORD) {
+            this.anims.play("sword-attack", true);
+        }
 
         this.once("animationcomplete", () => {
             this.setActive(false);
             this.setVisible(false);
             this.disableBody(true, true);
+            this.player.isAttacking = false;
         });
     }
 
     update() {
-        if (this.active) {
-            const offsetX = this.player.controls.facing === "left" ? -30 : 30;
-            this.setPosition(this.player.x + offsetX, this.player.y);
-            this.flipX = this.player.controls.facing === "left";
+        this.player.inventory.selectedHandSlot === 1
+            ? (this.isSelected = true)
+            : (this.isSelected = false);
+
+        if (this.isSelected) {
+            if (this.player.isAttacking) {
+                if (this.active) {
+                    const offsetX =
+                        this.player.controls.facing === "right" ? 30 : -30;
+                    this.setPosition(this.player.x + offsetX, this.player.y);
+                    this.flipX = this.player.controls.facing === "right";
+                }
+            } else {
+                this.setVisible(true);
+                this.setFrame(0);
+                const offsetX =
+                    this.player.controls.facing === "right" ? 30 : -30;
+                this.setPosition(this.player.x + offsetX, this.player.y);
+                this.flipX = this.player.controls.facing === "right";
+            }
+        } else {
+            this.setVisible(false);
         }
     }
 }
-

@@ -1,20 +1,25 @@
-import Weapon from "./Weapon";
+import MeleeWeapon from "./MeleeWeapon";
+import RangedWeapon from "./RangedWeapon";
 
 export default class Inventory {
     selectedHandSlot: number;
-    meleeWeapon: Weapon;
+    meleeWeapon: MeleeWeapon;
+    rangedWeapon: RangedWeapon;
     // TODO: add ranged weapon
     // TODO: add support items - healing, buff, grenade etc
 
-    constructor(meleeWeapon: Weapon) {
+    constructor() {
         this.selectedHandSlot = 1;
-        this.meleeWeapon = meleeWeapon;
 
         document.addEventListener("keydown", this.handleKeyDown.bind(this));
     }
 
-    replaceMeleeWeapon(meleeWeapon: Weapon) {
+    replaceMeleeWeapon(meleeWeapon: MeleeWeapon) {
         this.meleeWeapon = meleeWeapon;
+    }
+
+    replaceRangedWeapon(rangedWeapon: RangedWeapon) {
+        this.rangedWeapon = rangedWeapon;
     }
 
     displayInventory(): void {
@@ -35,6 +40,11 @@ export default class Inventory {
         if (event.key === "2") {
             this.selectedHandSlot = 2;
         }
+    }
+
+    update() {
+        this.meleeWeapon.update();
+        this.rangedWeapon.update();
     }
 }
 

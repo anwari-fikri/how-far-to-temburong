@@ -17,7 +17,7 @@ export class WeaponTest extends Scene {
             this,
             this.scale.width / 2,
             this.scale.height / 2,
-            "dude",
+            "soldier",
         );
         this.zombies = new ZombieGroup(this, this.player);
     }
@@ -27,4 +27,3 @@ export class WeaponTest extends Scene {
         this.zombies.update(this.player);
     }
 }
-

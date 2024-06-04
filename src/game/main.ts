@@ -5,6 +5,7 @@ import { MainMenu } from "./scenes/MainMenu";
 import { Game } from "phaser";
 import { Preloader } from "./scenes/Preloader";
 import { PauseMenu } from "./scenes/PauseMenu";
+import { WeaponTest } from "./scenes/WeaponTest";
 import { RandomEncounterTest } from "./scenes/RandomEncounterTest";
 import { Intro } from "./scenes/Intro";
 
@@ -27,14 +28,20 @@ const config: Phaser.Types.Core.GameConfig = {
     pixelArt: true,
     parent: "game-container",
     backgroundColor: "#028af8",
-    scene: [Boot, Preloader, MainMenu, MainGame, GameOver, PauseMenu, RandomEncounterTest, Intro],
+    scene: [
+        Boot,
+        Preloader,
+        MainMenu,
+        MainGame,
+        GameOver,
+        PauseMenu,
+        RandomEncounterTest,
+        Intro,
+        WeaponTest,
+    ],
 };
 
 const StartGame = (parent: string) => {
-    const gameContainer = document.getElementById(parent);
-    if (gameContainer) {
-        gameContainer.style.backgroundColor = 'black';
-    }
     return new Game({ ...config, parent });
 };
 

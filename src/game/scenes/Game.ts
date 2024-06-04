@@ -2,13 +2,11 @@ import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
 import Player from "../classes/Player";
 import PowerUp, { PowerUpType } from "../classes/PowerUp";
-import { PickUp } from "../classes/PickUp";
-import Weapon from "../classes/Weapon";
+import Weapon, { WEAPON_TYPE } from "../classes/Weapon";
 import Inventory from "../classes/Inventory";
 import playerStore from "../stores/PlayerStore";
 import { debugGraphic } from "../classes/DebugTool";
 import { createPause } from "../classes/PauseResume";
-import { AttackWeapon } from "../classes/AttackWeapon";
 import { ZombieGroup } from "../classes/ZombieGroup";
 import { PowerUpManager } from "../classes/PowerUpManager";
 import { GameUI } from "../classes/GameUI";
@@ -34,15 +32,6 @@ export class Game extends Scene {
     create() {
         bridgeMap(this);
 
-        this.inventory = new Inventory();
-
-        this.weapons.push(new Weapon(this, 500, -300, "katana", true));
-        this.weapons.push(new Weapon(this, 600, -300, "katana", true));
-        this.weapons.push(new Weapon(this, 700, -300, "sword", true));
-        this.weapons.push(new Weapon(this, 800, -300, "gun", false));
-        this.weapons.push(new Weapon(this, 900, -300, "spear", true));
-        this.weapons.push(new Weapon(this, 200, -200, "seliparJepun", false));
-
         // Player
         this.player = new Player(
             this,
@@ -65,11 +54,7 @@ export class Game extends Scene {
         this.physics.add.collider(this.player, this.wallLayer);
         // this.physics.add.collider(this.zombies, this.wallLayer);
 
-        this.weapons.forEach((weapon) => {
-            PickUp(this, this.player, weapon, this.inventory);
-        });
-
-        AttackWeapon(this, this.player, this.inventory);
+        // AttackWeapon(this, this.player, this.inventory);
 
         const graphics = this.add.graphics();
         graphics.lineStyle(2, 0xffffff, 1.0);
@@ -150,6 +135,6 @@ export class Game extends Scene {
     }
 
     changeScene() {
-        this.scene.start("RandomEncounterTest");
+        this.scene.start("WeaponTest");
     }
 }

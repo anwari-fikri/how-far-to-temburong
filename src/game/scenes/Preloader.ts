@@ -47,10 +47,14 @@ export class Preloader extends Scene {
             frameWidth: 32,
             frameHeight: 46,
         });
+        this.load.spritesheet("sword", "weapons/sword.png", {
+            frameWidth: 192,
+            frameHeight: 192,
+        });
 
         this.load.image("katana", "weapons/weapon1.png");
         this.load.image("gun", "weapons/weapon2.png");
-        this.load.image("sword", "weapons/weapon3.png");
+        // this.load.image("sword", "weapons/weapon3.png");
         this.load.image("dagger", "weapons/weapon4.png");
         this.load.image("spear", "weapons/weapon5.png");
         this.load.image("seliparJepun", "weapons/weapon6.png");
@@ -72,16 +76,18 @@ export class Preloader extends Scene {
         );
 
         // Random Encounter
-        this.load.image('random1', 'randomEncounter/random1.png');
-        this.load.image('random2', 'randomEncounter/random2.png');
-        this.load.image('random3', 'randomEncounter/random3.png');
-        this.load.image('random4', 'randomEncounter/random4.png');
-        this.load.image('random5', 'randomEncounter/random5.png');
-        this.load.image('random6', 'randomEncounter/random6.png');
-        this.load.image('random7', 'randomEncounter/random7.png');
-        this.load.image('random8', 'randomEncounter/random8.png');
-        this.load.image('random9', 'randomEncounter/random9.png');
-        this.load.image('random10', 'randomEncounter/random10.png');
+        this.load.image("random1", "randomEncounter/random1.png");
+        this.load.image("random2", "randomEncounter/random2.png");
+        this.load.image("random3", "randomEncounter/random3.png");
+        this.load.image("random4", "randomEncounter/random4.png");
+        this.load.image("random5", "randomEncounter/random5.png");
+        this.load.image("random6", "randomEncounter/random6.png");
+        this.load.image("random7", "randomEncounter/random7.png");
+        this.load.image("random8", "randomEncounter/random8.png");
+        this.load.image("random9", "randomEncounter/random9.png");
+        this.load.image("random10", "randomEncounter/random10.png");
+
+        this.load.audio("attack", "audio/attack_zombie.mp3");
     }
 
     create() {

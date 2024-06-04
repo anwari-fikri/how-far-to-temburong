@@ -6,6 +6,7 @@ interface WeaponProperties {
     texture: string;
     attackRange: "short" | "medium" | "long";
     attackCooldown: number; // Milliseconds
+    hitbox: { width: number; height: number };
 }
 
 export const WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> = {
@@ -14,6 +15,7 @@ export const WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> = {
         texture: "sword_attack",
         attackRange: "medium",
         attackCooldown: 800,
+        hitbox: { width: 20, height: 20 },
     },
 } as const;
 
@@ -26,6 +28,7 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
     attackRange: string;
     attackCooldown: number;
     lastAttackTime: number;
+    hitbox: { width: number; height: number };
 
     constructor(scene: Scene, player: Player, weaponType: WEAPON_TYPE) {
         super(scene, player.x, player.y, weaponType.texture);
@@ -37,12 +40,13 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
         this.weaponType = weaponType;
         this.attackRange = weaponType.attackRange;
         this.attackCooldown = weaponType.attackCooldown;
+        this.hitbox = weaponType.hitbox;
         this.lastAttackTime = 0;
 
         this.setActive(false);
         this.setVisible(false);
         this.disableBody(true, true);
-        this.setBodySize(50, 50);
+        this.setBodySize(this.hitbox.width, this.hitbox.height);
 
         this.createAnimations(scene);
         this.setupInput(scene);
@@ -98,17 +102,24 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
         if (this.isSelected) {
             if (this.player.isAttacking) {
                 if (this.active) {
-                    const offsetX = 0;
-                    // this.player.controls.facing === "right" ? 30 : -30;
-                    this.setPosition(this.player.x + offsetX, this.player.y);
+                    const offsetX =
+                        this.player.controls.facing === "right"
+                            ? 20
+                            : -20 - this.hitbox.width;
+                    const centerX = this.width / 2;
+                    const centerY = this.height / 2;
+
+                    this.setOffset(
+                        centerX + offsetX,
+                        centerY - this.hitbox.height,
+                    );
+                    this.setPosition(this.player.x + 0, this.player.y);
                     this.flipX = this.player.controls.facing === "right";
                 }
             } else {
                 this.setVisible(true);
                 this.setFrame(0);
-                const offsetX = 0;
-                // this.player.controls.facing === "right" ? 30 : -30;
-                this.setPosition(this.player.x + offsetX, this.player.y);
+                this.setPosition(this.player.x, this.player.y);
                 this.flipX = this.player.controls.facing === "right";
             }
         } else {

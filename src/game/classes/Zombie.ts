@@ -1,3 +1,4 @@
+import Bullet from "./Bullet";
 import Player from "./Player";
 import { Physics, Scene } from "phaser";
 
@@ -8,8 +9,8 @@ interface ZombieProperties {
 }
 
 export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
-    NORMAL: { texture: "dude", chaseSpeed: 10, tint: 0xff0000 },
-    STRONG: { texture: "dude", chaseSpeed: 20, tint: 0x00ff00 },
+    NORMAL: { texture: "dude", chaseSpeed: 20, tint: 0xff0000 },
+    STRONG: { texture: "dude", chaseSpeed: 40, tint: 0x00ff00 },
     MINI_BOSS: { texture: "dude", chaseSpeed: 30, tint: 0xffff00 },
 } as const;
 
@@ -24,12 +25,9 @@ export class Zombie extends Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        var radius = this.width / 3;
-        this.setCircle(
-            radius,
-            -radius + 0.5 * this.width,
-            -radius + 0.5 * this.height + 5,
-        );
+        this.setOrigin(0.5, 1);
+        this.setBodySize(28, 40);
+        this.setOffset((this.width - 28) / 2, this.height - 40);
 
         this.setActive(false);
         this.setVisible(false);

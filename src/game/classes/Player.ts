@@ -1,7 +1,9 @@
 import { playerAnims } from "./CharAnims";
 import Inventory from "./Inventory";
+import MeleeWeapon, { WEAPON_TYPE } from "./MeleeWeapon";
 import PlayerControls from "./PlayerControls";
 import { PowerUpType } from "./PowerUp";
+import RangedWeapon, { RANGED_WEAPON_TYPE } from "./RangedWeapon";
 import { ZombieGroup } from "./ZombieGroup";
 
 export enum PLAYER_CONST {
@@ -18,7 +20,9 @@ enum POWERUP_DURATION {
 }
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-    private controls: PlayerControls;
+    controls: PlayerControls;
+    inventory: Inventory;
+    isAttacking: boolean = false;
 
     // Stats
     currentHealth: number;
@@ -35,19 +39,22 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     isInvincibility: boolean;
     invincibilityTimer: Phaser.Time.TimerEvent;
 
-    //facing direction
-    facing: "left" | "right";
-
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
         super(scene, x, y, texture);
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
         this.controls = new PlayerControls(scene, this);
+        playerAnims(scene);
+        this.setOrigin(0.5, 0.5);
+        this.inventory = new Inventory();
+        this.inventory.replaceMeleeWeapon(
+            new MeleeWeapon(scene, this, WEAPON_TYPE.SWORD),
+        );
+        this.inventory.replaceRangedWeapon(
+            new RangedWeapon(scene, this, RANGED_WEAPON_TYPE.GUN),
+        );
         scene.cameras.main.startFollow(this, true);
-
-        //facing direction
-        this.facing = "left";
 
         // Stats Init
         this.resetAttributes();
@@ -57,8 +64,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.isAttackBoosted = false;
         this.isTimeStopped = false;
         this.isInvincibility = false;
-
-        playerAnims(scene);
     }
 
     receiveDamage(attack: number) {
@@ -208,5 +213,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         this.controls.update();
+        this.inventory.update();
     }
 }

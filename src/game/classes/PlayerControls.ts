@@ -6,6 +6,7 @@ export default class PlayerControls {
     keyD!: Phaser.Input.Keyboard.Key;
     keyW!: Phaser.Input.Keyboard.Key;
     player: Player;
+    facing: "left" | "right";
 
     constructor(scene: Phaser.Scene, player: Player) {
         if (scene.input && scene.input.keyboard) {
@@ -24,29 +25,43 @@ export default class PlayerControls {
         }
 
         this.player = player;
+        this.facing = "left";
     }
 
     update() {
         // Player Movement
         const velocity = { x: 0, y: 0 };
 
+        // Update movement based on input
         if (this.keyA.isDown) {
             velocity.x = -this.player.currentMovementSpeed;
-            this.player.anims.play("left", true);
-            this.player.facing = "left";
+            if (!this.player.isAttacking) {
+                this.facing = "left";
+            }
         } else if (this.keyD.isDown) {
             velocity.x = this.player.currentMovementSpeed;
-            this.player.anims.play("right", true);
-            this.player.facing = "right";
+            if (!this.player.isAttacking) {
+                this.facing = "right";
+            }
         }
 
         if (this.keyW.isDown) {
             velocity.y = -this.player.currentMovementSpeed;
         } else if (this.keyS.isDown) {
             velocity.y = this.player.currentMovementSpeed;
-            this.player.anims.play("turn");
         }
 
+        // Apply movement
         this.player.setVelocity(velocity.x, velocity.y);
+
+        // Update animation based on facing direction
+        if (!this.player.isAttacking) {
+            if (velocity.x !== 0 || velocity.y !== 0) {
+                this.player.anims.play(this.facing, true);
+            }
+        } else {
+            // Maintain current facing animation while attacking
+            this.player.anims.play(this.facing, true);
+        }
     }
 }

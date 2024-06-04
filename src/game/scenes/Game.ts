@@ -1,13 +1,9 @@
 import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
 import Player from "../classes/Player";
-import PowerUp, { PowerUpType } from "../classes/PowerUp";
-import Weapon, { WEAPON_TYPE } from "../classes/Weapon";
-import Inventory from "../classes/Inventory";
 import playerStore from "../stores/PlayerStore";
 import { debugGraphic } from "../classes/DebugTool";
 import { createPause } from "../classes/PauseResume";
-import { AttackWeapon } from "../classes/AttackWeapon";
 import { ZombieGroup } from "../classes/ZombieGroup";
 import { PowerUpManager } from "../classes/PowerUpManager";
 import { GameUI } from "../classes/GameUI";
@@ -18,10 +14,8 @@ export class Game extends Scene {
     zombies: ZombieGroup;
     gameUI: GameUI;
     powerUps: PowerUpManager;
-    private weapons: Weapon[] = [];
     private wallLayer!: any;
     private objectLayer!: any;
-    private inventory: Inventory;
     private map: Phaser.Tilemaps.Tilemap;
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;
@@ -38,14 +32,8 @@ export class Game extends Scene {
             this,
             this.scale.width / 2,
             this.scale.height / 2,
-            "dude",
+            "soldier",
         );
-
-        this.inventory = new Inventory(
-            new Weapon(this, 800, -300, WEAPON_TYPE.SPEAR),
-        );
-
-        AttackWeapon(this, this.player, this.inventory, this.zombies);
 
         // Zombies
         this.zombies = new ZombieGroup(this, this.player);

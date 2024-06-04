@@ -98,16 +98,16 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
         if (this.isSelected) {
             if (this.player.isAttacking) {
                 if (this.active) {
-                    const offsetX =
-                        this.player.controls.facing === "right" ? 30 : -30;
+                    const offsetX = 0;
+                    // this.player.controls.facing === "right" ? 30 : -30;
                     this.setPosition(this.player.x + offsetX, this.player.y);
                     this.flipX = this.player.controls.facing === "right";
                 }
             } else {
                 this.setVisible(true);
                 this.setFrame(0);
-                const offsetX =
-                    this.player.controls.facing === "right" ? 30 : -30;
+                const offsetX = 0;
+                // this.player.controls.facing === "right" ? 30 : -30;
                 this.setPosition(this.player.x + offsetX, this.player.y);
                 this.flipX = this.player.controls.facing === "right";
             }
@@ -116,3 +116,4 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
         }
     }
 }
+

@@ -15,7 +15,7 @@ export const RANGED_WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> =
             name: "gun",
             texture: "guns_sheet",
             attackRange: "medium",
-            attackCooldown: 1000,
+            attackCooldown: 100,
         },
     } as const;
 
@@ -74,7 +74,6 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
     setupInput(scene: Scene) {
         scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
             if (pointer.leftButtonDown() && this.isSelected) {
-                console.log("bang");
                 const currentTime = scene.time.now;
                 if (currentTime - this.lastAttackTime >= this.attackCooldown) {
                     this.lastAttackTime = currentTime;
@@ -90,7 +89,6 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
     playAttackAnimation() {
         this.setActive(true);
         this.setVisible(true);
-        this.enableBody(true, this.player.x, this.player.y, true, true);
 
         if (this.weaponType === RANGED_WEAPON_TYPE.GUN) {
             this.anims.play("gun-attack", true);
@@ -100,7 +98,6 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         this.once("animationcomplete", () => {
             this.setActive(false);
             this.setVisible(false);
-            this.disableBody(true, true);
             this.player.isAttacking = false;
         });
     }
@@ -129,10 +126,7 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
                 this.bullets.children.iterate(
                     (bullet: Phaser.GameObjects.GameObject) => {
                         if (bullet instanceof Bullet) {
-                            if (bullet.active && bullet.y < -50) {
-                                bullet.setActive(false);
-                                bullet.setVisible(false);
-                            }
+                            bullet.update(this.player);
                         }
                         return true;
                     },
@@ -141,3 +135,4 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         }
     }
 }
+

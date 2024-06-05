@@ -1,7 +1,6 @@
 import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
 import Player from "../classes/Player";
-import playerStore from "../stores/PlayerStore";
 import { debugGraphic } from "../classes/DebugTool";
 import { createPause } from "../classes/PauseResume";
 import { ZombieGroup } from "../classes/ZombieGroup";
@@ -81,11 +80,6 @@ export class Game extends Scene {
         // maybe delete nanti
         this.player.setDepth(4);
         this.zombies.setDepth(4);
-
-        if (playerStore.currentHealth <= 0) {
-            this.scene.pause();
-            this.scene.launch("GameOver");
-        }
 
         if (this.player.x > this.map.widthInPixels - 800) {
             generateMapContinuation(this);

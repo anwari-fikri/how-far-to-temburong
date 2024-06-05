@@ -69,8 +69,8 @@ export class GameUI {
     createCalendar(day: number) {
         const calendarX: number = 20;
         const calendarY: number = 20;
-        const scale: number = 0.15;
-        const textFontSize = scale * 100;
+        const scale: number = 2;
+        const textFontSize = 5;
 
         this.calendar = this.scene.add.group();
 
@@ -107,10 +107,11 @@ export class GameUI {
             .setScrollFactor(0);
 
         this.calendar.add(calendarImage);
-        this.calendar.add(dayText);
-        this.calendar.add(dayNumberText);
+        // this.calendar.add(dayText);
+        // this.calendar.add(dayNumberText);
         this.calendar.setDepth(100);
     }
 
     update() {}
 }
+

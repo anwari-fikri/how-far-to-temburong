@@ -1,4 +1,3 @@
-import Bullet from "./Bullet";
 import Player from "./Player";
 import { Physics, Scene } from "phaser";
 
@@ -25,9 +24,12 @@ export class Zombie extends Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        this.setOrigin(0.5, 1);
-        this.setBodySize(28, 40);
-        this.setOffset((this.width - 28) / 2, this.height - 40);
+        var radius = 15;
+        this.setCircle(
+            radius,
+            -radius + 0.5 * this.width,
+            -radius + 0.5 * this.height + 5,
+        );
 
         this.setActive(false);
         this.setVisible(false);

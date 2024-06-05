@@ -15,7 +15,7 @@ export const WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> = {
         texture: "sword_attack",
         attackRange: "medium",
         attackCooldown: 800,
-        hitbox: { width: 20, height: 20 },
+        hitbox: { width: 20, height: 25 },
     },
 } as const;
 
@@ -111,7 +111,7 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
 
                     this.setOffset(
                         centerX + offsetX,
-                        centerY - this.hitbox.height,
+                        centerY - this.hitbox.height + 5,
                     );
                     this.setPosition(this.player.x + 0, this.player.y);
                     this.flipX = this.player.controls.facing === "right";

@@ -70,9 +70,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (!this.isInvincibility) {
             this.currentHealth = Math.max(0, this.currentHealth - attack);
         }
+
         console.log(this.currentHealth);
         this.currentHealth -= attack;
         this.emit("health-changed");
+
+        const playerDamage = this.scene.sound.add("playerHurt");
+        playerDamage.play();
     }
 
     resetAttributes() {

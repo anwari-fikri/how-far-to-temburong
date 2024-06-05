@@ -102,7 +102,15 @@ export class Preloader extends Scene {
         this.load.image("random9", "randomEncounter/random9.png");
         this.load.image("random10", "randomEncounter/random10.png");
 
-        this.load.audio("attack", "audio/attack_zombie.mp3");
+        this.load.audio("mediumAttack", "audio/attack_medium.mp3");
+        this.load.audio("shortAttack", "audio/attack_short.mp3");
+        // this.load.audio("longAttack", "audio/attack_long.mp3");
+        this.load.audio("gunAttack", "audio/attack_gun.mp3");
+        this.load.audio("playerHurt", "audio/player_hurt.mp3");
+        this.load.audio("playerDeath", "audio/player_death.mp3");
+        this.load.audio("inventoryOpen", "audio/player_open_inventory.mp3");
+        this.load.audio("spawnMiniboss", "audio/enemy_miniboss_spawn.mp3");
+        this.load.audio("zombieDeath", "audio/enemy_zombie_death.mp3");
     }
 
     create() {

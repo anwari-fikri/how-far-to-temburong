@@ -60,6 +60,8 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         const zombie = this.get() as Zombie;
         if (zombie) {
             zombie.activateZombie(this.player, ZOMBIE_TYPE.MINI_BOSS);
+            const minibossSpawn = this.scene.sound.add("spawnMiniboss");
+            minibossSpawn.play();
         }
     }
 
@@ -128,4 +130,3 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         });
     }
 }
-

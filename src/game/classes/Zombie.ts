@@ -129,6 +129,8 @@ export class Zombie extends Physics.Arcade.Sprite {
                 this.scene.physics.overlap(this, player.inventory.meleeWeapon)
             ) {
                 this.die();
+                const zombieDeath = this.scene.sound.add("zombieDeath");
+                zombieDeath.play();
             }
             if (
                 this.scene.physics.overlap(
@@ -137,8 +139,9 @@ export class Zombie extends Physics.Arcade.Sprite {
                 )
             ) {
                 this.die();
+                const zombieDeath = this.scene.sound.add("zombieDeath");
+                zombieDeath.play();
             }
         }
     }
 }
-

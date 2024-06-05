@@ -8,8 +8,8 @@ interface ZombieProperties {
 }
 
 export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
-    NORMAL: { texture: "dude", chaseSpeed: 10, tint: 0xff0000 },
-    STRONG: { texture: "dude", chaseSpeed: 20, tint: 0x00ff00 },
+    NORMAL: { texture: "dude", chaseSpeed: 20, tint: 0xff0000 },
+    STRONG: { texture: "dude", chaseSpeed: 40, tint: 0x00ff00 },
     MINI_BOSS: { texture: "dude", chaseSpeed: 30, tint: 0xffff00 },
 } as const;
 
@@ -24,7 +24,7 @@ export class Zombie extends Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        var radius = this.width / 3;
+        var radius = 15;
         this.setCircle(
             radius,
             -radius + 0.5 * this.width,

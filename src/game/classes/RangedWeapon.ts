@@ -106,6 +106,7 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         if (bullet) {
             bullet.fire(this.player);
         }
+        return bullet;
     }
 
     update() {

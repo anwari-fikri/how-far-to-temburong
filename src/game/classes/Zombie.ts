@@ -1,3 +1,4 @@
+import { Game } from "../scenes/Game";
 import Player from "./Player";
 import { Physics, Scene } from "phaser";
 
@@ -55,7 +56,7 @@ export class Zombie extends Physics.Arcade.Sprite {
                 break;
         }
 
-        spawnY = Phaser.Math.Between(-300, 250);
+        spawnY = Phaser.Math.Between(350, 600);
 
         // Set the zombie's position and activate it
         switch (zombieType) {
@@ -86,8 +87,10 @@ export class Zombie extends Physics.Arcade.Sprite {
     }
 
     die(isDeSpawn: boolean = false) {
-        if (isDeSpawn) {
-            // don't count towards kill count
+        if (!isDeSpawn) {
+            Game.player.killCount += 1;
+            // player.killCount++;
+            // console.log(player.killCount);
         }
         this.setActive(false);
         this.setVisible(false);

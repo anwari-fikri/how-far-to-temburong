@@ -8,6 +8,8 @@ import { ZombieGroup } from "../classes/ZombieGroup";
 import { PowerUpManager } from "../classes/PowerUpManager";
 import { GameUI } from "../classes/GameUI";
 import { bridgeMap, generateMapContinuation } from "../classes/Map";
+import Bullet from "../classes/Bullet";
+import { Zombie } from "../classes/Zombie";
 
 export class Game extends Scene {
     player: Player;
@@ -73,7 +75,23 @@ export class Game extends Scene {
 
         createPause(this);
 
+        this.physics.add.collider(
+            this.player.inventory.rangedWeapon.bullets,
+            this.zombies,
+            this.bulletHitZombie, // IDK how to fix this!!
+            null,
+            this,
+        );
+
         EventBus.emit("current-scene-ready", this);
+    }
+
+    bulletHitZombie(bullet: Bullet, zombie: Zombie) {
+        // Remove bullet when it hits zombie
+        bullet.die();
+
+        // Remove zombie
+        zombie.die();
     }
 
     update() {

@@ -9,9 +9,9 @@ interface ZombieProperties {
 }
 
 export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
-    NORMAL: { texture: "dude", chaseSpeed: 20, tint: 0xff0000 },
-    STRONG: { texture: "dude", chaseSpeed: 40, tint: 0x00ff00 },
-    MINI_BOSS: { texture: "dude", chaseSpeed: 30, tint: 0xffff00 },
+    NORMAL: { texture: "zombie", chaseSpeed: 20, tint: 0xff0000 },
+    STRONG: { texture: "zombie", chaseSpeed: 40, tint: 0x00ff00 },
+    MINI_BOSS: { texture: "zombie", chaseSpeed: 30, tint: 0xffff00 },
 } as const;
 
 type ZombieType = (typeof ZOMBIE_TYPE)[keyof typeof ZOMBIE_TYPE];
@@ -20,21 +20,23 @@ export class Zombie extends Physics.Arcade.Sprite {
     chaseSpeed: number = 20;
 
     constructor(scene: Scene) {
-        super(scene, 0, 0, "dude");
+        super(scene, 0, 0, "zombie");
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        var radius = 15;
+        this.setOrigin(0.5, 0.5);
+        var radius = 10;
         this.setCircle(
             radius,
             -radius + 0.5 * this.width,
-            -radius + 0.5 * this.height + 5,
+            -radius + 0.5 * this.height,
         );
 
         this.setActive(false);
         this.setVisible(false);
         this.disableBody(true, true);
+        this.setDepth(22);
     }
 
     activateZombie(player: Player, zombieType: ZombieType) {
@@ -63,7 +65,7 @@ export class Zombie extends Physics.Arcade.Sprite {
             case ZOMBIE_TYPE.NORMAL:
                 this.setTexture(ZOMBIE_TYPE.NORMAL.texture);
                 this.chaseSpeed = ZOMBIE_TYPE.NORMAL.chaseSpeed;
-                this.setTint(ZOMBIE_TYPE.NORMAL.tint); // Normal zombies tinted red
+                // this.setTint(ZOMBIE_TYPE.NORMAL.tint); // Normal zombies tinted red
                 break;
             case ZOMBIE_TYPE.STRONG:
                 this.setTexture(ZOMBIE_TYPE.STRONG.texture);
@@ -124,6 +126,14 @@ export class Zombie extends Physics.Arcade.Sprite {
         if (this.active) {
             this.scene.physics.moveToObject(this, player, this.chaseSpeed);
             this.checkDistanceToPlayer(player);
+
+            const direction = player.x - this.x;
+            if (direction > 0) {
+                this.anims.play("walk-right", true);
+            } else {
+                this.anims.play("walk-left", true);
+            }
+
             if (this.scene.physics.overlap(this, player)) {
                 this.die();
                 player.receiveDamage(0.1);

@@ -4,15 +4,12 @@ export function objectiveUI(scene: any) {
     scene.fallingObject(70, 70, 250, 432, 4000);
     scene.highestX = 0;
 
-    const fontSize = Math.round(16 * window.devicePixelRatio);
     scene.distanceText = scene.add
         .text(360, 16, "Distance: 0 / 1000", {
-            fontFamily: "DotGothic16",
-            fontSize: `${fontSize}px`, // Use dynamic font size
+            fontSize: "20px",
             color: "#000000",
-            resolution: window.devicePixelRatio,
+            fontFamily: "Press Start 2P",
         })
-
         .setOrigin(0, 0)
         .setScrollFactor(0)
         .setDepth(100);

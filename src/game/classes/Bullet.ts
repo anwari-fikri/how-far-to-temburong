@@ -11,15 +11,16 @@ export default class Bullet extends Physics.Arcade.Sprite {
 
         this.setActive(false);
         this.setVisible(false);
+        this.setDepth(20);
 
         if (!scene.anims.exists("pistol_bullet")) {
             scene.anims.create({
                 key: "pistol_bullet",
                 frames: scene.anims.generateFrameNames("bullet_sheet", {
                     start: 0,
-                    end: 1,
+                    end: 2,
                 }),
-                frameRate: 10,
+                frameRate: 12,
                 repeat: 0,
             });
         }

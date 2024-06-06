@@ -50,6 +50,10 @@ export class Preloader extends Scene {
             frameWidth: 96,
             frameHeight: 64,
         });
+        this.load.spritesheet("zombie", "characters/zombie.png", {
+            frameWidth: 96,
+            frameHeight: 64,
+        });
 
         // Weapons
         this.load.spritesheet("sword_attack", "weapons/sword_attack.png", {
@@ -70,7 +74,7 @@ export class Preloader extends Scene {
             "bullet_sheet",
             "weapons/projectiles/bullet_sheet.png",
             {
-                frameWidth: 10,
+                frameWidth: 20,
                 frameHeight: 5,
             },
         );

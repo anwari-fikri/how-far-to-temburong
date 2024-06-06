@@ -47,6 +47,7 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
         this.setVisible(false);
         this.disableBody(true, true);
         this.setBodySize(this.hitbox.width, this.hitbox.height);
+        this.setDepth(21);
 
         this.createAnimations(scene);
         this.setupInput(scene);

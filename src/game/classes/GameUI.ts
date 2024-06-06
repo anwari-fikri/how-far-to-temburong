@@ -15,7 +15,7 @@ export class GameUI {
 
         this.createAndUpdateHealthBar();
         this.createCalendar(1);
-        this.createElapsedTime();
+        // this.createElapsedTime();
     }
 
     createElapsedTime() {
@@ -33,7 +33,7 @@ export class GameUI {
                 color: "#ffffff",
             })
             .setScrollFactor(0)
-            .setDepth(100);
+            .setDepth(40);
 
         this.scene.time.addEvent({
             delay: 1000,
@@ -55,10 +55,10 @@ export class GameUI {
                 this.player.currentHealth / PLAYER_CONST.BASE_HEALTH;
             this.healthBar.clear();
             this.healthBar.fillStyle(0xff0000);
-            this.healthBar.fillRect(90, 25, 200 * healthPercentage, 20);
-            this.healthBar.lineStyle(2, 0xffffff);
-            this.healthBar.strokeRect(90, 25, 200, 20);
-            this.healthBar.setDepth(100);
+            this.healthBar.fillRect(60, 11, 150 * healthPercentage, 15);
+            this.healthBar.lineStyle(1, 0xffffff);
+            this.healthBar.strokeRect(60, 11, 150, 15);
+            this.healthBar.setDepth(40);
         };
 
         updateHealthBar();
@@ -67,10 +67,10 @@ export class GameUI {
     }
 
     createCalendar(day: number) {
-        const calendarX: number = 20;
-        const calendarY: number = 20;
+        const calendarX: number = 10;
+        const calendarY: number = 10;
         const scale: number = 2;
-        const textFontSize = 5;
+        const textFontSize = 12;
 
         this.calendar = this.scene.add.group();
 
@@ -96,7 +96,7 @@ export class GameUI {
         const dayNumberText = this.scene.add
             .text(
                 calendarX + (calendarImage.width / 2) * scale,
-                calendarY + (calendarImage.height / 2) * scale + 24,
+                calendarY + (calendarImage.height / 2) * scale + textFontSize,
                 String(day),
                 {
                     fontSize: `${textFontSize}px`,
@@ -107,9 +107,9 @@ export class GameUI {
             .setScrollFactor(0);
 
         this.calendar.add(calendarImage);
-        // this.calendar.add(dayText);
-        // this.calendar.add(dayNumberText);
-        this.calendar.setDepth(100);
+        this.calendar.add(dayText);
+        this.calendar.add(dayNumberText);
+        this.calendar.setDepth(40);
     }
 
     update() {}

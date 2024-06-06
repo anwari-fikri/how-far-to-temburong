@@ -52,6 +52,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             -radius + 0.5 * this.width,
             -radius + 0.5 * this.height,
         );
+        this.setDepth(20);
 
         this.controls = new PlayerControls(scene, this);
         playerAnims(scene);

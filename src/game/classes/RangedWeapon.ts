@@ -47,6 +47,7 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         this.setVisible(false);
         this.disableBody(true, true);
         this.setBodySize(50, 50);
+        this.setDepth(21);
 
         this.createAnimations(scene);
         this.setupInput(scene);

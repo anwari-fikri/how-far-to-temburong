@@ -129,7 +129,7 @@ export class Game extends Scene {
         });
     }
 
-    changeScene() {
-        this.scene.start("WeaponTest");
-    }
+    // changeScene() {
+    //     this.scene.start("WeaponTest");
+    // }
 }

@@ -42,7 +42,15 @@ const config: Phaser.Types.Core.GameConfig = {
 };
 
 const StartGame = (parent: string) => {
+    const parentElement = document.getElementById(parent);
+    if (parentElement) {
+        parentElement.style.backgroundColor = 'black';
+    } else {
+        console.warn(`Element with id "${parent}" not found.`);
+    }
+
     return new Game({ ...config, parent });
 };
+
 
 export default StartGame;

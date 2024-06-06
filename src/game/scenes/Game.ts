@@ -72,6 +72,7 @@ export class Game extends Scene {
         this.physics.add.collider(
             Game.player.inventory.rangedWeapon.bullets,
             this.zombies,
+            // @ts-ignore
             this.bulletHitZombie, // IDK how to fix this!!
             null,
             this,

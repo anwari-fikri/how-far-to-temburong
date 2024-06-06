@@ -30,7 +30,6 @@ export class Preloader extends Scene {
         this.load.addFile(new WebFontFile(this.load, "DotGothic16"));
 
         this.load.image("logo", "logo.png");
-        this.load.image("star", "star.png");
 
         // UI
         this.load.image("calendar", "ui/calendar.png");
@@ -40,10 +39,11 @@ export class Preloader extends Scene {
         });
 
         // Power Ups
-        this.load.image("attack-up", "powerUps/attack-up.png");
+        this.load.image("attack_boost", "powerUps/attack-boost.png");
         this.load.image("nuke", "powerUps/nuke.png");
-        this.load.image("time-stop", "powerUps/time-stop.png");
+        this.load.image("time_stop", "powerUps/time-stop.png");
         this.load.image("invincibility", "powerUps/invincibility.png");
+        this.load.image("speed_boost", "powerUps/speed-boost.png");
 
         // Characters
         this.load.spritesheet("soldier", "characters/soldier.png", {

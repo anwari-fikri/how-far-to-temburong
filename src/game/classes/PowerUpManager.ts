@@ -16,9 +16,9 @@ export class PowerUpManager extends Phaser.GameObjects.Group {
 
     exampleSpawnPowerUps() {
         this.addPowerUp(100, 50, "nuke", PowerUpType.NUKE);
-        this.addPowerUp(100, 100, "star", PowerUpType.SPEED_BOOST);
-        this.addPowerUp(100, 150, "attack-up", PowerUpType.ATTACK_BOOST);
-        this.addPowerUp(100, 200, "time-stop", PowerUpType.TIME_STOP);
+        this.addPowerUp(100, 100, "speed_boost", PowerUpType.SPEED_BOOST);
+        this.addPowerUp(100, 150, "attack_boost", PowerUpType.ATTACK_BOOST);
+        this.addPowerUp(100, 200, "time_stop", PowerUpType.TIME_STOP);
         this.addPowerUp(100, 250, "invincibility", PowerUpType.INVINCIBILITY);
     }
 
@@ -48,3 +48,4 @@ export class PowerUpManager extends Phaser.GameObjects.Group {
         });
     }
 }
+

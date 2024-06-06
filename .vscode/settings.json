@@ -5,6 +5,8 @@
         "autorun",
         "Cooldown",
         "katana",
+        "powerup",
+        "speedboost",
         "spritesheet"
     ]
 }

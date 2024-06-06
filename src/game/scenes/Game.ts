@@ -59,7 +59,7 @@ export class Game extends Scene {
         this.powerUps = new PowerUpManager(this);
         this.powerUps.exampleSpawnPowerUps();
 
-        this.gameUI = new GameUI(this, Game.player);
+        this.gameUI = new GameUI(this);
 
         this.collider();
 

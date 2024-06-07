@@ -68,10 +68,13 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
         scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
             if (pointer.leftButtonDown() && this.isSelected) {
                 const currentTime = scene.time.now;
+
                 if (currentTime - this.lastAttackTime >= this.attackCooldown) {
                     this.lastAttackTime = currentTime;
                     this.player.isAttacking = true;
                     this.playAttackAnimation();
+                    const attackSound = scene.sound.add("mediumAttack");
+                    attackSound.play();
                 }
             }
         });

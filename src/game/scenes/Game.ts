@@ -130,6 +130,6 @@ export class Game extends Scene {
     }
 
     changeScene() {
-        this.scene.start("WeaponTest");
+        this.scene.start("Game");
     }
 }

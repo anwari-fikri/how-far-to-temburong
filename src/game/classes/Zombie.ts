@@ -1,3 +1,4 @@
+import { Game } from "../scenes/Game";
 import Player from "./Player";
 import { Physics, Scene } from "phaser";
 
@@ -129,6 +130,8 @@ export class Zombie extends Physics.Arcade.Sprite {
                 this.scene.physics.overlap(this, player.inventory.meleeWeapon)
             ) {
                 this.die(player);
+                const zombieDeath = this.scene.sound.add("zombieDeath");
+                zombieDeath.play();
             }
             if (
                 this.scene.physics.overlap(
@@ -137,7 +140,10 @@ export class Zombie extends Physics.Arcade.Sprite {
                 )
             ) {
                 this.die(player);
+                const zombieDeath = this.scene.sound.add("zombieDeath");
+                zombieDeath.play();
             }
         }
     }
 }
+

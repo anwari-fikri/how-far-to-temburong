@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { EventBus } from '../EventBus';
 import Typed from 'typed.js';
+import playerStore from '../stores/PlayerStore';
 
 function loadGoogleFont() {
     const link = document.createElement('link');
@@ -37,11 +38,11 @@ function addGlobalStyles() {
     }
 
     .char-image:hover {
-        background-color: rgba(255, 255, 255, 0.15); 
+        background-color: rgba(255, 255, 255, 0.1); 
     }
 
     .char-image.highlight {
-        background-color: rgba(255, 255, 255, 0.3); /* Adjust the alpha value to change opacity */
+        background-color: rgba(255, 255, 255, 0.35); /* Adjust the alpha value to change opacity */
     }    
 
     .weapon-image:hover {
@@ -53,8 +54,13 @@ function addGlobalStyles() {
 }
 
 export class Intro extends Scene {
+    static selectedMeleeWeapon: any;
+    static selectedRangedWeapon: any;
+    static selectedCharacter: any;
+
     constructor() {
         super('Intro');
+       
     }
 
     preload() {
@@ -70,15 +76,15 @@ export class Intro extends Scene {
         EventBus.emit('current-scene-ready', this);
 
         setTimeout(() => {
-            this.showScreenCharacter();
+            this.companyNameScreen();
         }, 1000);
     }
 
-    showScreen1() {
+    companyNameScreen() {
         this.cleanup();
     
         const screenDiv = document.createElement('div');
-        screenDiv.id = 'screen1';
+        screenDiv.id = 'companyNameScreen';
         screenDiv.style.position = 'fixed';
         screenDiv.style.top = '50%';
         screenDiv.style.left = '50%';
@@ -101,12 +107,12 @@ export class Intro extends Scene {
     
             setTimeout(() => {
                 this.cleanup();
-                this.showScreen2();
+                this.newspaperScreen();
             }, 1000); 
         }, 3000); 
     }
     
-    showScreen2() {
+    newspaperScreen() {
         this.cleanup();
     
         const imagePaths = ['assets/Intro/n1.png', 'assets/Intro/n2.png', 'assets/Intro/n3.png'];
@@ -150,7 +156,7 @@ export class Intro extends Scene {
                                     duration: 1000,
                                     onComplete: () => {
                                         this.cleanup();
-                                        this.showScreen3();
+                                        this.mainMenuScreen();
                                     },
                                 });
                             }, 500); 
@@ -163,11 +169,11 @@ export class Intro extends Scene {
         this.load.start();
     }
     
-    showScreen3() {
+    mainMenuScreen() {
         this.cleanup();
     
         const screenDiv = document.createElement('div');
-        screenDiv.id = 'screen3';
+        screenDiv.id = 'mainMenuScreen';
         screenDiv.style.position = 'fixed';
         screenDiv.style.top = '50%';
         screenDiv.style.left = '50%';
@@ -221,7 +227,7 @@ export class Intro extends Scene {
         const settingsButtonLeft = '40%'; 
         const creditsButtonLeft = '38%';
     
-        createButton('Start', 'startButton', '48%', () => this.showScreenCharacter(), 'assets/Intro/buttons.png');
+        createButton('Start', 'startButton', '48%', () => this.characterSelectionScreen(), 'assets/Intro/buttons.png');
         const startButton = document.getElementById('startButton');
         if (startButton) {
             startButton.style.left = startButtonLeft;
@@ -239,11 +245,11 @@ export class Intro extends Scene {
         screenDiv.style.animation = 'fade-in 1s forwards';
     }
 
-    showScreenCharacter() {
+    characterSelectionScreen() {
         this.cleanup();
     
         const screenDiv = document.createElement('div');
-        screenDiv.id = 'showScreenCharacter';
+        screenDiv.id = 'characterSelectionScreen';
         screenDiv.style.position = 'fixed';
         screenDiv.style.top = '50%';
         screenDiv.style.left = '50%';
@@ -258,144 +264,144 @@ export class Intro extends Scene {
         screenDiv.style.boxShadow = 'none';
         screenDiv.style.opacity = '0';
         document.body.appendChild(screenDiv);
-        
-// Create a container for the weapon selection
-const weaponContainer = document.createElement('div');
-weaponContainer.style.display = 'flex';
-weaponContainer.style.flexDirection = 'column';
-weaponContainer.style.alignItems = 'center';
-weaponContainer.style.position = 'absolute';
-weaponContainer.style.top = '34%';
-weaponContainer.style.left = '44%';
-weaponContainer.style.transform = 'translate(-50%, -50%)';
-weaponContainer.style.width = '600px';
-weaponContainer.style.height = '250px'; // Increased height to accommodate text
-weaponContainer.style.fontFamily = '"Press Start 2P", sans-serif';
-weaponContainer.style.fontSize = '14px';
-weaponContainer.style.zIndex = '6';
-weaponContainer.style.backgroundColor = 'none'; // Semi-transparent background
-
-// Add weapon images to the container
-const meleeWeapons = [
-    { url: 'assets/Intro/weapon1.png', name: 'knife' },
-    { url: 'assets/Intro/weapon2.png', name: 'sword' },
-    { url: 'assets/Intro/weapon3.png', name: 'spear' }
-];
-
-const rangedWeapons = [
-    { url: 'assets/Intro/weapon4.png', name: 'pistol' },
-    { url: 'assets/Intro/weapon5.png', name: 'sniper' }
-];
-
-// Array to track selected weapons
-let selectedMeleeWeapon: any = null;
-let selectedRangedWeapon: any = null;
-
-// Function to create weapon rows
-const createWeaponRow = (weapons: any, label: any) => {
-    const rowContainer = document.createElement('div');
-    rowContainer.style.display = 'flex';
-    rowContainer.style.alignItems = 'center';
-    rowContainer.style.justifyContent = 'flex-start'; // Align items to the start (left side)
-    rowContainer.style.marginBottom = '10px';
-    rowContainer.style.width = '100%'; // Ensure the row takes up full width
-    rowContainer.style.paddingLeft = '20px'; // Add padding to the left for spacing
-
-    const labelDiv = document.createElement('div');
-    labelDiv.textContent = label;
-    labelDiv.style.color = 'white';
-    labelDiv.style.fontSize = '24px';
-    labelDiv.style.marginRight = '10px';
-    labelDiv.style.width = '150px';
-    rowContainer.appendChild(labelDiv);
-
-    const weaponRow = document.createElement('div');
-    weaponRow.style.display = 'flex';
-    weaponRow.style.justifyContent = 'flex-start'; // Align items to the start (left side)
-
-    weapons.forEach((weapon: any, index: any) => {
-        const wrapper = document.createElement('div');
-        const wrapperContainer = document.createElement('div'); // Container for the wrapper and text
-        wrapperContainer.style.display = 'flex';
-        wrapperContainer.style.flexDirection = 'column';
-        wrapperContainer.style.alignItems = 'center';
-        wrapperContainer.style.margin = '0 10px'; // Add some spacing between images
-        wrapperContainer.classList.add('weapon-image'); // Add the weapon-image class for shaking effect
-        wrapper.style.display = 'flex';
-        wrapper.style.justifyContent = 'center';
-        wrapper.style.alignItems = 'center';
-        wrapper.style.backgroundColor = '#e03c28';
-        wrapper.style.padding = '10px'; // Add padding around the image
-        wrapper.style.border = 'none';
-        wrapper.style.boxShadow = '4px 4px 0 black, 8px 8px 0 black';
-        wrapper.style.cursor = 'pointer'; // Add pointer cursor
-
-        const img = document.createElement('img');
-        img.src = weapon.url;
-        img.style.width = '60px'; // Adjust the size of the weapon images
-
-        // Create a div for the weapon name
-        const weaponName = document.createElement('div');
-        weaponName.textContent = weapon.name;
-        weaponName.style.color = 'white'; // Adjust text color
-        weaponName.style.marginTop = '10px'; // Space between image and text
-
-        // Add click event listener to change background color on click
-        wrapper.addEventListener('click', () => {
-            if (label === 'Melee') {
-                if (selectedMeleeWeapon === wrapper) {
-                    // If already selected, deselect
-                    wrapper.style.backgroundColor = '#e03c28';
-                    selectedMeleeWeapon = null;
-                } else {
-                    if (selectedMeleeWeapon) {
-                        selectedMeleeWeapon.style.backgroundColor = '#e03c28';
-                    }
-                    // Select the clicked weapon
-                    wrapper.style.backgroundColor = '#43ac42'; // Change the color as needed
-                    selectedMeleeWeapon = wrapper;
-                }
-            } else if (label === 'Ranged') {
-                if (selectedRangedWeapon === wrapper) {
-                    // If already selected, deselect
-                    wrapper.style.backgroundColor = '#e03c28';
-                    selectedRangedWeapon = null;
-                } else {
-                    if (selectedRangedWeapon) {
-                        selectedRangedWeapon.style.backgroundColor = '#e03c28';
-                    }
-                    // Select the clicked weapon
-                    wrapper.style.backgroundColor = '#43ac42'; // Change the color as needed
-                    selectedRangedWeapon = wrapper;
-                }
+    
+        // Create a container for the weapon selection
+        const weaponContainer = document.createElement('div');
+        weaponContainer.style.display = 'flex';
+        weaponContainer.style.flexDirection = 'column';
+        weaponContainer.style.alignItems = 'center';
+        weaponContainer.style.position = 'absolute';
+        weaponContainer.style.top = '34%';
+        weaponContainer.style.left = '44%';
+        weaponContainer.style.transform = 'translate(-50%, -50%)';
+        weaponContainer.style.width = '600px';
+        weaponContainer.style.height = '250px'; // Increased height to accommodate text
+        weaponContainer.style.fontFamily = '"Press Start 2P", sans-serif';
+        weaponContainer.style.fontSize = '14px';
+        weaponContainer.style.zIndex = '6';
+        weaponContainer.style.backgroundColor = 'none'; 
+    
+        // Add weapon images to the container
+        const meleeWeapons = [
+            { url: 'assets/Intro/weapon1.png', name: 'knife' },
+            { url: 'assets/Intro/weapon2.png', name: 'sword' },
+            { url: 'assets/Intro/weapon3.png', name: 'spear' }
+        ];
+    
+        const rangedWeapons = [
+            { url: 'assets/Intro/weapon4.png', name: 'pistol' },
+            { url: 'assets/Intro/weapon5.png', name: 'sniper' }
+        ];
+    
+        // Variables to track selected weapons
+        Intro.selectedMeleeWeapon = null;
+        Intro.selectedRangedWeapon = null;
+        Intro.selectedCharacter = null;
+        let selectedMeleeElement:any = null;
+        let selectedRangedElement:any = null;
+    
+        // Function to check selections and update text
+        const checkSelectionsAndUpdateText = () => {
+            if (Intro.selectedMeleeWeapon && Intro.selectedRangedWeapon && Intro.selectedCharacter === 'char1.5') {
+                textElement.textContent = "PRESS ENTER TO CONTINUE...";
+                this.enableEnterKey();
+            } else {
+                textElement.textContent = "SELECT YOUR WEAPONS & CHARACTER";
             }
-        });
-
-        wrapper.appendChild(img);
-        wrapper.classList.add('weapon-wrapper'); // Add a class for easier selection
-
-        // Append the wrapper and weapon name to the wrapperContainer
-        wrapperContainer.appendChild(wrapper);
-        wrapperContainer.appendChild(weaponName);
-
-        // Append the wrapperContainer to the weaponRow
-        weaponRow.appendChild(wrapperContainer);
-    });
-
-    rowContainer.appendChild(weaponRow);
-    return rowContainer;
-};
-
-// Create and append melee and ranged weapon rows
-const meleeRow = createWeaponRow(meleeWeapons, 'Melee');
-const rangedRow = createWeaponRow(rangedWeapons, 'Ranged');
-
-weaponContainer.appendChild(meleeRow);
-weaponContainer.appendChild(rangedRow);
-
-// Add the weapon container to the screenDiv
-screenDiv.appendChild(weaponContainer);
-
+        };
+    
+        // Function to create weapon rows
+        const createWeaponRow = (weapons:any, label:any) => {
+            const rowContainer = document.createElement('div');
+            rowContainer.style.display = 'flex';
+            rowContainer.style.alignItems = 'center';
+            rowContainer.style.justifyContent = 'flex-start'; // Align items to the start (left side)
+            rowContainer.style.marginBottom = '10px';
+            rowContainer.style.width = '100%'; // Ensure the row takes up full width
+            rowContainer.style.paddingLeft = '20px'; // Add padding to the left for spacing
+    
+            const labelDiv = document.createElement('div');
+            labelDiv.textContent = label;
+            labelDiv.style.color = 'white';
+            labelDiv.style.fontSize = '24px';
+            labelDiv.style.marginRight = '10px';
+            labelDiv.style.width = '150px';
+            rowContainer.appendChild(labelDiv);
+    
+            const weaponRow = document.createElement('div');
+            weaponRow.style.display = 'flex';
+            weaponRow.style.justifyContent = 'flex-start'; // Align items to the start (left side)
+    
+            weapons.forEach((weapon:any) => {
+                const wrapper = document.createElement('div');
+                const wrapperContainer = document.createElement('div'); // Container for the wrapper and text
+                wrapperContainer.style.display = 'flex';
+                wrapperContainer.style.flexDirection = 'column';
+                wrapperContainer.style.alignItems = 'center';
+                wrapperContainer.style.margin = '0 10px'; // Add some spacing between images
+                wrapperContainer.classList.add('weapon-image'); // Add the weapon-image class for shaking effect
+                wrapper.style.display = 'flex';
+                wrapper.style.justifyContent = 'center';
+                wrapper.style.alignItems = 'center';
+                wrapper.style.backgroundColor = '#e03c28';
+                wrapper.style.padding = '10px'; // Add padding around the image
+                wrapper.style.border = 'none';
+                wrapper.style.boxShadow = '4px 4px 0 black, 8px 8px 0 black';
+                wrapper.style.cursor = 'pointer'; // Add pointer cursor
+    
+                const img = document.createElement('img');
+                img.src = weapon.url;
+                img.style.width = '60px'; // Adjust the size of the weapon images
+    
+                // Create a div for the weapon name
+                const weaponName = document.createElement('div');
+                weaponName.textContent = weapon.name;
+                weaponName.style.color = 'white'; // Adjust text color
+                weaponName.style.marginTop = '10px'; // Space between image and text
+    
+                wrapper.addEventListener('click', () => {
+                    if (label === 'Melee') {
+                        if (selectedMeleeElement) {
+                            selectedMeleeElement.style.backgroundColor = '#e03c28';
+                        }
+                        Intro.selectedMeleeWeapon = weapon.name;
+                        selectedMeleeElement = wrapper;
+                    } else if (label === 'Ranged') {
+                        if (selectedRangedElement) {
+                            selectedRangedElement.style.backgroundColor = '#e03c28';
+                        }
+                        Intro.selectedRangedWeapon = weapon.name;
+                        selectedRangedElement = wrapper;
+                    }
+                    wrapper.style.backgroundColor = '#43ac42';
+                    checkSelectionsAndUpdateText();
+                });
+    
+                wrapper.appendChild(img);
+                wrapper.classList.add('weapon-wrapper'); // Add a class for easier selection
+    
+                // Append the wrapper and weapon name to the wrapperContainer
+                wrapperContainer.appendChild(wrapper);
+                wrapperContainer.appendChild(weaponName);
+    
+                // Append the wrapperContainer to the weaponRow
+                weaponRow.appendChild(wrapperContainer);
+            });
+    
+            rowContainer.appendChild(weaponRow);
+            return rowContainer;
+        };
+    
+        // Create and append melee and ranged weapon rows
+        const meleeRow = createWeaponRow(meleeWeapons, 'Melee');
+        const rangedRow = createWeaponRow(rangedWeapons, 'Ranged');
+    
+        weaponContainer.appendChild(meleeRow);
+        weaponContainer.appendChild(rangedRow);
+    
+        // Add the weapon container to the screenDiv
+        screenDiv.appendChild(weaponContainer);
+    
         // Add fade-in animation
         screenDiv.style.animation = 'fade-in 2s forwards';
     
@@ -428,7 +434,11 @@ screenDiv.appendChild(weaponContainer);
             img.classList.add('char-image'); // Add char-image class
             img.style.cursor = 'pointer'; // Add pointer cursor
             img.style.zIndex = '10'; // Ensure character images are above details div
-            img.addEventListener('click', () => this.showCharacterDetails(img, url)); // Add click event listener
+            img.addEventListener('click', () => {
+                this.characterDetailsScreen(img, url);
+                Intro.selectedCharacter = url === 'assets/Intro/char1.5.png' ? 'char1.5' : 'other';
+                checkSelectionsAndUpdateText(); // Check selections and update text
+            });
             imageContainer.appendChild(img);
         });
     
@@ -441,16 +451,18 @@ screenDiv.appendChild(weaponContainer);
         textElement.style.top = '10%'; // Adjust the position as needed
         textElement.style.left = '50%';
         textElement.style.transform = 'translate(-50%, -50%)';
+        textElement.style.color = 'white';
         textElement.style.fontFamily = '"Press Start 2P", sans-serif';
-        textElement.style.color = 'white'; // Adjust the text color as needed
-        textElement.style.fontSize = '24px'; // Adjust the font size as needed
+        textElement.style.fontSize = '20px';
         textElement.style.textAlign = 'center';
+        textElement.style.zIndex = '6'; // Ensure text is above images
     
         screenDiv.appendChild(textElement);
-
     }
     
-    showCharacterDetails(img:any, imageUrl:any) {
+    
+    
+    characterDetailsScreen(img:any, imageUrl:any) {
         // Remove highlight class from all character images
         const allChars = document.querySelectorAll('.char-image');
         allChars.forEach(char => char.classList.remove('highlight'));
@@ -524,119 +536,27 @@ screenDiv.appendChild(weaponContainer);
         detailsDiv.appendChild(imgElement);
     
         // Append the details div to the screen div if it exists
-        const screenDiv = document.getElementById('showScreenCharacter');
+        const screenDiv = document.getElementById('characterSelectionScreen');
         if (screenDiv) {
             screenDiv.appendChild(detailsDiv);
         } else {
-            console.error('showScreenCharacter element not found');
+            console.error('characterSelectionScreen element not found');
         }
     }
-    
-
-    showScreen4() {
-        this.cleanup();
-    
-        const screenDiv = document.createElement('div');
-        screenDiv.id = 'screen4';
-        screenDiv.style.position = 'fixed';
-        screenDiv.style.top = '50%';
-        screenDiv.style.left = '50%';
-        screenDiv.style.transform = 'translate(-50%, -50%)';
-        screenDiv.style.backgroundImage = 'url("assets/Intro/ChapterOne.png")';
-        screenDiv.style.backgroundSize = '40% 70%'; 
-        screenDiv.style.backgroundRepeat = 'no-repeat'; 
-        screenDiv.style.backgroundPosition = 'center';
-        screenDiv.style.width = '100%'; 
-        screenDiv.style.height = '100%'; 
-        screenDiv.style.border = 'none';
-        screenDiv.style.boxShadow = 'none';
-        screenDiv.style.opacity = '0'; 
-        document.body.appendChild(screenDiv);
-    
-        screenDiv.style.animation = 'fade-in 2s forwards';
-    
-        setTimeout(() => {
-            screenDiv.style.animation = 'fade-out 1s forwards';
-    
-            setTimeout(() => {
+  
+    enableEnterKey() {
+        const enterKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        enterKey?.on("down", () => {
+            if (Intro.selectedMeleeWeapon && Intro.selectedRangedWeapon && Intro.selectedCharacter === 'char1.5') {
+                playerStore.resetAttributes();
                 this.cleanup();
-                this.showScreen5();
-            }, 1000); 
-        }, 3000); 
-    }
-
-    showScreen5() {
-        this.cleanup();
-    
-        const screenDiv = document.createElement('div');
-        screenDiv.id = 'screen5';
-        screenDiv.style.position = 'fixed';
-        screenDiv.style.top = '50%';
-        screenDiv.style.left = '50%';
-        screenDiv.style.transform = 'translate(-50%, -50%)';
-        screenDiv.style.backgroundImage = 'url("assets/Intro/introBridge.png")';
-        screenDiv.style.backgroundSize = '70% 100%';
-        screenDiv.style.backgroundRepeat = 'no-repeat';
-        screenDiv.style.backgroundPosition = 'center';
-        screenDiv.style.width = '100%';
-        screenDiv.style.height = '100%';
-        screenDiv.style.border = 'none';
-        screenDiv.style.boxShadow = 'none';
-        screenDiv.style.opacity = '0';
-        document.body.appendChild(screenDiv);
-    
-        const dialogueDiv = document.createElement('div');
-        dialogueDiv.id = 'dialogue';
-        dialogueDiv.style.position = 'absolute';
-        dialogueDiv.style.left = '260px';
-        dialogueDiv.style.top = '50px';
-        dialogueDiv.style.fontFamily = '"Press Start 2P", sans-serif';
-        dialogueDiv.style.fontSize = '15px';
-        dialogueDiv.style.color = 'black';
-        dialogueDiv.style.width = '45%';
-        dialogueDiv.style.background = 'white';
-        dialogueDiv.style.padding = '10px';
-        dialogueDiv.style.border = '4px solid black';
-        dialogueDiv.style.boxShadow = '6px 6px 0 black, 12px 12px 0 black';
-        dialogueDiv.style.imageRendering = 'pixelated';
-        document.body.appendChild(dialogueDiv);
-    
-        new Typed('#dialogue', {
-            strings: ['Two years have passed since the attacks began, The situation in Brunei Muara has worsened day by day. I\'m hopeful that Temburong is as safe as the rumors suggest. Great, the bridge is closed off! It appears my journey is about to take an unexpected turn…'],
-            typeSpeed: 20,
-            showCursor: false,
-            onComplete: () => {
-                const continueButton = document.createElement('button');
-                continueButton.textContent = '>>';
-                continueButton.style.position = 'absolute';
-                continueButton.style.bottom = '1%';
-                continueButton.style.right = '1%';
-                continueButton.style.padding = '8px 15px';
-                continueButton.style.background = 'black';
-                continueButton.style.color = 'white';
-                continueButton.style.fontFamily = '"Press Start 2P", Arial, sans-serif';
-                continueButton.style.fontSize = '10px';
-                continueButton.style.border = 'none';
-                continueButton.style.cursor = 'pointer';
-                continueButton.classList.add('continue-button');
-                continueButton.addEventListener('click', () => this.startMainGame());
-                dialogueDiv.appendChild(continueButton);
-                continueButton.style.zIndex = '100';
+                this.scene.start("CheckpointAndChapters");
             }
         });
-    
-        screenDiv.style.animation = 'fade-in 1s forwards';
     }
     
-    
-
-    startMainGame() {
-        this.cleanup();
-        this.scene.start('Game');
-    }
-
     cleanup() {
-        const elementsToRemove = ['screen1', 'screen2', 'screen3', 'screen4', 'screen5', 'dialogue'];
+        const elementsToRemove = ['companyNameScreen', 'newspaperScreen', 'mainMenuScreen','characterSelectionScreen', 'characterDetailsScreen'];
         elementsToRemove.forEach(id => {
             const element = document.getElementById(id);
             if (element) {

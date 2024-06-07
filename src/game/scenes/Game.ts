@@ -8,6 +8,7 @@ import { ZombieGroup } from "../classes/ZombieGroup";
 import { PowerUpManager } from "../classes/PowerUpManager";
 import { GameUI } from "../classes/GameUI";
 import { bridgeMap, generateMapContinuation } from "../classes/Map";
+import { Intro } from "./Intro";
 
 export class Game extends Scene {
     player: Player;
@@ -90,7 +91,9 @@ export class Game extends Scene {
         if (this.player.x > this.map.widthInPixels - 800) {
             generateMapContinuation(this);
             this.collider();
+            
         }
+        
     }
 
     collider() {
@@ -129,7 +132,4 @@ export class Game extends Scene {
         });
     }
 
-    // changeScene() {
-    //     this.scene.start("WeaponTest");
-    // }
 }

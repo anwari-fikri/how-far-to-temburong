@@ -62,7 +62,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             new MeleeWeapon(scene, this, WEAPON_TYPE.SWORD),
         );
         this.inventory.replaceRangedWeapon(
-            new RangedWeapon(scene, this, RANGED_WEAPON_TYPE.GUN),
+            new RangedWeapon(scene, this, RANGED_WEAPON_TYPE.PISTOL),
         );
         scene.cameras.main.startFollow(this, true);
 

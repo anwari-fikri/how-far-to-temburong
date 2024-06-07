@@ -60,13 +60,9 @@ export class Preloader extends Scene {
             frameWidth: 96,
             frameHeight: 64,
         });
-        this.load.spritesheet("sword", "weapons/sword.png", {
-            frameWidth: 192,
-            frameHeight: 192,
-        });
-        this.load.spritesheet("guns_sheet", "weapons/guns_sheet.png", {
-            frameWidth: 48,
-            frameHeight: 16,
+        this.load.spritesheet("pistol", "weapons/pistol.png", {
+            frameWidth: 96,
+            frameHeight: 64,
         });
 
         // Projectiles

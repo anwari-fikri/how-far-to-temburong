@@ -1,7 +1,8 @@
 import { Game } from "../scenes/Game";
 
 export function objectiveUI(scene: any) {
-    scene.fallingObject(70, 70, 250, 432, 4000);
+    scene.distanceComplete = false;
+    scene.killComplete = false;
     scene.highestX = 0;
 
     scene.distanceText = scene.add
@@ -23,9 +24,6 @@ export function objectiveUI(scene: any) {
 }
 
 export function stageObjective(scene: any) {
-    let distanceComplete = false;
-    let killComplete = false;
-
     // distance count
     scene.distanceText.setText("Distance: " + scene.highestX + " / 1000");
 
@@ -33,7 +31,7 @@ export function stageObjective(scene: any) {
         scene.highestX = Math.round(scene.player.x);
     }
     if (scene.highestX >= 1000) {
-        distanceComplete = true;
+        scene.distanceComplete = true;
         // console.log("distance objective: ", distanceComplete);
     }
 
@@ -41,7 +39,7 @@ export function stageObjective(scene: any) {
     scene.killText.setText("Kills: " + scene.player.killCount + " / 10");
 
     if (scene.player.killCount >= 10) {
-        killComplete = true;
+        scene.killComplete = true;
         // console.log("kill objective: ", killComplete);
     }
 
@@ -50,7 +48,7 @@ export function stageObjective(scene: any) {
     Game.totalTime = scene.gameUI.elapsedTime;
 
     // time limit
-    if (distanceComplete && killComplete) {
+    if (scene.distanceComplete && scene.killComplete) {
         if (scene.gameUI.elapsedTime < 60) {
             scene.scene.start("GameOver");
         }

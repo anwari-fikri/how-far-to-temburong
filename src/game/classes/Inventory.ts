@@ -50,4 +50,3 @@ export default class Inventory {
         this.rangedWeapon.update();
     }
 }
-

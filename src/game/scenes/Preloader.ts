@@ -37,6 +37,10 @@ export class Preloader extends Scene {
             frameWidth: 7,
             frameHeight: 7,
         });
+        this.load.spritesheet("inventory-slot", "ui/inventory-slot.png", {
+            frameWidth: 32,
+            frameHeight: 32,
+        });
 
         // Power Ups
         this.load.image("attack_boost", "powerUps/attack-boost.png");
@@ -56,10 +60,12 @@ export class Preloader extends Scene {
         });
 
         // Weapons
+        this.load.image("sword_icon", "weapons/icons/sword_icon.png");
         this.load.spritesheet("sword_attack", "weapons/sword_attack.png", {
             frameWidth: 96,
             frameHeight: 64,
         });
+        this.load.image("pistol_icon", "weapons/icons/pistol_icon.png");
         this.load.spritesheet("pistol", "weapons/pistol.png", {
             frameWidth: 96,
             frameHeight: 64,

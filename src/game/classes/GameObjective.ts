@@ -5,8 +5,8 @@ export function objectiveUI(scene: any) {
     scene.highestX = 0;
 
     scene.distanceText = scene.add
-        .text(360, 16, "Distance: 0 / 1000", {
-            fontSize: "20px",
+        .text(10, 60, "Distance: 0 / 1000", {
+            fontSize: "12px",
             color: "#000000",
             fontFamily: "Press Start 2P",
         })
@@ -14,9 +14,10 @@ export function objectiveUI(scene: any) {
         .setScrollFactor(0)
         .setDepth(100);
     scene.killText = scene.add
-        .text(360, 36, "Kills: 0 / 10", {
-            fontSize: "8px",
+        .text(10, 74, "Kills: 0 / 10", {
+            fontSize: "12px",
             color: "#000000",
+            fontFamily: "Press Start 2P",
         })
         .setOrigin(0, 0)
         .setScrollFactor(0)

@@ -1,3 +1,4 @@
+import { Game } from "../scenes/Game";
 import MeleeWeapon from "./MeleeWeapon";
 import RangedWeapon from "./RangedWeapon";
 
@@ -35,10 +36,12 @@ export default class Inventory {
 
         if (event.key === "1") {
             this.selectedHandSlot = 1;
+            Game.player.emit("handslot-changed");
         }
 
         if (event.key === "2") {
             this.selectedHandSlot = 2;
+            Game.player.emit("handslot-changed");
         }
     }
 

@@ -4,6 +4,7 @@ import Bullet from "./Bullet";
 
 interface WeaponProperties {
     name: string;
+    icon: string;
     texture: string;
     attackRange: "short" | "medium" | "long";
     attackCooldown: number; // Milliseconds
@@ -13,6 +14,7 @@ export const RANGED_WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> =
     {
         PISTOL: {
             name: "pistol",
+            icon: "pistol_icon",
             texture: "pistol",
             attackRange: "medium",
             attackCooldown: 100,

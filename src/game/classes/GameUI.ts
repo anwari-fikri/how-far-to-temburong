@@ -11,6 +11,11 @@ export class GameUI {
     calendar: Phaser.GameObjects.Group;
     startTime: number;
 
+    // leftSlot: Phaser.GameObjects.Sprite;
+    // rightSlot: Phaser.GameObjects.Sprite;
+    // leftWeapon: Phaser.GameObjects.Image;
+    // rightWeapon: Phaser.GameObjects.Image;
+
     constructor(scene: Scene) {
         this.scene = scene;
 
@@ -18,6 +23,55 @@ export class GameUI {
         this.createCalendar(1);
         this.createPowerUpStatus();
         // this.createElapsedTime();
+        this.createInventory();
+    }
+
+    createInventory() {
+        const createSlot = (x: number, y: number, depth: number) => {
+            return this.scene.add
+                .sprite(x, y, "inventory-slot", 0)
+                .setOrigin(1, 0)
+                .setScrollFactor(0)
+                .setDepth(depth);
+        };
+
+        const createWeapon = (
+            x: number,
+            y: number,
+            icon: string,
+            depth: number,
+        ) => {
+            return this.scene.add
+                .sprite(x, y, icon)
+                .setOrigin(0.5, 0)
+                .setScrollFactor(0)
+                .setDepth(depth);
+        };
+
+        const leftSlot = createSlot(470 - 30, 10, 40); // -30 (-32 to be exact) is width of sprite
+        const rightSlot = createSlot(470, 10, 40);
+
+        const meleeWeapon = createWeapon(
+            leftSlot.x - 16,
+            10,
+            Game.player.inventory.meleeWeapon.weaponType.icon,
+            41,
+        );
+        const rangedWeapon = createWeapon(
+            rightSlot.x - 16,
+            10,
+            Game.player.inventory.rangedWeapon.weaponType.icon,
+            41,
+        );
+
+        const updateHandSlot = () => {
+            const isSelectedLeft = Game.player.inventory.selectedHandSlot === 1;
+            leftSlot.setFrame(isSelectedLeft ? 1 : 0);
+            rightSlot.setFrame(isSelectedLeft ? 0 : 1);
+        };
+
+        updateHandSlot();
+        Game.player.on("handslot-changed", updateHandSlot);
     }
 
     createElapsedTime() {

@@ -82,7 +82,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.emit("health-changed");
 
         const playerDamage = this.scene.sound.add("playerHurt");
-        playerDamage.play();
+        playerDamage.play({ volume: 0.3 });
     }
 
     resetAttributes() {

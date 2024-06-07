@@ -80,7 +80,7 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
                     this.player.isAttacking = true;
                     this.playAttackAnimation();
                     const attackSound = scene.sound.add("gunAttack");
-                    attackSound.play();
+                    attackSound.play({ volume: 0.3 });
                 }
             }
         });
@@ -135,4 +135,3 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         }
     }
 }
-

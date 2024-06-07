@@ -39,19 +39,20 @@ export function bridgeMap(scene: any) {
         height: 50,
     });
 
-    if (Game.entryCount == 1) {
+    if (Game.gameStage == 1) {
         const oceantile = scene.map.addTilesetImage("ocean");
 
         scene.bgOcean = scene.map.createBlankLayer("Ocean Layer", oceantile);
         scene.bgOcean.fill(1, 0, 0, scene.map.width, scene.map.height);
         scene.bgOcean.setScrollFactor(1.1, 1);
     }
-    if (Game.entryCount == 2) {
+    if (Game.gameStage == 2) {
         jungleBg(scene);
     }
 
     const tileset = scene.map.addTilesetImage("bridgeImage");
     const objectset = scene.map.addTilesetImage("objectImage");
+    const slimeset = scene.map.addTilesetImage("slime");
 
     if (tileset && objectset) {
         scene.roadLayer = scene.map.createBlankLayer("Road Layer", tileset);
@@ -60,20 +61,22 @@ export function bridgeMap(scene: any) {
             tileset,
         );
         scene.wallLayer = scene.map.createBlankLayer("Wall Layer", tileset);
+        scene.wallLayer2 = scene.map.createBlankLayer("Wall Layer 2", tileset);
         scene.objectLayer = scene.map.createBlankLayer(
             "Object Layer",
             objectset,
         );
-        scene.slimeLayer = scene.map.createBlankLayer("Slime Layer", objectset);
+        scene.bridgeLayer = scene.map.createBlankLayer("Bridge Layer", tileset);
+        scene.slimeLayer = scene.map.createBlankLayer("Slime Layer", slimeset);
         scene.lightLayer1 = scene.map.createBlankLayer(
             "Light Layer 1",
             tileset,
         );
     }
 
-    const roadX = 12;
+    const roadY = 12;
     const roadWidth = 4;
-    for (let roadRow = roadX; roadRow < roadX + roadWidth; roadRow += 1) {
+    for (let roadRow = roadY; roadRow < roadY + roadWidth; roadRow += 1) {
         scene.roadLayer.fill(road, 0, roadRow, scene.map.width, 1);
     }
     const roadLineY = roadWidth / 2 - 1;
@@ -81,42 +84,42 @@ export function bridgeMap(scene: any) {
         scene.roadLayer.putTileAt(
             roadLineBot_r,
             roadlineX,
-            roadLineY + roadX,
+            roadLineY + roadY,
             scene.map.width,
             1,
         );
         scene.roadLayer.putTileAt(
             roadLineTop_r,
             roadlineX,
-            roadLineY + roadX + 1,
+            roadLineY + roadY + 1,
             scene.map.width,
             1,
         );
     }
 
-    const roadX2 = roadX + roadWidth + 1;
-    for (let roadRow = roadX2; roadRow < roadX2 + roadWidth; roadRow += 1) {
+    const roadY2 = roadY + roadWidth + 1;
+    for (let roadRow = roadY2; roadRow < roadY2 + roadWidth; roadRow += 1) {
         scene.roadLayer.fill(road, 0, roadRow, scene.map.width, 1);
     }
     for (let roadlineX = 0; roadlineX < scene.map.width; roadlineX += 3) {
         scene.roadLayer.putTileAt(
             roadLineBot_r,
             roadlineX,
-            roadLineY + roadX2,
+            roadLineY + roadY2,
             scene.map.width,
             1,
         );
         scene.roadLayer.putTileAt(
             roadLineTop_r,
             roadlineX,
-            roadLineY + roadX2 + 1,
+            roadLineY + roadY2 + 1,
             scene.map.width,
             1,
         );
     }
 
-    scene.wallLayer.fill(fence, 0, roadX - 1, scene.map.width, 1); // tile, x, y, ', num of row
-    scene.wallLayer.fill(fence, 0, roadX2 + roadWidth - 1, scene.map.width, 1);
+    scene.wallLayer2.fill(fence, 0, roadY - 1, scene.map.width, 1); // tile, x, y, ', num of row
+    scene.wallLayer.fill(fence, 0, roadY2 + roadWidth - 1, scene.map.width, 1);
     scene.wallLayer.weightedRandomize(
         [
             { index: barricade, weight: 40 },
@@ -125,51 +128,70 @@ export function bridgeMap(scene: any) {
             { index: -1, weight: 3 },
         ],
         0,
-        roadX + roadWidth - 1,
+        roadY + roadWidth - 1,
         scene.map.width,
-        2,
+        1,
+    );
+    scene.wallLayer2.weightedRandomize(
+        [
+            { index: barricade, weight: 40 },
+            { index: barricadeCrack1, weight: 15 },
+            { index: barricadeCrack2, weight: 15 },
+            { index: -1, weight: 3 },
+        ],
+        0,
+        roadY + roadWidth,
+        scene.map.width,
+        1,
     );
 
     scene.objectLayer.weightedRandomize(
         [
             { index: rock, weight: 1 },
             { index: crushedRock, weight: 1 },
-            { index: carBlue_l, weight: 1 },
+            { index: carBlue_l, weight: 0.2 },
+            { index: carRed_l, weight: 0.2 },
+            { index: carGreen_l, weight: 0.2 },
+            { index: carPurple_l, weight: 0.2 },
             { index: -1, weight: 50 },
         ],
         0,
-        roadX + 1,
+        roadY + 1,
+        scene.map.width - 1,
+        7,
+    );
+
+    scene.slimeLayer.weightedRandomize(
+        [
+            { index: 0, weight: 1 },
+            { index: -1, weight: 50 },
+        ],
+        0,
+        roadY + 1,
         scene.map.width,
         7,
     );
 
-    // scene.slimeLayer.weightedRandomize(
-    //     [
-    //         { index: pothole, weight: 20 },
-    //         { index: -1, weight: 50 },
-    //     ],
-    //     0,
-    //     roadX + 1,
-    //     scene.map.width,
-    //     7,
-    // );
-
     generateStreetLight(scene.lightLayer1, 11);
     generateStreetLight(scene.lightLayer2, 20);
-    clearPath(0, scene.wallLayer, -1);
-    generateBridge(1, scene.wallLayer, bridge_r);
+    clearPath(0, scene, -1);
+    generateBridge(1, scene, scene.bridgeLayer, bridge_r);
     clearObject(scene.objectLayer);
+    clearObject(scene.slimeLayer);
     completeCar(scene.objectLayer, carBlue_l);
     completeCar(scene.objectLayer, carGreen_l);
     completeCar(scene.objectLayer, carRed_l);
     completeCar(scene.objectLayer, carPurple_l);
 
     scene.roadLayer.setDepth(1);
-    scene.lightLayer2.setDepth(2);
-    scene.wallLayer.setDepth(3);
-    scene.slimeLayer.setDepth(3);
-    scene.objectLayer.setDepth(3);
-    scene.lightLayer1.setDepth(4);
+    scene.bridgeLayer.setDepth(2);
+    scene.slimeLayer.setDepth(2);
+    scene.wallLayer2.setDepth(1);
+    scene.lightLayer1.setDepth(3);
+
+    scene.wallLayer.setDepth(23);
+    scene.objectLayer.setDepth(21);
+    scene.lightLayer2.setDepth(22);
 
     scene.wallLayer.setCollision([
         fence,
@@ -177,7 +199,13 @@ export function bridgeMap(scene: any) {
         barricadeCrack1,
         barricadeCrack2,
     ]);
-    scene.objectLayer.setCollision([rock, crushedRock, carBlue_l, carRed_l]);
+    scene.wallLayer2.setCollision([
+        fence,
+        barricade,
+        barricadeCrack1,
+        barricadeCrack2,
+    ]);
+    scene.objectLayer.setCollisionByExclusion([-1]);
 }
 
 export function generateMapContinuation(scene: any) {
@@ -191,7 +219,7 @@ export function generateMapContinuation(scene: any) {
         height: 50,
     });
 
-    if (Game.entryCount == 1) {
+    if (Game.gameStage == 1) {
         const oceantile = scene.map.addTilesetImage("ocean");
 
         scene.bgOcean = scene.map.createBlankLayer("Ocean Layer", oceantile);
@@ -204,31 +232,32 @@ export function generateMapContinuation(scene: any) {
         );
         scene.bgOcean.setScrollFactor(1.1, 1);
     }
-    if (Game.entryCount == 2) {
+    if (Game.gameStage == 2) {
         const jungle = scene.add
             .image(scene.map.widthInPixels, 200, "jungle")
             .setOrigin(0, 0);
         jungle.setScale(1, 1);
         jungle.setScrollFactor(1.1, 1);
-        const jungle2 = scene.add
-            .image(jungle.x + jungle.width, 200, "jungle")
-            .setOrigin(0, 0);
-        jungle2.setScale(1, 1);
-        jungle2.setScrollFactor(1.1, 1);
-        const jungle3 = scene.add
-            .image(jungle2.x + jungle2.width, 200, "jungle")
-            .setOrigin(0, 0);
-        jungle3.setScale(1, 1);
-        jungle3.setScrollFactor(1.1, 1);
-        const jungle4 = scene.add
-            .image(jungle3.x + jungle3.width, 200, "jungle")
-            .setOrigin(0, 0);
-        jungle4.setScale(1, 1);
-        jungle4.setScrollFactor(1.1, 1);
+        scene.jungleImages = [];
+
+        for (let i = 1; i <= 4; i++) {
+            const jungleX =
+                scene.map.widthInPixels +
+                i * scene.textures.get("jungle").getSourceImage().width;
+
+            const newJungle = scene.add
+                .image(jungleX, 200, "jungle")
+                .setOrigin(0, 0)
+                .setScale(1, 1)
+                .setScrollFactor(1.1, 1);
+
+            scene.jungleImages.push(newJungle);
+        }
     }
 
     const tileset = scene.map.addTilesetImage("bridgeImage");
     const objectset = scene.map.addTilesetImage("objectImage");
+    const slimeset = scene.map.addTilesetImage("slime");
 
     if (tileset && objectset) {
         scene.roadLayer = scene.map.createBlankLayer("Road Layer", tileset);
@@ -237,11 +266,13 @@ export function generateMapContinuation(scene: any) {
             tileset,
         );
         scene.wallLayer = scene.map.createBlankLayer("Wall Layer", tileset);
+        scene.wallLayer2 = scene.map.createBlankLayer("Wall Layer 2", tileset);
         scene.objectLayer = scene.map.createBlankLayer(
             "Object Layer",
             objectset,
         );
-        scene.slimeLayer = scene.map.createBlankLayer("Slime Layer", objectset);
+        scene.bridgeLayer = scene.map.createBlankLayer("Bridge Layer", tileset);
+        scene.slimeLayer = scene.map.createBlankLayer("Slime Layer", slimeset);
         scene.lightLayer1 = scene.map.createBlankLayer(
             "Light Layer 1",
             tileset,
@@ -250,9 +281,9 @@ export function generateMapContinuation(scene: any) {
 
     const startX = originalWidth;
 
-    const roadX = 12;
+    const roadY = 12;
     const roadWidth = 4;
-    for (let roadRow = roadX; roadRow < roadX + roadWidth; roadRow += 1) {
+    for (let roadRow = roadY; roadRow < roadY + roadWidth; roadRow += 1) {
         scene.roadLayer.fill(road, startX, roadRow, scene.map.width, 1);
     }
     const roadLineY = roadWidth / 2 - 1;
@@ -260,45 +291,45 @@ export function generateMapContinuation(scene: any) {
         scene.roadLayer.putTileAt(
             roadLineBot_r,
             roadlineX,
-            roadLineY + roadX,
+            roadLineY + roadY,
             scene.map.width,
             1,
         );
         scene.roadLayer.putTileAt(
             roadLineTop_r,
             roadlineX,
-            roadLineY + roadX + 1,
+            roadLineY + roadY + 1,
             scene.map.width,
             1,
         );
     }
 
-    const roadX2 = roadX + roadWidth + 1;
-    for (let roadRow = roadX2; roadRow < roadX2 + roadWidth; roadRow += 1) {
+    const roadY2 = roadY + roadWidth + 1;
+    for (let roadRow = roadY2; roadRow < roadY2 + roadWidth; roadRow += 1) {
         scene.roadLayer.fill(road, startX, roadRow, scene.map.width, 1);
     }
     for (let roadlineX = startX; roadlineX < scene.map.width; roadlineX += 3) {
         scene.roadLayer.putTileAt(
             roadLineBot_r,
             roadlineX,
-            roadLineY + roadX2,
+            roadLineY + roadY2,
             scene.map.width,
             1,
         );
         scene.roadLayer.putTileAt(
             roadLineTop_r,
             roadlineX,
-            roadLineY + roadX2 + 1,
+            roadLineY + roadY2 + 1,
             scene.map.width,
             1,
         );
     }
 
-    scene.wallLayer.fill(fence, startX, roadX - 1, scene.map.width, 1); // tile, x, y, ', num of row
+    scene.wallLayer2.fill(fence, startX, roadY - 1, scene.map.width, 1); // tile, x, y, ', num of row
     scene.wallLayer.fill(
         fence,
         startX,
-        roadX2 + roadWidth - 1,
+        roadY2 + roadWidth - 1,
         scene.map.width,
         1,
     );
@@ -309,61 +340,88 @@ export function generateMapContinuation(scene: any) {
             { index: barricadeCrack2, weight: 15 },
             { index: -1, weight: 2.5 },
         ],
-        startX + 1,
-        roadX + roadWidth - 1,
+        startX,
+        roadY + roadWidth - 1,
         scene.map.width,
-        2,
+        1,
+    );
+    scene.wallLayer2.weightedRandomize(
+        [
+            { index: barricade, weight: 40 },
+            { index: barricadeCrack1, weight: 15 },
+            { index: barricadeCrack2, weight: 15 },
+            { index: -1, weight: 2.5 },
+        ],
+        startX,
+        roadY + roadWidth,
+        scene.map.width,
+        1,
     );
 
     scene.objectLayer.weightedRandomize(
         [
             { index: rock, weight: 1 },
             { index: crushedRock, weight: 1 },
-            { index: carBlue_l, weight: 1 },
+            { index: carBlue_l, weight: 0.25 },
+            { index: carRed_l, weight: 0.25 },
+            { index: carGreen_l, weight: 0.25 },
+            { index: carPurple_l, weight: 0.25 },
             { index: -1, weight: 50 },
         ],
         startX,
-        roadX + 1,
+        roadY + 1,
+        49,
+        7,
+    );
+
+    scene.slimeLayer.weightedRandomize(
+        [
+            { index: 0, weight: 1 },
+            { index: -1, weight: 50 },
+        ],
+        startX,
+        roadY + 1,
         scene.map.width,
         7,
     );
 
-    // scene.slimeLayer.weightedRandomize(
-    //     [
-    //         { index: pothole, weight: 20 },
-    //         { index: -1, weight: 50 },
-    //     ],
-    //     startX,
-    //     roadX + 1,
-    //     scene.map.width,
-    //     7,
-    // );
-
     generateStreetLight(scene.lightLayer1, 11);
     generateStreetLight(scene.lightLayer2, 20);
-    clearPath(startX, scene.wallLayer, -1);
-    generateBridge(startX, scene.wallLayer, bridge_r);
+    clearPath(startX, scene, -1);
+    generateBridge(startX, scene, scene.bridgeLayer, bridge_r);
     clearObject(scene.objectLayer);
+    clearObject(scene.slimeLayer);
     completeCar(scene.objectLayer, carBlue_l);
+    completeCar(scene.objectLayer, carGreen_l);
+    completeCar(scene.objectLayer, carRed_l);
+    completeCar(scene.objectLayer, carPurple_l);
 
     scene.roadLayer.setDepth(1);
-    scene.lightLayer2.setDepth(2);
-    scene.wallLayer.setDepth(3);
-    scene.slimeLayer.setDepth(3);
-    scene.objectLayer.setDepth(3);
-    scene.lightLayer1.setDepth(4);
+    scene.bridgeLayer.setDepth(2);
+    scene.slimeLayer.setDepth(2);
+    scene.wallLayer2.setDepth(1);
+    scene.lightLayer1.setDepth(3);
 
-    scene.wallLayer.setCollision(
-        [fence, barricade, barricadeCrack1, barricadeCrack2],
-        true,
-        true,
-        {
-            tileIndex: startX,
-        },
+    scene.wallLayer.setDepth(23);
+    scene.objectLayer.setDepth(21);
+    scene.lightLayer2.setDepth(22);
+
+    scene.wallLayer.setCollisionByExclusion([-1]);
+    scene.wallLayer2.setCollisionByExclusion([-1]);
+    scene.objectLayer.setCollisionByExclusion([-1]);
+
+    scene.startLayer = scene.map.createBlankLayer(
+        "Start Layer",
+        scene.map.addTilesetImage("start"),
     );
-    scene.objectLayer.setCollision([rock, crushedRock, carBlue_l], true, true, {
-        tileIndex: startX,
-    });
+    scene.endLayer = scene.map.createBlankLayer(
+        "End Layer",
+        scene.map.addTilesetImage("end"),
+    );
+    scene.startLayer.putTileAt(0, startX, 12);
+    scene.endLayer.putTileAt(0, startX + 49, 12);
+    scene.startLayer.setDepth(5);
+    scene.endLayer.setDepth(5);
 }
 
 export function jungleBg(scene: any) {
@@ -385,28 +443,34 @@ export function jungleBg(scene: any) {
     }
 }
 
-export function clearPath(startX: any, layer: any, newIndex: any) {
+export function clearPath(startX: any, scene: any, newIndex: any) {
     for (let x = startX; x < startX + 49; x++) {
-        const tile = layer.getTileAt(x, 15);
+        const tile = scene.wallLayer.getTileAt(x, 15);
         if (!tile) {
-            layer.putTileAt(newIndex, x - 1, 16);
-            layer.putTileAt(newIndex, x - 2, 16);
-            layer.putTileAt(newIndex, x - 1, 15);
+            scene.wallLayer2.putTileAt(newIndex, x - 1, 16);
+            scene.wallLayer2.putTileAt(newIndex, x - 2, 16);
+            scene.wallLayer.putTileAt(newIndex, x - 1, 15);
         }
     }
 }
 
-export function generateBridge(startX: any, layer: any, newIndex: any) {
+export function generateBridge(
+    startX: any,
+    scene: any,
+    newLayer: any,
+    newIndex: any,
+) {
     for (let x = startX + 1; x < startX + 49; x++) {
-        const tile = layer.getTileAt(x, 15);
-        const noBridge = layer.getTileAt(x - 1, 15);
-        if (!tile && !noBridge) {
-            layer.putTileAt(newIndex, x, 15);
-            layer.putTileAt(newIndex + 1, x - 1, 15);
-            layer.putTileAt(newIndex, x - 1, 16);
-            layer.putTileAt(newIndex + 1, x - 2, 16);
-            layer.putTileAt(newIndex, x - 2, 17);
-            layer.putTileAt(newIndex + 1, x - 3, 17);
+        const tile = scene.wallLayer.getTileAt(x, 15);
+        const tile2 = scene.wallLayer.getTileAt(x - 1, 15);
+        const noBridge = scene.bridgeLayer.getTileAt(x - 1, 15);
+        if (!tile && !tile2 && !noBridge) {
+            newLayer.putTileAt(newIndex, x, 15);
+            newLayer.putTileAt(newIndex + 1, x - 1, 15);
+            newLayer.putTileAt(newIndex, x - 1, 16);
+            newLayer.putTileAt(newIndex + 1, x - 2, 16);
+            newLayer.putTileAt(newIndex, x - 2, 17);
+            newLayer.putTileAt(newIndex + 1, x - 3, 17);
         }
     }
 }

@@ -13,16 +13,17 @@ import {
 } from "../classes/Map";
 import { Intro } from "./Intro";
 import { objectiveUI, stageObjective } from "../classes/GameObjective";
+import Bullet from "../classes/Bullet";
+import { Zombie } from "../classes/Zombie";
 
 export class Game extends Scene {
-    player: Player;
+    static player: Player;
     zombies: ZombieGroup;
     gameUI: GameUI;
     powerUps: PowerUpManager;
     private wallLayer!: any;
     private wallLayer2!: any;
     private objectLayer!: any;
-    private slimeLayer!: any;
     private map: Phaser.Tilemaps.Tilemap;
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;
@@ -57,18 +58,18 @@ export class Game extends Scene {
         );
 
         // Player
-        this.player = new Player(this, 40, 450, "soldier");
-        this.camera.startFollow(this.player);
+        Game.player = new Player(this, 40, 450, "soldier");
+        this.camera.startFollow(Game.player);
 
         // Zombies
-        this.zombies = new ZombieGroup(this, this.player);
+        this.zombies = new ZombieGroup(this, Game.player);
         // this.zombies.exampleInfiniteZombie();
 
         // PowerUps
         this.powerUps = new PowerUpManager(this);
         this.powerUps.exampleSpawnPowerUps();
 
-        this.gameUI = new GameUI(this, this.player);
+        this.gameUI = new GameUI(this);
 
         this.collider();
 
@@ -79,19 +80,33 @@ export class Game extends Scene {
 
         createPause(this);
 
+        this.physics.add.collider(
+            Game.player.inventory.rangedWeapon.bullets,
+            this.zombies,
+            // @ts-ignore
+            this.bulletHitZombie, // IDK how to fix this!!
+            null,
+            this,
+        );
+
         EventBus.emit("current-scene-ready", this);
     }
 
+    bulletHitZombie(bullet: Bullet, zombie: Zombie) {
+        bullet.die();
+        zombie.die();
+    }
+
     update() {
-        this.player.update();
-        this.zombies.update(this.player);
-        this.powerUps.update(this.player, this.zombies);
+        Game.player.update();
+        this.zombies.update(Game.player);
+        this.powerUps.update(Game.player, this.zombies);
         this.gameUI.update();
 
-        this.player.setDepth(11);
+        Game.player.setDepth(11);
         this.zombies.setDepth(11);
 
-        if (this.player.x > this.map.widthInPixels - 800) {
+        if (Game.player.x > this.map.widthInPixels - 800) {
             generateMapContinuation(this);
             this.collider();
             this.camera.setBounds(0, 0, this.map.widthInPixels, 700);
@@ -108,11 +123,11 @@ export class Game extends Scene {
     }
 
     collider() {
-        this.player.setCollideWorldBounds(true);
-        this.physics.add.collider(this.player, this.wallLayer);
-        this.physics.add.collider(this.player, this.wallLayer2);
-        this.physics.add.collider(this.player, this.objectLayer);
-        this.physics.add.collider(this.player, this.falling);
+        Game.player.setCollideWorldBounds(true);
+        this.physics.add.collider(Game.player, this.wallLayer);
+        this.physics.add.collider(Game.player, this.wallLayer2);
+        this.physics.add.collider(Game.player, this.objectLayer);
+        this.physics.add.collider(Game.player, this.falling);
         this.physics.add.collider(this.zombies, this.wallLayer);
         this.physics.add.collider(this.zombies, this.wallLayer2);
         this.physics.add.collider(this.zombies, this.objectLayer);
@@ -147,6 +162,6 @@ export class Game extends Scene {
                 this.falling.setTexture("objectImageS", 1);
             },
         });
-        this.physics.add.collider(this.player, this.falling);
+        this.physics.add.collider(Game.player, this.falling);
     }
 }

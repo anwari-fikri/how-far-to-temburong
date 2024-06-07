@@ -1,6 +1,7 @@
 import { Scene } from "phaser";
 import { ZOMBIE_TYPE, Zombie } from "./Zombie";
 import Player from "./Player";
+import { Game } from "../scenes/Game";
 
 export class ZombieGroup extends Phaser.GameObjects.Group {
     spawnRate: number;
@@ -104,7 +105,7 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
     getNuked() {
         this.children.iterate((zombie: Phaser.GameObjects.GameObject) => {
             if (zombie instanceof Zombie) {
-                zombie.die(this.player);
+                zombie.die();
             }
             return true;
         });
@@ -130,3 +131,4 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         });
     }
 }
+

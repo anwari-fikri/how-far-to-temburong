@@ -531,14 +531,15 @@ export function brokenStreetLight(layer: any) {
 
 export function slimeDebuff(scene: any) {
     const playerTile = scene.slimeLayer.getTileAtWorldXY(
-        scene.player.x,
-        scene.player.y,
+        Game.player.x,
+        Game.player.y,
     );
     if (playerTile) {
-        scene.player.currentMovementSpeed = 75;
+        Game.player.currentMovementSpeed = 75;
         // console.log("slow... ", scene.player.currentMovementSpeed);
     } else {
-        scene.player.currentMovementSpeed = 200;
+        Game.player.currentMovementSpeed = 200;
         // console.log("normal... ", scene.player.currentMovementSpeed);
     }
 }
+

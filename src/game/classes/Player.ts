@@ -12,11 +12,12 @@ export enum PLAYER_CONST {
     BASE_ATTACK = 10,
 }
 
-enum POWERUP_DURATION {
+export enum POWERUP_DURATION {
     SECOND = 1000,
-    SPEED_BOOST = 5 * SECOND,
-    ATTACK_BOOST = 5 * SECOND,
-    TIME_STOP = 5 * SECOND,
+    SPEED_BOOST = 10 * SECOND,
+    ATTACK_BOOST = 10 * SECOND,
+    TIME_STOP = 10 * SECOND,
+    INVINCIBILITY = 10 * SECOND,
 }
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
@@ -52,6 +53,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             -radius + 0.5 * this.width,
             -radius + 0.5 * this.height,
         );
+        this.setDepth(20);
 
         this.controls = new PlayerControls(scene, this);
         playerAnims(scene);
@@ -60,7 +62,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             new MeleeWeapon(scene, this, WEAPON_TYPE.SWORD),
         );
         this.inventory.replaceRangedWeapon(
-            new RangedWeapon(scene, this, RANGED_WEAPON_TYPE.GUN),
+            new RangedWeapon(scene, this, RANGED_WEAPON_TYPE.PISTOL),
         );
         scene.cameras.main.startFollow(this, true);
 
@@ -222,12 +224,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 this.invincibilityTimer.remove();
             }
 
-            this.invincibilityTimer = this.scene.time.delayedCall(5000, () => {
-                this.isInvincibility = false;
-            });
+            this.invincibilityTimer = this.scene.time.delayedCall(
+                POWERUP_DURATION.INVINCIBILITY,
+                () => {
+                    this.isInvincibility = false;
+                },
+            );
         } else {
             this.invincibilityTimer.reset({
-                delay: 5000,
+                delay: POWERUP_DURATION.INVINCIBILITY,
                 callback: () => (this.isInvincibility = false),
             });
         }

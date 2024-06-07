@@ -4,6 +4,7 @@ import Bullet from "./Bullet";
 
 interface WeaponProperties {
     name: string;
+    icon: string;
     texture: string;
     attackRange: "short" | "medium" | "long";
     attackCooldown: number; // Milliseconds
@@ -11,9 +12,10 @@ interface WeaponProperties {
 
 export const RANGED_WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> =
     {
-        GUN: {
-            name: "gun",
-            texture: "guns_sheet",
+        PISTOL: {
+            name: "pistol",
+            icon: "pistol_icon",
+            texture: "pistol",
             attackRange: "medium",
             attackCooldown: 100,
         },
@@ -46,8 +48,7 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         this.setActive(false);
         this.setVisible(false);
         this.disableBody(true, true);
-        this.setBodySize(50, 50);
-        this.setDepth(10);
+        this.setDepth(21);
 
         this.createAnimations(scene);
         this.setupInput(scene);
@@ -62,13 +63,13 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
 
     createAnimations(scene: Scene) {
         scene.anims.create({
-            key: "gun-attack",
+            key: "pistol-attack",
             frames: scene.anims.generateFrameNames(this.weaponType.texture, {
                 start: 0,
                 end: 0,
             }),
             frameRate: 10,
-            repeat: 3,
+            repeat: 0,
         });
     }
 
@@ -91,14 +92,15 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         this.setActive(true);
         this.setVisible(true);
 
-        if (this.weaponType === RANGED_WEAPON_TYPE.GUN) {
-            this.anims.play("gun-attack", true);
+        if (this.weaponType === RANGED_WEAPON_TYPE.PISTOL) {
+            this.anims.play("pistol-attack", true);
             this.fireBullet();
         }
 
         this.once("animationcomplete", () => {
             this.setActive(false);
             this.setVisible(false);
+            this.disableBody(true, true);
             this.player.isAttacking = false;
         });
     }
@@ -109,6 +111,7 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         if (bullet) {
             bullet.fire(this.player);
         }
+        return bullet;
     }
 
     update() {
@@ -117,12 +120,12 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
             : (this.isSelected = false);
 
         if (this.isSelected) {
-            if (this.active) {
-                const offsetX =
-                    this.player.controls.facing === "left" ? -30 : 30;
-                this.setPosition(this.player.x + offsetX, this.player.y);
-                this.flipX = this.player.controls.facing === "left";
+            this.setVisible(true);
+            this.setFrame(0);
+            this.setPosition(this.player.x, this.player.y);
+            this.flipX = this.player.controls.facing === "right";
 
+            if (this.active) {
                 // Update bullets
                 this.bullets.children.iterate(
                     (bullet: Phaser.GameObjects.GameObject) => {
@@ -133,6 +136,9 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
                     },
                 );
             }
+        } else {
+            this.setVisible(false);
         }
     }
 }
+

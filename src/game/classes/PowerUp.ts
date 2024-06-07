@@ -46,3 +46,4 @@ export default class PowerUp extends Physics.Arcade.Sprite {
         }
     }
 }
+

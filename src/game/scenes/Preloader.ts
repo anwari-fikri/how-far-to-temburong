@@ -88,8 +88,9 @@ export class Preloader extends Scene {
 
         this.load.image("bridgeImage", "tiles/Texture/bridgetilesetv2.png");
 
-        this.load.image("ocean", "bg-ocean.png");
+        this.load.image("ocean", "tiles/Texture/oceantileset.png");
         this.load.image("sky", "bg-sky.jpg");
+        this.load.image("jungle", "bg-jungle.png");
         this.load.image("objectImage", "tiles/Texture/enviromentalhazards.png");
         this.load.spritesheet(
             "objectImageS",

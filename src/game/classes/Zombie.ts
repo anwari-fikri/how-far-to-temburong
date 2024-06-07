@@ -1,3 +1,4 @@
+import { Game } from "../scenes/Game";
 import Player from "./Player";
 import { Physics, Scene } from "phaser";
 
@@ -55,7 +56,7 @@ export class Zombie extends Physics.Arcade.Sprite {
                 break;
         }
 
-        spawnY = Phaser.Math.Between(-300, 250);
+        spawnY = Phaser.Math.Between(350, 600);
 
         // Set the zombie's position and activate it
         switch (zombieType) {
@@ -85,9 +86,9 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.enableBody();
     }
 
-    die(isDeSpawn: boolean = false) {
-        if (isDeSpawn) {
-            // don't count towards kill count
+    die(player: Player, isDeSpawn: boolean = false) {
+        if (!isDeSpawn) {
+            player.killCount++;
         }
         this.setActive(false);
         this.setVisible(false);
@@ -104,7 +105,7 @@ export class Zombie extends Physics.Arcade.Sprite {
                 player.y,
             );
             if (distance > deSpawnDistance) {
-                this.die(true);
+                this.die(player, true);
             }
         }
     }
@@ -122,13 +123,13 @@ export class Zombie extends Physics.Arcade.Sprite {
             this.scene.physics.moveToObject(this, player, this.chaseSpeed);
             this.checkDistanceToPlayer(player);
             if (this.scene.physics.overlap(this, player)) {
-                this.die();
+                this.die(player);
                 player.receiveDamage(0.1);
             }
             if (
                 this.scene.physics.overlap(this, player.inventory.meleeWeapon)
             ) {
-                this.die();
+                this.die(player);
                 const zombieDeath = this.scene.sound.add("zombieDeath");
                 zombieDeath.play();
             }
@@ -138,10 +139,11 @@ export class Zombie extends Physics.Arcade.Sprite {
                     player.inventory.rangedWeapon.bullets,
                 )
             ) {
-                this.die();
+                this.die(player);
                 const zombieDeath = this.scene.sound.add("zombieDeath");
                 zombieDeath.play();
             }
         }
     }
 }
+

@@ -104,7 +104,7 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
     getNuked() {
         this.children.iterate((zombie: Phaser.GameObjects.GameObject) => {
             if (zombie instanceof Zombie) {
-                zombie.die();
+                zombie.die(this.player);
             }
             return true;
         });

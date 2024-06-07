@@ -39,6 +39,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     isInvincibility: boolean;
     invincibilityTimer: Phaser.Time.TimerEvent;
 
+    killCount: number = 0;
+
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
         super(scene, x, y, texture);
         scene.add.existing(this);

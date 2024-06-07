@@ -78,9 +78,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (!this.isInvincibility) {
             this.currentHealth = Math.max(0, this.currentHealth - attack);
         }
+
         console.log(this.currentHealth);
         this.currentHealth -= attack;
         this.emit("health-changed");
+
+        const playerDamage = this.scene.sound.add("playerHurt");
+        playerDamage.play();
     }
 
     resetAttributes() {
@@ -100,18 +104,28 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         switch (powerUpType) {
             case PowerUpType.SPEED_BOOST:
                 this.applySpeedBoost(PLAYER_CONST.BASE_MOVEMENT_SPEED);
+                let speedBoostSound = this.scene.sound.add("speedUp");
+                speedBoostSound.play();
                 break;
             case PowerUpType.ATTACK_BOOST:
                 this.applyAttackBoost(PLAYER_CONST.BASE_ATTACK);
+                let attackBoostSound = this.scene.sound.add("attackUp");
+                attackBoostSound.play();
                 break;
             case PowerUpType.NUKE:
                 this.applyNuke(enemies);
+                let nukeSound = this.scene.sound.add("nuke");
+                nukeSound.play();
                 break;
             case PowerUpType.TIME_STOP:
                 this.applyTimeStop(enemies);
+                let timeStopSound = this.scene.sound.add("timeStop");
+                timeStopSound.play();
                 break;
             case PowerUpType.INVINCIBILITY:
                 this.applyInvincibility();
+                let invincibilitySound = this.scene.sound.add("invincibility");
+                invincibilitySound.play();
                 break;
         }
     }

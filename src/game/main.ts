@@ -8,6 +8,7 @@ import { PauseMenu } from "./scenes/PauseMenu";
 import { WeaponTest } from "./scenes/WeaponTest";
 import { RandomEncounterTest } from "./scenes/RandomEncounterTest";
 import { Intro } from "./scenes/Intro";
+import { CheckpointAndChapters } from "./scenes/CheckpointAndChapters";
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -38,11 +39,20 @@ const config: Phaser.Types.Core.GameConfig = {
         RandomEncounterTest,
         Intro,
         WeaponTest,
+        CheckpointAndChapters
     ],
 };
 
 const StartGame = (parent: string) => {
+    const parentElement = document.getElementById(parent);
+    if (parentElement) {
+        parentElement.style.backgroundColor = 'black';
+    } else {
+        console.warn(`Element with id "${parent}" not found.`);
+    }
+
     return new Game({ ...config, parent });
 };
+
 
 export default StartGame;

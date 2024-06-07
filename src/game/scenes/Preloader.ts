@@ -27,7 +27,6 @@ export class Preloader extends Scene {
         this.load.setPath("assets");
 
         this.load.image("logo", "logo.png");
-        this.load.image("star", "star.png");
 
         // UI
         this.load.image("calendar", "ui/calendar.png");
@@ -37,10 +36,11 @@ export class Preloader extends Scene {
         });
 
         // Power Ups
-        this.load.image("attack-up", "powerUps/attack-up.png");
-        this.load.image("nuke", "powerUps/nuke.png");
-        this.load.image("time-stop", "powerUps/time-stop.png");
-        this.load.image("invincibility", "powerUps/invincibility.png");
+        this.load.image("attack-up", "powerUps/PowerUp.png");
+        this.load.image("nuke", "powerUps/PowerUp.png");
+        this.load.image("time-stop", "powerUps/PowerUp.png");
+        this.load.image("invincibility", "powerUps/PowerUp.png");
+        this.load.image("star", "powerUps/PowerUp.png");
 
         // Characters
         this.load.spritesheet("soldier", "characters/soldier.png", {
@@ -115,8 +115,21 @@ export class Preloader extends Scene {
         this.load.image("random8", "randomEncounter/random8.png");
         this.load.image("random9", "randomEncounter/random9.png");
         this.load.image("random10", "randomEncounter/random10.png");
-
-        this.load.audio("attack", "audio/attack_zombie.mp3");
+        this.load.image("char1", "assets/Intro/char1.png");
+        this.load.audio("mediumAttack", "audio/attack_medium.mp3");
+        this.load.audio("shortAttack", "audio/attack_short.mp3");
+        // this.load.audio("longAttack", "audio/attack_long.mp3");
+        this.load.audio("gunAttack", "audio/attack_gun.mp3");
+        this.load.audio("playerHurt", "audio/player_hurt.mp3");
+        this.load.audio("playerDeath", "audio/player_death.mp3");
+        this.load.audio("inventoryOpen", "audio/player_open_inventory.mp3");
+        this.load.audio("spawnMiniboss", "audio/enemy_miniboss_spawn.mp3");
+        this.load.audio("zombieDeath", "audio/enemy_zombie_death.mp3");
+        this.load.audio("attackUp", "audio/powerUp_attack.mp3");
+        this.load.audio("speedUp", "audio/powerUp_speed.mp3");
+        this.load.audio("timeStop", "audio/powerUp_timeStop.mp3");
+        this.load.audio("nuke", "audio/powerUp_nuke.mp3");
+        this.load.audio("invincibility", "audio/powerUp_invincibility.mp3");
     }
 
     create() {
@@ -124,7 +137,7 @@ export class Preloader extends Scene {
         //  For example, you can define global animations here, so we can use them in other scenes.
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start("Game");
+        this.scene.start("Intro");
         // this.scene.start("GameUIOverlay");
     }
 }

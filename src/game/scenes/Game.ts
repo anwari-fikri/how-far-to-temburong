@@ -20,7 +20,6 @@ export class Game extends Scene {
     gameUI: GameUI;
     powerUps: PowerUpManager;
     private wallLayer!: any;
-    private wallLayer2!: any;
     private objectLayer!: any;
     private slimeLayer!: any;
     private map: Phaser.Tilemaps.Tilemap;
@@ -30,7 +29,7 @@ export class Game extends Scene {
     private distanceText: any;
     private killText: any;
 
-    static gameStage = 0;
+    static entryCount = 0;
     static totalKill = 0;
     static totalDistance = 0;
     static totalTime = 0;
@@ -45,16 +44,8 @@ export class Game extends Scene {
         this.camera.followOffset.set(0, 50);
         this.camera.setBounds(0, 0, 10000, 700);
 
-        Game.gameStage += 1;
-        // Game.gameStage = 2;
+        Game.entryCount += 1;
         bridgeMap(this);
-
-        this.physics.world.setBounds(
-            0,
-            0,
-            this.map.widthInPixels,
-            this.map.heightInPixels,
-        );
 
         // Player
         this.player = new Player(this, 40, 450, "soldier");
@@ -75,7 +66,6 @@ export class Game extends Scene {
         // AttackWeapon(this, this.player, this.inventory);
 
         objectiveUI(this);
-        this.fallingObject(70, 70, 250, 432, 4000);
 
         createPause(this);
 
@@ -88,19 +78,14 @@ export class Game extends Scene {
         this.powerUps.update(this.player, this.zombies);
         this.gameUI.update();
 
-        this.player.setDepth(11);
-        this.zombies.setDepth(11);
+        // maybe delete nanti
+        this.player.setDepth(4);
+        this.zombies.setDepth(4);
 
         if (this.player.x > this.map.widthInPixels - 800) {
             generateMapContinuation(this);
             this.collider();
             this.camera.setBounds(0, 0, this.map.widthInPixels, 700);
-            this.physics.world.setBounds(
-                0,
-                0,
-                this.map.widthInPixels,
-                this.map.heightInPixels,
-            );
         }
 
         slimeDebuff(this);
@@ -108,15 +93,11 @@ export class Game extends Scene {
     }
 
     collider() {
-        this.player.setCollideWorldBounds(true);
         this.physics.add.collider(this.player, this.wallLayer);
-        this.physics.add.collider(this.player, this.wallLayer2);
         this.physics.add.collider(this.player, this.objectLayer);
         this.physics.add.collider(this.player, this.falling);
         this.physics.add.collider(this.zombies, this.wallLayer);
-        this.physics.add.collider(this.zombies, this.wallLayer2);
         this.physics.add.collider(this.zombies, this.objectLayer);
-        this.physics.add.collider(this.zombies, this.zombies);
         // uncomment to check collider
         // debugGraphic(this);
     }
@@ -135,7 +116,6 @@ export class Game extends Scene {
             2,
         );
         this.falling.body.setImmovable(true);
-        this.falling.setDepth(20);
 
         this.tweens.add({
             targets: this.falling,

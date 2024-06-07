@@ -33,7 +33,7 @@ export class GameUI {
                 color: "#ffffff",
             })
             .setScrollFactor(0)
-            .setDepth(40);
+            .setDepth(100);
 
         this.scene.time.addEvent({
             delay: 1000,
@@ -58,7 +58,7 @@ export class GameUI {
             this.healthBar.fillRect(90, 25, 200 * healthPercentage, 20);
             this.healthBar.lineStyle(2, 0xffffff);
             this.healthBar.strokeRect(90, 25, 200, 20);
-            this.healthBar.setDepth(40);
+            this.healthBar.setDepth(100);
         };
 
         updateHealthBar();
@@ -109,7 +109,7 @@ export class GameUI {
         this.calendar.add(calendarImage);
         this.calendar.add(dayText);
         this.calendar.add(dayNumberText);
-        this.calendar.setDepth(40);
+        this.calendar.setDepth(100);
     }
 
     update() {}

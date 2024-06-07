@@ -100,9 +100,6 @@ export class Preloader extends Scene {
                 frameHeight: 32,
             },
         );
-        this.load.image("slime", "tiles/Texture/slime.png");
-        this.load.image("start", "tiles/Texture/start.png");
-        this.load.image("end", "tiles/Texture/end.png");
 
         // Random Encounter
         this.load.image("random1", "randomEncounter/random1.png");

@@ -11,6 +11,7 @@ import {
     generateMapContinuation,
     slimeDebuff,
 } from "../classes/Map";
+import { Intro } from "./Intro";
 import { objectiveUI, stageObjective } from "../classes/GameObjective";
 
 export class Game extends Scene {
@@ -127,9 +128,5 @@ export class Game extends Scene {
             },
         });
         this.physics.add.collider(this.player, this.falling);
-    }
-
-    changeScene() {
-        this.scene.start("Game");
     }
 }

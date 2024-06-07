@@ -62,6 +62,16 @@ export class Preloader extends Scene {
             frameHeight: 16,
         });
 
+        // Projectiles
+        this.load.spritesheet(
+            "bullet_sheet",
+            "weapons/projectiles/bullet_sheet.png",
+            {
+                frameWidth: 10,
+                frameHeight: 5,
+            },
+        );
+
         this.load.image("corpse", "corpse.png");
         this.load.spritesheet("dude", "dude.png", {
             frameWidth: 32,
@@ -78,8 +88,9 @@ export class Preloader extends Scene {
 
         this.load.image("bridgeImage", "tiles/Texture/bridgetilesetv2.png");
 
-        this.load.image("ocean", "bg-ocean.png");
+        this.load.image("ocean", "tiles/Texture/oceantileset.png");
         this.load.image("sky", "bg-sky.jpg");
+        this.load.image("jungle", "bg-jungle.png");
         this.load.image("objectImage", "tiles/Texture/enviromentalhazards.png");
         this.load.spritesheet(
             "objectImageS",

@@ -8,8 +8,8 @@ interface ZombieProperties {
 }
 
 export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
-    NORMAL: { texture: "dude", chaseSpeed: 10, tint: 0xff0000 },
-    STRONG: { texture: "dude", chaseSpeed: 20, tint: 0x00ff00 },
+    NORMAL: { texture: "dude", chaseSpeed: 20, tint: 0xff0000 },
+    STRONG: { texture: "dude", chaseSpeed: 40, tint: 0x00ff00 },
     MINI_BOSS: { texture: "dude", chaseSpeed: 30, tint: 0xffff00 },
 } as const;
 
@@ -24,7 +24,7 @@ export class Zombie extends Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        var radius = this.width / 3;
+        var radius = 15;
         this.setCircle(
             radius,
             -radius + 0.5 * this.width,
@@ -55,7 +55,7 @@ export class Zombie extends Physics.Arcade.Sprite {
                 break;
         }
 
-        spawnY = Phaser.Math.Between(-300, 250);
+        spawnY = Phaser.Math.Between(350, 600);
 
         // Set the zombie's position and activate it
         switch (zombieType) {
@@ -85,9 +85,9 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.enableBody();
     }
 
-    die(isDeSpawn: boolean = false) {
-        if (isDeSpawn) {
-            // don't count towards kill count
+    die(player: Player, isDeSpawn: boolean = false) {
+        if (!isDeSpawn) {
+            player.killCount++;
         }
         this.setActive(false);
         this.setVisible(false);
@@ -104,7 +104,7 @@ export class Zombie extends Physics.Arcade.Sprite {
                 player.y,
             );
             if (distance > deSpawnDistance) {
-                this.die(true);
+                this.die(player, true);
             }
         }
     }
@@ -122,13 +122,13 @@ export class Zombie extends Physics.Arcade.Sprite {
             this.scene.physics.moveToObject(this, player, this.chaseSpeed);
             this.checkDistanceToPlayer(player);
             if (this.scene.physics.overlap(this, player)) {
-                this.die();
+                this.die(player);
                 player.receiveDamage(0.1);
             }
             if (
                 this.scene.physics.overlap(this, player.inventory.meleeWeapon)
             ) {
-                this.die();
+                this.die(player);
             }
             if (
                 this.scene.physics.overlap(
@@ -136,9 +136,8 @@ export class Zombie extends Physics.Arcade.Sprite {
                     player.inventory.rangedWeapon.bullets,
                 )
             ) {
-                this.die();
+                this.die(player);
             }
         }
     }
 }
-

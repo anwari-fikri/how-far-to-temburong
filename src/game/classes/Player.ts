@@ -39,14 +39,22 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     isInvincibility: boolean;
     invincibilityTimer: Phaser.Time.TimerEvent;
 
+    killCount: number = 0;
+
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
         super(scene, x, y, texture);
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        this.setOrigin(0.5, 0.5);
+        var radius = 5;
+        this.setCircle(
+            radius,
+            -radius + 0.5 * this.width,
+            -radius + 0.5 * this.height,
+        );
 
         this.controls = new PlayerControls(scene, this);
         playerAnims(scene);
-        this.setOrigin(0.5, 0.5);
         this.inventory = new Inventory();
         this.inventory.replaceMeleeWeapon(
             new MeleeWeapon(scene, this, WEAPON_TYPE.SWORD),

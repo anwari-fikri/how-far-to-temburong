@@ -1,5 +1,4 @@
 import { Scene } from "phaser";
-import WebFontFile from "../utils/WebFontFile";
 
 export class Preloader extends Scene {
     constructor() {
@@ -26,8 +25,6 @@ export class Preloader extends Scene {
     preload() {
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath("assets");
-
-        this.load.addFile(new WebFontFile(this.load, "DotGothic16"));
 
         this.load.image("logo", "logo.png");
 

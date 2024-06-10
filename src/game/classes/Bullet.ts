@@ -11,15 +11,16 @@ export default class Bullet extends Physics.Arcade.Sprite {
 
         this.setActive(false);
         this.setVisible(false);
+        this.setDepth(20);
 
         if (!scene.anims.exists("pistol_bullet")) {
             scene.anims.create({
                 key: "pistol_bullet",
                 frames: scene.anims.generateFrameNames("bullet_sheet", {
                     start: 0,
-                    end: 1,
+                    end: 2,
                 }),
-                frameRate: 10,
+                frameRate: 12,
                 repeat: 0,
             });
         }
@@ -27,7 +28,6 @@ export default class Bullet extends Physics.Arcade.Sprite {
 
     fire(player: Player) {
         this.currentBulletSpeed = pistolBulletSpeed;
-        this.setPosition(player.x, player.y);
         this.setActive(true);
         this.setVisible(true);
         this.enableBody();
@@ -35,8 +35,10 @@ export default class Bullet extends Physics.Arcade.Sprite {
         this.play("pistol_bullet", true);
 
         if (player.controls.facing === "left") {
+            this.setPosition(player.x - 10, player.y - 2);
             this.setVelocityX(-this.currentBulletSpeed);
         } else {
+            this.setPosition(player.x + 10, player.y - 2);
             this.setVelocityX(this.currentBulletSpeed);
         }
     }

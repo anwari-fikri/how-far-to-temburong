@@ -1,6 +1,7 @@
 import { Scene } from "phaser";
 import { ZOMBIE_TYPE, Zombie } from "./Zombie";
 import Player from "./Player";
+import { Game } from "../scenes/Game";
 
 export class ZombieGroup extends Phaser.GameObjects.Group {
     spawnRate: number;
@@ -67,8 +68,8 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
 
     adjustSpawnRate() {
         // Adjust spawn rate and enemies per spawn based on elapsed minutes
-        this.enemiesPerSpawn = this.elapsedMinutes + 1; // Increase enemies per spawn each minute
-        this.spawnRate = 2000 / (this.elapsedMinutes + 1); // Decrease spawn interval
+        this.enemiesPerSpawn = this.elapsedMinutes + 10; // Increase enemies per spawn each minute
+        this.spawnRate = 2 / (this.elapsedMinutes + 1); // Decrease spawn interval
     }
 
     spawnEnemies() {
@@ -104,7 +105,7 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
     getNuked() {
         this.children.iterate((zombie: Phaser.GameObjects.GameObject) => {
             if (zombie instanceof Zombie) {
-                zombie.die(this.player);
+                zombie.die();
             }
             return true;
         });
@@ -130,3 +131,4 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         });
     }
 }
+

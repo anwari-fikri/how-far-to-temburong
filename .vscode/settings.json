@@ -4,7 +4,10 @@
         "anims",
         "autorun",
         "Cooldown",
+        "handslot",
         "katana",
+        "powerup",
+        "speedboost",
         "spritesheet"
     ]
 }

@@ -11,16 +11,19 @@ import {
     generateMapContinuation,
     slimeDebuff,
 } from "../classes/Map";
+import { Intro } from "./Intro";
 import { objectiveUI, stageObjective } from "../classes/GameObjective";
+import Bullet from "../classes/Bullet";
+import { Zombie } from "../classes/Zombie";
 
 export class Game extends Scene {
-    player: Player;
+    static player: Player;
     zombies: ZombieGroup;
     gameUI: GameUI;
     powerUps: PowerUpManager;
     private wallLayer!: any;
+    private wallLayer2!: any;
     private objectLayer!: any;
-    private slimeLayer!: any;
     private map: Phaser.Tilemaps.Tilemap;
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;
@@ -28,7 +31,7 @@ export class Game extends Scene {
     private distanceText: any;
     private killText: any;
 
-    static entryCount = 0;
+    static gameStage = 0;
     static totalKill = 0;
     static totalDistance = 0;
     static totalTime = 0;
@@ -43,48 +46,76 @@ export class Game extends Scene {
         this.camera.followOffset.set(0, 50);
         this.camera.setBounds(0, 0, 10000, 700);
 
-        Game.entryCount += 1;
+        Game.gameStage += 1;
+        // Game.gameStage = 2;
         bridgeMap(this);
 
+        this.physics.world.setBounds(
+            0,
+            0,
+            this.map.widthInPixels,
+            this.map.heightInPixels,
+        );
+
         // Player
-        this.player = new Player(this, 40, 450, "soldier");
-        this.camera.startFollow(this.player);
+        Game.player = new Player(this, 40, 450, "soldier");
+        this.camera.startFollow(Game.player);
 
         // Zombies
-        this.zombies = new ZombieGroup(this, this.player);
+        this.zombies = new ZombieGroup(this, Game.player);
         // this.zombies.exampleInfiniteZombie();
 
         // PowerUps
         this.powerUps = new PowerUpManager(this);
         this.powerUps.exampleSpawnPowerUps();
 
-        this.gameUI = new GameUI(this, this.player);
+        this.gameUI = new GameUI(this);
 
         this.collider();
 
         // AttackWeapon(this, this.player, this.inventory);
 
         objectiveUI(this);
+        this.fallingObject(70, 70, 250, 432, 4000);
 
         createPause(this);
+
+        this.physics.add.collider(
+            Game.player.inventory.rangedWeapon.bullets,
+            this.zombies,
+            // @ts-ignore
+            this.bulletHitZombie, // IDK how to fix this!!
+            null,
+            this,
+        );
 
         EventBus.emit("current-scene-ready", this);
     }
 
+    bulletHitZombie(bullet: Bullet, zombie: Zombie) {
+        bullet.die();
+        zombie.die();
+    }
+
     update() {
-        this.player.update();
-        this.zombies.update(this.player);
-        this.powerUps.update(this.player, this.zombies);
+        Game.player.update();
+        this.zombies.update(Game.player);
+        this.powerUps.update(Game.player, this.zombies);
         this.gameUI.update();
 
-        // maybe delete nanti
-        this.player.setDepth(4);
-        this.zombies.setDepth(4);
+        Game.player.setDepth(11);
+        this.zombies.setDepth(11);
 
-        if (this.player.x > this.map.widthInPixels - 800) {
+        if (Game.player.x > this.map.widthInPixels - 800) {
             generateMapContinuation(this);
             this.collider();
             this.camera.setBounds(0, 0, this.map.widthInPixels, 700);
+            this.physics.world.setBounds(
+                0,
+                0,
+                this.map.widthInPixels,
+                this.map.heightInPixels,
+            );
         }
 
         slimeDebuff(this);
@@ -92,11 +123,15 @@ export class Game extends Scene {
     }
 
     collider() {
-        this.physics.add.collider(this.player, this.wallLayer);
-        this.physics.add.collider(this.player, this.objectLayer);
-        this.physics.add.collider(this.player, this.falling);
+        Game.player.setCollideWorldBounds(true);
+        this.physics.add.collider(Game.player, this.wallLayer);
+        this.physics.add.collider(Game.player, this.wallLayer2);
+        this.physics.add.collider(Game.player, this.objectLayer);
+        this.physics.add.collider(Game.player, this.falling);
         this.physics.add.collider(this.zombies, this.wallLayer);
+        this.physics.add.collider(this.zombies, this.wallLayer2);
         this.physics.add.collider(this.zombies, this.objectLayer);
+        this.physics.add.collider(this.zombies, this.zombies);
         // uncomment to check collider
         // debugGraphic(this);
     }
@@ -115,6 +150,7 @@ export class Game extends Scene {
             2,
         );
         this.falling.body.setImmovable(true);
+        this.falling.setDepth(20);
 
         this.tweens.add({
             targets: this.falling,
@@ -126,10 +162,6 @@ export class Game extends Scene {
                 this.falling.setTexture("objectImageS", 1);
             },
         });
-        this.physics.add.collider(this.player, this.falling);
-    }
-
-    changeScene() {
-        this.scene.start("Game");
+        this.physics.add.collider(Game.player, this.falling);
     }
 }

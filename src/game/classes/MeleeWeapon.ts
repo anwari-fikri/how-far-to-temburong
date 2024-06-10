@@ -3,6 +3,7 @@ import Player from "./Player";
 
 interface WeaponProperties {
     name: string;
+    icon: string;
     texture: string;
     attackRange: "short" | "medium" | "long";
     attackCooldown: number; // Milliseconds
@@ -12,6 +13,7 @@ interface WeaponProperties {
 export const WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> = {
     SWORD: {
         name: "sword",
+        icon: "sword_icon",
         texture: "sword_attack",
         attackRange: "medium",
         attackCooldown: 800,
@@ -47,6 +49,7 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
         this.setVisible(false);
         this.disableBody(true, true);
         this.setBodySize(this.hitbox.width, this.hitbox.height);
+        this.setDepth(21);
 
         this.createAnimations(scene);
         this.setupInput(scene);

@@ -1,13 +1,15 @@
 import { Physics } from "phaser";
 import Player from "./Player";
-
-const pistolBulletSpeed: number = 600;
+import { Game } from "../scenes/Game";
 
 export default class Bullet extends Physics.Arcade.Sprite {
-    currentBulletSpeed: number = pistolBulletSpeed;
+    currentBulletSpeed: number;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, "bullet_sheet"); // Use the texture atlas or sprite sheet
+
+        this.currentBulletSpeed =
+            Game.player.inventory.rangedWeapon.weaponType.bulletSpeed;
 
         this.setActive(false);
         this.setVisible(false);
@@ -27,7 +29,8 @@ export default class Bullet extends Physics.Arcade.Sprite {
     }
 
     fire(player: Player) {
-        this.currentBulletSpeed = pistolBulletSpeed;
+        this.currentBulletSpeed =
+            Game.player.inventory.rangedWeapon.weaponType.bulletSpeed;
         this.setActive(true);
         this.setVisible(true);
         this.enableBody();

@@ -24,6 +24,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     controls: PlayerControls;
     inventory: Inventory;
     isAttacking: boolean = false;
+    isInIFrame: boolean = false;
 
     // Stats
     currentHealth: number;
@@ -76,17 +77,27 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.isInvincibility = false;
     }
 
-    receiveDamage(attack: number) {
-        if (!this.isInvincibility) {
-            this.currentHealth = Math.max(0, this.currentHealth - attack);
+    receiveDamage(value: number) {
+        if (!this.isInIFrame) {
+            if (!this.isInvincibility) {
+                this.currentHealth = Math.max(0, this.currentHealth - value);
+            }
+
+            console.log(this.currentHealth);
+            this.currentHealth -= value;
+            this.setIFrame(500);
+            this.emit("health-changed");
+
+            const playerDamage = this.scene.sound.add("playerHurt");
+            playerDamage.play();
         }
+    }
 
-        console.log(this.currentHealth);
-        this.currentHealth -= attack;
-        this.emit("health-changed");
-
-        const playerDamage = this.scene.sound.add("playerHurt");
-        playerDamage.play();
+    setIFrame(duration: number) {
+        this.isInIFrame = true;
+        this.scene.time.delayedCall(duration, () => {
+            this.isInIFrame = false;
+        });
     }
 
     resetAttributes() {

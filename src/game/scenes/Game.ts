@@ -81,7 +81,7 @@ export class Game extends Scene {
 
         createPause(this);
 
-        this.physics.add.collider(
+        this.physics.add.overlap(
             Game.player.inventory.rangedWeapon.bullets,
             this.zombies,
             // @ts-ignore
@@ -93,9 +93,18 @@ export class Game extends Scene {
         EventBus.emit("current-scene-ready", this);
     }
 
-    bulletHitZombie(bullet: Bullet, zombie: Zombie) {
+    bulletHitZombie(zombie: Zombie, bullet: Bullet) {
         bullet.die();
-        zombie.die();
+        zombie.receiveDamage(
+            Game.player.currentAttackPower,
+            Game.player.inventory.rangedWeapon,
+        );
+        console.log(zombie.currentHealth);
+        if (zombie.currentHealth <= 0) {
+            zombie.die();
+            const zombieDeath = this.sound.add("zombieDeath");
+            zombieDeath.play();
+        }
     }
 
     update() {

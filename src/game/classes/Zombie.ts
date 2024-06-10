@@ -1,23 +1,50 @@
 import { Game } from "../scenes/Game";
+import Bullet from "./Bullet";
+import MeleeWeapon from "./MeleeWeapon";
 import Player from "./Player";
 import { Physics, Scene } from "phaser";
+import RangedWeapon from "./RangedWeapon";
 
 interface ZombieProperties {
     texture: string;
+    baseHealth: number;
+    attackPower: number;
     chaseSpeed: number;
     tint: number;
 }
 
 export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
-    NORMAL: { texture: "zombie", chaseSpeed: 20, tint: 0xff0000 },
-    STRONG: { texture: "zombie", chaseSpeed: 40, tint: 0x00ff00 },
-    MINI_BOSS: { texture: "zombie", chaseSpeed: 30, tint: 0xffff00 },
+    NORMAL: {
+        texture: "zombie",
+        baseHealth: 100,
+        attackPower: 5,
+        chaseSpeed: 20,
+        tint: 0xff0000,
+    },
+    STRONG: {
+        texture: "zombie",
+        baseHealth: 200,
+        attackPower: 10,
+        chaseSpeed: 40,
+        tint: 0x00ff00,
+    },
+    MINI_BOSS: {
+        texture: "zombie",
+        baseHealth: 1000,
+        attackPower: 30,
+        chaseSpeed: 30,
+        tint: 0xffff00,
+    },
 } as const;
 
 type ZombieType = (typeof ZOMBIE_TYPE)[keyof typeof ZOMBIE_TYPE];
 
 export class Zombie extends Physics.Arcade.Sprite {
-    chaseSpeed: number = 20;
+    currentHealth: number;
+    attackPower: number;
+    chaseSpeed: number;
+
+    isInIFrame: boolean = false;
 
     constructor(scene: Scene) {
         super(scene, 0, 0, "zombie");
@@ -69,24 +96,44 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
 
         // Set the zombie's position and activate it
+        this.setTexture(zombieType.texture);
+        this.currentHealth = zombieType.baseHealth;
+        this.attackPower = zombieType.attackPower;
+        this.chaseSpeed = zombieType.chaseSpeed;
+
         switch (zombieType) {
             case ZOMBIE_TYPE.NORMAL:
                 this.setTexture(ZOMBIE_TYPE.NORMAL.texture);
-                this.chaseSpeed = ZOMBIE_TYPE.NORMAL.chaseSpeed;
-                // this.setTint(ZOMBIE_TYPE.NORMAL.tint); // Normal zombies tinted red
                 break;
             case ZOMBIE_TYPE.STRONG:
-                this.setTexture(ZOMBIE_TYPE.STRONG.texture);
-                this.chaseSpeed = ZOMBIE_TYPE.STRONG.chaseSpeed;
                 this.setTint(ZOMBIE_TYPE.STRONG.tint); // Strong zombies tinted green
                 break;
             case ZOMBIE_TYPE.MINI_BOSS:
-                this.setTexture(ZOMBIE_TYPE.MINI_BOSS.texture);
-                this.chaseSpeed = ZOMBIE_TYPE.MINI_BOSS.chaseSpeed;
                 this.setTint(ZOMBIE_TYPE.MINI_BOSS.tint); // Mini-boss zombies tinted yellow
                 break;
         }
         this.alive(spawnX, spawnY);
+    }
+
+    receiveDamage(amount: number, weapon?: MeleeWeapon | RangedWeapon) {
+        if (!this.isInIFrame) {
+            this.currentHealth -= amount;
+            if (weapon instanceof MeleeWeapon) {
+                this.setIFrame(weapon.attackCooldown);
+            }
+            if (weapon instanceof RangedWeapon) {
+                this.setIFrame(0);
+                // Time = Speed / Distance
+                // IFrame = Bullet Speed / Zombie Width
+            }
+        }
+    }
+
+    setIFrame(duration: number) {
+        this.isInIFrame = true;
+        this.scene.time.delayedCall(duration, () => {
+            this.isInIFrame = false;
+        });
     }
 
     alive(spawnX: number, spawnY: number) {
@@ -140,26 +187,25 @@ export class Zombie extends Physics.Arcade.Sprite {
                 this.anims.play("walk-left", true);
             }
 
+            // Player X Zombie
             if (this.scene.physics.overlap(this, player)) {
-                this.die();
                 player.receiveDamage(0.1);
             }
+
+            // Melee X Zombie
             if (
                 this.scene.physics.overlap(this, player.inventory.meleeWeapon)
             ) {
-                this.die();
-                const zombieDeath = this.scene.sound.add("zombieDeath");
-                zombieDeath.play();
-            }
-            if (
-                this.scene.physics.overlap(
-                    this,
-                    player.inventory.rangedWeapon.bullets,
-                )
-            ) {
-                this.die();
-                const zombieDeath = this.scene.sound.add("zombieDeath");
-                zombieDeath.play();
+                console.log(this.currentHealth);
+                this.receiveDamage(
+                    player.currentAttackPower,
+                    player.inventory.meleeWeapon,
+                );
+                if (this.currentHealth <= 0) {
+                    this.die();
+                    const zombieDeath = this.scene.sound.add("zombieDeath");
+                    zombieDeath.play();
+                }
             }
         }
     }

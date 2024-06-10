@@ -9,7 +9,7 @@ import { ZombieGroup } from "./ZombieGroup";
 export enum PLAYER_CONST {
     BASE_HEALTH = 100,
     BASE_MOVEMENT_SPEED = 200,
-    BASE_ATTACK = 10,
+    BASE_ATTACK = 25,
 }
 
 export enum POWERUP_DURATION {

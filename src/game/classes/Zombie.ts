@@ -75,17 +75,25 @@ export class Zombie extends Physics.Arcade.Sprite {
         let spawnX: number = 0;
         let spawnY: number = 0;
 
-        const spawnSide = Phaser.Math.Between(0, 1);
+        const spawnSide = Phaser.Math.Between(0, 3);
         switch (spawnSide) {
-            case 0: // Left side
+            case 0: // Left top side
                 spawnX = playerX - camera.width - spawnMargin;
+                spawnY = Phaser.Math.Between(380, 480);
                 break;
-            case 1: // Right side
+            case 1: // Left bot side
+                spawnX = playerX - camera.width + spawnMargin;
+                spawnY = Phaser.Math.Between(550, 630);
+                break;
+            case 2: // Right top side
                 spawnX = playerX + camera.width + spawnMargin;
+                spawnY = Phaser.Math.Between(380, 480);
+                break;
+            case 3: // Right bot side
+                spawnX = playerX + camera.width - spawnMargin;
+                spawnY = Phaser.Math.Between(550, 630);
                 break;
         }
-
-        spawnY = Phaser.Math.Between(350, 600);
 
         // Set the zombie's position and activate it
         this.setTexture(zombieType.texture);
@@ -138,8 +146,6 @@ export class Zombie extends Physics.Arcade.Sprite {
     die(isDeSpawn: boolean = false) {
         if (!isDeSpawn) {
             Game.player.killCount += 1;
-            // player.killCount++;
-            // console.log(player.killCount);
         }
         this.setActive(false);
         this.setVisible(false);
@@ -204,4 +210,3 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
     }
 }
-

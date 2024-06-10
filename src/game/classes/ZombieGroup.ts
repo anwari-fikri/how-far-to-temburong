@@ -18,8 +18,7 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
 
         scene.add.existing(this);
 
-        this.spawnRate = 1000;
-        this.enemiesPerSpawn = 1;
+        this.adjustSpawnRate();
         this.elapsedMinutes = 0;
 
         this.startSpawnTimer();
@@ -67,9 +66,31 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
     }
 
     adjustSpawnRate() {
+        let spawnNum = 0;
+        let spawnInterval = 0;
+        switch (Game.gameStage) {
+            case 2:
+                spawnNum = 5;
+                spawnInterval = 5000;
+                break;
+            case 3:
+                spawnNum = 10;
+                spawnInterval = 5000;
+                break;
+            case 4:
+                spawnNum = 12;
+                spawnInterval = 4000;
+                break;
+            default:
+                spawnNum = 2;
+                spawnInterval = 5000;
+                break;
+        }
+
         // Adjust spawn rate and enemies per spawn based on elapsed minutes
-        this.enemiesPerSpawn = this.elapsedMinutes + 10; // Increase enemies per spawn each minute
-        this.spawnRate = 2 / (this.elapsedMinutes + 1); // Decrease spawn interval
+        const test = this.elapsedMinutes;
+        this.enemiesPerSpawn = spawnNum; // Increase enemies per spawn each minute
+        this.spawnRate = spawnInterval; // Decrease spawn interval
     }
 
     spawnEnemies() {
@@ -90,10 +111,22 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
     }
 
     addZombie() {
+        let normalRate = 0;
+        switch (Game.gameStage) {
+            case 3:
+                normalRate = 0.2;
+                break;
+            case 4:
+                normalRate = 0.2;
+                break;
+            default:
+                normalRate = 0.5;
+                break;
+        }
         const zombie = this.get() as Zombie;
         if (zombie) {
             const randomType = Math.random();
-            if (randomType < 0.5) {
+            if (randomType < normalRate) {
                 zombie.activateZombie(this.player, ZOMBIE_TYPE.NORMAL);
             } else {
                 zombie.activateZombie(this.player, ZOMBIE_TYPE.STRONG);
@@ -131,4 +164,3 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         });
     }
 }
-

@@ -5,8 +5,35 @@ export function objectiveUI(scene: any) {
     scene.killComplete = false;
     scene.highestX = 0;
 
+    scene.distanceObjective = 0;
+    scene.killObjective = 0;
+
+    switch (Game.gameStage) {
+        case 1:
+            scene.distanceObjective = 25;
+            scene.killObjective = 10;
+            break;
+        case 2:
+            scene.distanceObjective = 30;
+            scene.killObjective = 15;
+            break;
+        case 3:
+            scene.distanceObjective = 30;
+            scene.killObjective = 20;
+            break;
+        case 4:
+            scene.distanceObjective = 35;
+            scene.killObjective = 30;
+            break;
+
+        default:
+            scene.distanceObjective = 25;
+            scene.killObjective = 10;
+            break;
+    }
+
     scene.distanceText = scene.add
-        .text(10, 60, "Distance: 0 / 1000", {
+        .text(10, 60, "Distance: 0 / " + scene.distanceObjective, {
             fontSize: "12px",
             color: "#000000",
             fontFamily: "Press Start 2P",
@@ -15,7 +42,7 @@ export function objectiveUI(scene: any) {
         .setScrollFactor(0)
         .setDepth(100);
     scene.killText = scene.add
-        .text(10, 74, "Kills: 0 / 10", {
+        .text(10, 74, "Kills: 0 / " + scene.killObjective, {
             fontSize: "12px",
             color: "#000000",
             fontFamily: "Press Start 2P",
@@ -27,20 +54,26 @@ export function objectiveUI(scene: any) {
 
 export function stageObjective(scene: any) {
     // distance count
-    scene.distanceText.setText("Distance: " + scene.highestX + " / 1000");
+    scene.distanceText.setText(
+        "Distance: " + scene.highestX + " / " + scene.distanceObjective,
+    );
 
-    if (Game.player.x > scene.highestX) {
-        scene.highestX = Math.round(Game.player.x);
+    const playerX = Game.player.x / 100;
+
+    if (playerX > scene.highestX) {
+        scene.highestX = Math.round(playerX);
     }
-    if (scene.highestX >= 1000) {
+    if (scene.highestX >= scene.distanceObjective) {
         scene.distanceComplete = true;
         // console.log("distance objective: ", distanceComplete);
     }
 
     // kill count
-    scene.killText.setText("Kills: " + Game.player.killCount + " / 10");
+    scene.killText.setText(
+        "Kills: " + Game.player.killCount + " / " + scene.killObjective,
+    );
 
-    if (Game.player.killCount >= 10) {
+    if (Game.player.killCount >= scene.killObjective) {
         scene.killComplete = true;
         // console.log("kill objective: ", killComplete);
     }
@@ -60,9 +93,3 @@ export function stageObjective(scene: any) {
         scene.scene.start("GameOver");
     }
 }
-
-function stage_1() {}
-function stage_2() {}
-function stage_3() {}
-function stage_4() {}
-

@@ -20,7 +20,7 @@ export class GameUI {
         this.scene = scene;
 
         this.createAndUpdateHealthBar();
-        this.createCalendar(1);
+        this.createCalendar(Game.gameStage);
         this.createPowerUpStatus();
         // this.createElapsedTime();
         this.createInventory();
@@ -234,4 +234,3 @@ export class GameUI {
         this.createPowerUpStatus();
     }
 }
-

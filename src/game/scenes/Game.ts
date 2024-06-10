@@ -27,11 +27,8 @@ export class Game extends Scene {
     private map: Phaser.Tilemaps.Tilemap;
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;
-    private highestX: any;
-    private distanceText: any;
-    private killText: any;
 
-    static gameStage = 0;
+    static gameStage = 1;
     static totalKill = 0;
     static totalDistance = 0;
     static totalTime = 0;
@@ -43,11 +40,11 @@ export class Game extends Scene {
     create() {
         this.camera = this.cameras.main;
         this.camera.setZoom(1);
-        this.camera.followOffset.set(0, 50);
+        this.camera.followOffset.set(0, 100);
         this.camera.setBounds(0, 0, 10000, 700);
 
-        Game.gameStage += 1;
-        // Game.gameStage = 2;
+        // Game.gameStage = 3;
+        // console.log(Game.gameStage);
         bridgeMap(this);
 
         this.physics.world.setBounds(
@@ -77,6 +74,10 @@ export class Game extends Scene {
 
         objectiveUI(this);
         this.fallingObject(70, 70, 250, 432, 4000);
+
+        // const graphics = this.add.graphics().setDepth(100);
+        // graphics.lineStyle(2, 0xff0000);
+        // graphics.strokeRect(0, 550, this.map.widthInPixels, 90);
 
         createPause(this);
 

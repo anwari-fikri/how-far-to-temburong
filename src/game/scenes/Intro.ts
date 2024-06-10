@@ -64,6 +64,8 @@ export class Intro extends Scene {
 
     preload() {
         this.load.image("background", "assets/Intro/Company.png"); // Load the background image
+        this.load.audio("mainMenu", "assets/audio/intro_mainMenu.mp3");
+        this.load.audio("newspaper", "assets/audio/intro_newspaper.mp3");
     }
 
     create() {
@@ -113,6 +115,9 @@ export class Intro extends Scene {
 
     newspaperScreen() {
         this.cleanup();
+
+        const mainMenuSound = this.sound.add("newspaper");
+        mainMenuSound.play();
 
         const imagePaths = [
             "assets/Intro/n1.png",
@@ -178,6 +183,9 @@ export class Intro extends Scene {
 
     mainMenuScreen() {
         this.cleanup();
+
+        const mainMenuSound = this.sound.add("mainMenu");
+        mainMenuSound.play({ loop: true, volume: 0.5 });
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "mainMenuScreen";
@@ -620,4 +628,3 @@ export class Intro extends Scene {
         });
     }
 }
-

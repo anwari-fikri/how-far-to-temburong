@@ -12,7 +12,7 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
     constructor(scene: Scene, player: Player) {
         super(scene, {
             classType: Zombie,
-            maxSize: 100,
+            maxSize: 50,
         });
         this.player = player;
 

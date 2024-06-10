@@ -8,6 +8,7 @@ interface WeaponProperties {
     texture: string;
     attackRange: "short" | "medium" | "long";
     attackCooldown: number; // Milliseconds
+    bulletSpeed: number;
 }
 
 export const RANGED_WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> =
@@ -18,6 +19,7 @@ export const RANGED_WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> =
             texture: "pistol",
             attackRange: "medium",
             attackCooldown: 100,
+            bulletSpeed: 600,
         },
     } as const;
 

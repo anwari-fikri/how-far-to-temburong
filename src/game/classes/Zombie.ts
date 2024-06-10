@@ -110,6 +110,9 @@ export class Zombie extends Physics.Arcade.Sprite {
 
     receiveDamage(amount: number, weapon?: MeleeWeapon | RangedWeapon) {
         if (!this.isInIFrame) {
+            if (weapon) {
+                this.applyKnockback(weapon);
+            }
             this.currentHealth -= amount;
             if (weapon instanceof MeleeWeapon) {
                 this.setIFrame(weapon.attackCooldown);
@@ -118,11 +121,18 @@ export class Zombie extends Physics.Arcade.Sprite {
                 this.setIFrame(0);
             }
 
-            this.setTint(0xff0000); // Red
             this.scene.tweens.add({
                 targets: this,
-                tint: { from: 0xff0000, to: this.originalTint },
-                duration: 100,
+                tint: 0xff0000,
+                duration: 50,
+                onComplete: () => {
+                    this.scene.tweens.add({
+                        targets: this,
+                        tint: this.originalTint,
+                        duration: 100,
+                        delay: 100,
+                    });
+                },
             });
 
             // show damage numbers
@@ -165,6 +175,27 @@ export class Zombie extends Physics.Arcade.Sprite {
                 },
             });
         }
+    }
+
+    applyKnockback(weapon: MeleeWeapon | RangedWeapon) {
+        const knockbackPower = 1500;
+        const angle = Phaser.Math.Angle.Between(
+            weapon.x,
+            weapon.y,
+            this.x,
+            this.y,
+        );
+        const knockbackVelocity = this.scene.physics.velocityFromRotation(
+            angle,
+            knockbackPower,
+        );
+
+        this.setVelocity(knockbackVelocity.x, knockbackVelocity.y);
+
+        // Optionally, reset velocity after a short delay
+        this.scene.time.delayedCall(200, () => {
+            this.setVelocity(0, 0);
+        });
     }
 
     setIFrame(duration: number) {
@@ -226,8 +257,8 @@ export class Zombie extends Physics.Arcade.Sprite {
             }
 
             // Player X Zombie
-            if (this.scene.physics.overlap(this, player)) {
-                player.receiveDamage(0.1);
+            if (this.scene.physics.collide(this, player)) {
+                player.receiveDamage(0.1, this);
             }
 
             // Melee X Zombie

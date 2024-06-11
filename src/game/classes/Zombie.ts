@@ -1,5 +1,4 @@
 import { Game } from "../scenes/Game";
-import Bullet from "./Bullet";
 import MeleeWeapon from "./MeleeWeapon";
 import Player from "./Player";
 import { Physics, Scene } from "phaser";
@@ -19,7 +18,7 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         baseHealth: 100,
         attackPower: 5,
         chaseSpeed: 20,
-        tint: 0xff0000,
+        tint: 0xffffff,
     },
     STRONG: {
         texture: "zombie",
@@ -43,6 +42,7 @@ export class Zombie extends Physics.Arcade.Sprite {
     currentHealth: number;
     attackPower: number;
     chaseSpeed: number;
+    originalTint: number;
 
     isInIFrame: boolean = false;
 
@@ -100,6 +100,7 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.currentHealth = zombieType.baseHealth;
         this.attackPower = zombieType.attackPower;
         this.chaseSpeed = zombieType.chaseSpeed;
+        this.originalTint = zombieType.tint;
 
         switch (zombieType) {
             case ZOMBIE_TYPE.NORMAL:
@@ -117,16 +118,92 @@ export class Zombie extends Physics.Arcade.Sprite {
 
     receiveDamage(amount: number, weapon?: MeleeWeapon | RangedWeapon) {
         if (!this.isInIFrame) {
+            if (weapon) {
+                this.applyKnockback(weapon);
+            }
             this.currentHealth -= amount;
             if (weapon instanceof MeleeWeapon) {
                 this.setIFrame(weapon.attackCooldown);
             }
             if (weapon instanceof RangedWeapon) {
                 this.setIFrame(0);
-                // Time = Speed / Distance
-                // IFrame = Bullet Speed / Zombie Width
             }
+
+            this.scene.tweens.add({
+                targets: this,
+                tint: 0xff0000,
+                duration: 50,
+                onComplete: () => {
+                    this.scene.tweens.add({
+                        targets: this,
+                        tint: this.originalTint,
+                        duration: 100,
+                        delay: 100,
+                    });
+                },
+            });
+
+            // show damage numbers
+            const xDeviation = Phaser.Math.Between(-10, 10); // Random x deviation between -10 and 10
+            const yDeviation = Phaser.Math.Between(-10, -30); // Random y deviation between -10 and -30
+
+            let color = "#FFFFFF";
+            let fontSize = "8px";
+            if (amount < 30) {
+                color = "#FFFFFF"; // White
+                fontSize = "8px";
+            } else if (amount < 60) {
+                color = "#FF0000"; // Red
+                fontSize = "10px";
+            } else {
+                color = "#FFD700"; // Gold
+                fontSize = "12px";
+            }
+
+            const damageText = this.scene.add
+                .text(this.x + xDeviation, this.y - 10, `${amount}`, {
+                    fontFamily: "Arial",
+                    fontSize: fontSize,
+                    color: color,
+                    stroke: "#000000",
+                    strokeThickness: 2,
+                })
+                .setOrigin(0.5)
+                .setDepth(40);
+
+            // Apply upward floating animation with random deviation
+            this.scene.tweens.add({
+                targets: damageText,
+                x: damageText.x + xDeviation,
+                y: damageText.y + yDeviation,
+                alpha: 0,
+                duration: 1000,
+                onComplete: () => {
+                    damageText.destroy();
+                },
+            });
         }
+    }
+
+    applyKnockback(weapon: MeleeWeapon | RangedWeapon) {
+        const knockbackPower = 1500;
+        const angle = Phaser.Math.Angle.Between(
+            weapon.x,
+            weapon.y,
+            this.x,
+            this.y,
+        );
+        const knockbackVelocity = this.scene.physics.velocityFromRotation(
+            angle,
+            knockbackPower,
+        );
+
+        this.setVelocity(knockbackVelocity.x, knockbackVelocity.y);
+
+        // Optionally, reset velocity after a short delay
+        this.scene.time.delayedCall(200, () => {
+            this.setVelocity(0, 0);
+        });
     }
 
     setIFrame(duration: number) {
@@ -188,8 +265,8 @@ export class Zombie extends Physics.Arcade.Sprite {
             }
 
             // Player X Zombie
-            if (this.scene.physics.overlap(this, player)) {
-                player.receiveDamage(0.1);
+            if (this.scene.physics.collide(this, player)) {
+                player.receiveDamage(0.1, this);
             }
 
             // Melee X Zombie

@@ -4,12 +4,13 @@ import MeleeWeapon, { WEAPON_TYPE } from "./MeleeWeapon";
 import PlayerControls from "./PlayerControls";
 import { PowerUpType } from "./PowerUp";
 import RangedWeapon, { RANGED_WEAPON_TYPE } from "./RangedWeapon";
+import { Zombie } from "./Zombie";
 import { ZombieGroup } from "./ZombieGroup";
 
 export enum PLAYER_CONST {
     BASE_HEALTH = 100,
     BASE_MOVEMENT_SPEED = 200,
-    BASE_ATTACK = 10,
+    BASE_ATTACK = 25,
 }
 
 export enum POWERUP_DURATION {
@@ -77,10 +78,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.isInvincibility = false;
     }
 
-    receiveDamage(value: number) {
+    receiveDamage(value: number, zombie: Zombie) {
         if (!this.isInIFrame) {
             if (!this.isInvincibility) {
                 this.currentHealth = Math.max(0, this.currentHealth - value);
+            }
+
+            if (zombie) {
+                this.applyKnockback(zombie);
             }
 
             console.log(this.currentHealth);
@@ -91,6 +96,27 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             const playerDamage = this.scene.sound.add("playerHurt");
             playerDamage.play();
         }
+    }
+
+    applyKnockback(zombie: Zombie) {
+        const knockbackPower = 1000;
+        const angle = Phaser.Math.Angle.Between(
+            zombie.x,
+            zombie.y,
+            this.x,
+            this.y,
+        );
+        const knockbackVelocity = this.scene.physics.velocityFromRotation(
+            angle,
+            knockbackPower,
+        );
+
+        this.setVelocity(knockbackVelocity.x, knockbackVelocity.y);
+
+        // Optionally, reset velocity after a short delay
+        this.scene.time.delayedCall(200, () => {
+            this.setVelocity(0, 0);
+        });
     }
 
     setIFrame(duration: number) {

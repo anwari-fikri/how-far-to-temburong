@@ -4,14 +4,15 @@ import Typed from 'typed.js';
 // import playerStore from '../stores/PlayerStore';
 
 function loadGoogleFont() {
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap';
-    link.rel = 'stylesheet';
+    const link = document.createElement("link");
+    link.href =
+        "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap";
+    link.rel = "stylesheet";
     document.head.appendChild(link);
 }
 
 function addGlobalStyles() {
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
     @keyframes fade-in {
         0% { opacity: 0; }
@@ -59,8 +60,7 @@ export class CheckpointAndChapters extends Scene {
     static selectedCharacter: any;
 
     constructor() {
-        super('CheckpointAndChapters');
-       
+        super("CheckpointAndChapters");
     }
 
     preload() {
@@ -71,9 +71,9 @@ export class CheckpointAndChapters extends Scene {
         loadGoogleFont();
         addGlobalStyles();
 
-        this.cameras.main.setBackgroundColor('#000000');
+        this.cameras.main.setBackgroundColor("#000000");
 
-        EventBus.emit('current-scene-ready', this);
+        EventBus.emit("current-scene-ready", this);
 
         setTimeout(() => {
             this.chapterFinaleContinuation();
@@ -1026,10 +1026,10 @@ checkpointThreeScreen() {
 // -------------------------------------------------------------- MAIN GAME SCREEN AND CLEANUP  ---------------------------------------------------------------------------
 
 
-startMainGame() {
-    this.cleanup();
-    this.scene.start('Game');
-}
+    startMainGame() {
+        this.cleanup();
+        this.scene.start("Game");
+    }
 
 cleanup() {
     const elementsToRemove = [ 'chapterOne','chapterTwo','chapterThree','chapterFour','chapterFinale'           , 'chapterOneContinuation', 'dialogueChapterOne','chapterTwoContinuation', 'dialogueChapterTwo','chapterThreeContinuation', 'dialogueChapterThree','chapterFourContinuation', 'dialogueChapterFour','chapterFinaleContinuation', 'dialogueChapterFinale',          'checkpointOne','dialogueCheckpointOne','checkpointTwo','dialogueCheckpointTwo','checkpointThree','dialogueCheckpointThree' ];

@@ -34,32 +34,38 @@ export class Preloader extends Scene {
             frameWidth: 7,
             frameHeight: 7,
         });
+        this.load.spritesheet("inventory-slot", "ui/inventory-slot.png", {
+            frameWidth: 32,
+            frameHeight: 32,
+        });
 
         // Power Ups
-        this.load.image("attack-up", "powerUps/PowerUp.png");
-        this.load.image("nuke", "powerUps/PowerUp.png");
-        this.load.image("time-stop", "powerUps/PowerUp.png");
-        this.load.image("invincibility", "powerUps/PowerUp.png");
-        this.load.image("star", "powerUps/PowerUp.png");
+        this.load.image("attack_boost", "powerUps/attack-boost.png");
+        this.load.image("nuke", "powerUps/nuke.png");
+        this.load.image("time_stop", "powerUps/time-stop.png");
+        this.load.image("invincibility", "powerUps/invincibility.png");
+        this.load.image("speed_boost", "powerUps/speed-boost.png");
 
         // Characters
         this.load.spritesheet("soldier", "characters/soldier.png", {
             frameWidth: 96,
             frameHeight: 64,
         });
+        this.load.spritesheet("zombie", "characters/zombie.png", {
+            frameWidth: 96,
+            frameHeight: 64,
+        });
 
         // Weapons
+        this.load.image("sword_icon", "weapons/icons/sword_icon.png");
         this.load.spritesheet("sword_attack", "weapons/sword_attack.png", {
             frameWidth: 96,
             frameHeight: 64,
         });
-        this.load.spritesheet("sword", "weapons/sword.png", {
-            frameWidth: 192,
-            frameHeight: 192,
-        });
-        this.load.spritesheet("guns_sheet", "weapons/guns_sheet.png", {
-            frameWidth: 48,
-            frameHeight: 16,
+        this.load.image("pistol_icon", "weapons/icons/pistol_icon.png");
+        this.load.spritesheet("pistol", "weapons/pistol.png", {
+            frameWidth: 96,
+            frameHeight: 64,
         });
 
         // Projectiles
@@ -67,7 +73,7 @@ export class Preloader extends Scene {
             "bullet_sheet",
             "weapons/projectiles/bullet_sheet.png",
             {
-                frameWidth: 10,
+                frameWidth: 20,
                 frameHeight: 5,
             },
         );

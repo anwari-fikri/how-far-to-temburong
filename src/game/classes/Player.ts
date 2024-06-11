@@ -4,25 +4,28 @@ import MeleeWeapon, { WEAPON_TYPE } from "./MeleeWeapon";
 import PlayerControls from "./PlayerControls";
 import { PowerUpType } from "./PowerUp";
 import RangedWeapon, { RANGED_WEAPON_TYPE } from "./RangedWeapon";
+import { Zombie } from "./Zombie";
 import { ZombieGroup } from "./ZombieGroup";
 
 export enum PLAYER_CONST {
     BASE_HEALTH = 100,
     BASE_MOVEMENT_SPEED = 200,
-    BASE_ATTACK = 10,
+    BASE_ATTACK = 25,
 }
 
-enum POWERUP_DURATION {
+export enum POWERUP_DURATION {
     SECOND = 1000,
-    SPEED_BOOST = 5 * SECOND,
-    ATTACK_BOOST = 5 * SECOND,
-    TIME_STOP = 5 * SECOND,
+    SPEED_BOOST = 10 * SECOND,
+    ATTACK_BOOST = 10 * SECOND,
+    TIME_STOP = 10 * SECOND,
+    INVINCIBILITY = 10 * SECOND,
 }
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     controls: PlayerControls;
     inventory: Inventory;
     isAttacking: boolean = false;
+    isInIFrame: boolean = false;
 
     // Stats
     currentHealth: number;
@@ -52,6 +55,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             -radius + 0.5 * this.width,
             -radius + 0.5 * this.height,
         );
+        this.setDepth(20);
 
         this.controls = new PlayerControls(scene, this);
         playerAnims(scene);
@@ -60,7 +64,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             new MeleeWeapon(scene, this, WEAPON_TYPE.SWORD),
         );
         this.inventory.replaceRangedWeapon(
-            new RangedWeapon(scene, this, RANGED_WEAPON_TYPE.GUN),
+            new RangedWeapon(scene, this, RANGED_WEAPON_TYPE.PISTOL),
         );
         scene.cameras.main.startFollow(this, true);
 
@@ -74,17 +78,52 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.isInvincibility = false;
     }
 
-    receiveDamage(attack: number) {
-        if (!this.isInvincibility) {
-            this.currentHealth = Math.max(0, this.currentHealth - attack);
+    receiveDamage(value: number, zombie: Zombie) {
+        if (!this.isInIFrame) {
+            if (!this.isInvincibility) {
+                this.currentHealth = Math.max(0, this.currentHealth - value);
+            }
+
+            if (zombie) {
+                this.applyKnockback(zombie);
+            }
+
+            console.log(this.currentHealth);
+            this.currentHealth -= value;
+            this.setIFrame(500);
+            this.emit("health-changed");
+
+            const playerDamage = this.scene.sound.add("playerHurt");
+            playerDamage.play();
         }
+    }
 
-        console.log(this.currentHealth);
-        this.currentHealth -= attack;
-        this.emit("health-changed");
+    applyKnockback(zombie: Zombie) {
+        const knockbackPower = 1000;
+        const angle = Phaser.Math.Angle.Between(
+            zombie.x,
+            zombie.y,
+            this.x,
+            this.y,
+        );
+        const knockbackVelocity = this.scene.physics.velocityFromRotation(
+            angle,
+            knockbackPower,
+        );
 
-        const playerDamage = this.scene.sound.add("playerHurt");
-        playerDamage.play();
+        this.setVelocity(knockbackVelocity.x, knockbackVelocity.y);
+
+        // Optionally, reset velocity after a short delay
+        this.scene.time.delayedCall(200, () => {
+            this.setVelocity(0, 0);
+        });
+    }
+
+    setIFrame(duration: number) {
+        this.isInIFrame = true;
+        this.scene.time.delayedCall(duration, () => {
+            this.isInIFrame = false;
+        });
     }
 
     resetAttributes() {
@@ -222,12 +261,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 this.invincibilityTimer.remove();
             }
 
-            this.invincibilityTimer = this.scene.time.delayedCall(5000, () => {
-                this.isInvincibility = false;
-            });
+            this.invincibilityTimer = this.scene.time.delayedCall(
+                POWERUP_DURATION.INVINCIBILITY,
+                () => {
+                    this.isInvincibility = false;
+                },
+            );
         } else {
             this.invincibilityTimer.reset({
-                delay: 5000,
+                delay: POWERUP_DURATION.INVINCIBILITY,
                 callback: () => (this.isInvincibility = false),
             });
         }

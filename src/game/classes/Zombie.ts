@@ -293,7 +293,7 @@ export class Zombie extends Physics.Arcade.Sprite {
 
             // Player X Zombie
             if (this.scene.physics.collide(this, player)) {
-                player.receiveDamage(0.1, this);
+                player.receiveDamage(this.attackPower, this);
             }
 
             // Melee X Zombie
@@ -314,4 +314,3 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
     }
 }
-

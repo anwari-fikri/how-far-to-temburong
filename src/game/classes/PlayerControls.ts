@@ -1,3 +1,4 @@
+import { Game } from "../scenes/Game";
 import Player from "./Player";
 
 export default class PlayerControls {
@@ -5,10 +6,9 @@ export default class PlayerControls {
     keyS!: Phaser.Input.Keyboard.Key;
     keyD!: Phaser.Input.Keyboard.Key;
     keyW!: Phaser.Input.Keyboard.Key;
-    player: Player;
     facing: "left" | "right";
 
-    constructor(scene: Phaser.Scene, player: Player) {
+    constructor(scene: Phaser.Scene) {
         if (scene.input && scene.input.keyboard) {
             this.keyA = scene.input.keyboard.addKey(
                 Phaser.Input.Keyboard.KeyCodes.A,
@@ -24,7 +24,6 @@ export default class PlayerControls {
             );
         }
 
-        this.player = player;
         this.facing = "left";
     }
 
@@ -34,34 +33,34 @@ export default class PlayerControls {
 
         // Update movement based on input
         if (this.keyA.isDown) {
-            velocity.x = -this.player.currentMovementSpeed;
-            if (!this.player.isAttacking) {
+            velocity.x = -Game.player.currentMovementSpeed;
+            if (!Game.player.isAttacking) {
                 this.facing = "left";
             }
         } else if (this.keyD.isDown) {
-            velocity.x = this.player.currentMovementSpeed;
-            if (!this.player.isAttacking) {
+            velocity.x = Game.player.currentMovementSpeed;
+            if (!Game.player.isAttacking) {
                 this.facing = "right";
             }
         }
 
         if (this.keyW.isDown) {
-            velocity.y = -this.player.currentMovementSpeed;
+            velocity.y = -Game.player.currentMovementSpeed;
         } else if (this.keyS.isDown) {
-            velocity.y = this.player.currentMovementSpeed;
+            velocity.y = Game.player.currentMovementSpeed;
         }
 
         // Apply movement
-        this.player.setVelocity(velocity.x, velocity.y);
+        Game.player.setVelocity(velocity.x, velocity.y);
 
         // Update animation based on facing direction
-        if (!this.player.isAttacking) {
+        if (!Game.player.isAttacking) {
             if (velocity.x !== 0 || velocity.y !== 0) {
-                this.player.anims.play(this.facing, true);
+                Game.player.anims.play(this.facing, true);
             }
         } else {
             // Maintain current facing animation while attacking
-            this.player.anims.play(this.facing, true);
+            Game.player.anims.play(this.facing, true);
         }
     }
 }

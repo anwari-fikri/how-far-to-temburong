@@ -1,14 +1,15 @@
-// import Weapon, { WEAPON_TYPE } from "./Weapon";
+import { Physics } from "phaser";
+import { Game } from "../scenes/Game";
+import { Zombie } from "./Zombie";
 
-// export function dropItem(scene: Phaser.Scene, xPos: number, yPos: number) {
-//     const randomValue = Math.random();
-
-//     if (randomValue < 0.4) {
-//         new Weapon(scene, xPos, yPos, WEAPON_TYPE.DAGGER);
-//     } else if (randomValue < 0.6) {
-//         new Weapon(scene, xPos, yPos, WEAPON_TYPE.DAGGER);
-//     } else {
-//         new Weapon(scene, xPos, yPos, WEAPON_TYPE.DAGGER);
-//     }
+// const dropExp(zombie: Zombie) {
+//     let exp = this.getFirstDead(false) as Physics.Arcade.Sprite
 // }
 
+export function dropItem(zombie: Zombie) {
+    const randomValue = Math.random();
+
+    if (randomValue < 0.1) {
+        Game.powerUps.dropRandomPowerUp(zombie);
+    }
+}

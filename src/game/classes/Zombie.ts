@@ -3,6 +3,7 @@ import MeleeWeapon from "./MeleeWeapon";
 import Player from "./Player";
 import { Physics, Scene } from "phaser";
 import RangedWeapon from "./RangedWeapon";
+import { dropItem } from "./ItemDrop";
 
 interface ZombieProperties {
     texture: string;
@@ -235,6 +236,7 @@ export class Zombie extends Physics.Arcade.Sprite {
     die(isDeSpawn: boolean = false) {
         if (!isDeSpawn) {
             Game.player.killCount += 1;
+            dropItem(this);
         }
 
         this.chaseSpeed = 0;

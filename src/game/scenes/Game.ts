@@ -20,7 +20,7 @@ export class Game extends Scene {
     static player: Player;
     zombies: ZombieGroup;
     gameUI: GameUI;
-    powerUps: PowerUpManager;
+    static powerUps: PowerUpManager;
     private wallLayer!: any;
     private wallLayer2!: any;
     private objectLayer!: any;
@@ -63,8 +63,8 @@ export class Game extends Scene {
         // this.zombies.exampleInfiniteZombie();
 
         // PowerUps
-        this.powerUps = new PowerUpManager(this);
-        this.powerUps.exampleSpawnPowerUps();
+        Game.powerUps = new PowerUpManager(this);
+        // Game.powerUps.exampleSpawnPowerUps();
 
         this.gameUI = new GameUI(this);
 
@@ -111,7 +111,7 @@ export class Game extends Scene {
     update() {
         Game.player.update();
         this.zombies.update(Game.player);
-        this.powerUps.update(Game.player, this.zombies);
+        Game.powerUps.update(Game.player, this.zombies);
         this.gameUI.update();
 
         Game.player.setDepth(11);

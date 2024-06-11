@@ -172,7 +172,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     applyPowerUp(powerUpType: PowerUpType, enemies: ZombieGroup): void {
         switch (powerUpType) {
             case PowerUpType.SPEED_BOOST:
-                this.applySpeedBoost(this.currentMovementSpeed); // x2 speed
+                this.applySpeedBoost(PLAYER_CONST.BASE_MOVEMENT_SPEED / 2);
                 let speedBoostSound = this.scene.sound.add("speedUp");
                 speedBoostSound.play();
                 break;

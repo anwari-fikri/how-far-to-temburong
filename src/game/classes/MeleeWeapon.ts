@@ -5,6 +5,7 @@ interface WeaponProperties {
     name: string;
     icon: string;
     texture: string;
+    attackPower: number;
     attackRange: "short" | "medium" | "long";
     attackCooldown: number; // Milliseconds
     hitbox: { width: number; height: number };
@@ -15,6 +16,7 @@ export const WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> = {
         name: "sword",
         icon: "sword_icon",
         texture: "sword_attack",
+        attackPower: 50,
         attackRange: "medium",
         attackCooldown: 800,
         hitbox: { width: 20, height: 25 },
@@ -27,6 +29,7 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
     isSelected: boolean = false;
     player: Player;
     weaponType: WEAPON_TYPE;
+    attackPower: number;
     attackRange: string;
     attackCooldown: number;
     lastAttackTime: number;
@@ -40,6 +43,7 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
 
         this.player = player;
         this.weaponType = weaponType;
+        this.attackPower = weaponType.attackPower;
         this.attackRange = weaponType.attackRange;
         this.attackCooldown = weaponType.attackCooldown;
         this.hitbox = weaponType.hitbox;

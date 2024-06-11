@@ -10,7 +10,7 @@ import { ZombieGroup } from "./ZombieGroup";
 export enum PLAYER_CONST {
     BASE_HEALTH = 100,
     BASE_MOVEMENT_SPEED = 200,
-    BASE_ATTACK = 25,
+    BONUS_ATTACK = 10,
 }
 
 export enum POWERUP_DURATION {
@@ -31,6 +31,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     currentHealth: number;
     currentMovementSpeed: number;
     currentAttackPower: number;
+    bonusAttackPower: number;
 
     // PowerUps
     isSpeedBoosted: boolean;
@@ -82,19 +83,32 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (!this.isInIFrame) {
             if (!this.isInvincibility) {
                 this.currentHealth = Math.max(0, this.currentHealth - value);
+                if (zombie) {
+                    this.applyKnockback(zombie);
+                }
+
+                this.scene.tweens.add({
+                    targets: this,
+                    tint: 0xff0000,
+                    duration: 50,
+                    onComplete: () => {
+                        this.scene.tweens.add({
+                            targets: this,
+                            tint: 0xffffff,
+                            duration: 100,
+                            delay: 100,
+                        });
+                    },
+                });
+
+                console.log(this.currentHealth);
+                this.currentHealth -= value;
+                this.setIFrame(500);
+                this.emit("health-changed");
+
+                const playerDamage = this.scene.sound.add("playerHurt");
+                playerDamage.play();
             }
-
-            if (zombie) {
-                this.applyKnockback(zombie);
-            }
-
-            console.log(this.currentHealth);
-            this.currentHealth -= value;
-            this.setIFrame(500);
-            this.emit("health-changed");
-
-            const playerDamage = this.scene.sound.add("playerHurt");
-            playerDamage.play();
         }
     }
 
@@ -111,11 +125,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             knockbackPower,
         );
 
-        this.setVelocity(knockbackVelocity.x, knockbackVelocity.y);
+        zombie.setVelocity(-knockbackVelocity.x, -knockbackVelocity.y);
 
         // Optionally, reset velocity after a short delay
         this.scene.time.delayedCall(200, () => {
-            this.setVelocity(0, 0);
+            zombie.setVelocity(0, 0);
         });
     }
 
@@ -129,7 +143,19 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     resetAttributes() {
         this.currentHealth = PLAYER_CONST.BASE_HEALTH;
         this.currentMovementSpeed = PLAYER_CONST.BASE_MOVEMENT_SPEED;
-        this.currentAttackPower = PLAYER_CONST.BASE_ATTACK;
+        this.bonusAttackPower = PLAYER_CONST.BONUS_ATTACK;
+        this.updatePlayerAttack();
+    }
+
+    updatePlayerAttack() {
+        this.currentAttackPower =
+            this.inventory.selectedHandSlot === 1
+                ? this.inventory.meleeWeapon.attackPower +
+                  PLAYER_CONST.BONUS_ATTACK
+                : 0 + PLAYER_CONST.BONUS_ATTACK;
+
+        const self = this;
+        this.on("handslot-changed", () => self.updatePlayerAttack());
     }
 
     // Power Ups
@@ -142,12 +168,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     applyPowerUp(powerUpType: PowerUpType, enemies: ZombieGroup): void {
         switch (powerUpType) {
             case PowerUpType.SPEED_BOOST:
-                this.applySpeedBoost(PLAYER_CONST.BASE_MOVEMENT_SPEED);
+                this.applySpeedBoost(100);
                 let speedBoostSound = this.scene.sound.add("speedUp");
                 speedBoostSound.play();
                 break;
             case PowerUpType.ATTACK_BOOST:
-                this.applyAttackBoost(PLAYER_CONST.BASE_ATTACK);
+                this.applyAttackBoost(50);
                 let attackBoostSound = this.scene.sound.add("attackUp");
                 attackBoostSound.play();
                 break;
@@ -203,7 +229,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     async applyAttackBoost(value: number) {
         if (!this.isAttackBoosted) {
             this.isAttackBoosted = true;
-            this.currentAttackPower += value;
+            this.bonusAttackPower += value;
 
             if (this.attackBoostTimer) {
                 this.attackBoostTimer.remove();
@@ -213,7 +239,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 POWERUP_DURATION.ATTACK_BOOST,
                 () => {
                     this.isAttackBoosted = false;
-                    this.currentAttackPower -= value!;
+                    this.bonusAttackPower -= value!;
                 },
             );
         } else {
@@ -221,7 +247,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 delay: POWERUP_DURATION.ATTACK_BOOST,
                 callback: () => {
                     this.isAttackBoosted = false;
-                    this.currentAttackPower -= value!;
+                    this.bonusAttackPower -= value!;
                 },
             });
         }

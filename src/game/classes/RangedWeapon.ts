@@ -6,6 +6,7 @@ interface WeaponProperties {
     name: string;
     icon: string;
     texture: string;
+    attackPower: number;
     attackRange: "short" | "medium" | "long";
     attackCooldown: number; // Milliseconds
     bulletSpeed: number;
@@ -17,8 +18,9 @@ export const RANGED_WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> =
             name: "pistol",
             icon: "pistol_icon",
             texture: "pistol",
+            attackPower: 20,
             attackRange: "medium",
-            attackCooldown: 100,
+            attackCooldown: 300,
             bulletSpeed: 600,
         },
     } as const;
@@ -30,6 +32,7 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
     isSelected: boolean = false;
     player: Player;
     weaponType: RANGED_WEAPON_TYPE;
+    attackPower: number;
     attackRange: string;
     attackCooldown: number;
     lastAttackTime: number;
@@ -43,6 +46,7 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
 
         this.player = player;
         this.weaponType = weaponType;
+        this.attackPower = weaponType.attackPower;
         this.attackRange = weaponType.attackRange;
         this.attackCooldown = weaponType.attackCooldown;
         this.lastAttackTime = 0;

@@ -96,7 +96,8 @@ export class Game extends Scene {
     bulletHitZombie(zombie: Zombie, bullet: Bullet) {
         bullet.die();
         zombie.receiveDamage(
-            Game.player.currentAttackPower,
+            Game.player.inventory.rangedWeapon.attackPower +
+                Game.player.bonusAttackPower,
             Game.player.inventory.rangedWeapon,
         );
         console.log(zombie.currentHealth);

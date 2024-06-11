@@ -10,6 +10,8 @@ interface ZombieProperties {
     attackPower: number;
     chaseSpeed: number;
     tint: number;
+    animsKey: string;
+    hitboxRadius: number;
 }
 
 export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
@@ -19,20 +21,26 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         attackPower: 5,
         chaseSpeed: 20,
         tint: 0xffffff,
+        animsKey: "zombie",
+        hitboxRadius: 10,
     },
     STRONG: {
         texture: "zombie",
         baseHealth: 200,
         attackPower: 10,
         chaseSpeed: 40,
-        tint: 0x00ff00,
+        tint: 0x00ffff,
+        animsKey: "zombie",
+        hitboxRadius: 12,
     },
     MINI_BOSS: {
-        texture: "zombie",
+        texture: "fat_zombie",
         baseHealth: 1000,
         attackPower: 30,
         chaseSpeed: 30,
-        tint: 0xffff00,
+        tint: 0xffffff,
+        animsKey: "fat-zombie",
+        hitboxRadius: 10,
     },
 } as const;
 
@@ -43,6 +51,8 @@ export class Zombie extends Physics.Arcade.Sprite {
     attackPower: number;
     chaseSpeed: number;
     originalTint: number;
+    animsKey: string;
+    hitboxRadius: number;
 
     isInIFrame: boolean = false;
 
@@ -51,14 +61,6 @@ export class Zombie extends Physics.Arcade.Sprite {
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
-
-        this.setOrigin(0.5, 0.5);
-        var radius = 10;
-        this.setCircle(
-            radius,
-            -radius + 0.5 * this.width,
-            -radius + 0.5 * this.height,
-        );
 
         this.setActive(false);
         this.setVisible(false);
@@ -101,6 +103,16 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.attackPower = zombieType.attackPower;
         this.chaseSpeed = zombieType.chaseSpeed;
         this.originalTint = zombieType.tint;
+        this.animsKey = zombieType.animsKey;
+        this.hitboxRadius = zombieType.hitboxRadius;
+
+        this.setOrigin(0.5, 0.5);
+        var radius = this.hitboxRadius;
+        this.setCircle(
+            radius,
+            -radius + 0.5 * this.width,
+            -radius + 0.5 * this.height,
+        );
 
         switch (zombieType) {
             case ZOMBIE_TYPE.NORMAL:
@@ -149,10 +161,10 @@ export class Zombie extends Physics.Arcade.Sprite {
 
             let color = "#FFFFFF";
             let fontSize = "8px";
-            if (amount < 30) {
+            if (amount < 50) {
                 color = "#FFFFFF"; // White
                 fontSize = "8px";
-            } else if (amount < 60) {
+            } else if (amount < 100) {
                 color = "#FF0000"; // Red
                 fontSize = "10px";
             } else {
@@ -224,9 +236,24 @@ export class Zombie extends Physics.Arcade.Sprite {
         if (!isDeSpawn) {
             Game.player.killCount += 1;
         }
-        this.setActive(false);
-        this.setVisible(false);
-        this.disableBody(true, true);
+
+        this.chaseSpeed = 0;
+        this.disableBody(true, false); // Disable physics but keep the object visible for the animation
+
+        this.scene.tweens
+            .add({
+                targets: this,
+                alpha: { from: 1, to: 0 },
+                ease: "Power1",
+                duration: 1000,
+                onComplete: () => {
+                    this.setActive(false);
+                    this.setVisible(false);
+                    this.disableBody(true, true);
+                    this.setAlpha(1);
+                },
+            })
+            .play();
     }
 
     checkDistanceToPlayer(player: Player) {
@@ -259,9 +286,9 @@ export class Zombie extends Physics.Arcade.Sprite {
 
             const direction = player.x - this.x;
             if (direction > 0) {
-                this.anims.play("walk-right", true);
+                this.anims.play(`${this.animsKey}-walk-right`, true);
             } else {
-                this.anims.play("walk-left", true);
+                this.anims.play(`${this.animsKey}-walk-left`, true);
             }
 
             // Player X Zombie
@@ -287,3 +314,4 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
     }
 }
+

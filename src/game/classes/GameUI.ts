@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import { PLAYER_CONST } from "./Player";
 import { Game } from "../scenes/Game";
-import PowerUp, { PowerUpType } from "./PowerUp";
+import { POWERUP_DURATION, PowerUpType } from "./PowerUp";
 
 export class GameUI {
     scene: Scene;
@@ -111,24 +111,28 @@ export class GameUI {
                 isActive: Game.player.isSpeedBoosted,
                 timer: Game.player.speedBoostTimer,
                 icon: PowerUpType.SPEED_BOOST,
+                duration: POWERUP_DURATION.SPEED_BOOST,
             },
             {
                 key: PowerUpType.ATTACK_BOOST,
                 isActive: Game.player.isAttackBoosted,
                 timer: Game.player.attackBoostTimer,
                 icon: PowerUpType.ATTACK_BOOST,
+                duration: POWERUP_DURATION.ATTACK_BOOST,
             },
             {
                 key: PowerUpType.TIME_STOP,
                 isActive: Game.player.isTimeStopped,
                 timer: Game.player.timeStopTimer,
                 icon: PowerUpType.TIME_STOP,
+                duration: POWERUP_DURATION.TIME_STOP,
             },
             {
                 key: PowerUpType.INVINCIBILITY,
                 isActive: Game.player.isInvincibility,
                 timer: Game.player.invincibilityTimer,
                 icon: PowerUpType.INVINCIBILITY,
+                duration: POWERUP_DURATION.INVINCIBILITY,
             },
         ];
 
@@ -142,14 +146,13 @@ export class GameUI {
                 .sprite(60 + index * 20, 30, powerUp.icon)
                 .setOrigin(0, 0)
                 .setScrollFactor(0)
-                .setScale(0.5);
+                .setScale(0.5)
+                .setDepth(40);
 
             this.activePowerUps.add(icon);
 
             const remainingTime = powerUp.timer.getRemainingSeconds();
-            if (remainingTime < 5) {
-                // const scaleFactor = remainingTime / 4;
-                // icon.setAlpha(scaleFactor);
+            if (remainingTime < 2) {
                 if (
                     Math.floor(
                         this.scene.time.now / (500 + (remainingTime / 4) * 500),
@@ -234,3 +237,4 @@ export class GameUI {
         this.createPowerUpStatus();
     }
 }
+

@@ -94,8 +94,10 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
     }
 
     spawnEnemies() {
-        for (let i = 0; i < this.enemiesPerSpawn; i++) {
-            this.addZombie();
+        if (!Game.player.isTimeStopped) {
+            for (let i = 0; i < this.enemiesPerSpawn; i++) {
+                this.addZombie();
+            }
         }
     }
 
@@ -138,14 +140,14 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
     getNuked() {
         this.children.iterate((zombie: Phaser.GameObjects.GameObject) => {
             if (zombie instanceof Zombie) {
-                zombie.die();
+                zombie.die(true);
             }
             return true;
         });
     }
 
-    getFreezed(isTimeStopped: boolean) {
-        const action = isTimeStopped ? "freeze" : "unfreeze";
+    getFreezed() {
+        const action = Game.player.isTimeStopped ? "freeze" : "unfreeze";
 
         this.children.iterate((zombie: Phaser.GameObjects.GameObject) => {
             if (zombie instanceof Zombie) {
@@ -164,3 +166,4 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         });
     }
 }
+

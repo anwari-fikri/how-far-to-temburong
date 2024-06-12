@@ -34,7 +34,7 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         chaseSpeed: 50,
         tint: 0xfff000,
         animsKey: "zombie",
-        hitboxRadius: 12,
+        hitboxRadius: 10,
         customSize: 1.1,
     },
     MINI_BOSS: {
@@ -44,8 +44,8 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         chaseSpeed: 30,
         tint: 0xffffff,
         animsKey: "fat-zombie",
-        hitboxRadius: 10,
-        customSize: 1,
+        hitboxRadius: 12,
+        customSize: 1.2,
     },
 } as const;
 

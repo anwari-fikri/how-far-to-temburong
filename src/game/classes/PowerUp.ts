@@ -1,6 +1,7 @@
 import Player from "./Player";
 import { Physics } from "phaser";
 import { ZombieGroup } from "./ZombieGroup";
+import { Game } from "../scenes/Game";
 
 export enum PowerUpType {
     SPEED_BOOST = "speed_boost",
@@ -48,11 +49,11 @@ export default class PowerUp extends Physics.Arcade.Sprite {
         this.setVisible(true);
     }
 
-    update(player: Player, enemies: ZombieGroup) {
-        if (this.active && this.scene.physics.overlap(this, player)) {
+    update(enemies: ZombieGroup) {
+        if (this.active && this.scene.physics.overlap(this, Game.player)) {
             this.setActive(false);
             this.setVisible(false);
-            player.applyPowerUp(this.powerUpType, enemies);
+            Game.player.applyPowerUp(this.powerUpType, enemies);
         }
     }
 }

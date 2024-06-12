@@ -3,7 +3,7 @@ import MeleeWeapon from "./MeleeWeapon";
 import Player from "./Player";
 import { Physics, Scene } from "phaser";
 import RangedWeapon from "./RangedWeapon";
-import { dropItem } from "./ItemDrop";
+import { dropItem, dropRandomEncounterTrigger } from "./ItemDrop";
 
 interface ZombieProperties {
     texture: string;
@@ -60,6 +60,7 @@ export class Zombie extends Physics.Arcade.Sprite {
     animsKey: string;
     hitboxRadius: number;
     customSize: number;
+    zombieType: ZombieType;
 
     isInIFrame: boolean = false;
     isTimeStop: boolean = false;
@@ -115,6 +116,7 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.animsKey = zombieType.animsKey;
         this.hitboxRadius = zombieType.hitboxRadius;
         this.customSize = zombieType.customSize;
+        this.zombieType = zombieType;
 
         this.setOrigin(0.5, 0.5);
         var radius = this.hitboxRadius;
@@ -141,10 +143,12 @@ export class Zombie extends Physics.Arcade.Sprite {
     }
 
     receiveDamage(amount: number, weapon?: MeleeWeapon | RangedWeapon) {
+        amount = Math.round(amount);
         if (!this.isInIFrame) {
-            if (weapon) {
+            if (weapon && !Game.player.isTimeStopped) {
                 this.applyKnockback(weapon);
             }
+
             this.currentHealth -= amount;
             if (weapon instanceof MeleeWeapon) {
                 this.setIFrame(weapon.attackCooldown);
@@ -247,7 +251,10 @@ export class Zombie extends Physics.Arcade.Sprite {
     die(isDeSpawn: boolean = false) {
         if (!isDeSpawn) {
             Game.player.killCount += 1;
-            dropItem(this);
+
+            this.zombieType === ZOMBIE_TYPE.MINI_BOSS
+                ? dropRandomEncounterTrigger(this)
+                : dropItem(this, 15);
         }
 
         this.chaseSpeed = 0;
@@ -313,12 +320,17 @@ export class Zombie extends Physics.Arcade.Sprite {
 
             // Melee X Zombie
             if (
-                this.scene.physics.overlap(this, player.inventory.meleeWeapon)
+                this.scene.physics.overlap(
+                    this,
+                    Game.player.inventory.meleeWeapon,
+                )
             ) {
-                console.log(this.currentHealth);
+                const randomValue = 0.9 + Math.random() * 0.05;
                 this.receiveDamage(
-                    player.currentAttackPower,
-                    player.inventory.meleeWeapon,
+                    (Game.player.inventory.meleeWeapon.attackPower +
+                        Game.player.bonusAttackPower) *
+                        randomValue,
+                    Game.player.inventory.meleeWeapon,
                 );
                 if (this.currentHealth <= 0) {
                     this.die();

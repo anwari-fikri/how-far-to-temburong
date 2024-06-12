@@ -17,11 +17,11 @@ export class PowerUpManager extends Phaser.GameObjects.Group {
     }
 
     exampleSpawnPowerUps() {
-        this.addPowerUp(270, 400, "nuke", PowerUpType.NUKE);
-        this.addPowerUp(100, 400, "speed_boost", PowerUpType.SPEED_BOOST);
-        this.addPowerUp(150, 400, "attack_boost", PowerUpType.ATTACK_BOOST);
+        // this.addPowerUp(270, 400, "nuke", PowerUpType.NUKE);
+        // this.addPowerUp(100, 400, "speed_boost", PowerUpType.SPEED_BOOST);
+        // this.addPowerUp(150, 400, "attack_boost", PowerUpType.ATTACK_BOOST);
         this.addPowerUp(200, 400, "time_stop", PowerUpType.TIME_STOP);
-        this.addPowerUp(250, 400, "invincibility", PowerUpType.INVINCIBILITY);
+        // this.addPowerUp(250, 400, "invincibility", PowerUpType.INVINCIBILITY);
     }
 
     dropRandomPowerUp(zombie: Zombie) {
@@ -70,10 +70,10 @@ export class PowerUpManager extends Phaser.GameObjects.Group {
         this.setDepth(40);
     }
 
-    update(player: Player, enemies: ZombieGroup) {
+    update(enemies: ZombieGroup) {
         this.children.iterate((powerUp: Phaser.GameObjects.GameObject) => {
             if (powerUp instanceof PowerUp) {
-                powerUp.update(player, enemies);
+                powerUp.update(enemies);
             }
             return true;
         });

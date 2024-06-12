@@ -13,6 +13,7 @@ interface ZombieProperties {
     tint: number;
     animsKey: string;
     hitboxRadius: number;
+    customSize: number;
 }
 
 export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
@@ -24,15 +25,17 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         tint: 0xffffff,
         animsKey: "zombie",
         hitboxRadius: 10,
+        customSize: 1,
     },
     STRONG: {
         texture: "zombie",
         baseHealth: 200,
         attackPower: 10,
         chaseSpeed: 50,
-        tint: 0x00ffff,
+        tint: 0xfff000,
         animsKey: "zombie",
         hitboxRadius: 12,
+        customSize: 1.1,
     },
     MINI_BOSS: {
         texture: "fat_zombie",
@@ -42,6 +45,7 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         tint: 0xffffff,
         animsKey: "fat-zombie",
         hitboxRadius: 10,
+        customSize: 1,
     },
 } as const;
 
@@ -55,6 +59,7 @@ export class Zombie extends Physics.Arcade.Sprite {
     originalTint: number;
     animsKey: string;
     hitboxRadius: number;
+    customSize: number;
 
     isInIFrame: boolean = false;
     isTimeStop: boolean = false;
@@ -109,6 +114,7 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.originalTint = zombieType.tint;
         this.animsKey = zombieType.animsKey;
         this.hitboxRadius = zombieType.hitboxRadius;
+        this.customSize = zombieType.customSize;
 
         this.setOrigin(0.5, 0.5);
         var radius = this.hitboxRadius;
@@ -117,16 +123,17 @@ export class Zombie extends Physics.Arcade.Sprite {
             -radius + 0.5 * this.width,
             -radius + 0.5 * this.height,
         );
+        this.setScale(this.customSize, this.customSize);
 
         switch (zombieType) {
             case ZOMBIE_TYPE.NORMAL:
                 this.setTexture(ZOMBIE_TYPE.NORMAL.texture);
                 break;
             case ZOMBIE_TYPE.STRONG:
-                this.setTint(ZOMBIE_TYPE.STRONG.tint); // Strong zombies tinted green
+                this.setTint(ZOMBIE_TYPE.STRONG.tint);
                 break;
             case ZOMBIE_TYPE.MINI_BOSS:
-                this.setTint(ZOMBIE_TYPE.MINI_BOSS.tint); // Mini-boss zombies tinted yellow
+                this.setTint(ZOMBIE_TYPE.MINI_BOSS.tint);
                 break;
         }
         this.alive(spawnX, spawnY);

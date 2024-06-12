@@ -39,14 +39,13 @@ export function bridgeMap(scene: any) {
         height: 50,
     });
 
-    if (Game.gameStage == 1) {
+    if (Game.gameStage == 1 || Game.gameStage == 2) {
         const oceantile = scene.map.addTilesetImage("ocean");
 
         scene.bgOcean = scene.map.createBlankLayer("Ocean Layer", oceantile);
         scene.bgOcean.fill(1, 0, 0, scene.map.width, scene.map.height);
         scene.bgOcean.setScrollFactor(1.1, 1);
-    }
-    if (Game.gameStage == 2) {
+    } else {
         jungleBg(scene);
     }
 
@@ -193,18 +192,8 @@ export function bridgeMap(scene: any) {
     scene.objectLayer.setDepth(21);
     scene.lightLayer2.setDepth(22);
 
-    scene.wallLayer.setCollision([
-        fence,
-        barricade,
-        barricadeCrack1,
-        barricadeCrack2,
-    ]);
-    scene.wallLayer2.setCollision([
-        fence,
-        barricade,
-        barricadeCrack1,
-        barricadeCrack2,
-    ]);
+    scene.wallLayer.setCollisionByExclusion([-1]);
+    scene.wallLayer2.setCollisionByExclusion([-1]);
     scene.objectLayer.setCollisionByExclusion([-1]);
 }
 
@@ -219,7 +208,7 @@ export function generateMapContinuation(scene: any) {
         height: 50,
     });
 
-    if (Game.gameStage == 1) {
+    if (Game.gameStage == 1 || Game.gameStage == 2) {
         const oceantile = scene.map.addTilesetImage("ocean");
 
         scene.bgOcean = scene.map.createBlankLayer("Ocean Layer", oceantile);
@@ -231,8 +220,7 @@ export function generateMapContinuation(scene: any) {
             scene.map.height,
         );
         scene.bgOcean.setScrollFactor(1.1, 1);
-    }
-    if (Game.gameStage == 2) {
+    } else {
         const jungle = scene.add
             .image(scene.map.widthInPixels, 200, "jungle")
             .setOrigin(0, 0);
@@ -410,18 +398,18 @@ export function generateMapContinuation(scene: any) {
     scene.wallLayer2.setCollisionByExclusion([-1]);
     scene.objectLayer.setCollisionByExclusion([-1]);
 
-    scene.startLayer = scene.map.createBlankLayer(
-        "Start Layer",
-        scene.map.addTilesetImage("start"),
-    );
-    scene.endLayer = scene.map.createBlankLayer(
-        "End Layer",
-        scene.map.addTilesetImage("end"),
-    );
-    scene.startLayer.putTileAt(0, startX, 12);
-    scene.endLayer.putTileAt(0, startX + 49, 12);
-    scene.startLayer.setDepth(5);
-    scene.endLayer.setDepth(5);
+    // scene.startLayer = scene.map.createBlankLayer(
+    //     "Start Layer",
+    //     scene.map.addTilesetImage("start"),
+    // );
+    // scene.endLayer = scene.map.createBlankLayer(
+    //     "End Layer",
+    //     scene.map.addTilesetImage("end"),
+    // );
+    // scene.startLayer.putTileAt(0, startX, 12);
+    // scene.endLayer.putTileAt(0, startX + 49, 12);
+    // scene.startLayer.setDepth(5);
+    // scene.endLayer.setDepth(5);
 }
 
 export function jungleBg(scene: any) {
@@ -542,4 +530,3 @@ export function slimeDebuff(scene: any) {
         // console.log("normal... ", scene.player.currentMovementSpeed);
     }
 }
-

@@ -9,7 +9,7 @@ import { ZombieGroup } from "./ZombieGroup";
 
 export enum PLAYER_CONST {
     BASE_HEALTH = 100,
-    BASE_MOVEMENT_SPEED = 200,
+    BASE_MOVEMENT_SPEED = 100,
     BONUS_ATTACK = 10,
 }
 
@@ -43,6 +43,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     isInvincibility: boolean;
     invincibilityTimer: Phaser.Time.TimerEvent;
 
+    // Debuff
+    isOnSlimeTile: boolean;
+    originalMovementSpeed: number;
+
     killCount: number = 0;
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
@@ -58,7 +62,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         );
         this.setDepth(20);
 
-        this.controls = new PlayerControls(scene, this);
+        this.controls = new PlayerControls(scene);
         playerAnims(scene);
         this.inventory = new Inventory();
         this.inventory.replaceMeleeWeapon(
@@ -168,7 +172,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     applyPowerUp(powerUpType: PowerUpType, enemies: ZombieGroup): void {
         switch (powerUpType) {
             case PowerUpType.SPEED_BOOST:
-                this.applySpeedBoost(100);
+                this.applySpeedBoost(PLAYER_CONST.BASE_MOVEMENT_SPEED / 2);
                 let speedBoostSound = this.scene.sound.add("speedUp");
                 speedBoostSound.play();
                 break;

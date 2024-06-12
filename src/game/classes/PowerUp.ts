@@ -32,7 +32,9 @@ export default class PowerUp extends Physics.Arcade.Sprite {
         this.setVisible(false);
     }
 
-    activatePowerUp(x: number, y: number) {
+    activatePowerUp(x: number, y: number, powerUpType: PowerUpType) {
+        this.powerUpType = powerUpType;
+        this.setTexture(powerUpType);
         this.setPosition(x, y);
         this.setActive(true);
         this.setVisible(true);
@@ -46,4 +48,3 @@ export default class PowerUp extends Physics.Arcade.Sprite {
         }
     }
 }
-

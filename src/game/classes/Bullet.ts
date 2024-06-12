@@ -34,6 +34,7 @@ export default class Bullet extends Physics.Arcade.Sprite {
         this.setActive(true);
         this.setVisible(true);
         this.enableBody();
+        this.setSize(5, 10);
 
         this.play("pistol_bullet", true);
 
@@ -76,4 +77,3 @@ export default class Bullet extends Physics.Arcade.Sprite {
         }
     }
 }
-

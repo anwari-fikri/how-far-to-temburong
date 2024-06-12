@@ -1,5 +1,7 @@
 import { Physics, Scene } from "phaser";
 import Player from "./Player";
+import { WeaponSkill } from "./WeaponSkill";
+import { Game } from "../scenes/Game";
 
 interface WeaponProperties {
     name: string;
@@ -23,7 +25,7 @@ export const WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> = {
     },
 } as const;
 
-type WEAPON_TYPE = (typeof WEAPON_TYPE)[keyof typeof WEAPON_TYPE];
+export type WEAPON_TYPE = (typeof WEAPON_TYPE)[keyof typeof WEAPON_TYPE];
 
 export default class MeleeWeapon extends Physics.Arcade.Sprite {
     isSelected: boolean = false;
@@ -34,12 +36,15 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
     attackCooldown: number;
     lastAttackTime: number;
     hitbox: { width: number; height: number };
+    weaponSkill: WeaponSkill;
 
     constructor(scene: Scene, player: Player, weaponType: WEAPON_TYPE) {
         super(scene, player.x, player.y, weaponType.texture);
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
+
+        this.weaponSkill = new WeaponSkill(weaponType);
 
         this.player = player;
         this.weaponType = weaponType;
@@ -57,6 +62,14 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
 
         this.createAnimations(scene);
         this.setupInput(scene);
+    }
+
+    updateWeaponSkill() {
+        const check = () => {
+            this.attackPower =
+                this.weaponType.attackPower + this.weaponSkill.atk.bonus;
+        };
+        Game.player.on("weaponSkillLevelUp", check);
     }
 
     createAnimations(scene: Scene) {

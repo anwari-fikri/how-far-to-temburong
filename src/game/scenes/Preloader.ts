@@ -55,6 +55,10 @@ export class Preloader extends Scene {
             frameWidth: 96,
             frameHeight: 64,
         });
+        this.load.spritesheet("fat_zombie", "characters/fat_zombie.png", {
+            frameWidth: 96,
+            frameHeight: 64,
+        });
 
         // Weapons
         this.load.image("sword_icon", "weapons/icons/sword_icon.png");
@@ -111,6 +115,7 @@ export class Preloader extends Scene {
         this.load.image("end", "tiles/Texture/end.png");
 
         // Random Encounter
+        this.load.image("trigger", "randomEncounter/trigger.png");
         this.load.image("random1", "randomEncounter/random1.png");
         this.load.image("random2", "randomEncounter/random2.png");
         this.load.image("random3", "randomEncounter/random3.png");
@@ -125,7 +130,7 @@ export class Preloader extends Scene {
         this.load.audio("mediumAttack", "audio/attack_medium.mp3");
         this.load.audio("shortAttack", "audio/attack_short.mp3");
         // this.load.audio("longAttack", "audio/attack_long.mp3");
-        this.load.audio("gunAttack", "audio/attack_gun.mp3");
+        this.load.audio("gunAttack", "audio/attack_pistol.mp3");
         this.load.audio("playerHurt", "audio/player_hurt.mp3");
         this.load.audio("playerDeath", "audio/player_death.mp3");
         this.load.audio("inventoryOpen", "audio/player_open_inventory.mp3");

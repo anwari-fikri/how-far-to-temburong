@@ -1,14 +1,17 @@
-// import Weapon, { WEAPON_TYPE } from "./Weapon";
+import { Physics } from "phaser";
+import { Game } from "../scenes/Game";
+import { Zombie } from "./Zombie";
+import RandomEncounterTrigger from "./RandomEncounterTrigger";
 
-// export function dropItem(scene: Phaser.Scene, xPos: number, yPos: number) {
-//     const randomValue = Math.random();
+export function dropItem(zombie: Zombie, chance: number = 15) {
+    const randomValue = Math.random();
 
-//     if (randomValue < 0.4) {
-//         new Weapon(scene, xPos, yPos, WEAPON_TYPE.DAGGER);
-//     } else if (randomValue < 0.6) {
-//         new Weapon(scene, xPos, yPos, WEAPON_TYPE.DAGGER);
-//     } else {
-//         new Weapon(scene, xPos, yPos, WEAPON_TYPE.DAGGER);
-//     }
-// }
+    if (randomValue < chance / 100) {
+        Game.powerUps.dropRandomPowerUp(zombie);
+    }
+}
+
+export function dropRandomEncounterTrigger(zombie: Zombie) {
+    Game.randomEncounters.activateTrigger(zombie.x, zombie.y);
+}
 

@@ -40,7 +40,7 @@ const config: Phaser.Types.Core.GameConfig = {
         Intro,
         WeaponTest,
         CheckpointAndChapters,
-
+,
     ],
 };
 
@@ -59,7 +59,5 @@ const StartGame = (parent: string) => {
 
     return new Game({ ...config, parent });
 };
-
-
 
 export default StartGame;

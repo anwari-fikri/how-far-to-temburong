@@ -3,6 +3,7 @@ import MeleeWeapon from "./MeleeWeapon";
 import Player from "./Player";
 import { Physics, Scene } from "phaser";
 import RangedWeapon from "./RangedWeapon";
+import { dropItem, dropRandomEncounterTrigger } from "./ItemDrop";
 
 interface ZombieProperties {
     texture: string;
@@ -10,6 +11,9 @@ interface ZombieProperties {
     attackPower: number;
     chaseSpeed: number;
     tint: number;
+    animsKey: string;
+    hitboxRadius: number;
+    customSize: number;
 }
 
 export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
@@ -17,22 +21,31 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         texture: "zombie",
         baseHealth: 100,
         attackPower: 5,
-        chaseSpeed: 20,
+        chaseSpeed: 50,
         tint: 0xffffff,
+        animsKey: "zombie",
+        hitboxRadius: 10,
+        customSize: 1,
     },
     STRONG: {
         texture: "zombie",
         baseHealth: 200,
         attackPower: 10,
-        chaseSpeed: 40,
-        tint: 0x00ff00,
+        chaseSpeed: 50,
+        tint: 0xfff000,
+        animsKey: "zombie",
+        hitboxRadius: 10,
+        customSize: 1.1,
     },
     MINI_BOSS: {
-        texture: "zombie",
+        texture: "fat_zombie",
         baseHealth: 1000,
         attackPower: 30,
         chaseSpeed: 30,
-        tint: 0xffff00,
+        tint: 0xffffff,
+        animsKey: "fat-zombie",
+        hitboxRadius: 12,
+        customSize: 1.2,
     },
 } as const;
 
@@ -41,24 +54,22 @@ type ZombieType = (typeof ZOMBIE_TYPE)[keyof typeof ZOMBIE_TYPE];
 export class Zombie extends Physics.Arcade.Sprite {
     currentHealth: number;
     attackPower: number;
+    originalChaseSpeed: number;
     chaseSpeed: number;
     originalTint: number;
+    animsKey: string;
+    hitboxRadius: number;
+    customSize: number;
+    zombieType: ZombieType;
 
     isInIFrame: boolean = false;
+    isTimeStop: boolean = false;
 
     constructor(scene: Scene) {
         super(scene, 0, 0, "zombie");
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
-
-        this.setOrigin(0.5, 0.5);
-        var radius = 10;
-        this.setCircle(
-            radius,
-            -radius + 0.5 * this.width,
-            -radius + 0.5 * this.height,
-        );
 
         this.setActive(false);
         this.setVisible(false);
@@ -99,28 +110,45 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.setTexture(zombieType.texture);
         this.currentHealth = zombieType.baseHealth;
         this.attackPower = zombieType.attackPower;
+        this.originalChaseSpeed = zombieType.chaseSpeed;
         this.chaseSpeed = zombieType.chaseSpeed;
         this.originalTint = zombieType.tint;
+        this.animsKey = zombieType.animsKey;
+        this.hitboxRadius = zombieType.hitboxRadius;
+        this.customSize = zombieType.customSize;
+        this.zombieType = zombieType;
+
+        this.setOrigin(0.5, 0.5);
+        var radius = this.hitboxRadius;
+        this.setCircle(
+            radius,
+            -radius + 0.5 * this.width,
+            -radius + 0.5 * this.height,
+        );
+        this.setScale(this.customSize, this.customSize);
+        this.setTint(this.originalTint);
 
         switch (zombieType) {
             case ZOMBIE_TYPE.NORMAL:
                 this.setTexture(ZOMBIE_TYPE.NORMAL.texture);
                 break;
             case ZOMBIE_TYPE.STRONG:
-                this.setTint(ZOMBIE_TYPE.STRONG.tint); // Strong zombies tinted green
+                this.setTint(ZOMBIE_TYPE.STRONG.tint);
                 break;
             case ZOMBIE_TYPE.MINI_BOSS:
-                this.setTint(ZOMBIE_TYPE.MINI_BOSS.tint); // Mini-boss zombies tinted yellow
+                this.setTint(ZOMBIE_TYPE.MINI_BOSS.tint);
                 break;
         }
         this.alive(spawnX, spawnY);
     }
 
     receiveDamage(amount: number, weapon?: MeleeWeapon | RangedWeapon) {
+        amount = Math.round(amount);
         if (!this.isInIFrame) {
-            if (weapon) {
+            if (weapon && !Game.player.isTimeStopped) {
                 this.applyKnockback(weapon);
             }
+
             this.currentHealth -= amount;
             if (weapon instanceof MeleeWeapon) {
                 this.setIFrame(weapon.attackCooldown);
@@ -149,10 +177,10 @@ export class Zombie extends Physics.Arcade.Sprite {
 
             let color = "#FFFFFF";
             let fontSize = "8px";
-            if (amount < 30) {
+            if (amount < 50) {
                 color = "#FFFFFF"; // White
                 fontSize = "8px";
-            } else if (amount < 60) {
+            } else if (amount < 100) {
                 color = "#FF0000"; // Red
                 fontSize = "10px";
             } else {
@@ -223,10 +251,29 @@ export class Zombie extends Physics.Arcade.Sprite {
     die(isDeSpawn: boolean = false) {
         if (!isDeSpawn) {
             Game.player.killCount += 1;
+
+            this.zombieType === ZOMBIE_TYPE.MINI_BOSS
+                ? dropRandomEncounterTrigger(this)
+                : dropItem(this, 15);
         }
-        this.setActive(false);
-        this.setVisible(false);
-        this.disableBody(true, true);
+
+        this.chaseSpeed = 0;
+        this.disableBody(true, false); // Disable physics but keep the object visible for the animation
+
+        this.scene.tweens
+            .add({
+                targets: this,
+                alpha: { from: 1, to: 0 },
+                ease: "Power1",
+                duration: 1000,
+                onComplete: () => {
+                    this.setActive(false);
+                    this.setVisible(false);
+                    this.disableBody(true, true);
+                    this.setAlpha(1);
+                },
+            })
+            .play();
     }
 
     checkDistanceToPlayer(player: Player) {
@@ -249,7 +296,7 @@ export class Zombie extends Physics.Arcade.Sprite {
     }
 
     unfreeze() {
-        this.chaseSpeed = 40;
+        this.chaseSpeed = this.originalChaseSpeed;
     }
 
     update(player: Player) {
@@ -257,26 +304,33 @@ export class Zombie extends Physics.Arcade.Sprite {
             this.scene.physics.moveToObject(this, player, this.chaseSpeed);
             this.checkDistanceToPlayer(player);
 
-            const direction = player.x - this.x;
-            if (direction > 0) {
-                this.anims.play("walk-right", true);
-            } else {
-                this.anims.play("walk-left", true);
-            }
+            if (!Game.player.isTimeStopped) {
+                const direction = player.x - this.x;
+                if (direction > 0) {
+                    this.anims.play(`${this.animsKey}-walk-right`, true);
+                } else {
+                    this.anims.play(`${this.animsKey}-walk-left`, true);
+                }
 
-            // Player X Zombie
-            if (this.scene.physics.collide(this, player)) {
-                player.receiveDamage(0.1, this);
+                // Player X Zombie
+                if (this.scene.physics.collide(this, player)) {
+                    player.receiveDamage(this.attackPower, this);
+                }
             }
 
             // Melee X Zombie
             if (
-                this.scene.physics.overlap(this, player.inventory.meleeWeapon)
+                this.scene.physics.overlap(
+                    this,
+                    Game.player.inventory.meleeWeapon,
+                )
             ) {
-                console.log(this.currentHealth);
+                const randomValue = 0.9 + Math.random() * 0.05;
                 this.receiveDamage(
-                    player.currentAttackPower,
-                    player.inventory.meleeWeapon,
+                    (Game.player.inventory.meleeWeapon.attackPower +
+                        Game.player.bonusAttackPower) *
+                        randomValue,
+                    Game.player.inventory.meleeWeapon,
                 );
                 if (this.currentHealth <= 0) {
                     this.die();
@@ -287,3 +341,4 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
     }
 }
+

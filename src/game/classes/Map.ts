@@ -522,11 +522,20 @@ export function slimeDebuff(scene: any) {
         Game.player.x,
         Game.player.y,
     );
-    if (playerTile) {
-        Game.player.currentMovementSpeed = 75;
-        // console.log("slow... ", scene.player.currentMovementSpeed);
+
+    if (playerTile && !Game.player.isSpeedBoosted) {
+        if (!Game.player.isOnSlimeTile) {
+            Game.player.isOnSlimeTile = true;
+            Game.player.originalMovementSpeed =
+                Game.player.currentMovementSpeed;
+            Game.player.currentMovementSpeed =
+                Game.player.originalMovementSpeed / 2;
+        }
     } else {
-        Game.player.currentMovementSpeed = 200;
-        // console.log("normal... ", scene.player.currentMovementSpeed);
+        if (Game.player.isOnSlimeTile) {
+            Game.player.isOnSlimeTile = false;
+            Game.player.currentMovementSpeed =
+                Game.player.originalMovementSpeed;
+        }
     }
 }

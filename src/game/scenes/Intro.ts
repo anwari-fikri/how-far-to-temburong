@@ -66,6 +66,8 @@ export class Intro extends Scene {
         this.load.image("background", "assets/Intro/Company.png"); // Load the background image
         this.load.audio("mainMenu", "assets/audio/intro_mainMenu.mp3");
         this.load.audio("newspaper", "assets/audio/intro_newspaper.mp3");
+        this.load.audio("menuButton", "assets/audio/intro_menuButton.mp3");
+        this.load.audio("select", "assets/audio/intro_select.mp3");
     }
 
     create() {
@@ -116,8 +118,8 @@ export class Intro extends Scene {
     newspaperScreen() {
         this.cleanup();
 
-        const mainMenuSound = this.sound.add("newspaper");
-        mainMenuSound.play();
+        const newspaperSound = this.sound.add("newspaper");
+        newspaperSound.play();
 
         const imagePaths = [
             "assets/Intro/n1.png",
@@ -185,7 +187,7 @@ export class Intro extends Scene {
         this.cleanup();
 
         const mainMenuSound = this.sound.add("mainMenu");
-        mainMenuSound.play({ loop: true, volume: 0.5 });
+        mainMenuSound.play({ loop: true });
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "mainMenuScreen";
@@ -253,7 +255,11 @@ export class Intro extends Scene {
             "Start",
             "startButton",
             "48%",
-            () => this.characterSelectionScreen(),
+            () => {
+                const menuButtonSound = this.sound.add("menuButton");
+                menuButtonSound.play();
+                this.characterSelectionScreen();
+            },
             "assets/Intro/buttons.png",
         );
         const startButton = document.getElementById("startButton");
@@ -405,8 +411,11 @@ export class Intro extends Scene {
                 weaponName.style.marginTop = "10px"; // Space between image and text
 
                 wrapper.addEventListener("click", () => {
+                    const selectweapon = this.sound.add("select"); // Add this line
+
                     if (label === "Melee") {
                         if (selectedMeleeElement) {
+                            selectweapon.play(); // Change this line
                             selectedMeleeElement.style.backgroundColor =
                                 "#e03c28";
                         }
@@ -414,6 +423,7 @@ export class Intro extends Scene {
                         selectedMeleeElement = wrapper;
                     } else if (label === "Ranged") {
                         if (selectedRangedElement) {
+                            selectweapon.play(); // Change this line
                             selectedRangedElement.style.backgroundColor =
                                 "#e03c28";
                         }
@@ -478,10 +488,12 @@ export class Intro extends Scene {
         imageUrls.forEach((url) => {
             const img = document.createElement("img");
             img.src = url;
-            img.classList.add("char-image"); // Add char-image class
-            img.style.cursor = "pointer"; // Add pointer cursor
-            img.style.zIndex = "10"; // Ensure character images are above details div
+            img.classList.add("char-image");
+            img.style.cursor = "pointer";
+            img.style.zIndex = "10";
             img.addEventListener("click", () => {
+                const selectAudio = this.sound.add("select");
+                selectAudio.play();
                 this.characterDetailsScreen(img, url);
                 Intro.selectedCharacter =
                     url === "assets/Intro/char1.5.png" ? "char1.5" : "other";

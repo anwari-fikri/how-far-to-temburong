@@ -2,7 +2,6 @@ import { Scene } from "phaser";
 import { EventBus } from "../EventBus";
 import Typed from "typed.js";
 import { Game } from "./Game";
-// import playerStore from '../stores/PlayerStore';
 
 function loadGoogleFont() {
     const link = document.createElement("link");

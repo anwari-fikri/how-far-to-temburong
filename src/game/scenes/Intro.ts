@@ -266,13 +266,13 @@ export class Intro extends Scene {
         const startButtonLeft = "38%";
         const settingsButtonLeft = "40%";
         const creditsButtonLeft = "38%";
+        const menuButtonSound = this.sound.add("menuButton");
 
         createButton(
             "Start",
             "startButton",
             "53%",
             () => {
-                const menuButtonSound = this.sound.add("menuButton");
                 menuButtonSound.play();
                 this.characterSelectionScreen();
             },
@@ -286,7 +286,10 @@ export class Intro extends Scene {
             "Settings",
             "settingsButton",
             "63%",
-            () => console.log("Settings clicked"),
+            () => {
+                console.log("Settings clicked");
+                menuButtonSound.play();
+            },
             "assets/Intro/buttons.png",
         );
         const settingsButton = document.getElementById("settingsButton");
@@ -297,7 +300,10 @@ export class Intro extends Scene {
             "Credits",
             "creditsButton",
             "73%",
-            () => console.log("Credits clicked"),
+            () => {
+                console.log("Credits clicked");
+                menuButtonSound.play();
+            },
             "assets/Intro/buttons.png",
         );
         const creditsButton = document.getElementById("creditsButton");

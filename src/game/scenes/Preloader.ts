@@ -129,7 +129,7 @@ export class Preloader extends Scene {
         this.load.audio("mediumAttack", "audio/attack_medium.mp3");
         this.load.audio("shortAttack", "audio/attack_short.mp3");
         // this.load.audio("longAttack", "audio/attack_long.mp3");
-        this.load.audio("gunAttack", "audio/attack_gun.mp3");
+        this.load.audio("gunAttack", "audio/attack_pistol.mp3");
         this.load.audio("playerHurt", "audio/player_hurt.mp3");
         this.load.audio("playerDeath", "audio/player_death.mp3");
         this.load.audio("inventoryOpen", "audio/player_open_inventory.mp3");
@@ -147,7 +147,7 @@ export class Preloader extends Scene {
         //  For example, you can define global animations here, so we can use them in other scenes.
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start("Game");
+        this.scene.start("Intro");
         // this.scene.start("GameUIOverlay");
     }
 }

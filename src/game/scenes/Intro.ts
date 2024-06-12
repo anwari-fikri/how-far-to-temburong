@@ -69,6 +69,10 @@ export class Intro extends Scene {
 
     preload() {
         this.load.image("background", "assets/Intro/Company.png"); // Load the background image
+        this.load.audio("mainMenu", "assets/audio/intro_mainMenu.mp3");
+        this.load.audio("newspaper", "assets/audio/intro_newspaper.mp3");
+        this.load.audio("menuButton", "assets/audio/intro_menuButton.mp3");
+        this.load.audio("select", "assets/audio/intro_select.mp3");
     }
 
     create() {
@@ -118,6 +122,9 @@ export class Intro extends Scene {
 
     newspaperScreen() {
         this.cleanup();
+
+        const newspaperSound = this.sound.add("newspaper");
+        newspaperSound.play();
 
         const imagePaths = [
             "assets/Intro/n1.png",
@@ -183,7 +190,10 @@ export class Intro extends Scene {
 
     mainMenuScreen() {
         this.cleanup();
-    
+
+        const mainMenuSound = this.sound.add("mainMenu");
+        mainMenuSound.play({ loop: true });
+
         const screenDiv = document.createElement("div");
         screenDiv.id = "mainMenuScreen";
         screenDiv.style.position = "fixed";
@@ -200,7 +210,7 @@ export class Intro extends Scene {
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
         document.body.appendChild(screenDiv);
-    
+
         // Create and style the vignette overlay
         const vignetteOverlay = document.createElement("div");
         vignetteOverlay.style.position = "absolute";
@@ -213,7 +223,7 @@ export class Intro extends Scene {
         vignetteOverlay.style.background =
             "radial-gradient(circle, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 0.8) 100%)";
         screenDiv.appendChild(vignetteOverlay);
-    
+
         // Create and style the new image
         const topImage = document.createElement("img");
         topImage.src = "assets/Intro/gameTitle2.png"; // Path to your new image
@@ -222,10 +232,9 @@ export class Intro extends Scene {
         topImage.style.left = "50%";
         topImage.style.transform = "translateX(-50%)";
         topImage.style.zIndex = "15"; // Make sure it is above other elements
-        topImage.style.width = "45%"; // Adjust the size as needed
+        topImage.style.width = "50%"; // Adjust the size as needed
         screenDiv.appendChild(topImage);
-        
-    
+
         const createButton = (
             text: any,
             id: any,
@@ -253,16 +262,20 @@ export class Intro extends Scene {
             button.addEventListener("click", onClick);
             screenDiv.appendChild(button);
         };
-    
+
         const startButtonLeft = "38%";
         const settingsButtonLeft = "40%";
         const creditsButtonLeft = "38%";
-    
+        const menuButtonSound = this.sound.add("menuButton");
+
         createButton(
             "Start",
             "startButton",
             "53%",
-            () => this.characterSelectionScreen(),
+            () => {
+                menuButtonSound.play();
+                this.characterSelectionScreen();
+            },
             "assets/Intro/buttons.png",
         );
         const startButton = document.getElementById("startButton");
@@ -273,7 +286,10 @@ export class Intro extends Scene {
             "Settings",
             "settingsButton",
             "63%",
-            () => console.log("Settings clicked"),
+            () => {
+                console.log("Settings clicked");
+                menuButtonSound.play();
+            },
             "assets/Intro/buttons.png",
         );
         const settingsButton = document.getElementById("settingsButton");
@@ -284,7 +300,10 @@ export class Intro extends Scene {
             "Credits",
             "creditsButton",
             "73%",
-            () => console.log("Credits clicked"),
+            () => {
+                console.log("Credits clicked");
+                menuButtonSound.play();
+            },
             "assets/Intro/buttons.png",
         );
         const creditsButton = document.getElementById("creditsButton");
@@ -293,7 +312,7 @@ export class Intro extends Scene {
         }
         screenDiv.style.animation = "fade-in 1s forwards";
     }
-    
+
     characterSelectionScreen() {
         this.cleanup();
 
@@ -303,8 +322,7 @@ export class Intro extends Scene {
         screenDiv.style.top = "50%";
         screenDiv.style.left = "50%";
         screenDiv.style.transform = "translate(-50%, -50%)";
-        screenDiv.style.backgroundImage =
-            'url("assets/Intro/dungeon.gif")';
+        screenDiv.style.backgroundImage = 'url("assets/Intro/dungeon.gif")';
         screenDiv.style.backgroundSize = "100%";
         screenDiv.style.backgroundRepeat = "no-repeat";
         screenDiv.style.backgroundPosition = "center";
@@ -315,7 +333,6 @@ export class Intro extends Scene {
         screenDiv.style.opacity = "0";
         document.body.appendChild(screenDiv);
 
-        
         // Create and style the vignette overlay
         const vignetteOverlay = document.createElement("div");
         vignetteOverlay.style.position = "absolute";
@@ -328,7 +345,6 @@ export class Intro extends Scene {
         vignetteOverlay.style.background =
             "radial-gradient(circle, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 0.8) 100%)";
         screenDiv.appendChild(vignetteOverlay);
-    
 
         // Create a container for the weapon selection
         const weaponContainer = document.createElement("div");
@@ -429,8 +445,11 @@ export class Intro extends Scene {
                 weaponName.style.marginTop = "10px"; // Space between image and text
 
                 wrapper.addEventListener("click", () => {
+                    const selectweapon = this.sound.add("select"); // Add this line
+
                     if (label === "Melee") {
                         if (selectedMeleeElement) {
+                            selectweapon.play(); // Change this line
                             selectedMeleeElement.style.backgroundColor =
                                 "#e03c28";
                         }
@@ -438,6 +457,7 @@ export class Intro extends Scene {
                         selectedMeleeElement = wrapper;
                     } else if (label === "Ranged") {
                         if (selectedRangedElement) {
+                            selectweapon.play(); // Change this line
                             selectedRangedElement.style.backgroundColor =
                                 "#e03c28";
                         }
@@ -502,10 +522,12 @@ export class Intro extends Scene {
         imageUrls.forEach((url) => {
             const img = document.createElement("img");
             img.src = url;
-            img.classList.add("char-image"); // Add char-image class
-            img.style.cursor = "pointer"; // Add pointer cursor
-            img.style.zIndex = "10"; // Ensure character images are above details div
+            img.classList.add("char-image");
+            img.style.cursor = "pointer";
+            img.style.zIndex = "10";
             img.addEventListener("click", () => {
+                const selectAudio = this.sound.add("select");
+                selectAudio.play();
                 this.characterDetailsScreen(img, url);
                 Intro.selectedCharacter =
                     url === "assets/Intro/char1.5.png" ? "char1.5" : "other";
@@ -621,7 +643,7 @@ export class Intro extends Scene {
         }
     }
 
-    enableEnterKey() {
+    enableEnterKey(): void {
         const enterKey = this.input.keyboard?.addKey(
             Phaser.Input.Keyboard.KeyCodes.ENTER,
         );
@@ -632,6 +654,7 @@ export class Intro extends Scene {
                 Intro.selectedCharacter === "char1.5"
             ) {
                 this.cleanup();
+                this.sound.stopAll();
                 this.scene.start("CheckpointAndChapters");
             }
         });
@@ -653,4 +676,3 @@ export class Intro extends Scene {
         });
     }
 }
-

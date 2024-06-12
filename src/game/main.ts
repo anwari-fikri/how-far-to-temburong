@@ -40,7 +40,6 @@ const config: Phaser.Types.Core.GameConfig = {
         Intro,
         WeaponTest,
         CheckpointAndChapters,
-        ,
     ],
 };
 

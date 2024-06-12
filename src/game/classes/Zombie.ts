@@ -56,6 +56,7 @@ export class Zombie extends Physics.Arcade.Sprite {
     hitboxRadius: number;
 
     isInIFrame: boolean = false;
+    isTimeStop: boolean = false;
 
     constructor(scene: Scene) {
         super(scene, 0, 0, "zombie");
@@ -286,16 +287,18 @@ export class Zombie extends Physics.Arcade.Sprite {
             this.scene.physics.moveToObject(this, player, this.chaseSpeed);
             this.checkDistanceToPlayer(player);
 
-            const direction = player.x - this.x;
-            if (direction > 0) {
-                this.anims.play(`${this.animsKey}-walk-right`, true);
-            } else {
-                this.anims.play(`${this.animsKey}-walk-left`, true);
-            }
+            if (!Game.player.isTimeStopped) {
+                const direction = player.x - this.x;
+                if (direction > 0) {
+                    this.anims.play(`${this.animsKey}-walk-right`, true);
+                } else {
+                    this.anims.play(`${this.animsKey}-walk-left`, true);
+                }
 
-            // Player X Zombie
-            if (this.scene.physics.collide(this, player)) {
-                player.receiveDamage(this.attackPower, this);
+                // Player X Zombie
+                if (this.scene.physics.collide(this, player)) {
+                    player.receiveDamage(this.attackPower, this);
+                }
             }
 
             // Melee X Zombie
@@ -316,3 +319,4 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
     }
 }
+

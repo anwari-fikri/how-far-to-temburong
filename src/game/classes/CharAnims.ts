@@ -8,7 +8,7 @@ export function playerAnims(scene: Phaser.Scene) {
                 start: 1,
                 end: 0,
             }),
-            frameRate: 8,
+            frameRate: 3,
             repeat: 0,
         });
     }
@@ -20,7 +20,7 @@ export function playerAnims(scene: Phaser.Scene) {
                 start: 6,
                 end: 7,
             }),
-            frameRate: 8,
+            frameRate: 3,
             repeat: 0,
         });
     }

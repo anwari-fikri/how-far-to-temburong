@@ -1,24 +1,17 @@
+import { Game } from "../scenes/Game";
 import { playerAnims } from "./CharAnims";
 import Inventory from "./Inventory";
 import MeleeWeapon, { WEAPON_TYPE } from "./MeleeWeapon";
 import PlayerControls from "./PlayerControls";
-import { PowerUpType } from "./PowerUp";
+import { POWERUP_DURATION, PowerUpType } from "./PowerUp";
 import RangedWeapon, { RANGED_WEAPON_TYPE } from "./RangedWeapon";
 import { Zombie } from "./Zombie";
 import { ZombieGroup } from "./ZombieGroup";
 
 export enum PLAYER_CONST {
     BASE_HEALTH = 100,
-    BASE_MOVEMENT_SPEED = 100,
+    BASE_MOVEMENT_SPEED = 150,
     BONUS_ATTACK = 10,
-}
-
-export enum POWERUP_DURATION {
-    SECOND = 1000,
-    SPEED_BOOST = 10 * SECOND,
-    ATTACK_BOOST = 10 * SECOND,
-    TIME_STOP = 10 * SECOND,
-    INVINCIBILITY = 10 * SECOND,
 }
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
@@ -258,9 +251,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     applyTimeStop(enemies: ZombieGroup) {
-        if (!this.isTimeStopped) {
-            this.isTimeStopped = true;
-            enemies.getFreezed(this.isTimeStopped);
+        if (!Game.player.isTimeStopped) {
+            Game.player.isTimeStopped = true;
+            enemies.getFreezed();
 
             if (this.timeStopTimer) {
                 this.timeStopTimer.remove();
@@ -268,16 +261,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.timeStopTimer = this.scene.time.delayedCall(
                 POWERUP_DURATION.TIME_STOP,
                 () => {
-                    this.isTimeStopped = false;
-                    enemies!.getFreezed(this.isTimeStopped);
+                    Game.player.isTimeStopped = false;
+                    enemies!.getFreezed();
                 },
             );
         } else {
             this.timeStopTimer.reset({
                 delay: POWERUP_DURATION.TIME_STOP,
                 callback: () => {
-                    this.isTimeStopped = false;
-                    enemies!.getFreezed(this.isTimeStopped);
+                    Game.player.isTimeStopped = false;
+                    enemies!.getFreezed();
                 },
             });
         }

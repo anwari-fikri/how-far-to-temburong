@@ -79,3 +79,4 @@ export class PowerUpManager extends Phaser.GameObjects.Group {
         });
     }
 }
+

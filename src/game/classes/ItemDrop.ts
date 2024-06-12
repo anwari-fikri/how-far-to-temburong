@@ -9,7 +9,8 @@ import { Zombie } from "./Zombie";
 export function dropItem(zombie: Zombie) {
     const randomValue = Math.random();
 
-    if (randomValue < 0.1) {
-        Game.powerUps.dropRandomPowerUp(zombie);
-    }
+    // if (randomValue < 0.1) {
+    Game.powerUps.dropRandomPowerUp(zombie);
+    // }
 }
+

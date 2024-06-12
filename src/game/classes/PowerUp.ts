@@ -10,6 +10,14 @@ export enum PowerUpType {
     INVINCIBILITY = "invincibility",
 }
 
+export enum POWERUP_DURATION {
+    SECOND = 1000,
+    SPEED_BOOST = 5 * SECOND,
+    ATTACK_BOOST = 10 * SECOND,
+    TIME_STOP = 5 * SECOND,
+    INVINCIBILITY = 5 * SECOND,
+}
+
 export default class PowerUp extends Physics.Arcade.Sprite {
     powerUpType: PowerUpType;
 
@@ -48,3 +56,4 @@ export default class PowerUp extends Physics.Arcade.Sprite {
         }
     }
 }
+

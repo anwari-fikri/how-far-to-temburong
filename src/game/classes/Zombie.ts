@@ -3,7 +3,7 @@ import MeleeWeapon from "./MeleeWeapon";
 import Player from "./Player";
 import { Physics, Scene } from "phaser";
 import RangedWeapon from "./RangedWeapon";
-import { dropItem } from "./ItemDrop";
+import { dropItem, dropRandomEncounterTrigger } from "./ItemDrop";
 
 interface ZombieProperties {
     texture: string;
@@ -253,7 +253,7 @@ export class Zombie extends Physics.Arcade.Sprite {
             Game.player.killCount += 1;
 
             this.zombieType === ZOMBIE_TYPE.MINI_BOSS
-                ? dropItem(this, 100)
+                ? dropRandomEncounterTrigger(this)
                 : dropItem(this, 15);
         }
 

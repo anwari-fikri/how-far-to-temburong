@@ -15,12 +15,14 @@ import { Intro } from "./Intro";
 import { objectiveUI, stageObjective } from "../classes/GameObjective";
 import Bullet from "../classes/Bullet";
 import { Zombie } from "../classes/Zombie";
+import RandomEncounterTrigger from "../classes/RandomEncounterTrigger";
 
 export class Game extends Scene {
     static player: Player;
     zombies: ZombieGroup;
     gameUI: GameUI;
     static powerUps: PowerUpManager;
+    static randomEncounters: RandomEncounterTrigger;
     private wallLayer!: any;
     private wallLayer2!: any;
     private objectLayer!: any;
@@ -67,6 +69,12 @@ export class Game extends Scene {
         Game.powerUps.exampleSpawnPowerUps();
 
         this.gameUI = new GameUI(this);
+        Game.randomEncounters = new RandomEncounterTrigger(
+            this,
+            0,
+            0,
+            "trigger",
+        );
 
         this.collider();
 
@@ -112,8 +120,9 @@ export class Game extends Scene {
     update() {
         Game.player.update();
         this.zombies.update(Game.player);
-        Game.powerUps.update(Game.player, this.zombies);
+        Game.powerUps.update(this.zombies);
         this.gameUI.update();
+        Game.randomEncounters.update();
 
         Game.player.setDepth(11);
         this.zombies.setDepth(11);

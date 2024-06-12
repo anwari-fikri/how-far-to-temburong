@@ -115,6 +115,7 @@ export class Preloader extends Scene {
         this.load.image("end", "tiles/Texture/end.png");
 
         // Random Encounter
+        this.load.image("trigger", "randomEncounter/trigger.png");
         this.load.image("random1", "randomEncounter/random1.png");
         this.load.image("random2", "randomEncounter/random2.png");
         this.load.image("random3", "randomEncounter/random3.png");
@@ -143,11 +144,6 @@ export class Preloader extends Scene {
     }
 
     create() {
-        //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
-        //  For example, you can define global animations here, so we can use them in other scenes.
-
-        //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start("Intro");
-        // this.scene.start("GameUIOverlay");
+        this.scene.start("Game");
     }
 }

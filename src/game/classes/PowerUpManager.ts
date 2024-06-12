@@ -70,10 +70,10 @@ export class PowerUpManager extends Phaser.GameObjects.Group {
         this.setDepth(40);
     }
 
-    update(player: Player, enemies: ZombieGroup) {
+    update(enemies: ZombieGroup) {
         this.children.iterate((powerUp: Phaser.GameObjects.GameObject) => {
             if (powerUp instanceof PowerUp) {
-                powerUp.update(player, enemies);
+                powerUp.update(enemies);
             }
             return true;
         });

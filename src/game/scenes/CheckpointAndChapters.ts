@@ -76,7 +76,7 @@ export class CheckpointAndChapters extends Scene {
         EventBus.emit("current-scene-ready", this);
 
         setTimeout(() => {
-            this.chapterFinaleContinuation();
+            this.chapterOneScreen();
         }, 1000);
     }
 // -------------------------------------------------------------- CHAPTERS ---------------------------------------------------------------------------

@@ -39,14 +39,15 @@ const config: Phaser.Types.Core.GameConfig = {
         RandomEncounterTest,
         Intro,
         WeaponTest,
-        CheckpointAndChapters
+        CheckpointAndChapters,
+
     ],
 };
 
 const StartGame = (parent: string) => {
     const parentElement = document.getElementById(parent);
     if (parentElement) {
-        parentElement.style.backgroundColor = 'white';
+        parentElement.style.backgroundColor = 'black';
         parentElement.style.display = 'flex';
         parentElement.style.justifyContent = 'center';
         parentElement.style.alignItems = 'center';

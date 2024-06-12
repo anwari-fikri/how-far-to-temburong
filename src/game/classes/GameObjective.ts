@@ -1,4 +1,5 @@
 import { Game } from "../scenes/Game";
+import { CheckpointAndChapters } from "../scenes/CheckpointAndChapters";
 
 export function objectiveUI(scene: any) {
     scene.distanceComplete = false;
@@ -10,25 +11,25 @@ export function objectiveUI(scene: any) {
 
     switch (Game.gameStage) {
         case 1:
-            scene.distanceObjective = 25;
+            scene.distanceObjective = 50;
             scene.killObjective = 10;
             break;
         case 2:
-            scene.distanceObjective = 30;
-            scene.killObjective = 15;
-            break;
-        case 3:
-            scene.distanceObjective = 30;
+            scene.distanceObjective = 70;
             scene.killObjective = 20;
             break;
+        case 3:
+            scene.distanceObjective = 80;
+            scene.killObjective = 50;
+            break;
         case 4:
-            scene.distanceObjective = 35;
-            scene.killObjective = 30;
+            scene.distanceObjective = 80;
+            scene.killObjective = 40;
             break;
 
         default:
-            scene.distanceObjective = 25;
-            scene.killObjective = 10;
+            scene.distanceObjective = 1;
+            scene.killObjective = 1;
             break;
     }
 
@@ -85,7 +86,7 @@ export function stageObjective(scene: any) {
     // time limit
     if (scene.distanceComplete && scene.killComplete) {
         if (scene.gameUI.elapsedTime < 60) {
-            scene.scene.start("GameOver");
+            scene.scene.start("CheckpointAndChapters");
         }
     }
 

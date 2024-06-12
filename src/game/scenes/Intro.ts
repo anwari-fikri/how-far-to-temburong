@@ -232,7 +232,7 @@ export class Intro extends Scene {
         topImage.style.left = "50%";
         topImage.style.transform = "translateX(-50%)";
         topImage.style.zIndex = "15"; // Make sure it is above other elements
-        topImage.style.width = "45%"; // Adjust the size as needed
+        topImage.style.width = "50%"; // Adjust the size as needed
         screenDiv.appendChild(topImage);
 
         const createButton = (
@@ -637,7 +637,7 @@ export class Intro extends Scene {
         }
     }
 
-    enableEnterKey() {
+    enableEnterKey(): void {
         const enterKey = this.input.keyboard?.addKey(
             Phaser.Input.Keyboard.KeyCodes.ENTER,
         );
@@ -648,6 +648,7 @@ export class Intro extends Scene {
                 Intro.selectedCharacter === "char1.5"
             ) {
                 this.cleanup();
+                this.sound.stopAll();
                 this.scene.start("CheckpointAndChapters");
             }
         });

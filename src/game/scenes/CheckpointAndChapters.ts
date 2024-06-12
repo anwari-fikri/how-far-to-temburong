@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import { EventBus } from "../EventBus";
 import Typed from "typed.js";
-// import playerStore from '../stores/PlayerStore';
+import { Game } from "./Game";
 
 function loadGoogleFont() {
     const link = document.createElement("link");
@@ -74,7 +74,23 @@ export class CheckpointAndChapters extends Scene {
         EventBus.emit("current-scene-ready", this);
 
         setTimeout(() => {
-            this.chapterOneScreen();
+            switch (Game.gameStage) {
+                case 0:
+                    this.chapterOneScreen();
+                    break;
+                case 1:
+                    this.checkpointOneScreen();
+                    break;
+                case 2:
+                    this.checkpointTwoScreen();
+                    break;
+                case 3:
+                    this.checkpointThreeScreen();
+                    break;
+                case 4:
+                    this.chapterFinaleScreen();
+                    break;
+            }
         }, 1000);
     }
     // -------------------------------------------------------------- CHAPTERS ---------------------------------------------------------------------------
@@ -353,6 +369,7 @@ export class CheckpointAndChapters extends Scene {
     // -------------------------------------------------------------- CHAPTERS CONTINUATION ---------------------------------------------------------------------------
 
     chapterOneContinuation() {
+        Game.gameStage++;
         this.cleanup();
 
         const screenDiv = document.createElement("div");
@@ -432,6 +449,7 @@ export class CheckpointAndChapters extends Scene {
     }
 
     chapterTwoContinuation() {
+        Game.gameStage++;
         this.cleanup();
 
         const screenDiv = document.createElement("div");
@@ -501,7 +519,7 @@ export class CheckpointAndChapters extends Scene {
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
                     this.cleanup();
-                    this.checkpointTwoScreen();
+                    this.startMainGame();
                 });
                 buttonContainer.appendChild(continueButton);
             },
@@ -511,6 +529,7 @@ export class CheckpointAndChapters extends Scene {
     }
 
     chapterThreeContinuation() {
+        Game.gameStage++;
         this.cleanup();
 
         const screenDiv = document.createElement("div");
@@ -580,7 +599,7 @@ export class CheckpointAndChapters extends Scene {
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
                     this.cleanup();
-                    this.checkpointThreeScreen();
+                    this.startMainGame();
                 });
                 buttonContainer.appendChild(continueButton);
             },
@@ -590,6 +609,7 @@ export class CheckpointAndChapters extends Scene {
     }
 
     chapterFourContinuation() {
+        Game.gameStage++;
         this.cleanup();
 
         const screenDiv = document.createElement("div");
@@ -659,7 +679,7 @@ export class CheckpointAndChapters extends Scene {
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
                     this.cleanup();
-                    this.chapterFinaleScreen();
+                    this.startMainGame();
                 });
                 buttonContainer.appendChild(continueButton);
             },

@@ -30,6 +30,11 @@ function addGlobalStyles() {
     .selection-button:hover {  
         animation: hover-shake 0.5s;
     }
+
+    .selection-button:hover {  
+        animation: hover-shake 0.5s;
+    }
+
     .char-image {
         width: 200px;
         margin: 0 10px;
@@ -178,24 +183,24 @@ export class Intro extends Scene {
 
     mainMenuScreen() {
         this.cleanup();
-
+    
         const screenDiv = document.createElement("div");
         screenDiv.id = "mainMenuScreen";
         screenDiv.style.position = "fixed";
         screenDiv.style.top = "50%";
         screenDiv.style.left = "50%";
         screenDiv.style.transform = "translate(-50%, -50%)";
-        screenDiv.style.backgroundImage = 'url("assets/Intro/heh2.png")';
-        screenDiv.style.backgroundSize = "90%"; // Adjust the size here
+        screenDiv.style.backgroundImage = 'url("assets/Intro/mainMenu2.gif")';
+        screenDiv.style.backgroundSize = "100% 100%"; // Adjust the size here
         screenDiv.style.backgroundRepeat = "no-repeat"; // Prevent the image from repeating
         screenDiv.style.backgroundPosition = "center"; // Center the image within the div
-        screenDiv.style.width = "78%"; // Set the specific width
+        screenDiv.style.width = "75%"; // Set the specific width
         screenDiv.style.height = "100%"; // Set the specific height
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
         document.body.appendChild(screenDiv);
-
+    
         // Create and style the vignette overlay
         const vignetteOverlay = document.createElement("div");
         vignetteOverlay.style.position = "absolute";
@@ -206,9 +211,21 @@ export class Intro extends Scene {
         vignetteOverlay.style.pointerEvents = "none";
         vignetteOverlay.style.zIndex = "10"; // Make sure it is above other elements
         vignetteOverlay.style.background =
-            "radial-gradient(circle, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.8) 100%)";
+            "radial-gradient(circle, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 0.8) 100%)";
         screenDiv.appendChild(vignetteOverlay);
-
+    
+        // Create and style the new image
+        const topImage = document.createElement("img");
+        topImage.src = "assets/Intro/gameTitle2.png"; // Path to your new image
+        topImage.style.position = "absolute";
+        topImage.style.top = "5%"; // Adjust the top position as needed
+        topImage.style.left = "50%";
+        topImage.style.transform = "translateX(-50%)";
+        topImage.style.zIndex = "15"; // Make sure it is above other elements
+        topImage.style.width = "45%"; // Adjust the size as needed
+        screenDiv.appendChild(topImage);
+        
+    
         const createButton = (
             text: any,
             id: any,
@@ -236,15 +253,15 @@ export class Intro extends Scene {
             button.addEventListener("click", onClick);
             screenDiv.appendChild(button);
         };
-
+    
         const startButtonLeft = "38%";
         const settingsButtonLeft = "40%";
         const creditsButtonLeft = "38%";
-
+    
         createButton(
             "Start",
             "startButton",
-            "48%",
+            "53%",
             () => this.characterSelectionScreen(),
             "assets/Intro/buttons.png",
         );
@@ -255,7 +272,7 @@ export class Intro extends Scene {
         createButton(
             "Settings",
             "settingsButton",
-            "58%",
+            "63%",
             () => console.log("Settings clicked"),
             "assets/Intro/buttons.png",
         );
@@ -266,7 +283,7 @@ export class Intro extends Scene {
         createButton(
             "Credits",
             "creditsButton",
-            "68%",
+            "73%",
             () => console.log("Credits clicked"),
             "assets/Intro/buttons.png",
         );
@@ -276,7 +293,7 @@ export class Intro extends Scene {
         }
         screenDiv.style.animation = "fade-in 1s forwards";
     }
-
+    
     characterSelectionScreen() {
         this.cleanup();
 
@@ -287,16 +304,31 @@ export class Intro extends Scene {
         screenDiv.style.left = "50%";
         screenDiv.style.transform = "translate(-50%, -50%)";
         screenDiv.style.backgroundImage =
-            'url("assets/Intro/charSelectionBg.jpg")';
-        screenDiv.style.backgroundSize = "65%";
+            'url("assets/Intro/dungeon.gif")';
+        screenDiv.style.backgroundSize = "100%";
         screenDiv.style.backgroundRepeat = "no-repeat";
         screenDiv.style.backgroundPosition = "center";
-        screenDiv.style.width = "100%";
-        screenDiv.style.height = "100%";
+        screenDiv.style.width = "75%";
+        screenDiv.style.height = "100vh";
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
         document.body.appendChild(screenDiv);
+
+        
+        // Create and style the vignette overlay
+        const vignetteOverlay = document.createElement("div");
+        vignetteOverlay.style.position = "absolute";
+        vignetteOverlay.style.top = "0";
+        vignetteOverlay.style.left = "0";
+        vignetteOverlay.style.width = "100%";
+        vignetteOverlay.style.height = "100%";
+        vignetteOverlay.style.pointerEvents = "none";
+        vignetteOverlay.style.zIndex = "10"; // Make sure it is above other elements
+        vignetteOverlay.style.background =
+            "radial-gradient(circle, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 0.8) 100%)";
+        screenDiv.appendChild(vignetteOverlay);
+    
 
         // Create a container for the weapon selection
         const weaponContainer = document.createElement("div");
@@ -518,16 +550,17 @@ export class Intro extends Scene {
         const detailsDiv = document.createElement("div");
         detailsDiv.id = "characterDetails";
         detailsDiv.style.position = "absolute";
-        detailsDiv.style.top = "85%"; // Adjust position as needed
+        detailsDiv.style.top = "87%"; // Adjust position as needed
         detailsDiv.style.left = "50%";
         detailsDiv.style.transform = "translate(-50%, -50%)";
         detailsDiv.style.display = "flex";
         detailsDiv.style.justifyContent = "space-between";
         detailsDiv.style.alignItems = "center";
-        detailsDiv.style.width = "80%"; // Adjust width as needed
+        detailsDiv.style.width = "100%"; // Adjust width as needed
         detailsDiv.style.height = "auto";
         detailsDiv.style.paddingLeft = "100px";
         detailsDiv.style.paddingRight = "100px";
+        detailsDiv.style.paddingBottom = "10px";
         detailsDiv.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Semi-transparent background
         detailsDiv.style.zIndex = "5"; // Ensure details div is below character images
 

@@ -20,7 +20,7 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         texture: "zombie",
         baseHealth: 100,
         attackPower: 5,
-        chaseSpeed: 20,
+        chaseSpeed: 50,
         tint: 0xffffff,
         animsKey: "zombie",
         hitboxRadius: 10,
@@ -29,7 +29,7 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         texture: "zombie",
         baseHealth: 200,
         attackPower: 10,
-        chaseSpeed: 40,
+        chaseSpeed: 50,
         tint: 0x00ffff,
         animsKey: "zombie",
         hitboxRadius: 12,
@@ -50,6 +50,7 @@ type ZombieType = (typeof ZOMBIE_TYPE)[keyof typeof ZOMBIE_TYPE];
 export class Zombie extends Physics.Arcade.Sprite {
     currentHealth: number;
     attackPower: number;
+    originalChaseSpeed: number;
     chaseSpeed: number;
     originalTint: number;
     animsKey: string;
@@ -103,6 +104,7 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.setTexture(zombieType.texture);
         this.currentHealth = zombieType.baseHealth;
         this.attackPower = zombieType.attackPower;
+        this.originalChaseSpeed = zombieType.chaseSpeed;
         this.chaseSpeed = zombieType.chaseSpeed;
         this.originalTint = zombieType.tint;
         this.animsKey = zombieType.animsKey;
@@ -279,7 +281,7 @@ export class Zombie extends Physics.Arcade.Sprite {
     }
 
     unfreeze() {
-        this.chaseSpeed = 40;
+        this.chaseSpeed = this.originalChaseSpeed;
     }
 
     update(player: Player) {

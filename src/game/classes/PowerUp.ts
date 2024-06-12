@@ -10,6 +10,14 @@ export enum PowerUpType {
     INVINCIBILITY = "invincibility",
 }
 
+export enum POWERUP_DURATION {
+    SECOND = 1000,
+    SPEED_BOOST = 5 * SECOND,
+    ATTACK_BOOST = 10 * SECOND,
+    TIME_STOP = 5 * SECOND,
+    INVINCIBILITY = 5 * SECOND,
+}
+
 export default class PowerUp extends Physics.Arcade.Sprite {
     powerUpType: PowerUpType;
 
@@ -32,7 +40,9 @@ export default class PowerUp extends Physics.Arcade.Sprite {
         this.setVisible(false);
     }
 
-    activatePowerUp(x: number, y: number) {
+    activatePowerUp(x: number, y: number, powerUpType: PowerUpType) {
+        this.powerUpType = powerUpType;
+        this.setTexture(powerUpType);
         this.setPosition(x, y);
         this.setActive(true);
         this.setVisible(true);

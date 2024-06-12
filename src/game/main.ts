@@ -39,26 +39,24 @@ const config: Phaser.Types.Core.GameConfig = {
         RandomEncounterTest,
         Intro,
         WeaponTest,
-        CheckpointAndChapters
+        CheckpointAndChapters,
     ],
 };
 
 const StartGame = (parent: string) => {
     const parentElement = document.getElementById(parent);
     if (parentElement) {
-        parentElement.style.backgroundColor = 'white';
-        parentElement.style.display = 'flex';
-        parentElement.style.justifyContent = 'center';
-        parentElement.style.alignItems = 'center';
-        parentElement.style.height = '100vh'; 
-        parentElement.style.width = '100%'; 
+        parentElement.style.backgroundColor = "white";
+        parentElement.style.display = "flex";
+        parentElement.style.justifyContent = "center";
+        parentElement.style.alignItems = "center";
+        parentElement.style.height = "100vh";
+        parentElement.style.width = "100%";
     } else {
         console.warn(`Element with id "${parent}" not found.`);
     }
 
     return new Game({ ...config, parent });
 };
-
-
 
 export default StartGame;

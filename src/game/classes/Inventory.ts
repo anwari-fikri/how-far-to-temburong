@@ -23,15 +23,9 @@ export default class Inventory {
         this.rangedWeapon = rangedWeapon;
     }
 
-    displayInventory(): void {
-        console.log("selected hand slot:", this.selectedHandSlot);
-        console.log("Melee Weapon:", this.meleeWeapon.weaponType.name);
-    }
-
     handleKeyDown(event: KeyboardEvent): void {
         if (event.key === "Tab") {
             event.preventDefault();
-            this.displayInventory();
         }
 
         if (event.key === "1") {
@@ -50,3 +44,4 @@ export default class Inventory {
         this.rangedWeapon.update();
     }
 }
+

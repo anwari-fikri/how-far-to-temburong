@@ -11,7 +11,7 @@ import { ZombieGroup } from "./ZombieGroup";
 export enum PLAYER_CONST {
     BASE_HEALTH = 100,
     BASE_MOVEMENT_SPEED = 150,
-    BONUS_ATTACK = 10,
+    BONUS_ATTACK = 0,
 }
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
@@ -23,7 +23,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // Stats
     currentHealth: number;
     currentMovementSpeed: number;
-    currentAttackPower: number;
     bonusAttackPower: number;
 
     // PowerUps
@@ -181,18 +180,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.currentHealth = PLAYER_CONST.BASE_HEALTH;
         this.currentMovementSpeed = PLAYER_CONST.BASE_MOVEMENT_SPEED;
         this.bonusAttackPower = PLAYER_CONST.BONUS_ATTACK;
-        this.updatePlayerAttack();
-    }
-
-    updatePlayerAttack() {
-        this.currentAttackPower =
-            this.inventory.selectedHandSlot === 1
-                ? this.inventory.meleeWeapon.attackPower +
-                  PLAYER_CONST.BONUS_ATTACK
-                : 0 + PLAYER_CONST.BONUS_ATTACK;
-
-        const self = this;
-        this.on("handslot-changed", () => self.updatePlayerAttack());
     }
 
     // Power Ups

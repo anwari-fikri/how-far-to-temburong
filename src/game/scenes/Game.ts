@@ -64,7 +64,7 @@ export class Game extends Scene {
 
         // PowerUps
         Game.powerUps = new PowerUpManager(this);
-        // Game.powerUps.exampleSpawnPowerUps();
+        Game.powerUps.exampleSpawnPowerUps();
 
         this.gameUI = new GameUI(this);
 
@@ -95,12 +95,13 @@ export class Game extends Scene {
 
     bulletHitZombie(zombie: Zombie, bullet: Bullet) {
         bullet.die();
+        const randomValue = 0.9 + Math.random() * 0.05;
         zombie.receiveDamage(
-            Game.player.inventory.rangedWeapon.attackPower +
-                Game.player.bonusAttackPower,
+            (Game.player.inventory.rangedWeapon.attackPower +
+                Game.player.bonusAttackPower) *
+                randomValue,
             Game.player.inventory.rangedWeapon,
         );
-        console.log(zombie.currentHealth);
         if (zombie.currentHealth <= 0) {
             zombie.die();
             const zombieDeath = this.sound.add("zombieDeath");

@@ -124,6 +124,7 @@ export class Zombie extends Physics.Arcade.Sprite {
             -radius + 0.5 * this.height,
         );
         this.setScale(this.customSize, this.customSize);
+        this.setTint(this.originalTint);
 
         switch (zombieType) {
             case ZOMBIE_TYPE.NORMAL:

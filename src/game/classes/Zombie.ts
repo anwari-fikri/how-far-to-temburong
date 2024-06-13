@@ -67,6 +67,8 @@ export class Zombie extends Physics.Arcade.Sprite {
     // From weapon skill
     isSlowed: boolean = false;
     isConfused: boolean = false;
+    isOnFire: boolean = false;
+    fireBonusInterval: number | NodeJS.Timeout | null;
 
     constructor(scene: Scene) {
         super(scene, 0, 0, "zombie");
@@ -120,8 +122,12 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.hitboxRadius = zombieType.hitboxRadius;
         this.customSize = zombieType.customSize;
         this.zombieType = zombieType;
+
+        // Weapon Skill
         this.isSlowed = false;
         this.isConfused = false;
+        this.isOnFire = false;
+        this.fireBonusInterval = null;
 
         this.setOrigin(0.5, 0.5);
         var radius = this.hitboxRadius;
@@ -163,6 +169,7 @@ export class Zombie extends Physics.Arcade.Sprite {
                     );
                 }
             }
+
             const weaponSkillConfuse = Game.player.weaponSkill.confuse;
             if (!this.isConfused) {
                 if (weaponSkillConfuse.level > 0) {
@@ -182,6 +189,22 @@ export class Zombie extends Physics.Arcade.Sprite {
                             "#FFFF00",
                         );
                     }
+                }
+            }
+
+            const weaponSkillFire = Game.player.weaponSkill.fire;
+            if (!this.isOnFire) {
+                if (weaponSkillFire.level > 0) {
+                    this.isOnFire = true;
+
+                    Game.gameUI.createFloatingText(
+                        this.x,
+                        this.y,
+                        "burn",
+                        "#FFBF00",
+                        "8px",
+                        true,
+                    );
                 }
             }
 
@@ -272,6 +295,7 @@ export class Zombie extends Physics.Arcade.Sprite {
     }
 
     die(isDeSpawn: boolean = false) {
+        this.clearFireBonusInterval();
         if (!isDeSpawn) {
             Game.player.killCount += 1;
 
@@ -322,11 +346,45 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.chaseSpeed = this.originalChaseSpeed;
     }
 
+    startFireDamage() {
+        this.fireBonusInterval = setInterval(() => {
+            this.applyFireDamage();
+        }, 250);
+    }
+
+    applyFireDamage() {
+        const fireBonus = Game.player.weaponSkill.fire.bonus / 4;
+        Game.gameUI.createFloatingText(
+            this.x,
+            this.y,
+            String(Math.floor(fireBonus)),
+            "#FFBF00",
+        );
+        this.currentHealth -= fireBonus;
+        if (this.currentHealth <= 0) {
+            this.die();
+            const zombieDeath = this.scene.sound.add("zombieDeath");
+            zombieDeath.play();
+        }
+    }
+
+    clearFireBonusInterval() {
+        if (this.fireBonusInterval !== null) {
+            clearInterval(this.fireBonusInterval as number);
+            this.fireBonusInterval = null;
+        }
+    }
+
     update(player: Player) {
         if (this.active) {
             if (this.isSlowed && !Game.player.isTimeStopped) {
                 const slowBonus = Game.player.weaponSkill.slow.bonus / 100;
                 this.chaseSpeed = this.originalChaseSpeed * (1 - slowBonus);
+            }
+            if (this.isOnFire && this.fireBonusInterval === null) {
+                this.startFireDamage();
+            } else if (!this.isOnFire) {
+                this.clearFireBonusInterval();
             }
 
             this.scene.physics.moveToObject(

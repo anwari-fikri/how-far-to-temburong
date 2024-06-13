@@ -27,6 +27,7 @@ export default class GameUI {
         text: string,
         textColor: string = "#FFFFFF",
         fontSize: string = "8px",
+        priority: boolean = false,
     ) {
         const xDeviation = Phaser.Math.Between(-10, 10); // Random x deviation between -10 and 10
         const yDeviation = Phaser.Math.Between(-10, -30); // Random y deviation between -10 and -30
@@ -40,7 +41,7 @@ export default class GameUI {
                 strokeThickness: 2,
             })
             .setOrigin(0.5)
-            .setDepth(40);
+            .setDepth(priority ? 41 : 40);
 
         // Apply upward floating animation with random deviation
         this.scene.tweens.add({

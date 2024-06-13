@@ -9,11 +9,13 @@ export class WeaponSkill {
     atk: SkillLevel;
     slow: SkillLevel;
     confuse: SkillLevel;
+    fire: SkillLevel;
 
     constructor(
         atkLevel: number = 0,
-        slowLevel: number = 3,
+        slowLevel: number = 0,
         confuseLevel: number = 0,
+        fireLevel: number = 1,
     ) {
         this.atk = this.createSkillLevel(atkLevel, this.calculateAtkBonus);
         this.slow = this.createSkillLevel(slowLevel, this.calculateSlowBonus);
@@ -21,6 +23,7 @@ export class WeaponSkill {
             confuseLevel,
             this.calculateConfuseBonus,
         );
+        this.fire = this.createSkillLevel(fireLevel, this.calculateFireBonus);
     }
 
     createSkillLevel(
@@ -96,6 +99,28 @@ export class WeaponSkill {
     levelUpConfuse(): void {
         this.confuse.level++;
         this.confuse.bonus = this.calculateConfuseBonus(this.confuse.level);
+        Game.player.emit("weaponSkillLevelUp");
+    }
+
+    calculateFireBonus = (level: number): number => {
+        // Apply damage over time
+        switch (level) {
+            case 0:
+                return 0;
+            case 1:
+                return 5;
+            case 2:
+                return 10;
+            case 3:
+                return 20;
+            default:
+                return 20;
+        }
+    };
+
+    levelUpFire(): void {
+        this.fire.level++;
+        this.fire.bonus = this.calculateFireBonus(this.fire.level);
         Game.player.emit("weaponSkillLevelUp");
     }
 }

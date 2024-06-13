@@ -23,8 +23,11 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Check with main
-        run: git pull origin main --rebase  # Specify the rebase option to reconcile branches
+      - name: Ensure branch is up-to-date with main
+        run: |
+          git fetch origin main
+          git diff --exit-code origin/main
+        shell: bash
 
       - name: Install dependencies
         run: npm install

@@ -144,6 +144,7 @@ export class Preloader extends Scene {
         this.load.audio("nuke", "audio/powerUp_nuke.mp3");
         this.load.audio("invincibility", "audio/powerUp_invincibility.mp3");
         this.load.audio("waves", "audio/stage_waves.mp3");
+        this.load.audio("trees", "audio/stage_trees.mp3");
     }
 
     create() {
@@ -151,7 +152,7 @@ export class Preloader extends Scene {
         //  For example, you can define global animations here, so we can use them in other scenes.
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start("Game");
+        this.scene.start("CheckpointAndChapters");
         // this.scene.start("GameUIOverlay");
     }
 }

@@ -115,6 +115,7 @@ export class Preloader extends Scene {
         this.load.image("end", "tiles/Texture/end.png");
 
         // Random Encounter
+        this.load.image("trigger", "randomEncounter/trigger.png");
         this.load.image("random1", "randomEncounter/random1.png");
         this.load.image("random2", "randomEncounter/random2.png");
         this.load.image("random3", "randomEncounter/random3.png");

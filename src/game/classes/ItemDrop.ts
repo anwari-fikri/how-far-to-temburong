@@ -1,16 +1,17 @@
 import { Physics } from "phaser";
 import { Game } from "../scenes/Game";
 import { Zombie } from "./Zombie";
+import RandomEncounterTrigger from "./RandomEncounterTrigger";
 
-// const dropExp(zombie: Zombie) {
-//     let exp = this.getFirstDead(false) as Physics.Arcade.Sprite
-// }
-
-export function dropItem(zombie: Zombie) {
+export function dropItem(zombie: Zombie, chance: number = 15) {
     const randomValue = Math.random();
 
-    if (randomValue < 0.15) {
+    if (randomValue < chance / 100) {
         Game.powerUps.dropRandomPowerUp(zombie);
     }
+}
+
+export function dropRandomEncounterTrigger(zombie: Zombie) {
+    Game.randomEncounters.activateTrigger(zombie.x, zombie.y);
 }
 

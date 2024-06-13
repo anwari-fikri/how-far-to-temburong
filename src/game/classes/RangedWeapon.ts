@@ -47,12 +47,9 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        this.weaponSkill = new WeaponSkill();
-
         this.player = player;
         this.weaponType = weaponType;
-        this.attackPower =
-            this.weaponType.attackPower + this.weaponSkill.atk.bonus;
+        this.attackPower = this.weaponType.attackPower;
         this.attackRange = weaponType.attackRange;
         this.attackCooldown = weaponType.attackCooldown;
         this.lastAttackTime = 0;
@@ -71,14 +68,6 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
             maxSize: 100,
             runChildUpdate: true,
         });
-    }
-
-    updateWeaponSkill() {
-        const check = () => {
-            this.attackPower =
-                this.weaponType.attackPower + this.weaponSkill.atk.bonus;
-        };
-        Game.player.on("weaponSkillLevelUp", check);
     }
 
     createAnimations(scene: Scene) {

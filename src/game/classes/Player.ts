@@ -7,6 +7,7 @@ import { POWERUP_DURATION, PowerUpType } from "./PowerUp";
 import RangedWeapon, { RANGED_WEAPON_TYPE } from "./RangedWeapon";
 import { Zombie } from "./Zombie";
 import { ZombieGroup } from "./ZombieGroup";
+import { WeaponSkill } from "./WeaponSkill";
 
 export enum PLAYER_CONST {
     BASE_HEALTH = 100,
@@ -17,6 +18,7 @@ export enum PLAYER_CONST {
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     controls: PlayerControls;
     inventory: Inventory;
+    weaponSkill: WeaponSkill;
     isAttacking: boolean = false;
     isInIFrame: boolean = false;
 
@@ -63,6 +65,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.inventory.replaceRangedWeapon(
             new RangedWeapon(scene, this, RANGED_WEAPON_TYPE.PISTOL),
         );
+        this.weaponSkill = new WeaponSkill();
+        this.updateWeaponSkill();
         scene.cameras.main.startFollow(this, true);
 
         // Stats Init
@@ -73,6 +77,21 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.isAttackBoosted = false;
         this.isTimeStopped = false;
         this.isInvincibility = false;
+    }
+
+    updateWeaponSkill() {
+        const meleeWeapon = this.inventory.meleeWeapon;
+        const rangedWeapon = this.inventory.rangedWeapon;
+        const check = () => {
+            meleeWeapon.attackPower =
+                meleeWeapon.weaponType.attackPower + this.weaponSkill.atk.bonus;
+            rangedWeapon.attackPower =
+                rangedWeapon.weaponType.attackPower +
+                this.weaponSkill.atk.bonus;
+        };
+
+        check();
+        this.on("weaponSkillLevelUp", check);
     }
 
     receiveDamage(amount: number, zombie: Zombie) {

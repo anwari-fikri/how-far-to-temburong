@@ -325,6 +325,8 @@ export class Zombie extends Physics.Arcade.Sprite {
                     Game.player.inventory.meleeWeapon,
                 )
             ) {
+                console.log(Game.player.weaponSkill.atk);
+                Game.player.emit("weaponSkillLevelUp");
                 const randomValue = 0.95 + Math.random() * 0.05;
                 this.receiveDamage(
                     (Game.player.inventory.meleeWeapon.attackPower +

@@ -1,7 +1,5 @@
 import { Physics, Scene } from "phaser";
 import Player from "./Player";
-import { WeaponSkill } from "./WeaponSkill";
-import { Game } from "../scenes/Game";
 
 interface WeaponProperties {
     name: string;
@@ -36,7 +34,6 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
     attackCooldown: number;
     lastAttackTime: number;
     hitbox: { width: number; height: number };
-    weaponSkill: WeaponSkill;
 
     constructor(scene: Scene, player: Player, weaponType: WEAPON_TYPE) {
         super(scene, player.x, player.y, weaponType.texture);
@@ -45,12 +42,9 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
 
         scene.physics.add.existing(this);
 
-        this.weaponSkill = new WeaponSkill();
-
         this.player = player;
         this.weaponType = weaponType;
-        this.attackPower =
-            this.weaponType.attackPower + this.weaponSkill.atk.bonus;
+        this.attackPower = this.weaponType.attackPower;
         this.attackRange = weaponType.attackRange;
         this.attackCooldown = weaponType.attackCooldown;
         this.hitbox = weaponType.hitbox;
@@ -64,14 +58,6 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
 
         this.createAnimations(scene);
         this.setupInput(scene);
-    }
-
-    updateWeaponSkill() {
-        const check = () => {
-            this.attackPower =
-                this.weaponType.attackPower + this.weaponSkill.atk.bonus;
-        };
-        Game.player.on("weaponSkillLevelUp", check);
     }
 
     createAnimations(scene: Scene) {

@@ -3,18 +3,13 @@ import { PLAYER_CONST } from "./Player";
 import { Game } from "../scenes/Game";
 import { POWERUP_DURATION, PowerUpType } from "./PowerUp";
 
-export class GameUI {
+export default class GameUI {
     scene: Scene;
     activePowerUps: Phaser.GameObjects.Group;
     elapsedTime: number = 0;
     healthBar: Phaser.GameObjects.Graphics;
     calendar: Phaser.GameObjects.Group;
     startTime: number;
-
-    // leftSlot: Phaser.GameObjects.Sprite;
-    // rightSlot: Phaser.GameObjects.Sprite;
-    // leftWeapon: Phaser.GameObjects.Image;
-    // rightWeapon: Phaser.GameObjects.Image;
 
     constructor(scene: Scene) {
         this.scene = scene;
@@ -24,6 +19,40 @@ export class GameUI {
         this.createPowerUpStatus();
         // this.createElapsedTime();
         this.createInventory();
+    }
+
+    createFloatingText(
+        x: number,
+        y: number,
+        text: string,
+        textColor: string = "#FFFFFF",
+        fontSize: string = "8px",
+    ) {
+        const xDeviation = Phaser.Math.Between(-10, 10); // Random x deviation between -10 and 10
+        const yDeviation = Phaser.Math.Between(-10, -30); // Random y deviation between -10 and -30
+
+        const damageText = this.scene.add
+            .text(x + xDeviation, y - 10, text, {
+                fontFamily: "Arial",
+                fontSize: fontSize,
+                color: textColor,
+                stroke: "#000000",
+                strokeThickness: 2,
+            })
+            .setOrigin(0.5)
+            .setDepth(40);
+
+        // Apply upward floating animation with random deviation
+        this.scene.tweens.add({
+            targets: damageText,
+            x: damageText.x + xDeviation,
+            y: damageText.y + yDeviation,
+            alpha: 0,
+            duration: 1000,
+            onComplete: () => {
+                damageText.destroy();
+            },
+        });
     }
 
     createInventory() {

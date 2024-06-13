@@ -5,7 +5,7 @@ import { debugGraphic } from "../classes/DebugTool";
 import { createPause } from "../classes/PauseResume";
 import { ZombieGroup } from "../classes/ZombieGroup";
 import { PowerUpManager } from "../classes/PowerUpManager";
-import { GameUI } from "../classes/GameUI";
+import GameUI from "../classes/GameUI";
 import {
     bridgeMap,
     generateMapContinuation,
@@ -20,7 +20,7 @@ import RandomEncounterTrigger from "../classes/RandomEncounterTrigger";
 export class Game extends Scene {
     static player: Player;
     zombies: ZombieGroup;
-    gameUI: GameUI;
+    static gameUI: GameUI;
     static powerUps: PowerUpManager;
     static randomEncounters: RandomEncounterTrigger;
     private wallLayer!: any;
@@ -68,7 +68,7 @@ export class Game extends Scene {
         Game.powerUps = new PowerUpManager(this);
         Game.powerUps.exampleSpawnPowerUps();
 
-        this.gameUI = new GameUI(this);
+        Game.gameUI = new GameUI(this);
         Game.randomEncounters = new RandomEncounterTrigger(
             this,
             0,
@@ -121,7 +121,7 @@ export class Game extends Scene {
         Game.player.update();
         this.zombies.update(Game.player);
         Game.powerUps.update(this.zombies);
-        this.gameUI.update();
+        Game.gameUI.update();
         Game.randomEncounters.update();
 
         Game.player.setDepth(11);

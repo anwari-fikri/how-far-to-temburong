@@ -117,45 +117,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     },
                 });
 
-                // Show damage numbers
-                const xDeviation = Phaser.Math.Between(-10, 10); // Random x deviation between -10 and 10
-                const yDeviation = Phaser.Math.Between(-10, -30); // Random y deviation between -10 and -30
-
-                let color = "#FFFFFF";
+                let color = "#ff0000";
                 let fontSize = "8px";
-                if (amount < 50) {
-                    color = "#FFFFFF"; // White
-                    fontSize = "8px";
-                } else if (amount < 100) {
-                    color = "#FF0000"; // Red
-                    fontSize = "10px";
-                } else {
-                    color = "#FFD700"; // Gold
-                    fontSize = "12px";
-                }
 
-                const damageText = this.scene.add
-                    .text(this.x + xDeviation, this.y - 10, `${amount}`, {
-                        fontFamily: "Arial",
-                        fontSize: fontSize,
-                        color: color,
-                        stroke: "#000000",
-                        strokeThickness: 2,
-                    })
-                    .setOrigin(0.5)
-                    .setDepth(40);
-
-                // Apply upward floating animation with random deviation
-                this.scene.tweens.add({
-                    targets: damageText,
-                    x: damageText.x + xDeviation,
-                    y: damageText.y + yDeviation,
-                    alpha: 0,
-                    duration: 1000,
-                    onComplete: () => {
-                        damageText.destroy();
-                    },
-                });
+                Game.gameUI.createFloatingText(
+                    this.x,
+                    this.y,
+                    String(amount),
+                    color,
+                    fontSize,
+                );
 
                 this.currentHealth -= amount;
                 this.setIFrame(500);

@@ -12,8 +12,8 @@ export class WeaponSkill {
 
     constructor(
         atkLevel: number = 0,
-        slowLevel: number = 0,
-        confuseLevel: number = 3,
+        slowLevel: number = 3,
+        confuseLevel: number = 0,
     ) {
         this.atk = this.createSkillLevel(atkLevel, this.calculateAtkBonus);
         this.slow = this.createSkillLevel(slowLevel, this.calculateSlowBonus);
@@ -45,7 +45,7 @@ export class WeaponSkill {
             case 3:
                 return 40;
             default:
-                return 0;
+                return 40;
         }
     };
 
@@ -67,7 +67,7 @@ export class WeaponSkill {
             case 3:
                 return 20;
             default:
-                return 0;
+                return 20;
         }
     };
 
@@ -89,7 +89,7 @@ export class WeaponSkill {
             case 3:
                 return 20;
             default:
-                return 0;
+                return 20;
         }
     };
 

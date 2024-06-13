@@ -154,6 +154,13 @@ export class Zombie extends Physics.Arcade.Sprite {
             if (!this.isSlowed) {
                 if (weaponSkillSlow.level > 0) {
                     this.isSlowed = true;
+
+                    Game.gameUI.createFloatingText(
+                        this.x,
+                        this.y,
+                        "slowed",
+                        "#00FFFF",
+                    );
                 }
             }
             const weaponSkillConfuse = Game.player.weaponSkill.confuse;
@@ -167,6 +174,13 @@ export class Zombie extends Physics.Arcade.Sprite {
                         setTimeout(() => {
                             this.isConfused = false;
                         }, 800); // 0.8 seconds
+
+                        Game.gameUI.createFloatingText(
+                            this.x,
+                            this.y,
+                            "confused",
+                            "#FFFF00",
+                        );
                     }
                 }
             }
@@ -198,8 +212,6 @@ export class Zombie extends Physics.Arcade.Sprite {
             });
 
             // show damage numbers
-            const xDeviation = Phaser.Math.Between(-10, 10); // Random x deviation between -10 and 10
-            const yDeviation = Phaser.Math.Between(-10, -30); // Random y deviation between -10 and -30
 
             let color = "#FFFFFF";
             let fontSize = "8px";
@@ -207,35 +219,20 @@ export class Zombie extends Physics.Arcade.Sprite {
                 color = "#FFFFFF"; // White
                 fontSize = "8px";
             } else if (amount < 100) {
-                color = "#FF0000"; // Red
+                color = "#7c3f00"; // Brown
                 fontSize = "10px";
             } else {
                 color = "#FFD700"; // Gold
                 fontSize = "12px";
             }
 
-            const damageText = this.scene.add
-                .text(this.x + xDeviation, this.y - 10, `${amount}`, {
-                    fontFamily: "Arial",
-                    fontSize: fontSize,
-                    color: color,
-                    stroke: "#000000",
-                    strokeThickness: 2,
-                })
-                .setOrigin(0.5)
-                .setDepth(40);
-
-            // Apply upward floating animation with random deviation
-            this.scene.tweens.add({
-                targets: damageText,
-                x: damageText.x + xDeviation,
-                y: damageText.y + yDeviation,
-                alpha: 0,
-                duration: 1000,
-                onComplete: () => {
-                    damageText.destroy();
-                },
-            });
+            Game.gameUI.createFloatingText(
+                this.x,
+                this.y,
+                String(amount),
+                color,
+                fontSize,
+            );
         }
     }
 
@@ -327,13 +324,11 @@ export class Zombie extends Physics.Arcade.Sprite {
 
     update(player: Player) {
         if (this.active) {
-            // Initialize chaseSpeed with original value
-
             if (this.isSlowed && !Game.player.isTimeStopped) {
-                // Apply slow effect
                 const slowBonus = Game.player.weaponSkill.slow.bonus / 100;
-                this.chaseSpeed *= 1 - slowBonus;
+                this.chaseSpeed = this.originalChaseSpeed * (1 - slowBonus);
             }
+
             this.scene.physics.moveToObject(
                 this,
                 player,

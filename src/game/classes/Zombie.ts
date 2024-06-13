@@ -325,7 +325,7 @@ export class Zombie extends Physics.Arcade.Sprite {
                     Game.player.inventory.meleeWeapon,
                 )
             ) {
-                const randomValue = 0.9 + Math.random() * 0.05;
+                const randomValue = 0.95 + Math.random() * 0.05;
                 this.receiveDamage(
                     (Game.player.inventory.meleeWeapon.attackPower +
                         Game.player.bonusAttackPower) *

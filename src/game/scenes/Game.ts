@@ -30,7 +30,7 @@ export class Game extends Scene {
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;
 
-    static gameStage = 0;
+    static gameStage = 3;
     static totalKill = 0;
     static totalDistance = 0;
     static totalTime = 0;
@@ -127,8 +127,8 @@ export class Game extends Scene {
         Game.player.setDepth(11);
         this.zombies.setDepth(11);
 
-        if(Game.player.currentHealth<=0){
-            this.scene.start("GameOver")
+        if (Game.player.currentHealth <= 0) {
+            this.scene.start("GameOver");
         }
 
         if (Game.player.x > this.map.widthInPixels - 800) {

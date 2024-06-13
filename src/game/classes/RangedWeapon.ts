@@ -1,6 +1,8 @@
 import { Physics, Scene } from "phaser";
 import Player from "./Player";
 import Bullet from "./Bullet";
+import { WeaponSkill } from "./WeaponSkill";
+import { Game } from "../scenes/Game";
 
 interface WeaponProperties {
     name: string;
@@ -20,12 +22,12 @@ export const RANGED_WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> =
             texture: "pistol",
             attackPower: 20,
             attackRange: "medium",
-            attackCooldown: 300,
+            attackCooldown: 150,
             bulletSpeed: 600,
         },
     } as const;
 
-type RANGED_WEAPON_TYPE =
+export type RANGED_WEAPON_TYPE =
     (typeof RANGED_WEAPON_TYPE)[keyof typeof RANGED_WEAPON_TYPE];
 
 export default class RangedWeapon extends Physics.Arcade.Sprite {
@@ -37,6 +39,7 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
     attackCooldown: number;
     lastAttackTime: number;
     bullets: Phaser.Physics.Arcade.Group;
+    weaponSkill: WeaponSkill;
 
     constructor(scene: Scene, player: Player, weaponType: RANGED_WEAPON_TYPE) {
         super(scene, player.x, player.y, weaponType.texture);
@@ -44,9 +47,12 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
+        this.weaponSkill = new WeaponSkill();
+
         this.player = player;
         this.weaponType = weaponType;
-        this.attackPower = weaponType.attackPower;
+        this.attackPower =
+            this.weaponType.attackPower + this.weaponSkill.atk.bonus;
         this.attackRange = weaponType.attackRange;
         this.attackCooldown = weaponType.attackCooldown;
         this.lastAttackTime = 0;
@@ -67,6 +73,14 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         });
     }
 
+    updateWeaponSkill() {
+        const check = () => {
+            this.attackPower =
+                this.weaponType.attackPower + this.weaponSkill.atk.bonus;
+        };
+        Game.player.on("weaponSkillLevelUp", check);
+    }
+
     createAnimations(scene: Scene) {
         scene.anims.create({
             key: "pistol-attack",
@@ -74,7 +88,7 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
                 start: 0,
                 end: 0,
             }),
-            frameRate: 10,
+            frameRate: 20,
             repeat: 0,
         });
     }
@@ -147,3 +161,4 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         }
     }
 }
+

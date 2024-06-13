@@ -2,6 +2,7 @@ import { Scene } from "phaser";
 import { EventBus } from "../EventBus";
 import { Scenario } from "../classes/Scenario";
 import Typed from "typed.js";
+import { Game } from "./Game";
 
 function loadGoogleFont() {
     const link = document.createElement("link");
@@ -40,6 +41,7 @@ function addGlobalStyles() {
 }
 
 export class RandomEncounterTest extends Scene {
+    randomEffect: any;
     constructor() {
         super("RandomEncounterTest");
     }
@@ -103,6 +105,7 @@ export class RandomEncounterTest extends Scene {
             selectionDiv.textContent = choice;
             selectionDiv.addEventListener("click", () => {
                 this.createSecondScene(selection.answer, selection.reward);
+                this.randomEffect = selection.effect;
             });
             selectionContainerDiv.appendChild(selectionDiv);
         });
@@ -141,6 +144,7 @@ export class RandomEncounterTest extends Scene {
             typeSpeed: 20,
             showCursor: false,
             onComplete: () => {
+                console.log(this.randomEffect);
                 this.scene.resume("Game");
                 this.scene.stop();
             },

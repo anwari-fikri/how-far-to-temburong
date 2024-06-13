@@ -23,8 +23,9 @@ export default class RandomEncounterTrigger extends Physics.Arcade.Sprite {
         if (this.active && this.scene.physics.overlap(this, Game.player)) {
             this.setActive(false);
             this.setVisible(false);
-            console.log("TRIGGER ENCOUNTER");
+
+            this.scene.scene.pause();
+            this.scene.scene.launch("RandomEncounterTest");
         }
     }
 }
-

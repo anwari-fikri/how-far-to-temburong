@@ -127,8 +127,8 @@ export class Game extends Scene {
         Game.player.setDepth(11);
         this.zombies.setDepth(11);
 
-        if(Game.player.currentHealth<=0){
-            this.scene.start("GameOver")
+        if (Game.player.currentHealth <= 0) {
+            this.scene.start("GameOver");
         }
 
         if (Game.player.x > this.map.widthInPixels - 800) {

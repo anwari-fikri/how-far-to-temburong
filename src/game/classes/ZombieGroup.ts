@@ -69,21 +69,25 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         let spawnNum = 0;
         let spawnInterval = 0;
         switch (Game.gameStage) {
+            case 1:
+                spawnNum = 1;
+                spawnInterval = 5000;
+                break;
             case 2:
-                spawnNum = 5;
+                spawnNum = 3;
                 spawnInterval = 5000;
                 break;
             case 3:
-                spawnNum = 10;
+                spawnNum = 7;
                 spawnInterval = 5000;
                 break;
             case 4:
-                spawnNum = 12;
+                spawnNum = 10;
                 spawnInterval = 4000;
                 break;
             default:
-                spawnNum = 2;
-                spawnInterval = 5000;
+                spawnNum = 1;
+                spawnInterval = 10000;
                 break;
         }
 
@@ -166,4 +170,3 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         });
     }
 }
-

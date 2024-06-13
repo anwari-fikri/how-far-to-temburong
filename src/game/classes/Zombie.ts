@@ -63,7 +63,9 @@ export class Zombie extends Physics.Arcade.Sprite {
     zombieType: ZombieType;
 
     isInIFrame: boolean = false;
-    isTimeStop: boolean = false;
+
+    // From weapon skill
+    isSlowed: boolean = false;
 
     constructor(scene: Scene) {
         super(scene, 0, 0, "zombie");
@@ -117,6 +119,7 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.hitboxRadius = zombieType.hitboxRadius;
         this.customSize = zombieType.customSize;
         this.zombieType = zombieType;
+        this.isSlowed = false;
 
         this.setOrigin(0.5, 0.5);
         var radius = this.hitboxRadius;
@@ -145,6 +148,16 @@ export class Zombie extends Physics.Arcade.Sprite {
     receiveDamage(amount: number, weapon?: MeleeWeapon | RangedWeapon) {
         amount = Math.round(amount);
         if (!this.isInIFrame) {
+            const weaponSkillSlow = Game.player.weaponSkill.slow;
+            console.log("Weapon Skill Slow Level:", weaponSkillSlow.level);
+            console.log("Weapon Skill Slow Bonus:", weaponSkillSlow.bonus);
+
+            if (!this.isSlowed) {
+                if (weaponSkillSlow.level > 0) {
+                    this.isSlowed = true;
+                }
+            }
+
             if (weapon && !Game.player.isTimeStopped) {
                 this.applyKnockback(weapon);
             }
@@ -301,6 +314,12 @@ export class Zombie extends Physics.Arcade.Sprite {
 
     update(player: Player) {
         if (this.active) {
+            if (this.isSlowed && !Game.player.isTimeStopped) {
+                this.chaseSpeed =
+                    this.originalChaseSpeed *
+                    (1 - Game.player.weaponSkill.slow.bonus / 100);
+                console.log(this.chaseSpeed);
+            }
             this.scene.physics.moveToObject(this, player, this.chaseSpeed);
             this.checkDistanceToPlayer(player);
 
@@ -325,8 +344,8 @@ export class Zombie extends Physics.Arcade.Sprite {
                     Game.player.inventory.meleeWeapon,
                 )
             ) {
-                console.log(Game.player.weaponSkill.atk);
                 Game.player.emit("weaponSkillLevelUp");
+
                 const randomValue = 0.95 + Math.random() * 0.05;
                 this.receiveDamage(
                     (Game.player.inventory.meleeWeapon.attackPower +

@@ -362,6 +362,8 @@ export class Zombie extends Physics.Arcade.Sprite {
         );
         this.currentHealth -= fireBonus;
         if (this.currentHealth <= 0) {
+            this.isOnFire = false;
+            this.clearFireBonusInterval();
             this.die();
             const zombieDeath = this.scene.sound.add("zombieDeath");
             zombieDeath.play();

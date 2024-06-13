@@ -66,6 +66,7 @@ export class Zombie extends Physics.Arcade.Sprite {
 
     // From weapon skill
     isSlowed: boolean = false;
+    isConfused: boolean = false;
 
     constructor(scene: Scene) {
         super(scene, 0, 0, "zombie");
@@ -120,6 +121,7 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.customSize = zombieType.customSize;
         this.zombieType = zombieType;
         this.isSlowed = false;
+        this.isConfused = false;
 
         this.setOrigin(0.5, 0.5);
         var radius = this.hitboxRadius;
@@ -149,12 +151,23 @@ export class Zombie extends Physics.Arcade.Sprite {
         amount = Math.round(amount);
         if (!this.isInIFrame) {
             const weaponSkillSlow = Game.player.weaponSkill.slow;
-            console.log("Weapon Skill Slow Level:", weaponSkillSlow.level);
-            console.log("Weapon Skill Slow Bonus:", weaponSkillSlow.bonus);
-
             if (!this.isSlowed) {
                 if (weaponSkillSlow.level > 0) {
                     this.isSlowed = true;
+                }
+            }
+            const weaponSkillConfuse = Game.player.weaponSkill.confuse;
+            if (!this.isConfused) {
+                if (weaponSkillConfuse.level > 0) {
+                    const randomChance = Math.random();
+
+                    if (randomChance <= weaponSkillConfuse.bonus / 100) {
+                        this.isConfused = true;
+
+                        setTimeout(() => {
+                            this.isConfused = false;
+                        }, 800); // 0.8 seconds
+                    }
                 }
             }
 
@@ -314,18 +327,23 @@ export class Zombie extends Physics.Arcade.Sprite {
 
     update(player: Player) {
         if (this.active) {
+            // Initialize chaseSpeed with original value
+
             if (this.isSlowed && !Game.player.isTimeStopped) {
-                this.chaseSpeed =
-                    this.originalChaseSpeed *
-                    (1 - Game.player.weaponSkill.slow.bonus / 100);
-                console.log(this.chaseSpeed);
+                // Apply slow effect
+                const slowBonus = Game.player.weaponSkill.slow.bonus / 100;
+                this.chaseSpeed *= 1 - slowBonus;
             }
-            this.scene.physics.moveToObject(this, player, this.chaseSpeed);
+            this.scene.physics.moveToObject(
+                this,
+                player,
+                this.isConfused ? -this.chaseSpeed : this.chaseSpeed,
+            );
             this.checkDistanceToPlayer(player);
 
             if (!Game.player.isTimeStopped) {
                 const direction = player.x - this.x;
-                if (direction > 0) {
+                if (this.isConfused ? direction < 0 : direction > 0) {
                     this.anims.play(`${this.animsKey}-walk-right`, true);
                 } else {
                     this.anims.play(`${this.animsKey}-walk-left`, true);
@@ -344,6 +362,7 @@ export class Zombie extends Physics.Arcade.Sprite {
                     Game.player.inventory.meleeWeapon,
                 )
             ) {
+                console.log(this.isConfused);
                 Game.player.emit("weaponSkillLevelUp");
 
                 const randomValue = 0.95 + Math.random() * 0.05;

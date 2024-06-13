@@ -36,6 +36,7 @@ export default class PowerUp extends Physics.Arcade.Sprite {
 
         this.powerUpType = powerUpType;
         this.setDisplaySize(25, 25);
+        this.setScale(0.5, 0.5);
 
         this.setActive(false);
         this.setVisible(false);

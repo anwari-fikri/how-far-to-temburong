@@ -220,7 +220,7 @@ export class Zombie extends Physics.Arcade.Sprite {
 
                         setTimeout(() => {
                             this.isFrozen = false;
-                        }, 1000); // 1 second
+                        }, 2000); // 1 second
 
                         Game.gameUI.createFloatingText(
                             this.x,
@@ -289,13 +289,13 @@ export class Zombie extends Physics.Arcade.Sprite {
                 fontSize = "12px";
             }
 
-            // Game.gameUI.createFloatingText(
-            //     this.x,
-            //     this.y,
-            //     String(amount),
-            //     color,
-            //     fontSize,
-            // );
+            Game.gameUI.createFloatingText(
+                this.x,
+                this.y,
+                String(amount),
+                color,
+                fontSize,
+            );
         }
     }
 

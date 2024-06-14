@@ -220,7 +220,7 @@ export class Zombie extends Physics.Arcade.Sprite {
 
                         setTimeout(() => {
                             this.isFrozen = false;
-                        }, 5000); // 0.5 seconds
+                        }, 1000); // 1 second
 
                         Game.gameUI.createFloatingText(
                             this.x,
@@ -429,8 +429,6 @@ export class Zombie extends Physics.Arcade.Sprite {
                 this.clearFireBonusInterval();
             }
 
-            this.isFrozen ? this.freeze() : this.unfreeze();
-
             this.scene.physics.moveToObject(
                 this,
                 player,
@@ -438,17 +436,20 @@ export class Zombie extends Physics.Arcade.Sprite {
             );
             this.checkDistanceToPlayer(player);
 
-            if (!Game.player.isTimeStopped && !this.isFrozen) {
-                const direction = player.x - this.x;
-                if (this.isConfused ? direction < 0 : direction > 0) {
-                    this.anims.play(`${this.animsKey}-walk-right`, true);
-                } else {
-                    this.anims.play(`${this.animsKey}-walk-left`, true);
-                }
+            if (!Game.player.isTimeStopped) {
+                this.isFrozen ? this.freeze() : this.unfreeze();
+                if (!this.isFrozen) {
+                    const direction = player.x - this.x;
+                    if (this.isConfused ? direction < 0 : direction > 0) {
+                        this.anims.play(`${this.animsKey}-walk-right`, true);
+                    } else {
+                        this.anims.play(`${this.animsKey}-walk-left`, true);
+                    }
 
-                // Player X Zombie
-                if (this.scene.physics.collide(this, player)) {
-                    player.receiveDamage(this.attackPower, this);
+                    // Player X Zombie
+                    if (this.scene.physics.collide(this, player)) {
+                        player.receiveDamage(this.attackPower, this);
+                    }
                 }
             }
 

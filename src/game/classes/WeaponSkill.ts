@@ -18,7 +18,7 @@ export class WeaponSkill {
         slowLevel: number = 0,
         confuseLevel: number = 0,
         fireLevel: number = 0,
-        freezeLevel: number = 0,
+        freezeLevel: number = 3,
         critChanceLevel: number = 0,
     ) {
         this.atk = this.createSkillLevel(atkLevel, this.calculateAtkBonus);
@@ -86,10 +86,15 @@ export class WeaponSkill {
         }
     };
 
-    levelUpSlow(): void {
-        this.slow.level++;
-        this.slow.bonus = this.calculateSlowBonus(this.slow.level);
-        Game.player.emit("weaponSkillLevelUp");
+    levelUpSlow() {
+        if (this.slow.level < 3) {
+            this.slow.level++;
+            this.slow.bonus = this.calculateSlowBonus(this.slow.level);
+            Game.player.emit("weaponSkillLevelUp");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     calculateConfuseBonus = (level: number): number => {

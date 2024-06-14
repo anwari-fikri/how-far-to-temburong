@@ -63,7 +63,10 @@ export class CheckpointAndChapters extends Scene {
         super("CheckpointAndChapters");
     }
 
-    preload() {}
+    preload() {
+        this.load.audio("dialouge", "audio/dialouge.mp3");
+        this.load.audio("button", "assets/audio/intro_menuButton.mp3");
+    }
 
     create() {
         loadGoogleFont();
@@ -93,6 +96,7 @@ export class CheckpointAndChapters extends Scene {
             }
         }, 1000);
     }
+
     // -------------------------------------------------------------- CHAPTERS ---------------------------------------------------------------------------
 
     chapterOneScreen() {
@@ -372,6 +376,10 @@ export class CheckpointAndChapters extends Scene {
         Game.gameStage++;
         this.cleanup();
 
+        const buttonSound = this.sound.add("button");
+        const dialogueSound = this.sound.add("dialouge");
+        dialogueSound.play({ loop: true });
+
         const screenDiv = document.createElement("div");
         screenDiv.id = "chapterOneContinuation";
         screenDiv.style.position = "fixed";
@@ -425,6 +433,7 @@ export class CheckpointAndChapters extends Scene {
             typeSpeed: 15,
             showCursor: false,
             onComplete: () => {
+                dialogueSound.stop();
                 const continueButton = document.createElement("button");
                 continueButton.textContent = "continue!";
                 continueButton.style.padding = "8px 15px";
@@ -438,6 +447,7 @@ export class CheckpointAndChapters extends Scene {
                 continueButton.classList.add("continue-button");
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
+                    buttonSound.play();
                     this.cleanup();
                     this.startMainGame();
                 });
@@ -451,6 +461,10 @@ export class CheckpointAndChapters extends Scene {
     chapterTwoContinuation() {
         Game.gameStage++;
         this.cleanup();
+
+        const buttonSound = this.sound.add("button");
+        const dialogueSound = this.sound.add("dialouge");
+        dialogueSound.play({ loop: true });
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "chapterTwoContinuation";
@@ -506,6 +520,7 @@ export class CheckpointAndChapters extends Scene {
             showCursor: false,
             onComplete: () => {
                 const continueButton = document.createElement("button");
+                dialogueSound.stop();
                 continueButton.textContent = "continue!";
                 continueButton.style.padding = "8px 15px";
                 continueButton.style.background = "black";
@@ -518,6 +533,7 @@ export class CheckpointAndChapters extends Scene {
                 continueButton.classList.add("continue-button");
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
+                    buttonSound.play();
                     this.cleanup();
                     this.startMainGame();
                 });
@@ -531,6 +547,10 @@ export class CheckpointAndChapters extends Scene {
     chapterThreeContinuation() {
         Game.gameStage++;
         this.cleanup();
+
+        const buttonSound = this.sound.add("button");
+        const dialogueSound = this.sound.add("dialouge");
+        dialogueSound.play({ loop: true });
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "chapterThreeContinuation";
@@ -586,6 +606,7 @@ export class CheckpointAndChapters extends Scene {
             showCursor: false,
             onComplete: () => {
                 const continueButton = document.createElement("button");
+                dialogueSound.stop();
                 continueButton.textContent = "continue!";
                 continueButton.style.padding = "8px 15px";
                 continueButton.style.background = "black";
@@ -598,6 +619,7 @@ export class CheckpointAndChapters extends Scene {
                 continueButton.classList.add("continue-button");
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
+                    buttonSound.play();
                     this.cleanup();
                     this.startMainGame();
                 });
@@ -611,6 +633,10 @@ export class CheckpointAndChapters extends Scene {
     chapterFourContinuation() {
         Game.gameStage++;
         this.cleanup();
+
+        const buttonSound = this.sound.add("button");
+        const dialogueSound = this.sound.add("dialouge");
+        dialogueSound.play({ loop: true });
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "chapterFourContinuation";
@@ -666,6 +692,7 @@ export class CheckpointAndChapters extends Scene {
             showCursor: false,
             onComplete: () => {
                 const continueButton = document.createElement("button");
+                dialogueSound.stop();
                 continueButton.textContent = "continue!";
                 continueButton.style.padding = "8px 15px";
                 continueButton.style.background = "black";
@@ -678,6 +705,7 @@ export class CheckpointAndChapters extends Scene {
                 continueButton.classList.add("continue-button");
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
+                    buttonSound.play();
                     this.cleanup();
                     this.startMainGame();
                 });
@@ -690,6 +718,9 @@ export class CheckpointAndChapters extends Scene {
 
     chapterFinaleContinuation() {
         this.cleanup();
+
+        const dialogueSound = this.sound.add("dialouge");
+        dialogueSound.play({ loop: true });
 
         const dialogues = [
             "wajid: Whoa, what are you doing out here?",
@@ -755,9 +786,11 @@ export class CheckpointAndChapters extends Scene {
                     typeSpeed: 15,
                     showCursor: false,
                     onComplete: () => {
+                        dialogueSound.stop();
                         setTimeout(() => {
                             currentDialogue++;
                             showNextDialogue();
+                            dialogueSound.play({ loop: true });
                         }, 1000); // 1000 milliseconds delay between dialogues
                     },
                 });
@@ -775,6 +808,10 @@ export class CheckpointAndChapters extends Scene {
 
     checkpointOneScreen() {
         this.cleanup();
+
+        const buttonSound = this.sound.add("button");
+        const dialogueSound = this.sound.add("dialouge");
+        dialogueSound.play({ loop: true });
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "checkpointOne";
@@ -847,6 +884,7 @@ export class CheckpointAndChapters extends Scene {
             showCursor: false,
             onComplete: () => {
                 const continueButton = document.createElement("button");
+                dialogueSound.stop();
                 continueButton.textContent = "continue!";
                 continueButton.style.padding = "8px 15px";
                 continueButton.style.background = "black";
@@ -859,6 +897,7 @@ export class CheckpointAndChapters extends Scene {
                 continueButton.classList.add("continue-button");
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
+                    buttonSound.play();
                     this.cleanup();
                     this.chapterTwoScreen();
                 });
@@ -871,6 +910,10 @@ export class CheckpointAndChapters extends Scene {
 
     checkpointTwoScreen() {
         this.cleanup();
+
+        const buttonSound = this.sound.add("button");
+        const dialogueSound = this.sound.add("dialouge");
+        dialogueSound.play({ loop: true });
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "checkpointTwo";
@@ -943,6 +986,7 @@ export class CheckpointAndChapters extends Scene {
             showCursor: false,
             onComplete: () => {
                 const continueButton = document.createElement("button");
+                dialogueSound.stop();
                 continueButton.textContent = "continue!";
                 continueButton.style.padding = "8px 15px";
                 continueButton.style.background = "black";
@@ -955,6 +999,7 @@ export class CheckpointAndChapters extends Scene {
                 continueButton.classList.add("continue-button");
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
+                    buttonSound.play();
                     this.cleanup();
                     this.chapterThreeScreen();
                 });
@@ -967,6 +1012,10 @@ export class CheckpointAndChapters extends Scene {
 
     checkpointThreeScreen() {
         this.cleanup();
+
+        const buttonSound = this.sound.add("button");
+        const dialogueSound = this.sound.add("dialouge");
+        dialogueSound.play({ loop: true });
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "checkpointThree";
@@ -1039,6 +1088,7 @@ export class CheckpointAndChapters extends Scene {
             showCursor: false,
             onComplete: () => {
                 const continueButton = document.createElement("button");
+                dialogueSound.stop();
                 continueButton.textContent = "continue!";
                 continueButton.style.padding = "8px 15px";
                 continueButton.style.background = "black";
@@ -1051,6 +1101,7 @@ export class CheckpointAndChapters extends Scene {
                 continueButton.classList.add("continue-button");
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
+                    buttonSound.play();
                     this.cleanup();
                     this.chapterFourScreen();
                 });

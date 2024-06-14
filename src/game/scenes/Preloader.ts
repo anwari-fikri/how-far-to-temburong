@@ -145,6 +145,7 @@ export class Preloader extends Scene {
         this.load.audio("invincibility", "audio/powerUp_invincibility.mp3");
         this.load.audio("waves", "audio/stage_waves.mp3");
         this.load.audio("trees", "audio/stage_trees.mp3");
+        this.load.audio("dialouge", "audio/dialouge_keyboard.mp3");
     }
 
     create() {

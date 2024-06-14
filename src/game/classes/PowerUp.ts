@@ -36,6 +36,7 @@ export default class PowerUp extends Physics.Arcade.Sprite {
 
         this.powerUpType = powerUpType;
         this.setDisplaySize(25, 25);
+        this.setScale(0.5, 0.5);
 
         this.setActive(false);
         this.setVisible(false);
@@ -54,6 +55,13 @@ export default class PowerUp extends Physics.Arcade.Sprite {
             this.setActive(false);
             this.setVisible(false);
             Game.player.applyPowerUp(this.powerUpType, enemies);
+
+            Game.gameUI.createFloatingText(
+                Game.player.x,
+                Game.player.y,
+                this.powerUpType.replace(/_/g, " ").toUpperCase(),
+                "#d4af37",
+            );
         }
     }
 }

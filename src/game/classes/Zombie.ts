@@ -63,7 +63,13 @@ export class Zombie extends Physics.Arcade.Sprite {
     zombieType: ZombieType;
 
     isInIFrame: boolean = false;
-    isTimeStop: boolean = false;
+
+    // From weapon skill
+    isSlowed: boolean = false;
+    isConfused: boolean = false;
+    isOnFire: boolean = false;
+    fireBonusInterval: number | NodeJS.Timeout | null;
+    isFrozen: boolean = false;
 
     constructor(scene: Scene) {
         super(scene, 0, 0, "zombie");
@@ -118,6 +124,13 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.customSize = zombieType.customSize;
         this.zombieType = zombieType;
 
+        // Weapon Skill
+        this.isSlowed = false;
+        this.isConfused = false;
+        this.isOnFire = false;
+        this.fireBonusInterval = null;
+        this.isFrozen = false;
+
         this.setOrigin(0.5, 0.5);
         var radius = this.hitboxRadius;
         this.setCircle(
@@ -144,7 +157,97 @@ export class Zombie extends Physics.Arcade.Sprite {
 
     receiveDamage(amount: number, weapon?: MeleeWeapon | RangedWeapon) {
         amount = Math.round(amount);
+
+        const randomChance = Math.random();
+
+        if (randomChance <= Game.player.weaponSkill.critChance.bonus / 100) {
+            amount = amount * 2;
+
+            Game.gameUI.createFloatingText(
+                this.x,
+                this.y,
+                "CRIT",
+                "#d4af37",
+                "8px",
+                true,
+            );
+        }
+
         if (!this.isInIFrame) {
+            const weaponSkillSlow = Game.player.weaponSkill.slow;
+            if (!this.isSlowed) {
+                if (weaponSkillSlow.level > 0) {
+                    this.isSlowed = true;
+
+                    Game.gameUI.createFloatingText(
+                        this.x,
+                        this.y,
+                        "slowed",
+                        "#00FFFF",
+                    );
+                }
+            }
+
+            const weaponSkillConfuse = Game.player.weaponSkill.confuse;
+            if (!this.isConfused) {
+                if (weaponSkillConfuse.level > 0) {
+                    const randomChance = Math.random();
+
+                    if (randomChance <= weaponSkillConfuse.bonus / 100) {
+                        this.isConfused = true;
+
+                        setTimeout(() => {
+                            this.isConfused = false;
+                        }, 800); // 0.8 seconds
+
+                        Game.gameUI.createFloatingText(
+                            this.x,
+                            this.y,
+                            "confused",
+                            "#FFFF00",
+                        );
+                    }
+                }
+            }
+
+            const weaponSkillFreeze = Game.player.weaponSkill.freeze;
+            if (!this.isFrozen) {
+                if (weaponSkillFreeze.level > 0) {
+                    const randomChance = Math.random();
+
+                    if (randomChance <= weaponSkillFreeze.bonus / 100) {
+                        this.isFrozen = true;
+
+                        setTimeout(() => {
+                            this.isFrozen = false;
+                        }, 2000); // 1 second
+
+                        Game.gameUI.createFloatingText(
+                            this.x,
+                            this.y,
+                            "frozen",
+                            "#ADD8E6",
+                        );
+                    }
+                }
+            }
+
+            const weaponSkillFire = Game.player.weaponSkill.fire;
+            if (!this.isOnFire) {
+                if (weaponSkillFire.level > 0) {
+                    this.isOnFire = true;
+
+                    Game.gameUI.createFloatingText(
+                        this.x,
+                        this.y,
+                        "burn",
+                        "#FFBF00",
+                        "8px",
+                        true,
+                    );
+                }
+            }
+
             if (weapon && !Game.player.isTimeStopped) {
                 this.applyKnockback(weapon);
             }
@@ -172,8 +275,6 @@ export class Zombie extends Physics.Arcade.Sprite {
             });
 
             // show damage numbers
-            const xDeviation = Phaser.Math.Between(-10, 10); // Random x deviation between -10 and 10
-            const yDeviation = Phaser.Math.Between(-10, -30); // Random y deviation between -10 and -30
 
             let color = "#FFFFFF";
             let fontSize = "8px";
@@ -181,35 +282,20 @@ export class Zombie extends Physics.Arcade.Sprite {
                 color = "#FFFFFF"; // White
                 fontSize = "8px";
             } else if (amount < 100) {
-                color = "#FF0000"; // Red
+                color = "#7c3f00"; // Brown
                 fontSize = "10px";
             } else {
                 color = "#FFD700"; // Gold
                 fontSize = "12px";
             }
 
-            const damageText = this.scene.add
-                .text(this.x + xDeviation, this.y - 10, `${amount}`, {
-                    fontFamily: "Arial",
-                    fontSize: fontSize,
-                    color: color,
-                    stroke: "#000000",
-                    strokeThickness: 2,
-                })
-                .setOrigin(0.5)
-                .setDepth(40);
-
-            // Apply upward floating animation with random deviation
-            this.scene.tweens.add({
-                targets: damageText,
-                x: damageText.x + xDeviation,
-                y: damageText.y + yDeviation,
-                alpha: 0,
-                duration: 1000,
-                onComplete: () => {
-                    damageText.destroy();
-                },
-            });
+            Game.gameUI.createFloatingText(
+                this.x,
+                this.y,
+                String(amount),
+                color,
+                fontSize,
+            );
         }
     }
 
@@ -249,6 +335,7 @@ export class Zombie extends Physics.Arcade.Sprite {
     }
 
     die(isDeSpawn: boolean = false) {
+        this.clearFireBonusInterval();
         if (!isDeSpawn) {
             Game.player.killCount += 1;
 
@@ -299,22 +386,70 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.chaseSpeed = this.originalChaseSpeed;
     }
 
+    startFireDamage() {
+        this.fireBonusInterval = setInterval(() => {
+            this.applyFireDamage();
+        }, 250);
+    }
+
+    applyFireDamage() {
+        const fireBonus = Game.player.weaponSkill.fire.bonus / 4;
+        Game.gameUI.createFloatingText(
+            this.x,
+            this.y,
+            String(Math.floor(fireBonus)),
+            "#FFBF00",
+        );
+        this.currentHealth -= fireBonus;
+        if (this.currentHealth <= 0) {
+            this.isOnFire = false;
+            this.clearFireBonusInterval();
+            this.die();
+            const zombieDeath = this.scene.sound.add("zombieDeath");
+            zombieDeath.play();
+        }
+    }
+
+    clearFireBonusInterval() {
+        if (this.fireBonusInterval !== null) {
+            clearInterval(this.fireBonusInterval as number);
+            this.fireBonusInterval = null;
+        }
+    }
+
     update(player: Player) {
         if (this.active) {
-            this.scene.physics.moveToObject(this, player, this.chaseSpeed);
+            if (this.isSlowed && !Game.player.isTimeStopped) {
+                const slowBonus = Game.player.weaponSkill.slow.bonus / 100;
+                this.chaseSpeed = this.originalChaseSpeed * (1 - slowBonus);
+            }
+            if (this.isOnFire && this.fireBonusInterval === null) {
+                this.startFireDamage();
+            } else if (!this.isOnFire) {
+                this.clearFireBonusInterval();
+            }
+
+            this.scene.physics.moveToObject(
+                this,
+                player,
+                this.isConfused ? -this.chaseSpeed : this.chaseSpeed,
+            );
             this.checkDistanceToPlayer(player);
 
             if (!Game.player.isTimeStopped) {
-                const direction = player.x - this.x;
-                if (direction > 0) {
-                    this.anims.play(`${this.animsKey}-walk-right`, true);
-                } else {
-                    this.anims.play(`${this.animsKey}-walk-left`, true);
-                }
+                this.isFrozen ? this.freeze() : this.unfreeze();
+                if (!this.isFrozen) {
+                    const direction = player.x - this.x;
+                    if (this.isConfused ? direction < 0 : direction > 0) {
+                        this.anims.play(`${this.animsKey}-walk-right`, true);
+                    } else {
+                        this.anims.play(`${this.animsKey}-walk-left`, true);
+                    }
 
-                // Player X Zombie
-                if (this.scene.physics.collide(this, player)) {
-                    player.receiveDamage(this.attackPower, this);
+                    // Player X Zombie
+                    if (this.scene.physics.collide(this, player)) {
+                        player.receiveDamage(this.attackPower, this);
+                    }
                 }
             }
 
@@ -325,7 +460,9 @@ export class Zombie extends Physics.Arcade.Sprite {
                     Game.player.inventory.meleeWeapon,
                 )
             ) {
-                const randomValue = 0.9 + Math.random() * 0.05;
+                Game.player.emit("weaponSkillLevelUp");
+
+                const randomValue = 0.95 + Math.random() * 0.05;
                 this.receiveDamage(
                     (Game.player.inventory.meleeWeapon.attackPower +
                         Game.player.bonusAttackPower) *

@@ -7,6 +7,7 @@ import { POWERUP_DURATION, PowerUpType } from "./PowerUp";
 import RangedWeapon, { RANGED_WEAPON_TYPE } from "./RangedWeapon";
 import { Zombie } from "./Zombie";
 import { ZombieGroup } from "./ZombieGroup";
+import { WeaponSkill } from "./WeaponSkill";
 
 export enum PLAYER_CONST {
     BASE_HEALTH = 100,
@@ -17,6 +18,7 @@ export enum PLAYER_CONST {
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     controls: PlayerControls;
     inventory: Inventory;
+    weaponSkill: WeaponSkill;
     isAttacking: boolean = false;
     isInIFrame: boolean = false;
 
@@ -63,6 +65,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.inventory.replaceRangedWeapon(
             new RangedWeapon(scene, this, RANGED_WEAPON_TYPE.PISTOL),
         );
+        this.weaponSkill = new WeaponSkill();
+        this.updateWeaponSkill();
         scene.cameras.main.startFollow(this, true);
 
         // Stats Init
@@ -73,6 +77,21 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.isAttackBoosted = false;
         this.isTimeStopped = false;
         this.isInvincibility = false;
+    }
+
+    updateWeaponSkill() {
+        const meleeWeapon = this.inventory.meleeWeapon;
+        const rangedWeapon = this.inventory.rangedWeapon;
+        const check = () => {
+            meleeWeapon.attackPower =
+                meleeWeapon.weaponType.attackPower + this.weaponSkill.atk.bonus;
+            rangedWeapon.attackPower =
+                rangedWeapon.weaponType.attackPower +
+                this.weaponSkill.atk.bonus;
+        };
+
+        check();
+        this.on("weaponSkillLevelUp", check);
     }
 
     receiveDamage(amount: number, zombie: Zombie) {
@@ -98,45 +117,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     },
                 });
 
-                // Show damage numbers
-                const xDeviation = Phaser.Math.Between(-10, 10); // Random x deviation between -10 and 10
-                const yDeviation = Phaser.Math.Between(-10, -30); // Random y deviation between -10 and -30
-
-                let color = "#FFFFFF";
+                let color = "#ff0000";
                 let fontSize = "8px";
-                if (amount < 50) {
-                    color = "#FFFFFF"; // White
-                    fontSize = "8px";
-                } else if (amount < 100) {
-                    color = "#FF0000"; // Red
-                    fontSize = "10px";
-                } else {
-                    color = "#FFD700"; // Gold
-                    fontSize = "12px";
-                }
 
-                const damageText = this.scene.add
-                    .text(this.x + xDeviation, this.y - 10, `${amount}`, {
-                        fontFamily: "Arial",
-                        fontSize: fontSize,
-                        color: color,
-                        stroke: "#000000",
-                        strokeThickness: 2,
-                    })
-                    .setOrigin(0.5)
-                    .setDepth(40);
-
-                // Apply upward floating animation with random deviation
-                this.scene.tweens.add({
-                    targets: damageText,
-                    x: damageText.x + xDeviation,
-                    y: damageText.y + yDeviation,
-                    alpha: 0,
-                    duration: 1000,
-                    onComplete: () => {
-                        damageText.destroy();
-                    },
-                });
+                Game.gameUI.createFloatingText(
+                    this.x,
+                    this.y,
+                    String(amount),
+                    color,
+                    fontSize,
+                );
 
                 this.currentHealth -= amount;
                 this.setIFrame(500);

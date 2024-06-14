@@ -5,7 +5,6 @@ import { MainMenu } from "./scenes/MainMenu";
 import { Game } from "phaser";
 import { Preloader } from "./scenes/Preloader";
 import { PauseMenu } from "./scenes/PauseMenu";
-import { WeaponTest } from "./scenes/WeaponTest";
 import { RandomEncounterTest } from "./scenes/RandomEncounterTest";
 import { Intro } from "./scenes/Intro";
 import { CheckpointAndChapters } from "./scenes/CheckpointAndChapters";
@@ -41,7 +40,6 @@ const config: Phaser.Types.Core.GameConfig = {
         PauseMenu,
         RandomEncounterTest,
         Intro,
-        WeaponTest,
         CheckpointAndChapters,
         BossScene,
         GameCredits
@@ -51,12 +49,12 @@ const config: Phaser.Types.Core.GameConfig = {
 const StartGame = (parent: string) => {
     const parentElement = document.getElementById(parent);
     if (parentElement) {
-        parentElement.style.backgroundColor = 'black';
-        parentElement.style.display = 'flex';
-        parentElement.style.justifyContent = 'center';
-        parentElement.style.alignItems = 'center';
-        parentElement.style.height = '100vh'; 
-        parentElement.style.width = '100%'; 
+        parentElement.style.backgroundColor = "black";
+        parentElement.style.display = "flex";
+        parentElement.style.justifyContent = "center";
+        parentElement.style.alignItems = "center";
+        parentElement.style.height = "100vh";
+        parentElement.style.width = "100%";
     } else {
         console.warn(`Element with id "${parent}" not found.`);
     }

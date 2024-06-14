@@ -91,9 +91,9 @@ export function stageObjective(scene: any) {
         }
     }
 
-    if (scene.gameUI.elapsedTime == 60) {
+    if (Game.gameUI.elapsedTime == 60) {
+        scene.scene.start("GameOver");
         const playerDeathSound = scene.sound.add("playerDeath");
         playerDeathSound.play();
-        scene.scene.start("GameOver");
     }
 }

@@ -11,13 +11,15 @@ export class WeaponSkill {
     confuse: SkillLevel;
     fire: SkillLevel;
     freeze: SkillLevel;
+    critChance: SkillLevel;
 
     constructor(
         atkLevel: number = 0,
         slowLevel: number = 0,
         confuseLevel: number = 0,
         fireLevel: number = 0,
-        freezeLevel: number = 2,
+        freezeLevel: number = 0,
+        critChanceLevel: number = 0,
     ) {
         this.atk = this.createSkillLevel(atkLevel, this.calculateAtkBonus);
         this.slow = this.createSkillLevel(slowLevel, this.calculateSlowBonus);
@@ -29,6 +31,10 @@ export class WeaponSkill {
         this.freeze = this.createSkillLevel(
             freezeLevel,
             this.calculateFreezeBonus,
+        );
+        this.critChance = this.createSkillLevel(
+            critChanceLevel,
+            this.calculateCritLevel,
         );
     }
 
@@ -149,6 +155,28 @@ export class WeaponSkill {
     levelUpFreeze(): void {
         this.freeze.level++;
         this.freeze.bonus = this.calculateFireBonus(this.freeze.level);
+        Game.player.emit("weaponSkillLevelUp");
+    }
+
+    calculateCritLevel = (level: number): number => {
+        // Apply % chance to crit for double damage
+        switch (level) {
+            case 0:
+                return 0;
+            case 1:
+                return 10;
+            case 2:
+                return 20;
+            case 3:
+                return 40;
+            default:
+                return 40;
+        }
+    };
+
+    levelUpCritChance(): void {
+        this.critChance.level++;
+        this.critChance.bonus = this.calculateFireBonus(this.critChance.level);
         Game.player.emit("weaponSkillLevelUp");
     }
 }

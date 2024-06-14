@@ -157,6 +157,22 @@ export class Zombie extends Physics.Arcade.Sprite {
 
     receiveDamage(amount: number, weapon?: MeleeWeapon | RangedWeapon) {
         amount = Math.round(amount);
+
+        const randomChance = Math.random();
+
+        if (randomChance <= Game.player.weaponSkill.critChance.bonus / 100) {
+            amount = amount * 2;
+
+            Game.gameUI.createFloatingText(
+                this.x,
+                this.y,
+                "CRIT",
+                "#d4af37",
+                "8px",
+                true,
+            );
+        }
+
         if (!this.isInIFrame) {
             const weaponSkillSlow = Game.player.weaponSkill.slow;
             if (!this.isSlowed) {
@@ -273,13 +289,13 @@ export class Zombie extends Physics.Arcade.Sprite {
                 fontSize = "12px";
             }
 
-            Game.gameUI.createFloatingText(
-                this.x,
-                this.y,
-                String(amount),
-                color,
-                fontSize,
-            );
+            // Game.gameUI.createFloatingText(
+            //     this.x,
+            //     this.y,
+            //     String(amount),
+            //     color,
+            //     fontSize,
+            // );
         }
     }
 

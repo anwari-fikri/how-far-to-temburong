@@ -81,11 +81,11 @@ export function stageObjective(scene: any) {
 
     Game.totalKill = Game.player.killCount;
     Game.totalDistance = scene.highestX;
-    Game.totalTime = scene.gameUI.elapsedTime;
+    Game.totalTime = Game.gameUI.elapsedTime;
 
     // time limit
     if (scene.distanceComplete && scene.killComplete) {
-        if (scene.gameUI.elapsedTime < 60) {
+        if (Game.gameUI.elapsedTime < 60) {
             scene.scene.start("CheckpointAndChapters");
             scene.sound.stopAll();
         }

@@ -10,12 +10,14 @@ export class WeaponSkill {
     slow: SkillLevel;
     confuse: SkillLevel;
     fire: SkillLevel;
+    freeze: SkillLevel;
 
     constructor(
         atkLevel: number = 0,
         slowLevel: number = 0,
         confuseLevel: number = 0,
-        fireLevel: number = 1,
+        fireLevel: number = 0,
+        freezeLevel: number = 2,
     ) {
         this.atk = this.createSkillLevel(atkLevel, this.calculateAtkBonus);
         this.slow = this.createSkillLevel(slowLevel, this.calculateSlowBonus);
@@ -24,6 +26,10 @@ export class WeaponSkill {
             this.calculateConfuseBonus,
         );
         this.fire = this.createSkillLevel(fireLevel, this.calculateFireBonus);
+        this.freeze = this.createSkillLevel(
+            freezeLevel,
+            this.calculateFreezeBonus,
+        );
     }
 
     createSkillLevel(
@@ -121,6 +127,28 @@ export class WeaponSkill {
     levelUpFire(): void {
         this.fire.level++;
         this.fire.bonus = this.calculateFireBonus(this.fire.level);
+        Game.player.emit("weaponSkillLevelUp");
+    }
+
+    calculateFreezeBonus = (level: number): number => {
+        // Apply % chance to freeze enemy per hit for 1 second
+        switch (level) {
+            case 0:
+                return 0;
+            case 1:
+                return 5;
+            case 2:
+                return 10;
+            case 3:
+                return 20;
+            default:
+                return 20;
+        }
+    };
+
+    levelUpFreeze(): void {
+        this.freeze.level++;
+        this.freeze.bonus = this.calculateFireBonus(this.freeze.level);
         Game.player.emit("weaponSkillLevelUp");
     }
 }

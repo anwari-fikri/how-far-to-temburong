@@ -69,6 +69,7 @@ export class Zombie extends Physics.Arcade.Sprite {
     isConfused: boolean = false;
     isOnFire: boolean = false;
     fireBonusInterval: number | NodeJS.Timeout | null;
+    isFrozen: boolean = false;
 
     constructor(scene: Scene) {
         super(scene, 0, 0, "zombie");
@@ -128,6 +129,7 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.isConfused = false;
         this.isOnFire = false;
         this.fireBonusInterval = null;
+        this.isFrozen = false;
 
         this.setOrigin(0.5, 0.5);
         var radius = this.hitboxRadius;
@@ -187,6 +189,28 @@ export class Zombie extends Physics.Arcade.Sprite {
                             this.y,
                             "confused",
                             "#FFFF00",
+                        );
+                    }
+                }
+            }
+
+            const weaponSkillFreeze = Game.player.weaponSkill.freeze;
+            if (!this.isFrozen) {
+                if (weaponSkillFreeze.level > 0) {
+                    const randomChance = Math.random();
+
+                    if (randomChance <= weaponSkillFreeze.bonus / 100) {
+                        this.isFrozen = true;
+
+                        setTimeout(() => {
+                            this.isFrozen = false;
+                        }, 5000); // 0.5 seconds
+
+                        Game.gameUI.createFloatingText(
+                            this.x,
+                            this.y,
+                            "frozen",
+                            "#ADD8E6",
                         );
                     }
                 }
@@ -389,6 +413,8 @@ export class Zombie extends Physics.Arcade.Sprite {
                 this.clearFireBonusInterval();
             }
 
+            this.isFrozen ? this.freeze() : this.unfreeze();
+
             this.scene.physics.moveToObject(
                 this,
                 player,
@@ -396,7 +422,7 @@ export class Zombie extends Physics.Arcade.Sprite {
             );
             this.checkDistanceToPlayer(player);
 
-            if (!Game.player.isTimeStopped) {
+            if (!Game.player.isTimeStopped && !this.isFrozen) {
                 const direction = player.x - this.x;
                 if (this.isConfused ? direction < 0 : direction > 0) {
                     this.anims.play(`${this.animsKey}-walk-right`, true);
@@ -417,7 +443,6 @@ export class Zombie extends Physics.Arcade.Sprite {
                     Game.player.inventory.meleeWeapon,
                 )
             ) {
-                console.log(this.isConfused);
                 Game.player.emit("weaponSkillLevelUp");
 
                 const randomValue = 0.95 + Math.random() * 0.05;

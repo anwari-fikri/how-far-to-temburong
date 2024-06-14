@@ -9,6 +9,9 @@ import { WeaponTest } from "./scenes/WeaponTest";
 import { RandomEncounterTest } from "./scenes/RandomEncounterTest";
 import { Intro } from "./scenes/Intro";
 import { CheckpointAndChapters } from "./scenes/CheckpointAndChapters";
+import { BossScene } from "./scenes/BossScene";
+import { GameCredits } from "./scenes/GameCredits";
+
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -40,6 +43,8 @@ const config: Phaser.Types.Core.GameConfig = {
         Intro,
         WeaponTest,
         CheckpointAndChapters,
+        BossScene,
+        GameCredits
     ],
 };
 

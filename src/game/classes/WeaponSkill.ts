@@ -2,6 +2,8 @@ import { Game } from "../scenes/Game";
 
 export interface SkillLevel {
     displayName: string;
+    description: string;
+    imageUrl: string;
     level: number;
     bonus: number;
 }
@@ -24,31 +26,43 @@ export class WeaponSkill {
     ) {
         this.atk = this.createSkillLevel(
             "Attack Up",
+            "Increases weapon attack",
+            "",
             atkLevel,
             this.calculateAtkBonus,
         );
         this.slow = this.createSkillLevel(
             "Slow",
+            "Apply slow to zombies",
+            "",
             slowLevel,
             this.calculateSlowBonus,
         );
         this.confuse = this.createSkillLevel(
             "Confuse",
+            "Make enemy move opposite direction",
+            "",
             confuseLevel,
             this.calculateConfuseBonus,
         );
         this.fire = this.createSkillLevel(
             "Burn",
+            "Damage over time",
+            "",
             fireLevel,
             this.calculateFireBonus,
         );
         this.freeze = this.createSkillLevel(
             "Freeze",
+            "Stops enemy from moving and attacking",
+            "",
             freezeLevel,
             this.calculateFreezeBonus,
         );
         this.critChance = this.createSkillLevel(
             "Critical Chance",
+            "Chance to double damage",
+            "",
             critChanceLevel,
             this.calculateCritBonus,
         );
@@ -92,11 +106,15 @@ export class WeaponSkill {
 
     createSkillLevel(
         displayName: string,
+        description: string,
+        imageUrl: string,
         level: number,
         bonusCalc: (level: number) => number,
     ): SkillLevel {
         return {
             displayName: displayName,
+            description: description,
+            imageUrl: imageUrl,
             level: level,
             bonus: bonusCalc(level),
         };

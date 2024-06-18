@@ -10,9 +10,6 @@ export class LevelUpOverlay extends Scene {
     create() {
         const weaponSkill = Game.player.weaponSkill;
         const selection: SkillLevel[] = weaponSkill.choose3Random();
-        if (!selection) {
-            return;
-        }
 
         // Background panel for better readability
         const panel = this.add.graphics();

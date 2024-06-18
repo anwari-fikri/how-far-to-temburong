@@ -22,7 +22,7 @@ export default class GameUI {
         // this.createElapsedTime();
         this.createInventory();
         this.createExpBar();
-        this.createLevelUpSelection();
+        // this.createLevelUpSelection();
         this.createLevelCount();
     }
 
@@ -31,7 +31,7 @@ export default class GameUI {
         this.scene.scene.pause("Game");
 
         // Start the level-up overlay scene
-        this.scene.scene.launch("LevelUpOverlay");
+        this.scene.scene.launch("WeaponSkillUpgrade");
     }
 
     createExpBar() {

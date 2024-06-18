@@ -17,7 +17,7 @@ import { WeaponSkillUpgrade } from "./scenes/WeaponSkillUpgrade";
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
-    width: 480,
+    width: 560,
     height: 278,
     scale: {
         mode: Phaser.Scale.FIT,

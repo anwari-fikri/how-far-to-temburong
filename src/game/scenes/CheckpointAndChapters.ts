@@ -686,6 +686,7 @@ export class CheckpointAndChapters extends Scene {
         });
 
         screenDiv.style.animation = "fade-in 1s forwards";
+        screenDiv.style.animation = "fade-out 1s forwards";
     }
 
     chapterFinaleContinuation() {
@@ -702,7 +703,7 @@ export class CheckpointAndChapters extends Scene {
             "Yeah, it was… hey can I ask you something?",
             "wajid: Sure, go ahead.",
             "How far to Temburong?",
-            "wajid: Haha, don't worry son. You've made it. Welcome to Temburong, you are safe now",
+            "wajid: Haha, don't worry son. You've made it. Welcome to Temburong, you are safe now.",
         ];
 
         let currentDialogue = 0;
@@ -763,6 +764,7 @@ export class CheckpointAndChapters extends Scene {
                 });
             } else {
                 this.cleanup();
+                this.thankYouForPlayingScreen();
             }
         };
 
@@ -770,7 +772,65 @@ export class CheckpointAndChapters extends Scene {
 
         screenDiv.style.animation = "fade-in 1s forwards";
     }
-
+    thankYouForPlayingScreen() {
+        this.cleanup();
+    
+        const endText = document.createElement("div");
+        endText.textContent = "THE END";
+        endText.style.position = "fixed";
+        endText.style.top = "65%";
+        endText.style.left = "50%";
+        endText.style.transform = "translate(-50%, -50%)";
+        endText.style.fontFamily = '"Press Start 2P", Arial, sans-serif';
+        endText.style.fontSize = "36px";
+        endText.style.color = "#ffffff";
+        endText.style.textAlign = "center";
+        endText.style.opacity = "0"; // Initially hidden
+        endText.style.animation = "fade-in 2s forwards";
+    
+        const thankYouText = document.createElement("div");
+        thankYouText.textContent = "THANK YOU FOR PLAYING";
+        thankYouText.style.position = "fixed";
+        thankYouText.style.top = "55%";
+        thankYouText.style.left = "50%";
+        thankYouText.style.transform = "translate(-50%, -50%)";
+        thankYouText.style.fontFamily = '"Press Start 2P", Arial, sans-serif';
+        thankYouText.style.fontSize = "24px";
+        thankYouText.style.color = "#ffffff";
+        thankYouText.style.textAlign = "center";
+        thankYouText.style.opacity = "0"; // Initially hidden
+        thankYouText.style.animation = "fade-in 2s forwards";
+    
+        const gameLogo = document.createElement("img");
+        gameLogo.src = "assets/Intro/gameTitle2.png"; // Replace with the actual path to your game logo image
+        gameLogo.style.position = "fixed";
+        gameLogo.style.top = "25%";
+        gameLogo.style.left = "50%";
+        gameLogo.style.transform = "translateX(-50%)";
+        gameLogo.style.width = "300px"; // Adjust the width as needed
+        gameLogo.style.height = "auto"; // Maintain aspect ratio
+        gameLogo.style.opacity = "0"; // Initially hidden
+        gameLogo.style.animation = "fade-in 2s forwards";
+    
+        document.body.appendChild(endText);
+        document.body.appendChild(thankYouText);
+        document.body.appendChild(gameLogo);
+    
+        // Fade out elements after 5 seconds
+        setTimeout(() => {
+            endText.style.animation = "fade-out 2s forwards";
+            thankYouText.style.animation = "fade-out 2s forwards";
+            gameLogo.style.animation = "fade-out 2s forwards";
+        }, 5000); // 5000 milliseconds = 5 seconds
+    
+        // Redirect to main menu after 7 seconds
+        setTimeout(() => {
+            this.cleanup();
+            this.goToMenu();
+        }, 7000); // 7000 milliseconds = 7 seconds
+    }
+    
+    
     // -------------------------------------------------------------- CHECKPOINTS ---------------------------------------------------------------------------
 
     checkpointOneScreen() {
@@ -1068,6 +1128,12 @@ export class CheckpointAndChapters extends Scene {
         this.scene.start("Game");
     }
 
+    goToMenu() {
+        this.cleanup;
+        this.scene.start("MainMenu"); // Redirect to Main Menu scene
+    }
+    
+
     cleanup() {
         const elementsToRemove = [
             "chapterOne",
@@ -1091,6 +1157,7 @@ export class CheckpointAndChapters extends Scene {
             "dialogueCheckpointTwo",
             "checkpointThree",
             "dialogueCheckpointThree",
+            "thankYouForPlaying",
         ];
         elementsToRemove.forEach((id) => {
             const element = document.getElementById(id);

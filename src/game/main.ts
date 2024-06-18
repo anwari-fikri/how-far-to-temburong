@@ -8,7 +8,6 @@ import { PauseMenu } from "./scenes/PauseMenu";
 import { RandomEncounterTest } from "./scenes/RandomEncounterTest";
 import { Intro } from "./scenes/Intro";
 import { CheckpointAndChapters } from "./scenes/CheckpointAndChapters";
-import { LevelUpOverlay } from "./scenes/LevelUpOverlay";
 import { BossScene } from "./scenes/BossScene";
 import { GameCredits } from "./scenes/GameCredits";
 import { WeaponSkillUpgrade } from "./scenes/WeaponSkillUpgrade";
@@ -42,7 +41,6 @@ const config: Phaser.Types.Core.GameConfig = {
         RandomEncounterTest,
         Intro,
         CheckpointAndChapters,
-        LevelUpOverlay,
         BossScene,
         GameCredits,
         WeaponSkillUpgrade,

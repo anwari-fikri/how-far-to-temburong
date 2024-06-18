@@ -26,8 +26,6 @@ function addGlobalStyles() {
 }
 
 export class Intro extends Scene {
-
-
     constructor() {
         super("Intro");
     }
@@ -88,6 +86,7 @@ export class Intro extends Scene {
     newspaperScreen() {
         this.cleanup();
 
+        const introSong = this.sound.add("mainMenu");
         const newspaperSound = this.sound.add("newspaper");
         newspaperSound.play();
 
@@ -141,6 +140,7 @@ export class Intro extends Scene {
                                     onComplete: () => {
                                         this.cleanup();
                                         this.scene.start("MainMenu");
+                                        introSong.play();
                                     },
                                 });
                             }, 500);
@@ -154,10 +154,7 @@ export class Intro extends Scene {
     }
 
     cleanup() {
-        const elementsToRemove = [
-            "companyNameScreen",
-            "newspaperScreen",
-        ];
+        const elementsToRemove = ["companyNameScreen", "newspaperScreen"];
         elementsToRemove.forEach((id) => {
             const element = document.getElementById(id);
             if (element) {

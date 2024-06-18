@@ -1,6 +1,7 @@
 import { Game } from "../scenes/Game";
 
-interface SkillLevel {
+export interface SkillLevel {
+    displayName: string;
     level: number;
     bonus: number;
 }
@@ -16,33 +17,86 @@ export class WeaponSkill {
     constructor(
         atkLevel: number = 0,
         slowLevel: number = 0,
-        confuseLevel: number = 3,
+        confuseLevel: number = 0,
         fireLevel: number = 0,
         freezeLevel: number = 0,
         critChanceLevel: number = 0,
     ) {
-        this.atk = this.createSkillLevel(atkLevel, this.calculateAtkBonus);
-        this.slow = this.createSkillLevel(slowLevel, this.calculateSlowBonus);
+        this.atk = this.createSkillLevel(
+            "Attack Up",
+            atkLevel,
+            this.calculateAtkBonus,
+        );
+        this.slow = this.createSkillLevel(
+            "Slow",
+            slowLevel,
+            this.calculateSlowBonus,
+        );
         this.confuse = this.createSkillLevel(
+            "Confuse",
             confuseLevel,
             this.calculateConfuseBonus,
         );
-        this.fire = this.createSkillLevel(fireLevel, this.calculateFireBonus);
+        this.fire = this.createSkillLevel(
+            "Burn",
+            fireLevel,
+            this.calculateFireBonus,
+        );
         this.freeze = this.createSkillLevel(
+            "Freeze",
             freezeLevel,
             this.calculateFreezeBonus,
         );
         this.critChance = this.createSkillLevel(
+            "Critical Chance",
             critChanceLevel,
-            this.calculateCritLevel,
+            this.calculateCritBonus,
         );
     }
 
+    showLevels(): void {
+        console.log({
+            atkLevel: this.atk.level,
+            slowLevel: this.slow.level,
+            confuseLevel: this.confuse.level,
+            fireLevel: this.fire.level,
+            freezeLevel: this.freeze.level,
+            critChanceLevel: this.critChance.level,
+        });
+    }
+
+    applyLevelUp(skillName: string) {
+        switch (skillName) {
+            case "Attack Up":
+                this.levelUpAtk();
+                break;
+            case "Slow":
+                this.levelUpSlow();
+                break;
+            case "Confuse":
+                this.levelUpConfuse();
+                break;
+            case "Burn":
+                this.levelUpFire();
+                break;
+            case "Freeze":
+                this.levelUpFreeze();
+                break;
+            case "Critical Chance":
+                this.levelUpCritChance();
+                break;
+            default:
+                console.warn(`Unknown skill name: ${skillName}`);
+        }
+    }
+
     createSkillLevel(
+        displayName: string,
         level: number,
         bonusCalc: (level: number) => number,
     ): SkillLevel {
         return {
+            displayName: displayName,
             level: level,
             bonus: bonusCalc(level),
         };
@@ -163,7 +217,7 @@ export class WeaponSkill {
         Game.player.emit("weaponSkillLevelUp");
     }
 
-    calculateCritLevel = (level: number): number => {
+    calculateCritBonus = (level: number): number => {
         // Apply % chance to crit for double damage
         switch (level) {
             case 0:
@@ -181,8 +235,40 @@ export class WeaponSkill {
 
     levelUpCritChance(): void {
         this.critChance.level++;
-        this.critChance.bonus = this.calculateFireBonus(this.critChance.level);
+        this.critChance.bonus = this.calculateCritBonus(this.critChance.level);
         Game.player.emit("weaponSkillLevelUp");
+    }
+
+    choose3Random(): SkillLevel[] {
+        const skills = [
+            this.atk,
+            this.slow,
+            this.confuse,
+            this.fire,
+            this.freeze,
+            this.critChance,
+        ];
+
+        const selectableSkills = skills.filter((skill) => skill.level < 3);
+
+        if (selectableSkills.length <= 3) {
+            return selectableSkills;
+        }
+
+        const selection: SkillLevel[] = [];
+        const usedIndices: Set<number> = new Set();
+
+        while (selection.length < 3) {
+            const randomIndex = Math.floor(
+                Math.random() * selectableSkills.length,
+            );
+            if (!usedIndices.has(randomIndex)) {
+                usedIndices.add(randomIndex);
+                selection.push(selectableSkills[randomIndex]);
+            }
+        }
+
+        return selection;
     }
 }
 

@@ -11,6 +11,7 @@ export default class GameUI {
     calendar: Phaser.GameObjects.Group;
     startTime: number;
     expBar: Phaser.GameObjects.Graphics;
+    levelCount: Phaser.GameObjects.Text;
 
     constructor(scene: Scene) {
         this.scene = scene;
@@ -21,6 +22,16 @@ export default class GameUI {
         // this.createElapsedTime();
         this.createInventory();
         this.createExpBar();
+        this.createLevelUpSelection();
+        this.createLevelCount();
+    }
+
+    createLevelUpSelection() {
+        // Pause the game scene
+        this.scene.scene.pause("Game");
+
+        // Start the level-up overlay scene
+        this.scene.scene.launch("LevelUpOverlay");
     }
 
     createExpBar() {
@@ -218,6 +229,24 @@ export default class GameUI {
                 }
             }
         });
+    }
+
+    createLevelCount() {
+        this.levelCount = this.scene.add.text(
+            220,
+            11,
+            `Level ${String(Game.player.experience.levelCount)}`,
+        );
+        this.levelCount.setScrollFactor(0).setDepth(40);
+
+        const updateLevel = () => {
+            this.levelCount.setText(
+                `Level ${String(Game.player.experience.levelCount)}`,
+            );
+        };
+
+        // Register the update function to the "experience-changed" event
+        Game.player.on("experience-changed", updateLevel);
     }
 
     createAndUpdateHealthBar() {

@@ -44,8 +44,10 @@ export class Experience extends Physics.Arcade.Sprite {
             Game.player.experience.experiencePoint >=
             Game.player.experience.nextLevel
         ) {
+            Game.player.experience.levelCount += 1;
             Game.player.experience.experiencePoint = 0;
-            Game.player.experience.nextLevel += 10;
+            Game.player.experience.nextLevel += 5;
+            Game.gameUI.createLevelUpSelection();
         }
 
         Game.player.emit("experience-changed");

@@ -2,6 +2,7 @@ import { Scene } from "phaser";
 import { Experience } from "./Experience";
 
 export class ExperienceManager extends Phaser.GameObjects.Group {
+    levelCount: number;
     experiencePoint: number;
     nextLevel: number;
 
@@ -12,6 +13,7 @@ export class ExperienceManager extends Phaser.GameObjects.Group {
                 maxSize: 100,
             };
 
+        this.levelCount = 0;
         this.experiencePoint = 0;
         this.nextLevel = 5;
     }

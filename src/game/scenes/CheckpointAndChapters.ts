@@ -88,7 +88,7 @@ export class CheckpointAndChapters extends Scene {
                     this.checkpointThreeScreen();
                     break;
                 case 4:
-                    this.thankYouForPlayingScreen();
+                    this.chapterFinaleScreen();
                     break;
             }
         }, 1000);

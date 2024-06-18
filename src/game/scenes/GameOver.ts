@@ -187,13 +187,11 @@ export class GameOver extends Scene {
         distanceValueSpan.style.color = "white"; 
         distanceElement.appendChild(distanceValueSpan); 
 
-            // Create top-right element for time
         const timeElement = document.createElement("div");
-        timeElement.textContent = "Time: "; // Set the text content for "Time: "
+        timeElement.textContent = "Time: "; 
         timeElement.className = "top-right text-shadow";
-        timeElement.style.color = "#f29e00"; // Set the color of "Time: " text to #f29e00
+        timeElement.style.color = "#f29e00"; 
 
-        // Create a span element for the actual time data
         const timeValueSpan:any = document.createElement("span");
         timeValueSpan.textContent = Game.totalTime; 
         timeValueSpan.style.color = "white"; 
@@ -209,25 +207,8 @@ export class GameOver extends Scene {
         screenDiv.appendChild(timeElement);     
         screenDiv.style.animation = "fade-in 1s forwards";
     
-       
         this.currentSelection = "yes";
         this.updateArrowPosition();
-    
-
-        document.addEventListener("keydown", this.handleKeydown.bind(this));
-    }
-    
-    handleKeydown(event:any) {
-        if (event.key === "ArrowUp" || event.key === "ArrowDown") {
-            if (this.currentSelection === "yes") {
-                this.currentSelection = "no";
-            } else {
-                this.currentSelection = "yes";
-            }
-            this.updateArrowPosition();
-        } else if (event.key === "Enter") {
-            this.selectOption(this.currentSelection);
-        }
     }
 
     updateArrowPosition() {
@@ -241,14 +222,25 @@ export class GameOver extends Scene {
         }
     }
 
-    selectOption(option:any) {
+    selectOption(option: any) {
         console.log(`${option.toUpperCase()} clicked`);
         if (option === "yes") {
-        this.cleanup();
-            this.scene.start("Game");
+            this.cleanup();
+            this.startMainGame();
         } else if (option === "no") {
-
+            this.cleanup();
+            this.startMainMenu();
         }
+    }
+
+    startMainGame() {
+        this.cleanup();
+        this.scene.start("Game");
+    }
+
+    startMainMenu() {
+        this.cleanup();
+        this.scene.start("MainMenu");
     }
 
     cleanup() {
@@ -256,6 +248,5 @@ export class GameOver extends Scene {
         if (screenDiv) {
             screenDiv.remove();
         }
-        document.removeEventListener("keydown", this.handleKeydown.bind(this));
     }
 }

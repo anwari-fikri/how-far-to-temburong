@@ -338,11 +338,11 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.clearFireBonusInterval();
         if (!isDeSpawn) {
             Game.player.killCount += 1;
-
-            this.zombieType === ZOMBIE_TYPE.MINI_BOSS
-                ? dropRandomEncounterTrigger(this)
-                : dropItem(this, 15);
         }
+
+        this.zombieType === ZOMBIE_TYPE.MINI_BOSS
+            ? dropRandomEncounterTrigger(this)
+            : dropItem(this, 15);
 
         this.chaseSpeed = 0;
         this.disableBody(true, false); // Disable physics but keep the object visible for the animation
@@ -354,10 +354,11 @@ export class Zombie extends Physics.Arcade.Sprite {
                 ease: "Power1",
                 duration: 1000,
                 onComplete: () => {
-                    this.setActive(false);
-                    this.setVisible(false);
-                    this.disableBody(true, true);
+                    // this.setActive(false);
+                    // this.setVisible(false);
+                    // this.disableBody(true, true);
                     this.setAlpha(1);
+                    this.destroy();
                 },
             })
             .play();

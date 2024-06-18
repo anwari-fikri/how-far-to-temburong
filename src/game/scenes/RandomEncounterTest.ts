@@ -45,10 +45,14 @@ export class RandomEncounterTest extends Scene {
     }
 
     preload() {
+        this.load.audio("dialouge", "audio/dialouge.mp3");
+        this.load.audio("button", "assets/audio/intro_menuButton.mp3");
         this.load.json("scenarios", "assets/scenarios.json");
     }
 
     createFirstScene(scenario: any) {
+        const menuButtonSound = this.sound.add("button");
+        const dialougeSound = this.sound.add("dialouge");
         const scaleFactorX = 0.98;
         const scaleFactorY = 0.98;
         const bgImage = this.add.image(
@@ -75,10 +79,14 @@ export class RandomEncounterTest extends Scene {
         titleDiv.style.imageRendering = "pixelated";
         document.body.appendChild(titleDiv);
 
+        dialougeSound.play();
         new Typed("#title", {
             strings: [scenario.getScenarioText()],
             typeSpeed: 20,
             showCursor: false,
+            onComplete: () => {
+                dialougeSound.stop();
+            },
         });
 
         const selectionContainerDiv = document.createElement("div");
@@ -102,6 +110,7 @@ export class RandomEncounterTest extends Scene {
             selectionDiv.style.marginTop = "10px";
             selectionDiv.textContent = choice;
             selectionDiv.addEventListener("click", () => {
+                menuButtonSound.play();
                 this.createSecondScene(selection.answer, selection.reward);
             });
             selectionContainerDiv.appendChild(selectionDiv);
@@ -109,6 +118,7 @@ export class RandomEncounterTest extends Scene {
     }
 
     createSecondScene(answer: any, reward: any) {
+        const dialougeSound = this.sound.add("dialouge");
         const blackBg = document.createElement("div");
         blackBg.id = "black-bg";
         blackBg.style.position = "fixed";
@@ -136,13 +146,16 @@ export class RandomEncounterTest extends Scene {
         answerDiv.style.imageRendering = "pixelated";
         document.body.appendChild(answerDiv);
 
+        dialougeSound.play();
         new Typed("#answer", {
             strings: [`${answer}`, `Reward: ${reward}`],
             typeSpeed: 20,
             showCursor: false,
             onComplete: () => {
+                dialougeSound.stop();
                 this.scene.resume("Game");
                 this.scene.stop();
+                this.sound.resumeAll();
             },
         });
     }

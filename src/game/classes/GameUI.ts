@@ -10,6 +10,7 @@ export default class GameUI {
     healthBar: Phaser.GameObjects.Graphics;
     calendar: Phaser.GameObjects.Group;
     startTime: number;
+    expBar: Phaser.GameObjects.Graphics;
 
     constructor(scene: Scene) {
         this.scene = scene;
@@ -19,6 +20,29 @@ export default class GameUI {
         this.createPowerUpStatus();
         // this.createElapsedTime();
         this.createInventory();
+        this.createExpBar();
+    }
+
+    createExpBar() {
+        this.expBar = this.scene.add.graphics();
+        this.expBar.setScrollFactor(0);
+
+        const updateExpBar = () => {
+            const expPercentage =
+                Game.player.experience.experiencePoint /
+                Game.player.experience.nextLevel;
+            this.expBar.clear();
+            this.expBar.fillStyle(0x98fb98);
+            this.expBar.fillRect(0, 0, 480 * expPercentage, 5);
+
+            this.expBar.lineStyle(1, 0xffffff);
+            this.expBar.strokeRect(-1, -1, 482, 5);
+            this.expBar.setDepth(40);
+        };
+
+        updateExpBar();
+
+        Game.player.on("experience-changed", updateExpBar);
     }
 
     createFloatingText(
@@ -78,18 +102,18 @@ export default class GameUI {
                 .setDepth(depth);
         };
 
-        const leftSlot = createSlot(470 - 30, 10, 40); // -30 (-32 to be exact) is width of sprite
-        const rightSlot = createSlot(470, 10, 40);
+        const leftSlot = createSlot(470 - 30, 15, 40); // -30 (-32 to be exact) is width of sprite
+        const rightSlot = createSlot(470, 15, 40);
 
         const meleeWeapon = createWeapon(
             leftSlot.x - 16,
-            10,
+            15,
             Game.player.inventory.meleeWeapon.weaponType.icon,
             41,
         );
         const rangedWeapon = createWeapon(
             rightSlot.x - 16,
-            10,
+            15,
             Game.player.inventory.rangedWeapon.weaponType.icon,
             41,
         );
@@ -204,7 +228,7 @@ export default class GameUI {
             const healthPercentage =
                 Game.player.currentHealth / PLAYER_CONST.BASE_HEALTH;
             this.healthBar.clear();
-            this.healthBar.fillStyle(0xff0000);
+            this.healthBar.fillStyle(0xd0312d);
             this.healthBar.fillRect(60, 11, 150 * healthPercentage, 15);
             this.healthBar.lineStyle(1, 0xffffff);
             this.healthBar.strokeRect(60, 11, 150, 15);

@@ -16,9 +16,9 @@ export class WeaponSkill {
     constructor(
         atkLevel: number = 0,
         slowLevel: number = 0,
-        confuseLevel: number = 0,
+        confuseLevel: number = 3,
         fireLevel: number = 0,
-        freezeLevel: number = 3,
+        freezeLevel: number = 0,
         critChanceLevel: number = 0,
     ) {
         this.atk = this.createSkillLevel(atkLevel, this.calculateAtkBonus);

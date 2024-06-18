@@ -8,6 +8,7 @@ import RangedWeapon, { RANGED_WEAPON_TYPE } from "./RangedWeapon";
 import { Zombie } from "./Zombie";
 import { ZombieGroup } from "./ZombieGroup";
 import { WeaponSkill } from "./WeaponSkill";
+import { ExperienceManager } from "./ExperienceManager";
 
 export enum PLAYER_CONST {
     BASE_HEALTH = 100,
@@ -19,6 +20,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     controls: PlayerControls;
     inventory: Inventory;
     weaponSkill: WeaponSkill;
+    experience: ExperienceManager;
     isAttacking: boolean = false;
     isInIFrame: boolean = false;
 
@@ -65,6 +67,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.inventory.replaceRangedWeapon(
             new RangedWeapon(scene, this, RANGED_WEAPON_TYPE.PISTOL),
         );
+        this.experience = new ExperienceManager(this.scene);
         this.weaponSkill = new WeaponSkill();
         this.updateWeaponSkill();
         scene.cameras.main.startFollow(this, true);
@@ -318,5 +321,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     update() {
         this.controls.update();
         this.inventory.update();
+        this.experience.update();
     }
 }

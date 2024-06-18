@@ -8,6 +8,8 @@ export function dropItem(zombie: Zombie, chance: number = 15) {
 
     if (randomValue < chance / 100) {
         Game.powerUps.dropRandomPowerUp(zombie);
+    } else {
+        Game.player.experience.addExperience(zombie.x, zombie.y);
     }
 }
 

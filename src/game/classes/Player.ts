@@ -73,9 +73,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.isAttackBoosted = false;
         this.isTimeStopped = false;
         this.isInvincibility = false;
+
+        console.log("run after unpaused!");
     }
 
-    receiveDamage(amount: number, zombie: Zombie) {
+    receiveDamage(amount: number, zombie?: Zombie) {
         if (!this.isInIFrame) {
             if (!this.isInvincibility) {
                 this.currentHealth = Math.max(0, this.currentHealth - amount);
@@ -146,6 +148,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 playerDamage.play();
             }
         }
+    }
+
+    heal(amount: number) {
+        this.currentHealth += amount;
+        this.setIFrame(500);
+        this.emit("health-changed");
     }
 
     applyKnockback(zombie: Zombie) {

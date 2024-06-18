@@ -29,7 +29,7 @@ export function objectiveUI(scene: any) {
 
         default:
             scene.distanceObjective = 1;
-            scene.killObjective = 1;
+            scene.killObjective = 2;
             break;
     }
 

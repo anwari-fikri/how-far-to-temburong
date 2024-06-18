@@ -8,21 +8,30 @@
                     "success": false,
                     "answer": "The toyol becomes aggressive and attacks you, causing damage and slowing you down.",
                     "reward": "-20% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.2,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Move quietly to avoid attracting attention.",
                     "success": true,
                     "answer": "You pass by the toyol without disturbing it, avoiding any conflict.",
-                    "reward": "+10% health",
-                    "effect": 0.2
+                    "reward": "+20 health",
+                    "effect": {
+                        "rate": 20,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Distract the toyol with a shiny object.",
                     "success": false,
                     "answer": "The toyol is momentarily distracted but quickly resumes its mischief, causing you to lose valuables.",
                     "reward": "-10% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.1,
+                        "category": "health"
+                    }
                 }
             ],
             "backgroundImage": "random1"
@@ -35,21 +44,30 @@
                     "success": false,
                     "answer": "While hiding, the Orang Minyak detects your presence and launches a surprise attack, injuring you.",
                     "reward": "-20% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.2,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Try to confront the Orang Minyak.",
                     "success": false,
                     "answer": "The Orang Minyak catches you off guard and attacks, causing you to lose health.",
                     "reward": "-10% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.1,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Stay calm and walk past him cautiously.",
                     "success": true,
                     "answer": "You manage to slip past the Orang Minyak without him noticing, avoiding any confrontation.",
-                    "reward": "+10% health",
-                    "effect": 0.2
+                    "reward": "+20 health",
+                    "effect": {
+                        "rate": 20,
+                        "category": "health"
+                    }
                 }
             ],
             "backgroundImage": "random2"
@@ -61,22 +79,31 @@
                     "choice": "Stay calm and walk past it cautiously.",
                     "success": true,
                     "answer": "You manage to pass by unnoticed, and find a hidden stash of healing herbs further down the path.",
-                    "reward": "+10% health",
-                    "effect": 0.2
+                    "reward": "+20 health",
+                    "effect": {
+                        "rate": 20,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Try to confront the penanggal.",
                     "success": false,
                     "answer": "The penanggal attacks you viciously, causing you to lose a significant amount of health and slowing you down.",
                     "reward": "-20% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.2,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Hide and observe from a distance.",
                     "success": false,
                     "answer": "While hiding, the penanggal senses your presence and attacks, injuring you.",
                     "reward": "-15% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.15,
+                        "category": "health"
+                    }
                 }
             ],
             "backgroundImage": "random3"
@@ -89,21 +116,30 @@
                     "success": false,
                     "answer": "The ritual fails to calm the Hantu Pocong, and it attacks you, causing injury.",
                     "reward": "-10% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.1,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Avoid eye contact and quietly walk away.",
                     "success": false,
                     "answer": "While trying to avoid confrontation, you accidentally attract the Hantu Pocong's attention and get attacked.",
                     "reward": "-20% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.2,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Face the Hantu Pocong bravely.",
                     "success": true,
                     "answer": "Your bravery intimidates the Hantu Pocong, causing it to retreat and leave you unharmed.",
-                    "reward": "+10% health",
-                    "effect": 0.2
+                    "reward": "+20 health",
+                    "effect": {
+                        "rate": 20,
+                        "category": "health"
+                    }
                 }
             ],
             "backgroundImage": "random4"
@@ -116,21 +152,30 @@
                     "success": false,
                     "answer": "The Bunians find the dance amusing but do not offer any meaningful help.",
                     "reward": "-15% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.15,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Engage the Bunians in friendly conversation.",
                     "success": true,
                     "answer": "Your friendly interaction with the Bunians earns their trust, and they offer guidance for your journey.",
                     "reward": "-10% zombie spawn rate for next area",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.1,
+                        "category": "spawn"
+                    }
                 },
                 {
                     "choice": "Present a small gift as a token of goodwill.",
                     "success": false,
                     "answer": "The Bunians appreciate the gesture but remain wary, providing minimal assistance.",
                     "reward": "-10% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.1,
+                        "category": "health"
+                    }
                 }
             ],
             "backgroundImage": "random5"
@@ -142,22 +187,31 @@
                     "choice": "Whisper a prayer and walk slowly past her.",
                     "success": true,
                     "answer": "The Pontianak is momentarily calmed by your reverence and allows you to pass without harm.",
-                    "reward": "+10% health",
-                    "effect": 0.2
+                    "reward": "+20 health",
+                    "effect": {
+                        "rate": 20,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Try to charm her with compliments.",
                     "success": false,
                     "answer": "Your attempts to flatter the Pontianak anger her, and she attacks you, draining your energy.",
                     "reward": "-15% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.15,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Ignore her and continue walking confidently.",
                     "success": false,
                     "answer": "The Pontianak perceives your disregard as disrespect and strikes, causing you to lose health.",
                     "reward": "-20% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.2,
+                        "category": "health"
+                    }
                 }
             ],
             "backgroundImage": "random6"
@@ -170,21 +224,30 @@
                     "success": false,
                     "answer": "The Hantu Air are offended by your gift and drag you into the water, causing significant damage.",
                     "reward": "-20% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.2,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Speak respectfully and ask for safe passage.",
                     "success": true,
                     "answer": "The Hantu Air appreciate your respect and grant you safe passage, allowing you to continue your journey unharmed.",
-                    "reward": "+10% health",
-                    "effect": 0.2
+                    "reward": "+20 health",
+                    "effect": {
+                        "rate": 20,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Ignore the spirits and swim across.",
                     "success": false,
                     "answer": "The Hantu Air become enraged by your disrespect and pull you underwater, causing you to nearly drown.",
                     "reward": "-30% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.3,
+                        "category": "health"
+                    }
                 }
             ],
             "backgroundImage": "random7"
@@ -197,21 +260,30 @@
                     "success": false,
                     "answer": "The Jenglot sees you as a threat and attacks, draining your energy.",
                     "reward": "-20% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.2,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Offer it a small sacrifice.",
                     "success": true,
                     "answer": "The Jenglot accepts your offering and grants you a magical boost.",
-                    "reward": "+10% health",
-                    "effect": 0.2
+                    "reward": "+20 health",
+                    "effect": {
+                        "rate": 20,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Ignore it and continue on your path.",
                     "success": false,
                     "answer": "The Jenglot follows you and causes mischief, slowing your progress.",
-                    "reward": "-10% movement speed",
-                    "effect": 0.2
+                    "reward": "-25% movement speed",
+                    "effect": {
+                        "rate": 0.25,
+                        "category": "speed"
+                    }
                 }
             ],
             "backgroundImage": "random8"
@@ -224,21 +296,30 @@
                     "success": false,
                     "answer": "As you get closer, you realize he's a zombie! He lunges at you, causing damage.",
                     "reward": "-15% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.15,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Offer him some food to gain his trust.",
                     "success": false,
                     "answer": "Oh no! He reveals his true zombie form and attacks, taking a bite out of you.",
                     "reward": "-20% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.2,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Observe him from a distance.",
                     "success": true,
                     "answer": "Good move! You notice he's actually a zombie. You avoid a dangerous encounter and find useful supplies once he leaves.",
-                    "reward": "+10% health",
-                    "effect": 0.2
+                    "reward": "+20 health",
+                    "effect": {
+                        "rate": 20,
+                        "category": "health"
+                    }
                 }
             ],
             "backgroundImage": "random9"
@@ -251,21 +332,30 @@
                     "success": false,
                     "answer": "The makeshift path collapses under your weight, and you fall, getting hurt in the process.",
                     "reward": "-20% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.2,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Find an alternate route around the collapse.",
                     "success": false,
                     "answer": "The alternate route is a dead end, and you end up wasting valuable time and resources.",
                     "reward": "-15% health",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.15,
+                        "category": "health"
+                    }
                 },
                 {
                     "choice": "Jump over the collapsed section.",
                     "success": true,
                     "answer": "You make a daring leap and land safely on the other side, ready to continue your journey.",
                     "reward": "-10% zombie spawn rate for next area",
-                    "effect": 0.2
+                    "effect": {
+                        "rate": 0.1,
+                        "category": "spawn"
+                    }
                 }
             ],
             "backgroundImage": "random10"

@@ -10,6 +10,8 @@
         "Knockback",
         "powerup",
         "speedboost",
-        "spritesheet"
+        "spritesheet",
+        "Tilemap",
+        "Tilemaps"
     ]
 }

@@ -1,6 +1,7 @@
 import { Scene } from "phaser";
 import { EventBus } from "../EventBus";
-import { WeaponSkill } from "../classes/WeaponSkill";
+import { SkillLevel, WeaponSkill } from "../classes/WeaponSkill";
+import { Game } from "./Game";
 
 function loadGoogleFont() {
     const link = document.createElement("link");
@@ -121,9 +122,7 @@ export class WeaponSkillUpgrade extends Scene {
         this.cameras.main.setBackgroundColor("#000000");
         EventBus.emit("current-scene-ready", this);
 
-        setTimeout(() => {
-            this.weaponSkillUpgradeScreen();
-        }, 1000);
+        this.weaponSkillUpgradeScreen();
     }
 
     weaponSkillUpgradeScreen() {
@@ -142,7 +141,6 @@ export class WeaponSkillUpgrade extends Scene {
         screenDiv.style.alignItems = "center";
         screenDiv.style.zIndex = "100"; // Increase z-index value
 
-
         const bigText = document.createElement("div");
         bigText.className = "big-text";
         bigText.textContent = "Skill Level Up!";
@@ -154,47 +152,59 @@ export class WeaponSkillUpgrade extends Scene {
         container.style.flexDirection = "row"; // Change to row for horizontal layout
         container.style.alignItems = "center"; // Center items horizontally
         screenDiv.appendChild(container);
-        
-        const skillsList = [
-            { imgSrc: "assets/skill1.png", text: "Savage Strike", description: "Increases damage dealt by the player's attacks." },
-            { imgSrc: "assets/skill2.png", text: "Temporal Lock", description: "Slows down the movement speed of the affected enemy." },
-            { imgSrc: "assets/skill3.png", text: "Mind Control", description: "Temporarily confuses the target upon successful hits." },
-            { imgSrc: "assets/skill4.png", text: "Inferno Fury", description: "Inflicts burning damage on the enemy over time." },
-            { imgSrc: "assets/skill5.png", text: "Frostbite", description: "Freezes the enemy in place, preventing movement and actions." },
-            { imgSrc: "assets/skill6.png", text: "Critical Impact", description: "Increases the chances of critical hits for more damage." }
-        ];
 
-        const displayedSkills = getRandomItems(skillsList, 3);
+        const weaponSkill = Game.player.weaponSkill;
+        const displayedSkills: SkillLevel[] = weaponSkill.choose3Random();
 
-        displayedSkills.forEach((skill:any) => {
-            const skillDiv = document.createElement("div");
-            skillDiv.className = "skill-div";
+        if (displayedSkills.length === 0) {
+            const maxLevelText = document.createElement("div");
+            maxLevelText.className = "skill-text";
+            maxLevelText.textContent = "All skills are at max level.";
+            container.appendChild(maxLevelText);
 
-            const text = document.createElement("div");
-            text.className = "skill-text";
-            text.textContent = `${skill.text} lvl.${this.getSkillLevel(skill.text) + 1}`;
-            skillDiv.appendChild(text);
-
-            const img = document.createElement("img");
-            img.src = skill.imgSrc;
-            img.className = "skill-img";
-            skillDiv.appendChild(img);
-
-            const description = document.createElement("div");
-            description.className = "skill-description";
-            description.textContent = skill.description;
-            skillDiv.appendChild(description);
-
-            skillDiv.addEventListener("click", () => {
-                this.levelUpSkill(skill.text);
-                this.weaponSkillUpgradeScreen();
+            container.addEventListener("click", () => {
+                this.goToGame();
             });
+        } else {
+            displayedSkills.forEach((skill: SkillLevel) => {
+                const skillDiv = document.createElement("div");
+                skillDiv.className = "skill-div";
 
-            container.appendChild(skillDiv);
-        });
+                const text = document.createElement("div");
+                text.className = "skill-text";
+                text.textContent = `${skill.displayName} lvl.${skill.level + 1}`;
+                skillDiv.appendChild(text);
+
+                const description = document.createElement("div");
+                description.className = "skill-description";
+                description.textContent = skill.description;
+                skillDiv.appendChild(description);
+
+                skillDiv.addEventListener("click", () => {
+                    Game.player.weaponSkill.applyLevelUp(skill.displayName);
+                    this.goToGame();
+                });
+
+                container.appendChild(skillDiv);
+
+                // Add hover event to update skill description
+                skillDiv.addEventListener("mouseover", () => {
+                    description.style.display = "block"; // Show description on hover
+                });
+                skillDiv.addEventListener("mouseout", () => {
+                    description.style.display = "none"; // Hide description when not hovered
+                });
+            });
+        }
 
         document.body.appendChild(screenDiv);
         screenDiv.style.animation = "fade-in 1s forwards";
+    }
+
+    goToGame() {
+        this.cleanup();
+        this.scene.stop();
+        this.scene.resume("Game");
     }
 
     cleanup() {
@@ -203,53 +213,5 @@ export class WeaponSkillUpgrade extends Scene {
             document.body.removeChild(element);
         }
     }
-
-    getSkillLevel(skillName:any) {
-        switch (skillName) {
-            case "Savage Strike":
-                return this.weaponSkill.atk.level;
-            case "Temporal Lock":
-                return this.weaponSkill.slow.level;
-            case "Mind Control":
-                return this.weaponSkill.confuse.level;
-            case "Inferno Fury":
-                return this.weaponSkill.fire.level;
-            case "Frostbite":
-                return this.weaponSkill.freeze.level;
-            case "Critical Impact":
-                return this.weaponSkill.critChance.level;
-            default:
-                return 0;
-        }
-    }
-
-    levelUpSkill(skillName:any) {
-        switch (skillName) {
-            case "Savage Strike":
-                this.weaponSkill.levelUpAtk();
-                break;
-            case "Temporal Lock":
-                this.weaponSkill.levelUpSlow();
-                break;
-            case "Mind Control":
-                this.weaponSkill.levelUpConfuse();
-                break;
-            case "Inferno Fury":
-                this.weaponSkill.levelUpFire();
-                break;
-            case "Frostbite":
-                this.weaponSkill.levelUpFreeze();
-                break;
-            case "Critical Impact":
-                this.weaponSkill.levelUpCritChance();
-                break;
-            default:
-                break;
-        }
-    }
 }
 
-function getRandomItems(arr:any, numItems:any) {
-    const shuffled = arr.sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, numItems);
-}

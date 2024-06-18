@@ -27,9 +27,6 @@ function addGlobalStyles() {
         10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
         20%, 40%, 60%, 80% { transform: translateX(2px); }
     }
-    .selection-button:hover {  
-        animation: hover-shake 0.5s;
-    }
 
     .selection-button:hover {  
         animation: hover-shake 0.5s;
@@ -203,7 +200,7 @@ export class MainMenu extends Scene {
 
     characterSelectionScreen() {
         this.cleanup();
-
+    
         const screenDiv = document.createElement("div");
         screenDiv.id = "characterSelectionScreen";
         screenDiv.style.position = "fixed";
@@ -220,7 +217,7 @@ export class MainMenu extends Scene {
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
         document.body.appendChild(screenDiv);
-
+    
         // Create and style the vignette overlay
         const vignetteOverlay = document.createElement("div");
         vignetteOverlay.style.position = "absolute";
@@ -233,7 +230,7 @@ export class MainMenu extends Scene {
         vignetteOverlay.style.background =
             "radial-gradient(circle, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 0.8) 100%)";
         screenDiv.appendChild(vignetteOverlay);
-
+    
         // Create a container for the weapon selection
         const weaponContainer = document.createElement("div");
         weaponContainer.style.display = "flex";
@@ -249,42 +246,67 @@ export class MainMenu extends Scene {
         weaponContainer.style.fontSize = "14px";
         weaponContainer.style.zIndex = "6";
         weaponContainer.style.backgroundColor = "none";
-
+    
         // Add weapon images to the container
         const meleeWeapons = [
             { url: "assets/Intro/weapon1.png", name: "knife" },
             { url: "assets/Intro/weapon2.png", name: "sword" },
             { url: "assets/Intro/weapon3.png", name: "spear" },
         ];
-
+    
         const rangedWeapons = [
             { url: "assets/Intro/weapon4.png", name: "pistol" },
             { url: "assets/Intro/weapon5.png", name: "sniper" },
         ];
-
+    
         // Variables to track selected weapons
         MainMenu.selectedMeleeWeapon = null;
         MainMenu.selectedRangedWeapon = null;
         MainMenu.selectedCharacter = null;
-        let selectedMeleeElement: any = null;
-        let selectedRangedElement: any = null;
-
-        // Function to check selections and update text
+        let selectedMeleeElement:any = null;
+        let selectedRangedElement:any = null;
+    
+        // Create and style the button element
+        const buttonElement = document.createElement("button");
+        buttonElement.textContent = "OK";
+        buttonElement.style.position = "absolute";
+        buttonElement.style.top = "75%";
+        buttonElement.style.left = "50%";
+        buttonElement.style.transform = "translate(-50%, -50%)";
+        buttonElement.style.padding = "10px 20px";
+        buttonElement.style.fontFamily = '"Press Start 2P", sans-serif';
+        buttonElement.style.fontSize = "20px";
+        buttonElement.style.backgroundColor = "#43ac42";
+        buttonElement.style.color = "white";
+        buttonElement.style.border = "none";
+        buttonElement.style.cursor = "pointer";
+        buttonElement.style.display = "none"; // Hide button initially
+        buttonElement.style.zIndex = "100";
+        buttonElement.addEventListener("click", () => {
+            this.cleanup();
+            this.sound.stopAll();
+            this.scene.start("CheckpointAndChapters");
+        });
+    
+        screenDiv.appendChild(buttonElement);
+    
+        // Function to check selections and update text and button visibility
         const checkSelectionsAndUpdateText = () => {
             if (
                 MainMenu.selectedMeleeWeapon &&
                 MainMenu.selectedRangedWeapon &&
                 MainMenu.selectedCharacter === "char1.5"
             ) {
-                textElement.textContent = "PRESS ENTER TO CONTINUE...";
-                this.enableEnterKey();
+                textElement.textContent = "PRESS OK TO CONTINUE...";
+                buttonElement.style.display = "block"; // Show the button
             } else {
                 textElement.textContent = "SELECT YOUR WEAPONS & CHARACTER";
+                buttonElement.style.display = "none"; // Hide the button
             }
         };
-
+    
         // Function to create weapon rows
-        const createWeaponRow = (weapons: any, label: any) => {
+        const createWeaponRow = (weapons:any, label:any) => {
             const rowContainer = document.createElement("div");
             rowContainer.style.display = "flex";
             rowContainer.style.alignItems = "center";
@@ -292,7 +314,7 @@ export class MainMenu extends Scene {
             rowContainer.style.marginBottom = "10px";
             rowContainer.style.width = "100%"; // Ensure the row takes up full width
             rowContainer.style.paddingLeft = "20px"; // Add padding to the left for spacing
-
+    
             const labelDiv = document.createElement("div");
             labelDiv.textContent = label;
             labelDiv.style.color = "white";
@@ -300,12 +322,12 @@ export class MainMenu extends Scene {
             labelDiv.style.marginRight = "10px";
             labelDiv.style.width = "150px";
             rowContainer.appendChild(labelDiv);
-
+    
             const weaponRow = document.createElement("div");
             weaponRow.style.display = "flex";
             weaponRow.style.justifyContent = "flex-start"; // Align items to the start (left side)
-
-            weapons.forEach((weapon: any) => {
+    
+            weapons.forEach((weapon:any) => {
                 const wrapper = document.createElement("div");
                 const wrapperContainer = document.createElement("div"); // Container for the wrapper and text
                 wrapperContainer.style.display = "flex";
@@ -321,20 +343,20 @@ export class MainMenu extends Scene {
                 wrapper.style.border = "none";
                 wrapper.style.boxShadow = "4px 4px 0 black, 8px 8px 0 black";
                 wrapper.style.cursor = "pointer"; // Add pointer cursor
-
+    
                 const img = document.createElement("img");
                 img.src = weapon.url;
                 img.style.width = "60px"; // Adjust the size of the weapon images
-
+    
                 // Create a div for the weapon name
                 const weaponName = document.createElement("div");
                 weaponName.textContent = weapon.name;
                 weaponName.style.color = "white"; // Adjust text color
                 weaponName.style.marginTop = "10px"; // Space between image and text
-
+    
                 wrapper.addEventListener("click", () => {
                     const selectweapon = this.sound.add("select"); // Add this line
-
+    
                     if (label === "Melee") {
                         if (selectedMeleeElement) {
                             selectweapon.play(); // Change this line
@@ -355,35 +377,35 @@ export class MainMenu extends Scene {
                     wrapper.style.backgroundColor = "#43ac42";
                     checkSelectionsAndUpdateText();
                 });
-
+    
                 wrapper.appendChild(img);
                 wrapper.classList.add("weapon-wrapper"); // Add a class for easier selection
-
+    
                 // Append the wrapper and weapon name to the wrapperContainer
                 wrapperContainer.appendChild(wrapper);
                 wrapperContainer.appendChild(weaponName);
-
+    
                 // Append the wrapperContainer to the weaponRow
                 weaponRow.appendChild(wrapperContainer);
             });
-
+    
             rowContainer.appendChild(weaponRow);
             return rowContainer;
         };
-
+    
         // Create and append melee and ranged weapon rows
         const meleeRow = createWeaponRow(meleeWeapons, "Melee");
         const rangedRow = createWeaponRow(rangedWeapons, "Ranged");
-
+    
         weaponContainer.appendChild(meleeRow);
         weaponContainer.appendChild(rangedRow);
-
+    
         // Add the weapon container to the screenDiv
         screenDiv.appendChild(weaponContainer);
-
+    
         // Add fade-in animation
         screenDiv.style.animation = "fade-in 2s forwards";
-
+    
         // Create a container for the images
         const imageContainer = document.createElement("div");
         imageContainer.style.display = "flex";
@@ -395,7 +417,7 @@ export class MainMenu extends Scene {
         imageContainer.style.transform = "translate(-50%, -50%)";
         imageContainer.style.width = "90px";
         imageContainer.style.height = "auto";
-
+    
         // Add images to the container
         const imageUrls = [
             "assets/Intro/char2.png",
@@ -406,7 +428,7 @@ export class MainMenu extends Scene {
             "assets/Intro/char2.png",
             "assets/Intro/char2.png",
         ];
-
+    
         imageUrls.forEach((url) => {
             const img = document.createElement("img");
             img.src = url;
@@ -423,9 +445,9 @@ export class MainMenu extends Scene {
             });
             imageContainer.appendChild(img);
         });
-
+    
         screenDiv.appendChild(imageContainer);
-
+    
         // Create and style the text element
         const textElement = document.createElement("div");
         textElement.textContent = "SELECT YOUR WEAPONS & CHARACTER";
@@ -438,24 +460,24 @@ export class MainMenu extends Scene {
         textElement.style.fontSize = "20px";
         textElement.style.textAlign = "center";
         textElement.style.zIndex = "6"; // Ensure text is above images
-
+    
         screenDiv.appendChild(textElement);
     }
-
-    characterDetailsScreen(img: any, imageUrl: any) {
+    
+    characterDetailsScreen(img:any, imageUrl:any) {
         // Remove highlight class from all character images
         const allChars = document.querySelectorAll(".char-image");
         allChars.forEach((char) => char.classList.remove("highlight"));
-
+    
         // Add highlight class to the clicked character image
         img.classList.add("highlight");
-
+    
         // Remove any existing details div
         const existingDetailsDiv = document.getElementById("characterDetails");
         if (existingDetailsDiv) {
             existingDetailsDiv.remove();
         }
-
+    
         // Create a new div for character details
         const detailsDiv = document.createElement("div");
         detailsDiv.id = "characterDetails";
@@ -473,12 +495,12 @@ export class MainMenu extends Scene {
         detailsDiv.style.paddingBottom = "10px";
         detailsDiv.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Semi-transparent background
         detailsDiv.style.zIndex = "5"; // Ensure details div is below character images
-
+    
         // Create and style the text elements for character details
         const textElement = document.createElement("div");
         textElement.style.display = "flex";
         textElement.style.flexDirection = "column";
-
+    
         // First line
         const firstLine = document.createElement("div");
         firstLine.style.color = "red";
@@ -488,7 +510,7 @@ export class MainMenu extends Scene {
             imageUrl === "assets/Intro/char2.png"
                 ? "Character Locked"
                 : "Askar";
-
+    
         // Second line
         const secondLine = document.createElement("div");
         secondLine.style.color = "white";
@@ -499,11 +521,11 @@ export class MainMenu extends Scene {
             imageUrl === "assets/Intro/char2.png"
                 ? "You haven't unlocked this character yet."
                 : "A tough military leader, good at planning and very responsible.";
-
+    
         // Append lines to text element
         textElement.appendChild(firstLine);
         textElement.appendChild(secondLine);
-
+    
         // Determine the details image based on the clicked character
         let detailsImageUrl = "";
         if (imageUrl === "assets/Intro/char2.png") {
@@ -511,17 +533,17 @@ export class MainMenu extends Scene {
         } else if (imageUrl === "assets/Intro/char1.5.png") {
             detailsImageUrl = "assets/Intro/char1.5Display.png"; // Replace with your actual details image path
         }
-
+    
         // Create and style the image element for character details
         const imgElement = document.createElement("img");
         imgElement.src = detailsImageUrl; // Use the corresponding details image
         imgElement.style.width = "200px"; // Adjust width as needed
         imgElement.style.height = "auto"; // Maintain aspect ratio
-
+    
         // Append text and image elements to the details div
         detailsDiv.appendChild(textElement);
         detailsDiv.appendChild(imgElement);
-
+    
         // Append the details div to the screen div if it exists
         const screenDiv = document.getElementById("characterSelectionScreen");
         if (screenDiv) {
@@ -530,24 +552,7 @@ export class MainMenu extends Scene {
             console.error("characterSelectionScreen element not found");
         }
     }
-
-    enableEnterKey(): void {
-        const enterKey = this.input.keyboard?.addKey(
-            Phaser.Input.Keyboard.KeyCodes.ENTER,
-        );
-        enterKey?.on("down", () => {
-            if (
-                MainMenu.selectedMeleeWeapon &&
-                MainMenu.selectedRangedWeapon &&
-                MainMenu.selectedCharacter === "char1.5"
-            ) {
-                this.cleanup();
-                this.sound.stopAll();
-                this.scene.start("CheckpointAndChapters");
-            }
-        });
-    }
-
+    
     startCredits() {
         this.cleanup();
         this.scene.start("GameCredits");

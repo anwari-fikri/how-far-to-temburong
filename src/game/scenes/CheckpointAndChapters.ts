@@ -783,6 +783,7 @@ export class CheckpointAndChapters extends Scene {
 
         const showNextDialogue = () => {
             if (currentDialogue < dialogues.length) {
+                dialogueSound.play({ loop: true });
                 new Typed("#dialogueText", {
                     strings: [dialogues[currentDialogue]],
                     typeSpeed: 15,
@@ -792,23 +793,21 @@ export class CheckpointAndChapters extends Scene {
                         setTimeout(() => {
                             currentDialogue++;
                             showNextDialogue();
-                            dialogueSound.play({ loop: true });
                         }, 1000); // 1000 milliseconds delay between dialogues
                     },
                 });
             } else {
+                this.sound.stopAll();
                 this.cleanup();
                 this.thankYouForPlayingScreen();
             }
         };
-
         showNextDialogue();
-
         screenDiv.style.animation = "fade-in 1s forwards";
     }
     thankYouForPlayingScreen() {
         this.cleanup();
-    
+
         const endText = document.createElement("div");
         endText.textContent = "THE END";
         endText.style.position = "fixed";
@@ -821,7 +820,7 @@ export class CheckpointAndChapters extends Scene {
         endText.style.textAlign = "center";
         endText.style.opacity = "0"; // Initially hidden
         endText.style.animation = "fade-in 2s forwards";
-    
+
         const thankYouText = document.createElement("div");
         thankYouText.textContent = "THANK YOU FOR PLAYING";
         thankYouText.style.position = "fixed";
@@ -834,7 +833,7 @@ export class CheckpointAndChapters extends Scene {
         thankYouText.style.textAlign = "center";
         thankYouText.style.opacity = "0"; // Initially hidden
         thankYouText.style.animation = "fade-in 2s forwards";
-    
+
         const gameLogo = document.createElement("img");
         gameLogo.src = "assets/Intro/gameTitle2.png"; // Replace with the actual path to your game logo image
         gameLogo.style.position = "fixed";
@@ -845,26 +844,25 @@ export class CheckpointAndChapters extends Scene {
         gameLogo.style.height = "auto"; // Maintain aspect ratio
         gameLogo.style.opacity = "0"; // Initially hidden
         gameLogo.style.animation = "fade-in 2s forwards";
-    
+
         document.body.appendChild(endText);
         document.body.appendChild(thankYouText);
         document.body.appendChild(gameLogo);
-    
+
         // Fade out elements after 5 seconds
         setTimeout(() => {
             endText.style.animation = "fade-out 2s forwards";
             thankYouText.style.animation = "fade-out 2s forwards";
             gameLogo.style.animation = "fade-out 2s forwards";
         }, 5000); // 5000 milliseconds = 5 seconds
-    
+
         // Redirect to main menu after 7 seconds
         setTimeout(() => {
             this.cleanup();
             this.goToMenu();
         }, 7000); // 7000 milliseconds = 7 seconds
     }
-    
-    
+
     // -------------------------------------------------------------- CHECKPOINTS ---------------------------------------------------------------------------
 
     checkpointOneScreen() {
@@ -1193,7 +1191,6 @@ export class CheckpointAndChapters extends Scene {
         this.cleanup;
         this.scene.start("MainMenu"); // Redirect to Main Menu scene
     }
-    
 
     cleanup() {
         const elementsToRemove = [

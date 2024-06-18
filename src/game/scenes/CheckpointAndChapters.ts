@@ -703,7 +703,7 @@ export class CheckpointAndChapters extends Scene {
             "Yeah, it was… hey can I ask you something?",
             "wajid: Sure, go ahead.",
             "How far to Temburong?",
-            "wajid: Haha, don't worry son. You've made it. Welcome to Temburong, you are safe now",
+            "wajid: Haha, don't worry son. You've made it. Welcome to Temburong, you are safe now.",
         ];
 
         let currentDialogue = 0;

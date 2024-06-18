@@ -10,6 +10,7 @@ import { Intro } from "./scenes/Intro";
 import { CheckpointAndChapters } from "./scenes/CheckpointAndChapters";
 import { BossScene } from "./scenes/BossScene";
 import { GameCredits } from "./scenes/GameCredits";
+import { WeaponSkillUpgrade } from "./scenes/WeaponSkillUpgrade";
 
 
 //  Find out more information about the Game Config at:
@@ -42,7 +43,8 @@ const config: Phaser.Types.Core.GameConfig = {
         Intro,
         CheckpointAndChapters,
         BossScene,
-        GameCredits
+        GameCredits,
+        WeaponSkillUpgrade
     ],
 };
 

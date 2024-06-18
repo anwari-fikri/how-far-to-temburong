@@ -5,7 +5,7 @@ import { debugGraphic } from "../classes/DebugTool";
 import { createPause } from "../classes/PauseResume";
 import { ZombieGroup } from "../classes/ZombieGroup";
 import { PowerUpManager } from "../classes/PowerUpManager";
-import { GameUI } from "../classes/GameUI";
+import GameUI from "../classes/GameUI";
 import {
     bridgeMap,
     generateMapContinuation,
@@ -19,8 +19,8 @@ import RandomEncounterTrigger from "../classes/RandomEncounterTrigger";
 
 export class Game extends Scene {
     static player: Player;
-    zombies: ZombieGroup;
-    gameUI: GameUI;
+    static zombies: ZombieGroup;
+    static gameUI: GameUI;
     static powerUps: PowerUpManager;
     static randomEncounters: RandomEncounterTrigger;
     private wallLayer!: any;
@@ -61,14 +61,14 @@ export class Game extends Scene {
         this.camera.startFollow(Game.player);
 
         // Zombies
-        this.zombies = new ZombieGroup(this, Game.player);
-        // this.zombies.exampleInfiniteZombie();
+        Game.zombies = new ZombieGroup(this, Game.player);
+        // Game.zombies.exampleInfiniteZombie();
 
         // PowerUps
         Game.powerUps = new PowerUpManager(this);
         Game.powerUps.exampleSpawnPowerUps();
 
-        this.gameUI = new GameUI(this);
+        Game.gameUI = new GameUI(this);
         Game.randomEncounters = new RandomEncounterTrigger(
             this,
             0,
@@ -91,7 +91,7 @@ export class Game extends Scene {
 
         this.physics.add.overlap(
             Game.player.inventory.rangedWeapon.bullets,
-            this.zombies,
+            Game.zombies,
             // @ts-ignore
             this.bulletHitZombie, // IDK how to fix this!!
             null,
@@ -119,16 +119,17 @@ export class Game extends Scene {
 
     update() {
         Game.player.update();
-        this.zombies.update(Game.player);
-        Game.powerUps.update(this.zombies);
-        this.gameUI.update();
+        Game.zombies.update(Game.player);
+        Game.powerUps.update(Game.zombies);
+        Game.gameUI.update();
         Game.randomEncounters.update();
 
         Game.player.setDepth(11);
-        this.zombies.setDepth(11);
+        Game.zombies.setDepth(11);
 
         if (Game.player.currentHealth <= 0) {
             this.scene.start("GameOver");
+            Game.zombies.getNuked();
         }
 
         if (Game.player.x > this.map.widthInPixels - 800) {
@@ -153,10 +154,10 @@ export class Game extends Scene {
         this.physics.add.collider(Game.player, this.wallLayer2);
         this.physics.add.collider(Game.player, this.objectLayer);
         this.physics.add.collider(Game.player, this.falling);
-        this.physics.add.collider(this.zombies, this.wallLayer);
-        this.physics.add.collider(this.zombies, this.wallLayer2);
-        this.physics.add.collider(this.zombies, this.objectLayer);
-        this.physics.add.collider(this.zombies, this.zombies);
+        this.physics.add.collider(Game.zombies, this.wallLayer);
+        this.physics.add.collider(Game.zombies, this.wallLayer2);
+        this.physics.add.collider(Game.zombies, this.objectLayer);
+        this.physics.add.collider(Game.zombies, Game.zombies);
         // uncomment to check collider
         // debugGraphic(this);
     }

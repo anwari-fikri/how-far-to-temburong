@@ -5,10 +5,13 @@ import { MainMenu } from "./scenes/MainMenu";
 import { Game } from "phaser";
 import { Preloader } from "./scenes/Preloader";
 import { PauseMenu } from "./scenes/PauseMenu";
-import { WeaponTest } from "./scenes/WeaponTest";
 import { RandomEncounterTest } from "./scenes/RandomEncounterTest";
 import { Intro } from "./scenes/Intro";
 import { CheckpointAndChapters } from "./scenes/CheckpointAndChapters";
+import { BossScene } from "./scenes/BossScene";
+import { GameCredits } from "./scenes/GameCredits";
+import { WeaponSkillUpgrade } from "./scenes/WeaponSkillUpgrade";
+
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -38,20 +41,22 @@ const config: Phaser.Types.Core.GameConfig = {
         PauseMenu,
         RandomEncounterTest,
         Intro,
-        WeaponTest,
         CheckpointAndChapters,
+        BossScene,
+        GameCredits,
+        WeaponSkillUpgrade
     ],
 };
 
 const StartGame = (parent: string) => {
     const parentElement = document.getElementById(parent);
     if (parentElement) {
-        parentElement.style.backgroundColor = 'black';
-        parentElement.style.display = 'flex';
-        parentElement.style.justifyContent = 'center';
-        parentElement.style.alignItems = 'center';
-        parentElement.style.height = '100vh'; 
-        parentElement.style.width = '100%'; 
+        parentElement.style.backgroundColor = "black";
+        parentElement.style.display = "flex";
+        parentElement.style.justifyContent = "center";
+        parentElement.style.alignItems = "center";
+        parentElement.style.height = "100vh";
+        parentElement.style.width = "100%";
     } else {
         console.warn(`Element with id "${parent}" not found.`);
     }

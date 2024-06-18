@@ -18,12 +18,12 @@ export const WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> = {
         texture: "sword_attack",
         attackPower: 50,
         attackRange: "medium",
-        attackCooldown: 800,
+        attackCooldown: 400,
         hitbox: { width: 20, height: 25 },
     },
 } as const;
 
-type WEAPON_TYPE = (typeof WEAPON_TYPE)[keyof typeof WEAPON_TYPE];
+export type WEAPON_TYPE = (typeof WEAPON_TYPE)[keyof typeof WEAPON_TYPE];
 
 export default class MeleeWeapon extends Physics.Arcade.Sprite {
     isSelected: boolean = false;
@@ -39,11 +39,12 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
         super(scene, player.x, player.y, weaponType.texture);
 
         scene.add.existing(this);
+
         scene.physics.add.existing(this);
 
         this.player = player;
         this.weaponType = weaponType;
-        this.attackPower = weaponType.attackPower;
+        this.attackPower = this.weaponType.attackPower;
         this.attackRange = weaponType.attackRange;
         this.attackCooldown = weaponType.attackCooldown;
         this.hitbox = weaponType.hitbox;
@@ -66,7 +67,7 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
                 start: 1,
                 end: 6,
             }),
-            frameRate: 16,
+            frameRate: 32,
             repeat: 0,
         });
     }

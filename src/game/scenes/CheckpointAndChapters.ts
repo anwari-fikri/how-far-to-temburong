@@ -66,6 +66,7 @@ export class CheckpointAndChapters extends Scene {
     preload() {
         this.load.audio("dialouge", "audio/dialouge.mp3");
         this.load.audio("button", "assets/audio/intro_menuButton.mp3");
+        this.load.audio("checkpoint", "assets/audio/checkpoint_campfire.mp3");
     }
 
     create() {
@@ -812,6 +813,8 @@ export class CheckpointAndChapters extends Scene {
         const buttonSound = this.sound.add("button");
         const dialogueSound = this.sound.add("dialouge");
         dialogueSound.play({ loop: true });
+        const campfireSound = this.sound.add("checkpoint");
+        campfireSound.play({ loop: true });
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "checkpointOne";
@@ -898,6 +901,7 @@ export class CheckpointAndChapters extends Scene {
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
                     buttonSound.play();
+                    campfireSound.stop();
                     this.cleanup();
                     this.chapterTwoScreen();
                 });
@@ -914,6 +918,8 @@ export class CheckpointAndChapters extends Scene {
         const buttonSound = this.sound.add("button");
         const dialogueSound = this.sound.add("dialouge");
         dialogueSound.play({ loop: true });
+        const campfireSound = this.sound.add("checkpoint");
+        campfireSound.play({ loop: true });
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "checkpointTwo";
@@ -1000,6 +1006,7 @@ export class CheckpointAndChapters extends Scene {
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
                     buttonSound.play();
+                    campfireSound.stop();
                     this.cleanup();
                     this.chapterThreeScreen();
                 });
@@ -1016,6 +1023,8 @@ export class CheckpointAndChapters extends Scene {
         const buttonSound = this.sound.add("button");
         const dialogueSound = this.sound.add("dialouge");
         dialogueSound.play({ loop: true });
+        const campfireSound = this.sound.add("checkpoint");
+        campfireSound.play({ loop: true });
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "checkpointThree";
@@ -1102,6 +1111,7 @@ export class CheckpointAndChapters extends Scene {
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
                     buttonSound.play();
+                    campfireSound.stop();
                     this.cleanup();
                     this.chapterFourScreen();
                 });

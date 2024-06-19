@@ -41,6 +41,8 @@ export function bridgeMap(scene: any) {
 
     if (Game.gameStage == 1 || Game.gameStage == 2) {
         const oceantile = scene.map.addTilesetImage("ocean");
+        const waveStage = scene.sound.add("waves");
+        waveStage.play({ loop: true });
 
         scene.bgOcean = scene.map.createBlankLayer("Ocean Layer", oceantile);
         scene.bgOcean.fill(1, 0, 0, scene.map.width, scene.map.height);
@@ -429,6 +431,9 @@ export function jungleBg(scene: any) {
 
         scene.jungleImages.push(jungle);
     }
+
+    const treeStage = scene.sound.add("trees");
+    treeStage.play({ loop: true });
 }
 
 export function clearPath(startX: any, scene: any, newIndex: any) {

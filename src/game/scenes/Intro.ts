@@ -86,7 +86,6 @@ export class Intro extends Scene {
     newspaperScreen() {
         this.cleanup();
 
-        const introSong = this.sound.add("mainMenu");
         const newspaperSound = this.sound.add("newspaper");
         newspaperSound.play();
 
@@ -140,7 +139,6 @@ export class Intro extends Scene {
                                     onComplete: () => {
                                         this.cleanup();
                                         this.scene.start("MainMenu");
-                                        introSong.play();
                                     },
                                 });
                             }, 500);

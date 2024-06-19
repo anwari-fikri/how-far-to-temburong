@@ -87,6 +87,8 @@ export class MainMenu extends Scene {
 
     mainMenuScreen() {
         this.cleanup();
+        const introSong = this.sound.add("mainMenu");
+        introSong.play({ loop: true });
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "mainMenuScreen";
@@ -185,6 +187,7 @@ export class MainMenu extends Scene {
                 console.log("Credits clicked");
                 menuButtonSound.play();
                 this.startCredits();
+                this.sound.pauseAll();
             },
             "assets/Intro/buttons.png",
         );

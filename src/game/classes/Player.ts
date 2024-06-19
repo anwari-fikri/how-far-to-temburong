@@ -131,7 +131,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     fontSize,
                 );
 
-                this.currentHealth -= amount;
                 this.setIFrame(500);
                 this.emit("health-changed");
 
@@ -142,7 +141,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     heal(amount: number) {
-        this.currentHealth += amount;
+        this.currentHealth = Math.min(100, this.currentHealth + amount);
         this.setIFrame(500);
         this.emit("health-changed");
     }

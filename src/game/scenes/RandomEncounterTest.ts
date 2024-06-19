@@ -163,14 +163,16 @@ export class RandomEncounterTest extends Scene {
                 if (this.effectCondition) {
                     Game.player.heal(this.effectRate);
                 } else {
-                    Game.player.receiveDamage(this.effectRate * 100);
+                    Game.player.receiveDamage(
+                        Game.player.currentHealth * this.effectRate,
+                    );
                 }
                 break;
             case "speed":
                 console.log("speed debuff");
-                const toAdd =
+                const amount =
                     Game.player.currentMovementSpeed * this.effectRate;
-                Game.player.currentMovementSpeed -= toAdd;
+                Game.player.currentMovementSpeed -= amount;
                 break;
             case "spawn":
                 // malas usai spawn... nanti sja

@@ -2,6 +2,7 @@ import { Scene } from "phaser";
 import { EventBus } from "../EventBus";
 import { Scenario } from "../classes/Scenario";
 import Typed from "typed.js";
+import { Game } from "./Game";
 
 function loadGoogleFont() {
     const link = document.createElement("link");
@@ -40,6 +41,9 @@ function addGlobalStyles() {
 }
 
 export class RandomEncounterTest extends Scene {
+    effectRate: any;
+    effectCategory: any;
+    effectCondition: any;
     constructor() {
         super("RandomEncounterTest");
     }
@@ -77,7 +81,7 @@ export class RandomEncounterTest extends Scene {
 
         new Typed("#title", {
             strings: [scenario.getScenarioText()],
-            typeSpeed: 20,
+            typeSpeed: 15,
             showCursor: false,
         });
 
@@ -103,6 +107,9 @@ export class RandomEncounterTest extends Scene {
             selectionDiv.textContent = choice;
             selectionDiv.addEventListener("click", () => {
                 this.createSecondScene(selection.answer, selection.reward);
+                this.effectRate = selection.effect.rate;
+                this.effectCategory = selection.effect.category;
+                this.effectCondition = selection.success;
             });
             selectionContainerDiv.appendChild(selectionDiv);
         });
@@ -138,13 +145,45 @@ export class RandomEncounterTest extends Scene {
 
         new Typed("#answer", {
             strings: [`${answer}`, `Reward: ${reward}`],
-            typeSpeed: 20,
+            typeSpeed: 15,
             showCursor: false,
             onComplete: () => {
+                this.encounterEffect(); // health ui not updating
                 this.scene.resume("Game");
                 this.scene.stop();
             },
         });
+    }
+
+    encounterEffect() {
+        console.log(Game.player.currentHealth);
+        switch (this.effectCategory) {
+            case "health":
+                console.log("health debuff");
+                if (this.effectCondition) {
+                    Game.player.heal(this.effectRate);
+                } else {
+                    Game.player.receiveDamage(
+                        Game.player.currentHealth * this.effectRate,
+                    );
+                }
+                break;
+            case "speed":
+                console.log("speed debuff");
+                const amount =
+                    Game.player.currentMovementSpeed * this.effectRate;
+                Game.player.currentMovementSpeed -= amount;
+                break;
+            case "spawn":
+                // malas usai spawn... nanti sja
+                console.log("spawn debuff");
+                if (this.effectCondition) {
+                    Game.player.heal(this.effectRate);
+                } else {
+                    Game.player.receiveDamage(this.effectRate * 100);
+                }
+                break;
+        }
     }
 
     create() {

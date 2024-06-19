@@ -97,7 +97,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.on("weaponSkillLevelUp", check);
     }
 
-    receiveDamage(amount: number, zombie: Zombie) {
+    receiveDamage(amount: number, zombie?: Zombie) {
         if (!this.isInIFrame) {
             if (!this.isInvincibility) {
                 this.currentHealth = Math.max(0, this.currentHealth - amount);
@@ -131,7 +131,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     fontSize,
                 );
 
-                this.currentHealth -= amount;
                 this.setIFrame(500);
                 this.emit("health-changed");
 
@@ -139,6 +138,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 playerDamage.play();
             }
         }
+    }
+
+    heal(amount: number) {
+        this.currentHealth = Math.min(100, this.currentHealth + amount);
+        this.setIFrame(500);
+        this.emit("health-changed");
     }
 
     applyKnockback(zombie: Zombie) {

@@ -29,6 +29,7 @@ export class Preloader extends Scene {
         this.load.image("logo", "logo.png");
 
         // UI
+        this.load.image("experience", "ui/exp.png");
         this.load.image("calendar", "ui/calendar.png");
         this.load.spritesheet("heart", "ui/heart.png", {
             frameWidth: 7,
@@ -154,7 +155,7 @@ export class Preloader extends Scene {
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         // this.scene.start("CheckpointAndChapters");
-        this.scene.start("Intro");
+        this.scene.start("Game");
         // this.scene.start("GameUIOverlay");
     }
 }

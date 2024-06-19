@@ -12,7 +12,6 @@ import { BossScene } from "./scenes/BossScene";
 import { GameCredits } from "./scenes/GameCredits";
 import { WeaponSkillUpgrade } from "./scenes/WeaponSkillUpgrade";
 
-
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 const config: Phaser.Types.Core.GameConfig = {
@@ -44,7 +43,7 @@ const config: Phaser.Types.Core.GameConfig = {
         CheckpointAndChapters,
         BossScene,
         GameCredits,
-        WeaponSkillUpgrade
+        WeaponSkillUpgrade,
     ],
 };
 

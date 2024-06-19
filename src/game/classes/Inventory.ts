@@ -26,6 +26,7 @@ export default class Inventory {
     handleKeyDown(event: KeyboardEvent): void {
         if (event.key === "Tab") {
             event.preventDefault();
+            Game.player.weaponSkill.showLevels();
         }
 
         if (event.key === "1") {

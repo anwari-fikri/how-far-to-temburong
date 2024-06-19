@@ -5,7 +5,7 @@ import MeleeWeapon, { WEAPON_TYPE } from "./MeleeWeapon";
 import PlayerControls from "./PlayerControls";
 import { POWERUP_DURATION, PowerUpType } from "./PowerUp";
 import RangedWeapon, { RANGED_WEAPON_TYPE } from "./RangedWeapon";
-import { Zombie } from "./Zombie";
+import { ZOMBIE_TYPE, Zombie } from "./Zombie";
 import { ZombieGroup } from "./ZombieGroup";
 import { WeaponSkill } from "./WeaponSkill";
 import { ExperienceManager } from "./ExperienceManager";
@@ -147,6 +147,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     applyKnockback(zombie: Zombie) {
+        if (zombie.zombieType === ZOMBIE_TYPE.MINI_BOSS) {
+            return;
+        }
+
         const knockbackPower = 1000;
         const angle = Phaser.Math.Angle.Between(
             zombie.x,

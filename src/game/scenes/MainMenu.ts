@@ -352,11 +352,10 @@ export class MainMenu extends Scene {
                 weaponName.style.marginTop = "10px"; // Space between image and text
 
                 wrapper.addEventListener("click", () => {
-                    const selectweapon = this.sound.add("select"); // Add this line
-
+                    const selectweapon = this.sound.add("select");
+                    selectweapon.play();
                     if (label === "Melee") {
                         if (selectedMeleeElement) {
-                            selectweapon.play(); // Change this line
                             selectedMeleeElement.style.backgroundColor =
                                 "#e03c28";
                         }
@@ -364,7 +363,6 @@ export class MainMenu extends Scene {
                         selectedMeleeElement = wrapper;
                     } else if (label === "Ranged") {
                         if (selectedRangedElement) {
-                            selectweapon.play(); // Change this line
                             selectedRangedElement.style.backgroundColor =
                                 "#e03c28";
                         }

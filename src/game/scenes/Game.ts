@@ -16,6 +16,7 @@ import { objectiveUI, stageObjective } from "../classes/GameObjective";
 import Bullet from "../classes/Bullet";
 import { Zombie } from "../classes/Zombie";
 import RandomEncounterTrigger from "../classes/RandomEncounterTrigger";
+import HealthDrop from "../classes/HealthDrop";
 
 export class Game extends Scene {
     static player: Player;
@@ -23,6 +24,7 @@ export class Game extends Scene {
     static gameUI: GameUI;
     static powerUps: PowerUpManager;
     static randomEncounters: RandomEncounterTrigger;
+    static HealthDrop: Phaser.GameObjects.Group;
     private wallLayer!: any;
     private wallLayer2!: any;
     private objectLayer!: any;
@@ -69,6 +71,10 @@ export class Game extends Scene {
         Game.powerUps.exampleSpawnPowerUps();
 
         Game.gameUI = new GameUI(this);
+        Game.HealthDrop = this.add.group({
+            classType: HealthDrop,
+            runChildUpdate: true,
+        });
         Game.randomEncounters = new RandomEncounterTrigger(
             this,
             0,

@@ -150,4 +150,3 @@ export default class RangedWeapon extends Physics.Arcade.Sprite {
         }
     }
 }
-

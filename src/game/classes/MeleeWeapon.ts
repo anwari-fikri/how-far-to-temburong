@@ -138,4 +138,3 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
         }
     }
 }
-

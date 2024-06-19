@@ -25,6 +25,7 @@ export default class RandomEncounterTrigger extends Physics.Arcade.Sprite {
             this.setActive(false);
             this.setVisible(false);
 
+            this.scene.sound.pauseAll();
             this.scene.scene.pause();
             this.scene.scene.launch("RandomEncounterTest");
         }

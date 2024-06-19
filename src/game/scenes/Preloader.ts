@@ -128,13 +128,15 @@ export class Preloader extends Scene {
         this.load.image("random9", "randomEncounter/random9.png");
         this.load.image("random10", "randomEncounter/random10.png");
         this.load.image("char1", "assets/Intro/char1.png");
+
+        // Audio
         this.load.audio("mediumAttack", "audio/attack_medium.mp3");
         this.load.audio("shortAttack", "audio/attack_short.mp3");
         // this.load.audio("longAttack", "audio/attack_long.mp3");
         this.load.audio("gunAttack", "audio/attack_pistol.mp3");
         this.load.audio("playerHurt", "audio/player_hurt.mp3");
         this.load.audio("playerDeath", "audio/player_death.mp3");
-        this.load.audio("inventoryOpen", "audio/player_open_inventory.mp3");
+        this.load.audio("equip", "audio/player_equip.mp3");
         this.load.audio("spawnMiniboss", "audio/enemy_miniboss_spawn.mp3");
         this.load.audio("zombieDeath", "audio/enemy_zombie_death.mp3");
         this.load.audio("attackUp", "audio/powerUp_attack.mp3");
@@ -142,6 +144,9 @@ export class Preloader extends Scene {
         this.load.audio("timeStop", "audio/powerUp_timeStop.mp3");
         this.load.audio("nuke", "audio/powerUp_nuke.mp3");
         this.load.audio("invincibility", "audio/powerUp_invincibility.mp3");
+        this.load.audio("waves", "audio/stage_waves.mp3");
+        this.load.audio("trees", "audio/stage_trees.mp3");
+        this.load.audio("dialouge", "audio/dialouge_keyboard.mp3");
     }
 
     create() {

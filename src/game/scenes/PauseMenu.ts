@@ -39,6 +39,7 @@ export class PauseMenu extends Scene {
             Phaser.Input.Keyboard.KeyCodes.ESC,
         );
         this.escKey?.on("down", () => {
+            this.sound.resumeAll();
             this.scene.resume("Game");
             this.scene.stop();
         });

@@ -35,6 +35,9 @@ export class Game extends Scene {
     static totalDistance = 0;
     static totalTime = 0;
 
+    private zombieDeathSound!: Phaser.Sound.BaseSound;
+    private playerDeathSound!: Phaser.Sound.BaseSound;
+
     constructor() {
         super("Game");
     }
@@ -99,6 +102,9 @@ export class Game extends Scene {
         );
 
         EventBus.emit("current-scene-ready", this);
+
+        this.zombieDeathSound = this.sound.add("zombieDeath");
+        this.playerDeathSound = this.sound.add("playerDeath");
     }
 
     bulletHitZombie(zombie: Zombie, bullet: Bullet) {
@@ -112,8 +118,8 @@ export class Game extends Scene {
         );
         if (zombie.currentHealth <= 0) {
             zombie.die();
-            const zombieDeath = this.sound.add("zombieDeath");
-            zombieDeath.play();
+
+            this.zombieDeathSound.play();
         }
     }
 
@@ -128,6 +134,8 @@ export class Game extends Scene {
         Game.zombies.setDepth(11);
 
         if (Game.player.currentHealth <= 0) {
+            this.sound.stopAll();
+            this.playerDeathSound.play();
             this.scene.start("GameOver");
             Game.zombies.getNuked();
         }

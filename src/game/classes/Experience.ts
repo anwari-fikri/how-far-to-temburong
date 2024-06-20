@@ -22,6 +22,8 @@ export class Experience extends Physics.Arcade.Sprite {
 
     update() {
         if (this.active && this.scene.physics.overlap(this, Game.player)) {
+            const expSound = this.scene.sound.add("exp");
+            expSound.play();
             this.handlePlayerCollision();
         }
     }
@@ -53,4 +55,3 @@ export class Experience extends Physics.Arcade.Sprite {
         Game.player.emit("experience-changed");
     }
 }
-

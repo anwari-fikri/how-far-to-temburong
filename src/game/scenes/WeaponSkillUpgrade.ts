@@ -126,6 +126,8 @@ export class WeaponSkillUpgrade extends Scene {
     }
 
     weaponSkillUpgradeScreen() {
+        const levelUpSound = this.sound.add("levelUp");
+        levelUpSound.play();
         this.cleanup();
 
         const screenDiv = document.createElement("div");
@@ -182,6 +184,8 @@ export class WeaponSkillUpgrade extends Scene {
 
                 skillDiv.addEventListener("click", () => {
                     Game.player.weaponSkill.applyLevelUp(skill.displayName);
+                    const selectSkill = this.sound.add("select");
+                    selectSkill.play();
                     this.goToGame();
                 });
 
@@ -214,4 +218,3 @@ export class WeaponSkillUpgrade extends Scene {
         }
     }
 }
-

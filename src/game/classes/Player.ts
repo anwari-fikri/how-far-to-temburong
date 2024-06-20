@@ -5,7 +5,7 @@ import MeleeWeapon, { WEAPON_TYPE } from "./MeleeWeapon";
 import PlayerControls from "./PlayerControls";
 import { POWERUP_DURATION, PowerUpType } from "./PowerUp";
 import RangedWeapon, { RANGED_WEAPON_TYPE } from "./RangedWeapon";
-import { Zombie } from "./Zombie";
+import { ZOMBIE_TYPE, Zombie } from "./Zombie";
 import { ZombieGroup } from "./ZombieGroup";
 import { WeaponSkill } from "./WeaponSkill";
 import { ExperienceManager } from "./ExperienceManager";
@@ -97,7 +97,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.on("weaponSkillLevelUp", check);
     }
 
-    receiveDamage(amount: number, zombie: Zombie) {
+    receiveDamage(amount: number, zombie?: Zombie) {
         if (!this.isInIFrame) {
             if (!this.isInvincibility) {
                 this.currentHealth = Math.max(0, this.currentHealth - amount);
@@ -131,7 +131,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     fontSize,
                 );
 
-                this.currentHealth -= amount;
                 this.setIFrame(500);
                 this.emit("health-changed");
 
@@ -141,7 +140,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    heal(amount: number) {
+        this.currentHealth = Math.min(100, this.currentHealth + amount);
+        this.setIFrame(500);
+        this.emit("health-changed");
+    }
+
     applyKnockback(zombie: Zombie) {
+        if (zombie.zombieType === ZOMBIE_TYPE.MINI_BOSS) {
+            return;
+        }
+
         const knockbackPower = 1000;
         const angle = Phaser.Math.Angle.Between(
             zombie.x,

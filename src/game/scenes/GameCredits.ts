@@ -52,9 +52,9 @@ export class GameCredits extends Scene {
             { type: "Director", names: "Muin" },
             { type: "Graphic Artist", names: "Amirul" },
             { type: "Programmers", names: "Danial, Anwari, Wajdi, Muin" },
-            { type: "Music/Sounds", names: "Wajdi" }
+            { type: "Music/Sounds", names: "Wajdi" },
         ];
-    
+
         const creditsDiv = document.createElement("div");
         creditsDiv.id = "gameCredits";
         creditsDiv.style.position = "fixed";
@@ -65,22 +65,22 @@ export class GameCredits extends Scene {
         creditsDiv.style.fontSize = "24px";
         creditsDiv.style.color = "#ffffff";
         creditsDiv.style.textAlign = "left"; // Align text to the left
-    
+
         // Create a heading for "Credits" with larger font size
         const creditsHeading = document.createElement("h1");
         creditsHeading.textContent = "Credits";
         creditsHeading.style.textAlign = "center"; // Center align the heading
-        creditsHeading.style.paddingBottom = "15px"; 
+        creditsHeading.style.paddingBottom = "15px";
         creditsHeading.style.fontSize = "36px"; // Set larger font size
         creditsDiv.appendChild(creditsHeading);
-    
-        creditsData.forEach(credit => {
+
+        creditsData.forEach((credit) => {
             const creditLine = document.createElement("div");
             creditLine.textContent = `${credit.type}: ${credit.names}`;
             creditLine.style.marginBottom = "8px"; // Add margin for gap
             creditsDiv.appendChild(creditLine);
         });
-    
+
         // Create an "OK" button
         const okButton = document.createElement("button");
         okButton.textContent = "OK";
@@ -95,20 +95,19 @@ export class GameCredits extends Scene {
             this.closeCredits();
         });
         creditsDiv.appendChild(okButton);
-    
+
         document.body.appendChild(creditsDiv);
-    } 
+    }
 
     closeCredits() {
         this.cleanup;
         this.scene.start("MainMenu"); // Redirect to Main Menu scene
     }
-    
 
     cleanup() {
         const creditsDiv = document.getElementById("gameCredits");
         if (creditsDiv) {
             document.body.removeChild(creditsDiv);
         }
-    }   
+    }
 }

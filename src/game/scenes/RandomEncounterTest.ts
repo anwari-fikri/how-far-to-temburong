@@ -2,6 +2,7 @@ import { Scene } from "phaser";
 import { EventBus } from "../EventBus";
 import { Scenario } from "../classes/Scenario";
 import Typed from "typed.js";
+import { Game } from "./Game";
 
 function loadGoogleFont() {
     const link = document.createElement("link");
@@ -40,15 +41,22 @@ function addGlobalStyles() {
 }
 
 export class RandomEncounterTest extends Scene {
+    effectRate: any;
+    effectCategory: any;
+    effectCondition: any;
     constructor() {
         super("RandomEncounterTest");
     }
 
     preload() {
+        this.load.audio("dialouge", "audio/dialouge.mp3");
+        this.load.audio("button", "assets/audio/intro_menuButton.mp3");
         this.load.json("scenarios", "assets/scenarios.json");
     }
 
     createFirstScene(scenario: any) {
+        const menuButtonSound = this.sound.add("button");
+        const dialougeSound = this.sound.add("dialouge");
         const scaleFactorX = 0.98;
         const scaleFactorY = 0.98;
         const bgImage = this.add.image(
@@ -75,10 +83,14 @@ export class RandomEncounterTest extends Scene {
         titleDiv.style.imageRendering = "pixelated";
         document.body.appendChild(titleDiv);
 
+        dialougeSound.play();
         new Typed("#title", {
             strings: [scenario.getScenarioText()],
-            typeSpeed: 20,
+            typeSpeed: 15,
             showCursor: false,
+            onComplete: () => {
+                dialougeSound.stop();
+            },
         });
 
         const selectionContainerDiv = document.createElement("div");
@@ -102,13 +114,18 @@ export class RandomEncounterTest extends Scene {
             selectionDiv.style.marginTop = "10px";
             selectionDiv.textContent = choice;
             selectionDiv.addEventListener("click", () => {
+                menuButtonSound.play();
                 this.createSecondScene(selection.answer, selection.reward);
+                this.effectRate = selection.effect.rate;
+                this.effectCategory = selection.effect.category;
+                this.effectCondition = selection.success;
             });
             selectionContainerDiv.appendChild(selectionDiv);
         });
     }
 
     createSecondScene(answer: any, reward: any) {
+        const dialougeSound = this.sound.add("dialouge");
         const blackBg = document.createElement("div");
         blackBg.id = "black-bg";
         blackBg.style.position = "fixed";
@@ -136,15 +153,50 @@ export class RandomEncounterTest extends Scene {
         answerDiv.style.imageRendering = "pixelated";
         document.body.appendChild(answerDiv);
 
+        dialougeSound.play();
         new Typed("#answer", {
             strings: [`${answer}`, `Reward: ${reward}`],
-            typeSpeed: 20,
+            typeSpeed: 15,
             showCursor: false,
             onComplete: () => {
+                this.encounterEffect(); // health ui not updating
+                dialougeSound.stop();
                 this.scene.resume("Game");
                 this.scene.stop();
+                this.sound.resumeAll();
             },
         });
+    }
+
+    encounterEffect() {
+        console.log(Game.player.currentHealth);
+        switch (this.effectCategory) {
+            case "health":
+                console.log("health debuff");
+                if (this.effectCondition) {
+                    Game.player.heal(this.effectRate);
+                } else {
+                    Game.player.receiveDamage(
+                        Game.player.currentHealth * this.effectRate,
+                    );
+                }
+                break;
+            case "speed":
+                console.log("speed debuff");
+                const amount =
+                    Game.player.currentMovementSpeed * this.effectRate;
+                Game.player.currentMovementSpeed -= amount;
+                break;
+            case "spawn":
+                // malas usai spawn... nanti sja
+                console.log("spawn debuff");
+                if (this.effectCondition) {
+                    Game.player.heal(this.effectRate);
+                } else {
+                    Game.player.receiveDamage(this.effectRate * 100);
+                }
+                break;
+        }
     }
 
     create() {
@@ -182,3 +234,4 @@ export class RandomEncounterTest extends Scene {
         });
     }
 }
+

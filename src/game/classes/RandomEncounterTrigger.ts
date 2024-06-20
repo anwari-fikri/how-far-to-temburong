@@ -11,6 +11,7 @@ export default class RandomEncounterTrigger extends Physics.Arcade.Sprite {
         this.setActive(false);
         this.setVisible(false);
         this.setDepth(40);
+        this.activateTrigger(Game.player.x + 100, Game.player.y);
     }
 
     activateTrigger(x: number, y: number) {
@@ -24,6 +25,7 @@ export default class RandomEncounterTrigger extends Physics.Arcade.Sprite {
             this.setActive(false);
             this.setVisible(false);
 
+            this.scene.sound.pauseAll();
             this.scene.scene.pause();
             this.scene.scene.launch("RandomEncounterTest");
         }

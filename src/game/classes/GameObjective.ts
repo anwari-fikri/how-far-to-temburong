@@ -29,7 +29,7 @@ export function objectiveUI(scene: any) {
 
         default:
             scene.distanceObjective = 1;
-            scene.killObjective = 1;
+            scene.killObjective = 2;
             break;
     }
 
@@ -87,11 +87,13 @@ export function stageObjective(scene: any) {
     if (scene.distanceComplete && scene.killComplete) {
         if (Game.gameUI.elapsedTime < 60) {
             scene.scene.start("CheckpointAndChapters");
+            scene.sound.stopAll();
         }
     }
 
     if (Game.gameUI.elapsedTime == 60) {
         scene.scene.start("GameOver");
+        const playerDeathSound = scene.sound.add("playerDeath");
+        playerDeathSound.play();
     }
 }
-

@@ -4,7 +4,8 @@ import { Game } from "./Game";
 
 function loadGoogleFont() {
     const link = document.createElement("link");
-    link.href = "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap";
+    link.href =
+        "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap";
     link.rel = "stylesheet";
     document.head.appendChild(link);
 }
@@ -74,8 +75,7 @@ export class GameOver extends Scene {
         super("GameOver");
     }
 
-    preload() {
-    }
+    preload() {}
 
     create() {
         loadGoogleFont();
@@ -92,7 +92,7 @@ export class GameOver extends Scene {
 
     gameOverScreen() {
         this.cleanup();
-    
+
         const screenDiv = document.createElement("div");
         screenDiv.id = "gameOverScreen";
         screenDiv.style.position = "fixed";
@@ -100,113 +100,114 @@ export class GameOver extends Scene {
         screenDiv.style.left = "50%";
         screenDiv.style.transform = "translate(-50%, -50%)";
         screenDiv.style.backgroundImage = 'url("assets/Intro/GameOver.png")';
-        screenDiv.style.backgroundSize = '78% 100%';
-        screenDiv.style.backgroundRepeat = 'no-repeat';
-        screenDiv.style.backgroundPosition = 'center';
-        screenDiv.style.width = '100%';
-        screenDiv.style.height = '100%';
+        screenDiv.style.backgroundSize = "78% 100%";
+        screenDiv.style.backgroundRepeat = "no-repeat";
+        screenDiv.style.backgroundPosition = "center";
+        screenDiv.style.width = "100%";
+        screenDiv.style.height = "100%";
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
         document.body.appendChild(screenDiv);
-    
+
         const imageElement = document.createElement("img");
-        imageElement.src = "assets/Intro/GameOverText.png"; 
+        imageElement.src = "assets/Intro/GameOverText.png";
         imageElement.style.position = "absolute";
         imageElement.style.top = "40%";
         imageElement.style.left = "50%";
         imageElement.style.transform = "translate(-50%, -50%)";
-        imageElement.style.width = "47%"; 
-        imageElement.style.height = "auto"; 
-    
+        imageElement.style.width = "47%";
+        imageElement.style.height = "auto";
+
         const textElement = document.createElement("div");
         textElement.textContent = "CONTINUE?";
         textElement.style.position = "absolute";
-        textElement.style.top = "70%"; 
+        textElement.style.top = "70%";
         textElement.style.left = "50%";
         textElement.style.transform = "translate(-50%, -50%)";
         textElement.style.color = "#f29e00";
         textElement.style.fontFamily = '"Press Start 2P", sans-serif';
         textElement.style.fontSize = "35px";
         textElement.style.textAlign = "center";
-        textElement.style.zIndex = "6"; 
-        textElement.className = "text-shadow"; 
-    
+        textElement.style.zIndex = "6";
+        textElement.className = "text-shadow";
+
         const yesButton = document.createElement("button");
         yesButton.textContent = "YES";
-        yesButton.className = "button text-shadow"; 
+        yesButton.className = "button text-shadow";
         yesButton.style.top = "80%";
         yesButton.style.left = "50%";
         yesButton.style.transform = "translate(-50%, -50%)";
         yesButton.onclick = () => {
             this.selectOption("yes");
         };
-    
+
         const noButton = document.createElement("button");
         noButton.textContent = "NO";
-        noButton.className = "button text-shadow"; 
+        noButton.className = "button text-shadow";
         noButton.style.top = "90%";
         noButton.style.left = "50%";
         noButton.style.transform = "translate(-50%, -50%)";
         noButton.onclick = () => {
             this.selectOption("no");
         };
-    
+
         const arrowElement = document.createElement("div");
-        arrowElement.textContent = ">"; 
+        arrowElement.textContent = ">";
         arrowElement.id = "arrow";
         arrowElement.style.position = "absolute";
         arrowElement.style.width = "50px";
         arrowElement.style.height = "auto";
-        arrowElement.style.left = "47%"; 
+        arrowElement.style.left = "47%";
         arrowElement.style.transform = "translate(-50%, -50%)";
         arrowElement.style.transition = "top 0.3s ease-in-out";
-        arrowElement.style.zIndex = "7"; 
-        arrowElement.style.color = "white"; 
-        arrowElement.style.fontFamily = '"Press Start 2P', 'sans-serif'; 
-        arrowElement.style.fontSize = "30px"; 
-        arrowElement.className = "text-shadow"; 
+        arrowElement.style.zIndex = "7";
+        arrowElement.style.color = "white";
+        (arrowElement.style.fontFamily = '"Press Start 2P'), "sans-serif";
+        arrowElement.style.fontSize = "30px";
+        arrowElement.className = "text-shadow";
 
         const killsElement = document.createElement("div");
-        killsElement.textContent = "Kills:"; 
+        killsElement.textContent = "Kills:";
         killsElement.className = "top-left text-shadow";
         killsElement.style.color = "#f29e00";
-        
-        const killsElementSpan:any = document.createElement("span");
-        killsElementSpan.textContent = Game.totalKill; 
-        killsElementSpan.style.color = "white"; 
-        killsElement.appendChild(killsElementSpan); 
+
+        const killsElementSpan: any = document.createElement("span");
+        killsElementSpan.textContent = Game.totalKill;
+        killsElementSpan.style.color = "white";
+        killsElement.appendChild(killsElementSpan);
 
         const distanceElement = document.createElement("div");
-        distanceElement.textContent = "Distance: " ; 
+        distanceElement.textContent = "Distance: ";
         distanceElement.className = "top-center text-shadow";
         distanceElement.style.color = "#f29e00";
 
-        const distanceValueSpan:any = document.createElement("span");
-        distanceValueSpan.textContent = Game.totalDistance; 
-        distanceValueSpan.style.color = "white"; 
-        distanceElement.appendChild(distanceValueSpan); 
+        const distanceValueSpan: any = document.createElement("span");
+        distanceValueSpan.textContent = Game.totalDistance;
+        distanceValueSpan.style.color = "white";
+        distanceElement.appendChild(distanceValueSpan);
 
+        // Create top-right element for time
         const timeElement = document.createElement("div");
-        timeElement.textContent = "Time: "; 
+        timeElement.textContent = "Time: ";
         timeElement.className = "top-right text-shadow";
-        timeElement.style.color = "#f29e00"; 
+        timeElement.style.color = "#f29e00";
 
-        const timeValueSpan:any = document.createElement("span");
-        timeValueSpan.textContent = Game.totalTime; 
-        timeValueSpan.style.color = "white"; 
-        timeElement.appendChild(timeValueSpan); 
+        const timeValueSpan: any = document.createElement("span");
+        timeValueSpan.textContent = Game.totalTime;
+        timeValueSpan.style.color = "white";
+        timeElement.appendChild(timeValueSpan);
 
-        screenDiv.appendChild(textElement); 
-        screenDiv.appendChild(imageElement); 
-        screenDiv.appendChild(yesButton);         
-        screenDiv.appendChild(noButton);        
-        screenDiv.appendChild(arrowElement); 
-        screenDiv.appendChild(killsElement); 
-        screenDiv.appendChild(distanceElement); 
-        screenDiv.appendChild(timeElement);     
+        screenDiv.appendChild(textElement);
+        screenDiv.appendChild(imageElement);
+        screenDiv.appendChild(yesButton);
+        screenDiv.appendChild(noButton);
+        screenDiv.appendChild(arrowElement);
+        screenDiv.appendChild(killsElement);
+        screenDiv.appendChild(distanceElement);
+        screenDiv.appendChild(timeElement);
         screenDiv.style.animation = "fade-in 1s forwards";
-    
+
         this.currentSelection = "yes";
         this.updateArrowPosition();
 

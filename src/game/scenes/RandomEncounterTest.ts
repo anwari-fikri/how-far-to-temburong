@@ -153,6 +153,7 @@ export class RandomEncounterTest extends Scene {
         answerDiv.style.imageRendering = "pixelated";
         document.body.appendChild(answerDiv);
 
+        dialougeSound.stop();
         dialougeSound.play();
         new Typed("#answer", {
             strings: [`${answer}`, `Reward: ${reward}`],
@@ -234,4 +235,3 @@ export class RandomEncounterTest extends Scene {
         });
     }
 }
-

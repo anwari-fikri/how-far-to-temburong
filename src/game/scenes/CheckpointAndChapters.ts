@@ -997,7 +997,7 @@ export class CheckpointAndChapters extends Scene {
 
         new Typed("#dialogueText", {
             strings: [
-                "Imagine rewriting history books: 'The Great Zombie Uprising of 2022.' Maybe they'll name a bridge after me. Hopefully, not because I'm a victime. Here's to making history, one zombie at a time!",
+                "Imagine rewriting history books: 'The Great Zombie Uprising of 2022.' Maybe they'll name a bridge after me. Hopefully, not because I'm a victim. Here's to making history, one zombie at a time!",
             ],
             typeSpeed: 15,
             showCursor: false,

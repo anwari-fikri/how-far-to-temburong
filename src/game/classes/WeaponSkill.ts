@@ -27,42 +27,42 @@ export class WeaponSkill {
         this.atk = this.createSkillLevel(
             "Attack Up",
             "Increases weapon attack",
-            "",
+            "assets/Intro/attackUpSkill.png",
             atkLevel,
             this.calculateAtkBonus,
         );
         this.slow = this.createSkillLevel(
             "Slow",
             "Apply slow to zombies",
-            "",
+            "assets/Intro/slowSkill.png",
             slowLevel,
             this.calculateSlowBonus,
         );
         this.confuse = this.createSkillLevel(
             "Confuse",
             "Make enemy move opposite direction",
-            "",
+            "assets/Intro/confuseSkill.png",
             confuseLevel,
             this.calculateConfuseBonus,
         );
         this.fire = this.createSkillLevel(
             "Burn",
             "Damage over time",
-            "",
+            "assets/Intro/fireSkill.png",
             fireLevel,
             this.calculateFireBonus,
         );
         this.freeze = this.createSkillLevel(
             "Freeze",
             "Stops enemy from moving and attacking",
-            "",
+            "assets/Intro/freezeSkill.png",
             freezeLevel,
             this.calculateFreezeBonus,
         );
         this.critChance = this.createSkillLevel(
             "Critical Chance",
             "Chance to double damage",
-            "",
+            "assets/Intro/criticalChanceSkill.png",
             critChanceLevel,
             this.calculateCritBonus,
         );

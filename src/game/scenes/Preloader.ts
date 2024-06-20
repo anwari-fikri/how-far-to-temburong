@@ -115,6 +115,15 @@ export class Preloader extends Scene {
         this.load.image("start", "tiles/Texture/start.png");
         this.load.image("end", "tiles/Texture/end.png");
 
+        //weapon skill upgrade
+        this.load.image("attackUp","assets/Intro/attackUpSkill.png",);
+        this.load.image("slow","assets/Intro/slowSkill.png",);
+        this.load.image("confuse","assets/Intro/confuseSkill.png",);
+        this.load.image("criticalChance","assets/Intro/criticalChanceSkill.png",);
+        this.load.image("fire","assets/Intro/fireSkill.png",);
+        this.load.image("freeze","assets/Intro/freezeSkill.png",);
+
+
         // Random Encounter
         this.load.image("trigger", "randomEncounter/trigger.png");
         this.load.image("random1", "randomEncounter/random1.png");

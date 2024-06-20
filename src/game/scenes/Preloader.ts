@@ -29,12 +29,9 @@ export class Preloader extends Scene {
         this.load.image("logo", "logo.png");
 
         // UI
+        this.load.image("health_drop", "ui/health_drop.png");
         this.load.image("experience", "ui/exp.png");
         this.load.image("calendar", "ui/calendar.png");
-        this.load.spritesheet("heart", "ui/heart.png", {
-            frameWidth: 7,
-            frameHeight: 7,
-        });
         this.load.spritesheet("inventory-slot", "ui/inventory-slot.png", {
             frameWidth: 32,
             frameHeight: 32,

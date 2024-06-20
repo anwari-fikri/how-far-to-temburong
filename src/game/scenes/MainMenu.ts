@@ -87,9 +87,8 @@ export class MainMenu extends Scene {
 
     mainMenuScreen() {
         this.cleanup();
-
-        const mainMenuSound = this.sound.add("mainMenu");
-        mainMenuSound.play({ loop: true });
+        const introSong = this.sound.add("mainMenu");
+        introSong.play({ loop: true });
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "mainMenuScreen";
@@ -188,6 +187,7 @@ export class MainMenu extends Scene {
                 console.log("Credits clicked");
                 menuButtonSound.play();
                 this.startCredits();
+                this.sound.pauseAll();
             },
             "assets/Intro/buttons.png",
         );
@@ -355,11 +355,10 @@ export class MainMenu extends Scene {
                 weaponName.style.marginTop = "10px"; // Space between image and text
 
                 wrapper.addEventListener("click", () => {
-                    const selectweapon = this.sound.add("select"); // Add this line
-
+                    const selectweapon = this.sound.add("select");
+                    selectweapon.play();
                     if (label === "Melee") {
                         if (selectedMeleeElement) {
-                            selectweapon.play(); // Change this line
                             selectedMeleeElement.style.backgroundColor =
                                 "#e03c28";
                         }
@@ -367,7 +366,6 @@ export class MainMenu extends Scene {
                         selectedMeleeElement = wrapper;
                     } else if (label === "Ranged") {
                         if (selectedRangedElement) {
-                            selectweapon.play(); // Change this line
                             selectedRangedElement.style.backgroundColor =
                                 "#e03c28";
                         }

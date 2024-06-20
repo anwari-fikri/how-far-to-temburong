@@ -16,6 +16,7 @@ import { objectiveUI, stageObjective } from "../classes/GameObjective";
 import Bullet from "../classes/Bullet";
 import { Zombie } from "../classes/Zombie";
 import RandomEncounterTrigger from "../classes/RandomEncounterTrigger";
+import HealthDrop from "../classes/HealthDrop";
 
 export class Game extends Scene {
     static player: Player;
@@ -23,6 +24,7 @@ export class Game extends Scene {
     static gameUI: GameUI;
     static powerUps: PowerUpManager;
     static randomEncounters: RandomEncounterTrigger;
+    static HealthDrop: Phaser.GameObjects.Group;
     private wallLayer!: any;
     private wallLayer2!: any;
     private objectLayer!: any;
@@ -34,6 +36,9 @@ export class Game extends Scene {
     static totalKill = 0;
     static totalDistance = 0;
     static totalTime = 0;
+
+    private zombieDeathSound!: Phaser.Sound.BaseSound;
+    private playerDeathSound!: Phaser.Sound.BaseSound;
 
     constructor() {
         super("Game");
@@ -69,6 +74,10 @@ export class Game extends Scene {
         Game.powerUps.exampleSpawnPowerUps();
 
         Game.gameUI = new GameUI(this);
+        Game.HealthDrop = this.add.group({
+            classType: HealthDrop,
+            runChildUpdate: true,
+        });
         Game.randomEncounters = new RandomEncounterTrigger(
             this,
             0,
@@ -98,6 +107,9 @@ export class Game extends Scene {
         );
 
         EventBus.emit("current-scene-ready", this);
+
+        this.zombieDeathSound = this.sound.add("zombieDeath");
+        this.playerDeathSound = this.sound.add("playerDeath");
     }
 
     bulletHitZombie(zombie: Zombie, bullet: Bullet) {
@@ -111,8 +123,8 @@ export class Game extends Scene {
         );
         if (zombie.currentHealth <= 0) {
             zombie.die();
-            const zombieDeath = this.sound.add("zombieDeath");
-            zombieDeath.play();
+
+            this.zombieDeathSound.play();
         }
     }
 
@@ -127,6 +139,8 @@ export class Game extends Scene {
         Game.zombies.setDepth(11);
 
         if (Game.player.currentHealth <= 0) {
+            this.sound.stopAll();
+            this.playerDeathSound.play();
             this.scene.start("GameOver");
             Game.zombies.getNuked();
         }

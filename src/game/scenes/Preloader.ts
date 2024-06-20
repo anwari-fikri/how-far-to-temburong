@@ -138,6 +138,7 @@ export class Preloader extends Scene {
         this.load.audio("equip", "audio/player_equip.mp3");
         this.load.audio("spawnMiniboss", "audio/enemy_miniboss_spawn.mp3");
         this.load.audio("zombieDeath", "audio/enemy_zombie_death.mp3");
+        this.load.audio("zombieHurt", "audio/enemy_zombie_hurt.mp3");
         this.load.audio("attackUp", "audio/powerUp_attack.mp3");
         this.load.audio("speedUp", "audio/powerUp_speed.mp3");
         this.load.audio("timeStop", "audio/powerUp_timeStop.mp3");

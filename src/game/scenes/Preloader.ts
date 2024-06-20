@@ -135,6 +135,8 @@ export class Preloader extends Scene {
         // this.load.audio("longAttack", "audio/attack_long.mp3");
         this.load.audio("gunAttack", "audio/attack_pistol.mp3");
         this.load.audio("playerHurt", "audio/player_hurt.mp3");
+        this.load.audio("exp", "audio/player_pickExp.mp3");
+        this.load.audio("Levelup", "audio/player_levelUp.mp3");
         this.load.audio("playerDeath", "audio/player_death.mp3");
         this.load.audio("equip", "audio/player_equip.mp3");
         this.load.audio("spawnMiniboss", "audio/enemy_miniboss_spawn.mp3");
@@ -146,7 +148,10 @@ export class Preloader extends Scene {
         this.load.audio("invincibility", "audio/powerUp_invincibility.mp3");
         this.load.audio("waves", "audio/stage_waves.mp3");
         this.load.audio("trees", "audio/stage_trees.mp3");
+        this.load.audio("encounter", "audio/stage_encounter.mp3");
+        this.load.audio("slimeStep", "audio/stage_slimeStep.mp3");
         this.load.audio("dialouge", "audio/dialouge_keyboard.mp3");
+        this.load.audio("select", "audio/intro_select.mp3");
     }
 
     create() {

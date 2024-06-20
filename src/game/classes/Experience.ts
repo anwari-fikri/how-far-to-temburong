@@ -22,8 +22,6 @@ export class Experience extends Physics.Arcade.Sprite {
 
     update() {
         if (this.active && this.scene.physics.overlap(this, Game.player)) {
-            const expSound = this.scene.sound.add("exp");
-            expSound.play();
             this.handlePlayerCollision();
         }
     }
@@ -50,6 +48,11 @@ export class Experience extends Physics.Arcade.Sprite {
             Game.player.experience.experiencePoint = 0;
             Game.player.experience.nextLevel += 5;
             Game.gameUI.createLevelUpSelection();
+            const levelUpSound = this.scene.sound.add("levelUp");
+            levelUpSound.play();
+        } else {
+            const expSound = this.scene.sound.add("exp");
+            expSound.play();
         }
 
         Game.player.emit("experience-changed");

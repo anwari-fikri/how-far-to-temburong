@@ -126,8 +126,6 @@ export class WeaponSkillUpgrade extends Scene {
     }
 
     weaponSkillUpgradeScreen() {
-        const levelUpSound = this.sound.add("levelUp");
-        levelUpSound.play();
         this.cleanup();
 
         const screenDiv = document.createElement("div");

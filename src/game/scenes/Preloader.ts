@@ -131,12 +131,10 @@ export class Preloader extends Scene {
 
         // Audio
         this.load.audio("mediumAttack", "audio/attack_medium.mp3");
-        this.load.audio("shortAttack", "audio/attack_short.mp3");
-        // this.load.audio("longAttack", "audio/attack_long.mp3");
         this.load.audio("gunAttack", "audio/attack_pistol.mp3");
         this.load.audio("playerHurt", "audio/player_hurt.mp3");
         this.load.audio("exp", "audio/player_pickExp.mp3");
-        this.load.audio("Levelup", "audio/player_levelUp.mp3");
+        this.load.audio("levelUp", "audio/player_levelUp.mp3");
         this.load.audio("playerDeath", "audio/player_death.mp3");
         this.load.audio("equip", "audio/player_equip.mp3");
         this.load.audio("spawnMiniboss", "audio/enemy_miniboss_spawn.mp3");

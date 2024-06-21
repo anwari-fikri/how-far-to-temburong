@@ -111,16 +111,24 @@ function addGlobalStyles() {
         text-align: center;
         align-items: center;
         font-family: 'Press Start 2P', sans-serif;
+        
+    }
+
+    @keyframes flash-text {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
     }
     
     .big-text {
         top: 20%;
+        animation: flash-text 1s infinite;
     }
     
     .upgrade-text {
         top: 65%;
         width:899px;
         height:100vh;
+        animation: flash-text 1s infinite;
     }
     
 
@@ -134,7 +142,7 @@ function addGlobalStyles() {
         justify-content: space-between; 
         align-items: center;
         position: relative; 
-        background: #e03c28;
+        background: #98444c;
         color: white;
         font-family: 'Press Start 2P', sans-serif;
         padding: 10px;
@@ -186,90 +194,87 @@ export class WeaponSkillUpgrade extends Scene {
 
     weaponSkillUpgradeScreen() {
         this.cleanup();
-
+    
         const screenDiv = document.createElement("div");
         screenDiv.id = "weaponSkillUpgrade";
-        screenDiv.style.position = "fixed"; 
+        screenDiv.style.position = "fixed";
         screenDiv.style.top = "0";
-        screenDiv.style.left = "0"; 
-        screenDiv.style.width = "100vw";        
-        screenDiv.style.height = "100vh"; 
-        screenDiv.style.backgroundColor = "transparent"; 
+        screenDiv.style.left = "0";
+        screenDiv.style.width = "100vw";
+        screenDiv.style.height = "100vh";
+        screenDiv.style.backgroundColor = "transparent";
         screenDiv.style.display = "flex";
         screenDiv.style.justifyContent = "center";
         screenDiv.style.alignItems = "center";
-        screenDiv.style.zIndex = "100"; 
-
+        screenDiv.style.zIndex = "100";
+    
         const bigText = document.createElement("div");
         bigText.className = "big-text";
         bigText.textContent = "CHOOSE A SKILL!";
         screenDiv.appendChild(bigText);
-
-        const container = document.createElement("div");
-        container.id = "container";
-        container.style.display = "flex";
-        container.style.flexDirection = "row"; 
-        container.style.alignItems = "center";
-        screenDiv.appendChild(container);
-
-        const weaponSkill = Game.player.weaponSkill;
-        const displayedSkills: SkillLevel[] = weaponSkill.choose3Random();
-
-        if (displayedSkills.length === 0) {
-            const maxLevelText = document.createElement("div");
-            maxLevelText.className = "skill-text";
-            maxLevelText.textContent = "All skills are at max level.";
-            container.appendChild(maxLevelText);
-
-            container.addEventListener("click", () => {
-                this.goToGame();
-            });
-        } else {
-            displayedSkills.forEach((skill: SkillLevel) => {
-                const skillDiv = document.createElement("div");
-                skillDiv.className = "skill-div";
-                skillDiv.style.fontFamily = '"Press Start 2P", sans-serif';
-                skillDiv.style.color = "black";
-                skillDiv.style.background = "#e03c28";
-                skillDiv.style.padding = "10px";
-                skillDiv.style.border = "4px solid black";
-                skillDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
-                skillDiv.style.imageRendering = "pixelated";
-
-                const text = document.createElement("div");
-                text.className = "skill-text";
-                text.textContent = `${skill.displayName} lvl.${skill.level + 1}`;
-                skillDiv.appendChild(text);
-
-                const img = document.createElement("img");
-                img.src = skill.imageUrl;
-                skillDiv.appendChild(img);
-
-                const description = document.createElement("div");
-                description.className = "skill-description";
-                description.textContent = skill.description;
-                skillDiv.appendChild(description);
-
-                skillDiv.addEventListener("click", () => {
-                    this.selectedSkill = skill;
-                    Game.player.weaponSkill.applyLevelUp(skill.displayName);
-                    this.showResultScreen();
-                });
-
-                container.appendChild(skillDiv);
-
-                skillDiv.addEventListener("mouseover", () => {
-                    description.style.display = "block"; 
-                });
-                skillDiv.addEventListener("mouseout", () => {
-                    description.style.display = "none"; 
-                });
-            });
-        }
-
+    
         document.body.appendChild(screenDiv);
         screenDiv.style.animation = "fade-in 1s forwards";
+    
+        setTimeout(() => {
+            const container = document.createElement("div");
+            container.id = "container";
+            container.style.display = "flex";
+            container.style.flexDirection = "row";
+            container.style.alignItems = "center";
+            screenDiv.appendChild(container);
+    
+            const weaponSkill = Game.player.weaponSkill;
+            const displayedSkills: SkillLevel[] = weaponSkill.choose3Random();
+    
+            if (displayedSkills.length === 0) {
+                const maxLevelText = document.createElement("div");
+                maxLevelText.className = "skill-text";
+                maxLevelText.textContent = "All skills are at max level.";
+                container.appendChild(maxLevelText);
+    
+                container.addEventListener("click", () => {
+                    this.goToGame();
+                });
+            } else {
+                displayedSkills.forEach((skill: SkillLevel, index: any) => {
+                    const skillDiv = document.createElement("div");
+                    skillDiv.className = "skill-div";
+                    skillDiv.style.fontFamily = '"Press Start 2P", sans-serif';
+                    skillDiv.style.color = "black";
+                    skillDiv.style.background = "#98444c";
+                    skillDiv.style.padding = "10px";
+                    skillDiv.style.border = "4px solid black";
+                    skillDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
+                    skillDiv.style.imageRendering = "pixelated";
+                    skillDiv.style.animation = 'fade-in 2s forwards';
+    
+                    const text = document.createElement("div");
+                    text.className = "skill-text";
+                    text.textContent = `${skill.displayName} lvl.${skill.level + 1}`;
+                    skillDiv.appendChild(text);
+    
+                    const img = document.createElement("img");
+                    img.src = skill.imageUrl;
+                    skillDiv.appendChild(img);
+    
+                    const description = document.createElement("div");
+                    description.className = "skill-description";
+                    description.textContent = skill.description;
+                    skillDiv.appendChild(description);
+    
+                    skillDiv.addEventListener("click", () => {
+                        this.selectedSkill = skill;
+                        Game.player.weaponSkill.applyLevelUp(skill.displayName);
+                        this.showResultScreen();
+                    });
+    
+                    container.appendChild(skillDiv);
+                });
+            }
+        }, 2000); 
     }
+
 
     showResultScreen() {
         this.cleanup();
@@ -289,7 +294,7 @@ export class WeaponSkillUpgrade extends Scene {
         skillDiv.className = "skill-div";
         skillDiv.style.fontFamily = '"Press Start 2P", sans-serif';
         skillDiv.style.color = "black";
-        skillDiv.style.background = "#e03c28";
+        skillDiv.style.background = "#98444c";
         skillDiv.style.padding = "10px";
         skillDiv.style.border = "4px solid black";
         skillDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
@@ -328,12 +333,12 @@ export class WeaponSkillUpgrade extends Scene {
     
         setTimeout(() => {
             text.textContent = `${this.selectedSkill!.displayName} lvl.${this.selectedSkill!.level}`;
-            skillDiv.style.animation = "fade-in 1.5s"; // Ensure fade-in is long enough to see
-        }, 1500); // Adjust timing to match shake duration
+            skillDiv.style.animation = "fade-in 1.5s"; 
+        }, 1500); 
     
         setTimeout(() => {
             this.goToGame();
-        }, 3000); // Adjust timing to match total animation duration
+        }, 3000);
     
     }
     

@@ -140,18 +140,18 @@ export class CheckpointAndChapters extends Scene {
         document.body.appendChild(secondImage);
 
         setTimeout(() => {
-            secondImage.style.animation = "fade-in 3s forwards"; // Fade in the second image after 1 seconds
-        }, 2000); // Delay the fade-in of the second image by 2 seconds
+            secondImage.style.animation = "fade-in 3s forwards"; 
+        }, 2000);
 
         setTimeout(() => {
             screenDiv.style.animation = "fade-out 1s forwards";
-            secondImage.style.animation = "fade-out 1s forwards"; // Fade in the second image after 1 seconds
-        }, 5000); // Delay the fade-out of the first image by 5 seconds
+            secondImage.style.animation = "fade-out 1s forwards"; 
+        }, 5000); 
 
         setTimeout(() => {
             this.cleanup();
             this.chapterOneContinuation();
-        }, 6000); // Clean up and proceed after 5 seconds
+        }, 6000); 
     }
 
     chapterTwoScreen() {
@@ -182,7 +182,7 @@ export class CheckpointAndChapters extends Scene {
         secondImage.style.left = "50%";
         secondImage.style.transform = "translate(-50%, -50%)";
         secondImage.style.backgroundImage =
-            'url("assets/Intro/chapter2Title.png")'; // Adjust the path to your second image
+            'url("assets/Intro/chapter2Title.png")'; 
         secondImage.style.backgroundSize = "cover";
         secondImage.style.backgroundRepeat = "no-repeat";
         secondImage.style.backgroundPosition = "center";
@@ -194,18 +194,18 @@ export class CheckpointAndChapters extends Scene {
         document.body.appendChild(secondImage);
 
         setTimeout(() => {
-            secondImage.style.animation = "fade-in 3s forwards"; // Fade in the second image after 1 seconds
-        }, 2000); // Delay the fade-in of the second image by 2 seconds
+            secondImage.style.animation = "fade-in 3s forwards"; 
+        }, 2000);
 
         setTimeout(() => {
             screenDiv.style.animation = "fade-out 1s forwards";
-            secondImage.style.animation = "fade-out 1s forwards"; // Fade in the second image after 1 seconds
-        }, 5000); // Delay the fade-out of the first image by 5 seconds
+            secondImage.style.animation = "fade-out 1s forwards"; 
+        }, 5000); 
 
         setTimeout(() => {
             this.cleanup();
             this.chapterTwoContinuation();
-        }, 6000); // Clean up and proceed after 5 seconds
+        }, 6000); 
     }
 
     chapterThreeScreen() {
@@ -236,7 +236,7 @@ export class CheckpointAndChapters extends Scene {
         secondImage.style.left = "50%";
         secondImage.style.transform = "translate(-50%, -50%)";
         secondImage.style.backgroundImage =
-            'url("assets/Intro/chapter3Title.png")'; // Adjust the path to your second image
+            'url("assets/Intro/chapter3Title.png")'; 
         secondImage.style.backgroundSize = "cover";
         secondImage.style.backgroundRepeat = "no-repeat";
         secondImage.style.backgroundPosition = "center";
@@ -248,18 +248,18 @@ export class CheckpointAndChapters extends Scene {
         document.body.appendChild(secondImage);
 
         setTimeout(() => {
-            secondImage.style.animation = "fade-in 3s forwards"; // Fade in the second image after 1 seconds
-        }, 2000); // Delay the fade-in of the second image by 2 seconds
+            secondImage.style.animation = "fade-in 3s forwards"; 
+        }, 2000);
 
         setTimeout(() => {
             screenDiv.style.animation = "fade-out 1s forwards";
-            secondImage.style.animation = "fade-out 1s forwards"; // Fade in the second image after 1 seconds
-        }, 5000); // Delay the fade-out of the first image by 5 seconds
+            secondImage.style.animation = "fade-out 1s forwards"; 
+        }, 5000); 
 
         setTimeout(() => {
             this.cleanup();
             this.chapterThreeContinuation();
-        }, 6000); // Clean up and proceed after 5 seconds
+        }, 6000); 
     }
 
     chapterFourScreen() {
@@ -290,7 +290,7 @@ export class CheckpointAndChapters extends Scene {
         secondImage.style.left = "50%";
         secondImage.style.transform = "translate(-50%, -50%)";
         secondImage.style.backgroundImage =
-            'url("assets/Intro/chapter4Title.png")'; // Adjust the path to your second image
+            'url("assets/Intro/chapter4Title.png")'; 
         secondImage.style.backgroundSize = "cover";
         secondImage.style.backgroundRepeat = "no-repeat";
         secondImage.style.backgroundPosition = "center";
@@ -302,18 +302,18 @@ export class CheckpointAndChapters extends Scene {
         document.body.appendChild(secondImage);
 
         setTimeout(() => {
-            secondImage.style.animation = "fade-in 3s forwards"; // Fade in the second image after 1 seconds
-        }, 2000); // Delay the fade-in of the second image by 2 seconds
+            secondImage.style.animation = "fade-in 3s forwards"; 
+        }, 2000);
 
         setTimeout(() => {
             screenDiv.style.animation = "fade-out 1s forwards";
-            secondImage.style.animation = "fade-out 1s forwards"; // Fade in the second image after 1 seconds
-        }, 5000); // Delay the fade-out of the first image by 5 seconds
+            secondImage.style.animation = "fade-out 1s forwards"; 
+        }, 5000); 
 
         setTimeout(() => {
             this.cleanup();
             this.chapterFourContinuation();
-        }, 6000); // Clean up and proceed after 5 seconds
+        }, 6000); 
     }
 
     chapterFinaleScreen() {
@@ -345,7 +345,7 @@ export class CheckpointAndChapters extends Scene {
         secondImage.style.left = "50%";
         secondImage.style.transform = "translate(-50%, -50%)";
         secondImage.style.backgroundImage =
-            'url("assets/Intro/chapterFinaleTitle.png")'; // Adjust the path to your second image
+            'url("assets/Intro/chapterFinaleTitle.png")'; 
         secondImage.style.backgroundSize = "cover";
         secondImage.style.backgroundRepeat = "no-repeat";
         secondImage.style.backgroundPosition = "center";
@@ -357,18 +357,18 @@ export class CheckpointAndChapters extends Scene {
         document.body.appendChild(secondImage);
 
         setTimeout(() => {
-            secondImage.style.animation = "fade-in 3s forwards"; // Fade in the second image after 1 seconds
-        }, 2000); // Delay the fade-in of the second image by 2 seconds
+            secondImage.style.animation = "fade-in 3s forwards"; 
+        }, 2000);
 
         setTimeout(() => {
             screenDiv.style.animation = "fade-out 1s forwards";
-            secondImage.style.animation = "fade-out 1s forwards"; // Fade in the second image after 1 seconds
-        }, 5000); // Delay the fade-out of the first image by 5 seconds
+            secondImage.style.animation = "fade-out 1s forwards"; 
+        }, 5000); 
 
         setTimeout(() => {
             this.cleanup();
             this.chapterFinaleContinuation();
-        }, 6000); // Clean up and proceed after 5 seconds
+        }, 6000); 
     }
 
     // -------------------------------------------------------------- CHAPTERS CONTINUATION ---------------------------------------------------------------------------
@@ -396,7 +396,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; // Ensure the screenDiv is in the background
+        screenDiv.style.zIndex = "1"; 
         document.body.appendChild(screenDiv);
 
         const dialogueDiv = document.createElement("div");
@@ -413,7 +413,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid black";
         dialogueDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; // Ensure the dialogue is above the image
+        dialogueDiv.style.zIndex = "5"; 
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -482,7 +482,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; // Ensure the screenDiv is in the background
+        screenDiv.style.zIndex = "1"; 
         document.body.appendChild(screenDiv);
 
         const dialogueDiv = document.createElement("div");
@@ -499,7 +499,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid black";
         dialogueDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; // Ensure the dialogue is above the image
+        dialogueDiv.style.zIndex = "5"; 
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -568,7 +568,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; // Ensure the screenDiv is in the background
+        screenDiv.style.zIndex = "1"; 
         document.body.appendChild(screenDiv);
 
         const dialogueDiv = document.createElement("div");
@@ -585,7 +585,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid black";
         dialogueDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; // Ensure the dialogue is above the image
+        dialogueDiv.style.zIndex = "5"; 
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -654,7 +654,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; // Ensure the screenDiv is in the background
+        screenDiv.style.zIndex = "1"; 
         document.body.appendChild(screenDiv);
 
         const dialogueDiv = document.createElement("div");
@@ -671,7 +671,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid black";
         dialogueDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; // Ensure the dialogue is above the image
+        dialogueDiv.style.zIndex = "5"; 
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -756,7 +756,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; // Ensure the screenDiv is in the background
+        screenDiv.style.zIndex = "1"; 
         document.body.appendChild(screenDiv);
 
         const dialogueDiv = document.createElement("div");
@@ -773,7 +773,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid black";
         dialogueDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; // Ensure the dialogue is above the image
+        dialogueDiv.style.zIndex = "5"; 
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -889,7 +889,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; // Ensure the screenDiv is in the background
+        screenDiv.style.zIndex = "1"; 
         document.body.appendChild(screenDiv);
 
         const checkpointTextDiv = document.createElement("div");
@@ -923,7 +923,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid #17434b";
         dialogueDiv.style.boxShadow = "6px 6px 0 #17434b, 12px 12px 0 #17434b";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; // Ensure the dialogue is above the image
+        dialogueDiv.style.zIndex = "5"; 
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -994,7 +994,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; // Ensure the screenDiv is in the background
+        screenDiv.style.zIndex = "1"; 
         document.body.appendChild(screenDiv);
 
         const checkpointTextDiv = document.createElement("div");
@@ -1028,7 +1028,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid #17434b";
         dialogueDiv.style.boxShadow = "6px 6px 0 #17434b, 12px 12px 0 #17434b";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; // Ensure the dialogue is above the image
+        dialogueDiv.style.zIndex = "5"; 
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -1099,7 +1099,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; // Ensure the screenDiv is in the background
+        screenDiv.style.zIndex = "1"; 
         document.body.appendChild(screenDiv);
 
         const checkpointTextDiv = document.createElement("div");
@@ -1133,7 +1133,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid #17434b";
         dialogueDiv.style.boxShadow = "6px 6px 0 #17434b, 12px 12px 0 #17434b";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; // Ensure the dialogue is above the image
+        dialogueDiv.style.zIndex = "5"; 
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";

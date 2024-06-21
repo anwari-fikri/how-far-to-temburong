@@ -47,6 +47,16 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         hitboxRadius: 12,
         customSize: 1.2,
     },
+    SLIME_MINION: {
+        texture: "slime_minion",
+        baseHealth: 10,
+        attackPower: 2,
+        chaseSpeed: 35,
+        tint: 0xffffff,
+        animsKey: "slime-minion",
+        hitboxRadius: 16,
+        customSize: 0.5,
+    },
     SLIME_BOSS: {
         texture: "slime_boss",
         baseHealth: 2500,
@@ -54,6 +64,26 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         chaseSpeed: 20,
         tint: 0xffffff,
         animsKey: "slime-boss",
+        hitboxRadius: 16,
+        customSize: 1.5,
+    },
+    MONKE_MINION: {
+        texture: "monke_minion",
+        baseHealth: 10,
+        attackPower: 3,
+        chaseSpeed: 45,
+        tint: 0xffffff,
+        animsKey: "monke-minion",
+        hitboxRadius: 8,
+        customSize: 1,
+    },
+    MONKE_BOSS: {
+        texture: "monke_boss",
+        baseHealth: 3000,
+        attackPower: 35,
+        chaseSpeed: 35,
+        tint: 0xffffff,
+        animsKey: "monke-boss",
         hitboxRadius: 16,
         customSize: 1.5,
     },
@@ -143,11 +173,19 @@ export class Zombie extends Physics.Arcade.Sprite {
 
         this.setOrigin(0.5, 0.5);
         var radius = this.hitboxRadius;
-        this.setCircle(
-            radius,
-            -radius + 0.5 * this.width,
-            -radius + 0.5 * this.height,
-        );
+        if (this.zombieType === ZOMBIE_TYPE.SLIME_BOSS) {
+            this.setBodySize(
+                -radius + 0.5 * this.width,
+                -radius + 0.75 * this.height,
+            );
+        } else {
+            this.setCircle(
+                radius,
+                -radius + 0.5 * this.width,
+                -radius + 0.5 * this.height,
+            );
+        }
+
         this.setScale(this.customSize, this.customSize);
         this.setTint(this.originalTint);
 
@@ -347,7 +385,12 @@ export class Zombie extends Physics.Arcade.Sprite {
     die(isDeSpawn: boolean = false) {
         this.clearFireBonusInterval();
         if (!isDeSpawn) {
-            Game.player.killCount += 1;
+            if (
+                this.zombieType !== ZOMBIE_TYPE.SLIME_MINION &&
+                this.zombieType !== ZOMBIE_TYPE.MONKE_MINION
+            ) {
+                Game.player.killCount += 1;
+            }
         }
 
         this.zombieType === ZOMBIE_TYPE.MINI_BOSS

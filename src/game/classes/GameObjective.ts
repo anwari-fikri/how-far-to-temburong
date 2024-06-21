@@ -11,20 +11,20 @@ export function objectiveUI(scene: any) {
 
     switch (Game.gameStage) {
         case 1:
-            scene.distanceObjective = 50;
+            scene.distanceObjective = 500;
             scene.killObjective = 10;
             break;
         case 2:
-            if (Game.gameStage) {
+            if (Game.bossStage) {
                 scene.distanceObjective = 1;
                 scene.killObjective = 1;
             } else {
-                scene.distanceObjective = 70;
+                scene.distanceObjective = 700;
                 scene.killObjective = 20;
             }
             break;
         case 3:
-            scene.distanceObjective = 80;
+            scene.distanceObjective = 800;
             scene.killObjective = 50;
             break;
         case 4:
@@ -32,7 +32,7 @@ export function objectiveUI(scene: any) {
                 scene.distanceObjective = 1;
                 scene.killObjective = 1;
             } else {
-                scene.distanceObjective = 80;
+                scene.distanceObjective = 800;
                 scene.killObjective = 40;
             }
             break;

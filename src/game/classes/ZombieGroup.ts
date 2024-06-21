@@ -17,22 +17,14 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         this.player = player;
 
         scene.add.existing(this);
+        this.adjustSpawnRate();
+        this.elapsedMinutes = 0;
 
-        if (!Game.bossStage) {
-            this.adjustSpawnRate();
-            this.elapsedMinutes = 0;
+        this.startSpawnTimer();
+        this.startMinuteTracker();
 
-            this.startSpawnTimer();
-            this.startMinuteTracker();
-        } else {
-            switch (Game.gameStage) {
-                case 2:
-                    this.addSlimeBoss();
-                    break;
-                case 4:
-                    // gorilla boss here
-                    break;
-            }
+        if (Game.bossStage) {
+            this.addBoss();
         }
 
         // for (let i = 0; i < 100; i++) {
@@ -76,9 +68,17 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         }
     }
 
-    addSlimeBoss() {
+    addBoss() {
         const zombie = this.get() as Zombie;
-        zombie.activateZombie(this.player, ZOMBIE_TYPE.SLIME_BOSS);
+
+        switch (Game.gameStage) {
+            case 2:
+                zombie.activateZombie(this.player, ZOMBIE_TYPE.SLIME_BOSS);
+                break;
+            case 4:
+                zombie.activateZombie(this.player, ZOMBIE_TYPE.MONKE_BOSS);
+                break;
+        }
     }
 
     adjustSpawnRate() {
@@ -133,25 +133,44 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
     }
 
     addZombie() {
-        let normalRate = 0;
-        switch (Game.gameStage) {
-            case 3:
-                normalRate = 0.2;
-                break;
-            case 4:
-                normalRate = 0.2;
-                break;
-            default:
-                normalRate = 0.5;
-                break;
-        }
         const zombie = this.get() as Zombie;
-        if (zombie) {
-            const randomType = Math.random();
-            if (randomType < normalRate) {
-                zombie.activateZombie(this.player, ZOMBIE_TYPE.NORMAL);
-            } else {
-                zombie.activateZombie(this.player, ZOMBIE_TYPE.STRONG);
+        if (!Game.bossStage) {
+            let normalRate = 0;
+            switch (Game.gameStage) {
+                case 3:
+                    normalRate = 0.2;
+                    break;
+                case 4:
+                    normalRate = 0.2;
+                    break;
+                default:
+                    normalRate = 0.5;
+                    break;
+            }
+            if (zombie) {
+                const randomType = Math.random();
+                if (randomType < normalRate) {
+                    zombie.activateZombie(this.player, ZOMBIE_TYPE.NORMAL);
+                } else {
+                    zombie.activateZombie(this.player, ZOMBIE_TYPE.STRONG);
+                }
+            }
+        } else {
+            if (zombie) {
+                switch (Game.gameStage) {
+                    case 2:
+                        zombie.activateZombie(
+                            this.player,
+                            ZOMBIE_TYPE.SLIME_MINION,
+                        );
+                        break;
+                    case 4:
+                        zombie.activateZombie(
+                            this.player,
+                            ZOMBIE_TYPE.MONKE_MINION,
+                        );
+                        break;
+                }
             }
         }
     }

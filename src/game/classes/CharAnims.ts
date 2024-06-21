@@ -74,4 +74,29 @@ export function playerAnims(scene: Phaser.Scene) {
             repeat: 1,
         });
     }
+
+    // SLIME BOSS
+    if (!scene.anims.exists("slime-boss-walk-right")) {
+        scene.anims.create({
+            key: "slime-boss-walk-right",
+            frames: scene.anims.generateFrameNumbers("slime_boss", {
+                start: 11,
+                end: 7,
+            }),
+            frameRate: 7,
+            repeat: 1,
+        });
+    }
+
+    if (!scene.anims.exists("slime-boss-walk-left")) {
+        scene.anims.create({
+            key: "slime-boss-walk-left",
+            frames: scene.anims.generateFrameNumbers("slime_boss", {
+                start: 6,
+                end: 0,
+            }),
+            frameRate: 7,
+            repeat: 1,
+        });
+    }
 }

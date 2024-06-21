@@ -18,11 +18,22 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
 
         scene.add.existing(this);
 
-        this.adjustSpawnRate();
-        this.elapsedMinutes = 0;
+        if (!Game.bossStage) {
+            this.adjustSpawnRate();
+            this.elapsedMinutes = 0;
 
-        this.startSpawnTimer();
-        this.startMinuteTracker();
+            this.startSpawnTimer();
+            this.startMinuteTracker();
+        } else {
+            switch (Game.gameStage) {
+                case 2:
+                    this.addSlimeBoss();
+                    break;
+                case 4:
+                    // gorilla boss here
+                    break;
+            }
+        }
 
         // for (let i = 0; i < 100; i++) {
         //     const zombie = this.get() as Zombie;
@@ -63,6 +74,11 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
             const minibossSpawn = this.scene.sound.add("spawnMiniboss");
             minibossSpawn.play({ volume: 0.2 });
         }
+    }
+
+    addSlimeBoss() {
+        const zombie = this.get() as Zombie;
+        zombie.activateZombie(this.player, ZOMBIE_TYPE.SLIME_BOSS);
     }
 
     adjustSpawnRate() {
@@ -170,4 +186,3 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         });
     }
 }
-

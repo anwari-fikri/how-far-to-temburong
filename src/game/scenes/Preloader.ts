@@ -57,6 +57,10 @@ export class Preloader extends Scene {
             frameWidth: 96,
             frameHeight: 64,
         });
+        this.load.spritesheet("slime_boss", "characters/slime_boss.png", {
+            frameWidth: 96,
+            frameHeight: 64,
+        });
 
         // Weapons
         this.load.image("sword_icon", "weapons/icons/sword_icon.png");

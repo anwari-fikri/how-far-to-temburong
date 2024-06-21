@@ -47,6 +47,16 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         hitboxRadius: 12,
         customSize: 1.2,
     },
+    SLIME_BOSS: {
+        texture: "slime_boss",
+        baseHealth: 2500,
+        attackPower: 30,
+        chaseSpeed: 20,
+        tint: 0xffffff,
+        animsKey: "slime-boss",
+        hitboxRadius: 16,
+        customSize: 1.5,
+    },
 } as const;
 
 type ZombieType = (typeof ZOMBIE_TYPE)[keyof typeof ZOMBIE_TYPE];
@@ -418,6 +428,36 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
     }
 
+    fallingSlime(
+        this: any,
+        startX: number,
+        startY: number,
+        targetX: number,
+        targetY: number,
+        duration: number,
+    ) {
+        this.falling = this.physics.add.sprite(
+            startX,
+            startY,
+            "objectImageS",
+            2,
+        );
+        this.falling.body.setImmovable(true);
+        this.falling.setDepth(20);
+
+        this.tweens.add({
+            targets: this.falling,
+            y: targetY,
+            x: targetX,
+            duration: duration,
+            ease: "Linear",
+            onComplete: () => {
+                this.falling.setTexture("objectImageS", 1);
+            },
+        });
+        this.physics.add.collider(Game.player, this.falling);
+    }
+
     update(player: Player) {
         if (this.active) {
             if (this.isSlowed && !Game.player.isTimeStopped) {
@@ -479,4 +519,3 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
     }
 }
-

@@ -15,16 +15,26 @@ export function objectiveUI(scene: any) {
             scene.killObjective = 10;
             break;
         case 2:
-            scene.distanceObjective = 70;
-            scene.killObjective = 20;
+            if (Game.gameStage) {
+                scene.distanceObjective = 1;
+                scene.killObjective = 1;
+            } else {
+                scene.distanceObjective = 70;
+                scene.killObjective = 20;
+            }
             break;
         case 3:
             scene.distanceObjective = 80;
             scene.killObjective = 50;
             break;
         case 4:
-            scene.distanceObjective = 80;
-            scene.killObjective = 40;
+            if (Game.gameStage) {
+                scene.distanceObjective = 1;
+                scene.killObjective = 1;
+            } else {
+                scene.distanceObjective = 80;
+                scene.killObjective = 40;
+            }
             break;
 
         default:
@@ -33,50 +43,68 @@ export function objectiveUI(scene: any) {
             break;
     }
 
-    scene.distanceText = scene.add
-        .text(10, 60, "Distance: 0 / " + scene.distanceObjective, {
-            fontSize: "12px",
-            color: "#000000",
-            fontFamily: "Press Start 2P",
-        })
-        .setOrigin(0, 0)
-        .setScrollFactor(0)
-        .setDepth(100);
-    scene.killText = scene.add
-        .text(10, 74, "Kills: 0 / " + scene.killObjective, {
-            fontSize: "12px",
-            color: "#000000",
-            fontFamily: "Press Start 2P",
-        })
-        .setOrigin(0, 0)
-        .setScrollFactor(0)
-        .setDepth(100);
+    if (!Game.bossStage) {
+        scene.distanceText = scene.add
+            .text(10, 60, "Distance: 0m / " + scene.distanceObjective + "m", {
+                fontSize: "12px",
+                color: "#000000",
+                fontFamily: "Press Start 2P",
+            })
+            .setOrigin(0, 0)
+            .setScrollFactor(0)
+            .setDepth(100);
+        scene.killText = scene.add
+            .text(10, 74, "Kills: 0 / " + scene.killObjective, {
+                fontSize: "12px",
+                color: "#000000",
+                fontFamily: "Press Start 2P",
+            })
+            .setOrigin(0, 0)
+            .setScrollFactor(0)
+            .setDepth(100);
+    } else {
+        scene.killText = scene.add
+            .text(10, 74, "Kill the boss", {
+                fontSize: "12px",
+                color: "#000000",
+                fontFamily: "Press Start 2P",
+            })
+            .setOrigin(0, 0)
+            .setScrollFactor(0)
+            .setDepth(100);
+    }
 }
 
 export function stageObjective(scene: any) {
-    // distance count
-    scene.distanceText.setText(
-        "Distance: " + scene.highestX + " / " + scene.distanceObjective,
-    );
+    if (!Game.bossStage) {
+        // distance count
+        scene.distanceText.setText(
+            "Distance: " +
+                scene.highestX +
+                "m / " +
+                scene.distanceObjective +
+                "m",
+        );
 
-    const playerX = Game.player.x / 100;
+        // kill count
+        scene.killText.setText(
+            "Kills: " + Game.player.killCount + " / " + scene.killObjective,
+        );
+    }
+
+    // distance count
+    const playerX = Game.player.x / 10;
 
     if (playerX > scene.highestX) {
         scene.highestX = Math.round(playerX);
     }
     if (scene.highestX >= scene.distanceObjective) {
         scene.distanceComplete = true;
-        // console.log("distance objective: ", distanceComplete);
     }
 
     // kill count
-    scene.killText.setText(
-        "Kills: " + Game.player.killCount + " / " + scene.killObjective,
-    );
-
     if (Game.player.killCount >= scene.killObjective) {
         scene.killComplete = true;
-        // console.log("kill objective: ", killComplete);
     }
 
     Game.totalKill = Game.player.killCount;
@@ -86,8 +114,18 @@ export function stageObjective(scene: any) {
     // time limit
     if (scene.distanceComplete && scene.killComplete) {
         if (Game.gameUI.elapsedTime < 60) {
-            scene.scene.start("CheckpointAndChapters");
-            scene.sound.stopAll();
+            if (
+                (!Game.bossStage && Game.gameStage == 2) ||
+                (!Game.bossStage && Game.gameStage == 4)
+            ) {
+                Game.bossStage = true;
+                scene.scene.start("BossScene");
+                scene.sound.stopAll();
+            } else {
+                Game.bossStage = false;
+                scene.scene.start("CheckpointAndChapters");
+                scene.sound.stopAll();
+            }
         }
     }
 

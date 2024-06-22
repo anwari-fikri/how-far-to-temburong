@@ -63,7 +63,7 @@ export class Preloader extends Scene {
         });
         this.load.spritesheet("monke_boss", "characters/monke_boss.png", {
             frameWidth: 96,
-            frameHeight: 64,
+            frameHeight: 96,
         });
         this.load.spritesheet("slime_minion", "characters/slime_minion.png", {
             frameWidth: 96,
@@ -168,7 +168,7 @@ export class Preloader extends Scene {
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         // this.scene.start("CheckpointAndChapters");
-        this.scene.start("Game");
+        this.scene.start("TestGame");
         // this.scene.start("GameUIOverlay");
     }
 }

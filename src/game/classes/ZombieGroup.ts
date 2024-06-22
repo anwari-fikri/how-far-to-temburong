@@ -53,7 +53,9 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
             callback: () => {
                 this.elapsedMinutes++;
                 this.adjustSpawnRate();
-                this.addMiniBoss();
+                if (!Game.bossStage) {
+                    this.addMiniBoss();
+                }
             },
             callbackScope: this,
         });

@@ -174,9 +174,16 @@ export class Zombie extends Physics.Arcade.Sprite {
         this.setOrigin(0.5, 0.5);
         var radius = this.hitboxRadius;
         if (this.zombieType === ZOMBIE_TYPE.SLIME_BOSS) {
-            this.setBodySize(
+            this.setBodySize(70, 35);
+            this.setOffset(15, 30);
+        } else if (this.zombieType === ZOMBIE_TYPE.MONKE_BOSS) {
+            this.setBodySize(55, 65);
+            this.setOffset(20, 15);
+        } else if (this.zombieType === ZOMBIE_TYPE.SLIME_MINION) {
+            this.setCircle(
+                radius,
                 -radius + 0.5 * this.width,
-                -radius + 0.75 * this.height,
+                -radius + 0.8 * this.height,
             );
         } else {
             this.setCircle(

@@ -29,7 +29,7 @@ export function objectiveUI(scene: any) {
             scene.killObjective = 1;
             break;
         case 4:
-            if (Game.gameStage) {
+            if (Game.bossStage) {
                 scene.distanceObjective = 1;
                 scene.killObjective = 1;
             } else {

@@ -23,6 +23,7 @@ export class Experience extends Physics.Arcade.Sprite {
     update() {
         if (this.active && this.scene.physics.overlap(this, Game.player)) {
             this.handlePlayerCollision();
+            Game.player.experience.saveExperienceState();
         }
     }
 

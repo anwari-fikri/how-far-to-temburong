@@ -1,5 +1,6 @@
 import { Scene } from "phaser";
 import { EventBus } from "../EventBus";
+import { Game } from "./Game";
 
 function loadGoogleFont() {
     const link = document.createElement("link");
@@ -138,6 +139,7 @@ export class Intro extends Scene {
                                     duration: 1000,
                                     onComplete: () => {
                                         this.cleanup();
+
                                         this.scene.start("MainMenu");
                                     },
                                 });
@@ -161,3 +163,4 @@ export class Intro extends Scene {
         });
     }
 }
+

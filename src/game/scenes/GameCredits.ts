@@ -111,3 +111,4 @@ export class GameCredits extends Scene {
         }
     }
 }
+

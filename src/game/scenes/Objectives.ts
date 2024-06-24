@@ -10,18 +10,17 @@ export function loadGoogleFont() {
     link.rel = "stylesheet";
     document.head.appendChild(link);
 }
-    
+
 const objectives = [
     "Complete the objectives to finish this level! Kill 10 zombies and walk 500m.",
     "Complete the objectives to finish this level! Kill 20 zombies and walk 700m.",
     "Complete the objectives to finish this level! Kill 50 zombies and walk 800m.",
-    "Complete the objectives to finish this level! Kill 40 zombies and walk 800m."
+    "Complete the objectives to finish this level! Kill 40 zombies and walk 800m.",
 ];
 
 const bossObj = [
     "Complete the objectives to finish this level! Kill the boss.",
-]
-
+];
 
 export function Objectives(scene: any) {
     scene.scene.pause("Game");
@@ -70,13 +69,13 @@ export function Objectives(scene: any) {
     document.body.appendChild(ObjectivesDiv);
 
     const currentStage = Game.gameStage;
-    let objectiveString = '';
+    let objectiveString = "";
 
-if (Game.bossStage) {
-    objectiveString = bossObj[0];
-} else {
-    objectiveString = objectives[(currentStage - 1) % objectives.length];
-}
+    if (Game.bossStage) {
+        objectiveString = bossObj[0];
+    } else {
+        objectiveString = objectives[(currentStage - 1) % objectives.length];
+    }
 
     new Typed("#objectiveText", {
         strings: [objectiveString],
@@ -104,7 +103,7 @@ if (Game.bossStage) {
     });
 }
 
-export function objectiveComplete(scene:any) {
+export function objectiveComplete(scene: any) {
     scene.scene.pause("Game");
 
     const dialogueSound = scene.sound.add("dialouge");
@@ -119,7 +118,7 @@ export function objectiveComplete(scene:any) {
     screenDiv.style.width = "100%";
     screenDiv.style.height = "100%";
     screenDiv.style.opacity = "1";
-    screenDiv.style.zIndex = "1"; 
+    screenDiv.style.zIndex = "1";
     document.body.appendChild(screenDiv);
 
     const objectiveComplete = document.createElement("div");
@@ -136,7 +135,7 @@ export function objectiveComplete(scene:any) {
     objectiveComplete.style.border = "4px solid black";
     objectiveComplete.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
     objectiveComplete.style.imageRendering = "pixelated";
-    objectiveComplete.style.zIndex = "5"; 
+    objectiveComplete.style.zIndex = "5";
 
     const objectiveText = document.createElement("div");
     objectiveText.id = "objectiveText";
@@ -151,9 +150,7 @@ export function objectiveComplete(scene:any) {
     document.body.appendChild(objectiveComplete);
 
     new Typed("#objectiveText", {
-        strings: [
-            "Objective Complete!",
-        ],
+        strings: ["Objective Complete!"],
         typeSpeed: 15,
         showCursor: false,
         onComplete: () => {
@@ -171,14 +168,12 @@ export function objectiveComplete(scene:any) {
             continueButton.classList.add("continue-button");
             continueButton.style.zIndex = "100";
             continueButton.addEventListener("click", () => {
-
-              startCheckpoint(scene);
+                startCheckpoint(scene);
             });
             buttonContainer.appendChild(continueButton);
         },
     });
 }
-
 
 export function startMainGame(scene: any) {
     cleanup();
@@ -187,9 +182,9 @@ export function startMainGame(scene: any) {
 
 export function startCheckpoint(scene: any) {
     cleanup();
+
     scene.scene.start("CheckpointAndChapters");
 }
-
 
 export function cleanup() {
     const elementsToRemove = [

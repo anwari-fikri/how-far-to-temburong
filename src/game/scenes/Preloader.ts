@@ -178,6 +178,11 @@ export class Preloader extends Scene {
         this.load.audio("slimeStep", "audio/stage_slimeStep.mp3");
         this.load.audio("dialouge", "audio/dialouge_keyboard.mp3");
         this.load.audio("select", "audio/intro_select.mp3");
+        this.load.audio("mainMenu", "assets/audio/intro_mainMenu.mp3");
+        this.load.audio("newspaper", "assets/audio/intro_newspaper.mp3");
+        this.load.audio("menuButton", "assets/audio/intro_menuButton.mp3");
+        this.load.audio("select", "assets/audio/intro_select.mp3");
+        this.load.audio("campfire", "assets/audio/checkpoint_campfire.mp3");
     }
 
     create() {
@@ -188,6 +193,6 @@ export class Preloader extends Scene {
         // this.scene.start("GameUIOverlay");
         // this.scene.start("CheckpointAndChapters");
         // this.scene.start("GameOver");
-        this.scene.start("Game");
+        this.scene.start("Intro");
     }
 }

@@ -360,7 +360,7 @@ export function generateMapContinuation(scene: any) {
             { index: pothole, weight: 0.2 },
             { index: -1, weight: 50 },
         ],
-        startX,
+        startX + 1,
         roadY + 1,
         49,
         7,

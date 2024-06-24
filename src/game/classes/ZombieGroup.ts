@@ -180,7 +180,12 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
     getNuked() {
         this.children.iterate((zombie: Phaser.GameObjects.GameObject) => {
             if (zombie instanceof Zombie) {
-                zombie.die(true);
+                if (
+                    zombie.zombieType !== ZOMBIE_TYPE.MONKE_BOSS &&
+                    zombie.zombieType !== ZOMBIE_TYPE.SLIME_BOSS
+                ) {
+                    zombie.die(true);
+                }
             }
             return true;
         });

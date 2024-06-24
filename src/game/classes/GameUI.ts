@@ -2,6 +2,7 @@ import { Scene } from "phaser";
 import { PLAYER_CONST } from "./Player";
 import { Game } from "../scenes/Game";
 import { POWERUP_DURATION, PowerUpType } from "./PowerUp";
+import { ZOMBIE_TYPE, Zombie } from "./Zombie";
 
 export default class GameUI {
     scene: Scene;
@@ -12,6 +13,7 @@ export default class GameUI {
     startTime: number;
     expBar: Phaser.GameObjects.Graphics;
     levelCount: Phaser.GameObjects.Text;
+    indicator: Phaser.GameObjects.Graphics;
 
     constructor(scene: Scene) {
         this.scene = scene;
@@ -24,6 +26,7 @@ export default class GameUI {
         this.createExpBar();
         // this.createLevelUpSelection();
         this.createLevelCount();
+        // this.createIndicator();
     }
 
     createLevelUpSelection() {
@@ -315,9 +318,33 @@ export default class GameUI {
         this.calendar.setDepth(40);
     }
 
+    createIndicator() {
+        this.indicator = this.scene.add.graphics();
+        this.indicator.fillStyle(0xff0000, 1);
+        this.indicator.fillTriangle(0, 0, 20, 10, 0, 20);
+        this.indicator.setDepth(10);
+        this.indicator.setVisible(false);
+    }
+
+    updateIndicator() {
+        // todo
+        // if (
+        //     Zombie.zombieType === ZOMBIE_TYPE.MONKE_BOSS &&
+        //     Zombie.zombieType === ZOMBIE_TYPE.SLIME_BOSS
+        // ) {
+        //     //aa
+        // }
+        if ("not in view") {
+            this.indicator.setVisible(true);
+            this.indicator.setPosition(0, 0); // x stay at the edge of screen, y boss coord
+        } else {
+            this.indicator.setVisible(false);
+        }
+    }
+
     update() {
         this.activePowerUps.clear(true, true);
         this.createPowerUpStatus();
+        // this.updateIndicator();
     }
 }
-

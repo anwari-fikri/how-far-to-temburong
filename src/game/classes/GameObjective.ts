@@ -1,5 +1,6 @@
 import { Game } from "../scenes/Game";
 import { CheckpointAndChapters } from "../scenes/CheckpointAndChapters";
+import { objectiveComplete } from "../scenes/Objectives";
 
 export function objectiveUI(scene: any) {
     scene.distanceComplete = false;
@@ -123,7 +124,7 @@ export function stageObjective(scene: any) {
                 scene.sound.stopAll();
             } else {
                 Game.bossStage = false;
-                scene.scene.start("CheckpointAndChapters");
+                objectiveComplete(scene);
                 scene.sound.stopAll();
             }
         }

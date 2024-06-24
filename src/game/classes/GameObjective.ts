@@ -1,5 +1,6 @@
 import { Game } from "../scenes/Game";
 import { CheckpointAndChapters } from "../scenes/CheckpointAndChapters";
+import { objectiveComplete } from "../scenes/Objectives";
 
 export function objectiveUI(scene: any) {
     scene.distanceComplete = false;
@@ -86,7 +87,7 @@ export function stageObjective(scene: any) {
     // time limit
     if (scene.distanceComplete && scene.killComplete) {
         if (Game.gameUI.elapsedTime < 60) {
-            scene.scene.start("CheckpointAndChapters");
+            objectiveComplete(scene);
             scene.sound.stopAll();
         }
     }

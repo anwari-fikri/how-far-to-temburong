@@ -16,6 +16,7 @@ function loadFontAwesome() {
     link.rel = "stylesheet";
     document.head.appendChild(link);
 }
+
 function addGlobalStyles() {
     const style = document.createElement("style");
     style.textContent = `
@@ -29,7 +30,7 @@ function addGlobalStyles() {
     }
     .volume-icon {
         font-size: 35px;
-        color: #f29e00;
+        color: #E1D9D1;
         margin-right: 10px;
     }
     .controls-container {
@@ -45,7 +46,7 @@ function addGlobalStyles() {
         align-items: center;
         font-family: "Press Start 2P", sans-serif;
         font-size: 20px;
-        color: #f29e00;
+        color: #E1D9D1;
         margin-right: 20px;
     }
     .wasd-controls img {
@@ -58,10 +59,14 @@ function addGlobalStyles() {
         height: auto;
         margin-right: 10px;
     }
+    .change-weapon-controls img {
+        width: 70px;
+        height: auto;
+        margin-right: 10px;
+    }
     `;
     document.head.appendChild(style);
 }
-
 
 export class PauseMenu extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera;
@@ -78,9 +83,7 @@ export class PauseMenu extends Scene {
     create() {
         loadGoogleFont();
         loadFontAwesome();
-        addGlobalStyles(); 
-
-        this.cameras.main.setBackgroundColor("#000000");
+        addGlobalStyles();
 
         EventBus.emit("current-scene-ready", this);
 
@@ -109,18 +112,13 @@ export class PauseMenu extends Scene {
         const screenDiv = document.createElement("div");
         screenDiv.id = "pauseMenu";
         screenDiv.style.position = "fixed";
-        screenDiv.style.top = "50%";
-        screenDiv.style.left = "50%";
-        screenDiv.style.transform = "translate(-50%, -50%)";
-        screenDiv.style.backgroundImage = 'url("assets/Intro/GameOver.png")';
-        screenDiv.style.backgroundSize = "78% 100%";
-        screenDiv.style.backgroundRepeat = "no-repeat";
-        screenDiv.style.backgroundPosition = "center";
+        screenDiv.style.top = "0";
+        screenDiv.style.left = "0";
         screenDiv.style.width = "100%";
         screenDiv.style.height = "100%";
-        screenDiv.style.border = "none";
-        screenDiv.style.boxShadow = "none";
-        screenDiv.style.opacity = "1";
+        screenDiv.style.backdropFilter = "blur(5px)";
+        screenDiv.style.backgroundColor = "rgba(0, 0, 0, 0.4)"; 
+        screenDiv.style.zIndex = "9999";
         document.body.appendChild(screenDiv);
 
         const imageElement = document.createElement("img");
@@ -145,21 +143,6 @@ export class PauseMenu extends Scene {
 
         this.drawFrameOnCanvas(canvas, Game.gameStage - 1); 
 
-        // const textElement = document.createElement("div");
-        // textElement.textContent = "BACK TO MENU";
-        // textElement.style.position = "absolute";
-        // textElement.style.top = "90%";
-        // textElement.style.left = "50%";
-        // textElement.style.transform = "translate(-50%, -50%)";
-        // textElement.style.color = "#f29e00";
-        // textElement.style.fontFamily = '"Press Start 2P", sans-serif';
-        // textElement.style.fontSize = "35px";
-        // textElement.style.textAlign = "center";
-        // textElement.style.zIndex = "6";
-        // textElement.className = "text-shadow";
-
-        // screenDiv.appendChild(textElement);
-
         const volumeContainer = document.createElement("div");
         volumeContainer.className = "volume-container";
 
@@ -175,7 +158,7 @@ export class PauseMenu extends Scene {
         this.volumeSlider.value = this.sound.volume.toString();
         volumeContainer.appendChild(this.volumeSlider);
 
-        document.body.appendChild(volumeContainer);
+        screenDiv.appendChild(volumeContainer);
 
         this.volumeSlider.addEventListener("input", (event) => {
             const target = event.target as HTMLInputElement;
@@ -195,10 +178,10 @@ export class PauseMenu extends Scene {
     addControls() {
         const screenDiv = document.getElementById("pauseMenu");
         if (!screenDiv) return;
-    
+
         const controlsContainer = document.createElement("div");
         controlsContainer.className = "controls-container";
-    
+
         const movementControls = document.createElement("div");
         movementControls.className = "controls wasd-controls";
         movementControls.innerHTML = `
@@ -206,7 +189,7 @@ export class PauseMenu extends Scene {
             <span>Move</span>
         `;
         controlsContainer.appendChild(movementControls);
-    
+
         const attackControls = document.createElement("div");
         attackControls.className = "controls attack-controls";
         attackControls.innerHTML = `
@@ -214,9 +197,17 @@ export class PauseMenu extends Scene {
             <span>Attack</span>
         `;
         controlsContainer.appendChild(attackControls);
-    
+
+        const changeWeaponControls = document.createElement("div");
+        changeWeaponControls.className = "controls change-weapon-controls";
+        changeWeaponControls.innerHTML = `
+            <img src="assets/Intro/nums.png" alt="Number Keys">
+            <span>Change Weapon</span>
+        `;
+        controlsContainer.appendChild(changeWeaponControls);
+
         screenDiv.appendChild(controlsContainer);
-    }    
+    }
 
     drawFrameOnCanvas(canvas: HTMLCanvasElement, frameIndex: number) {
         const context = canvas.getContext("2d");

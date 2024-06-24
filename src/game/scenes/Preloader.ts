@@ -154,17 +154,19 @@ export class Preloader extends Scene {
         this.load.image("char1", "assets/Intro/char1.png");
 
         // Audio
-        this.load.audio("mediumAttack", "audio/attack_medium.mp3");
+        this.load.audio("mediumAttack", "audio/player_attack_medium.mp3");
         this.load.audio("swordSheath", "audio/player_swordSheath.mp3");
-        this.load.audio("gunAttack", "audio/attack_pistol.mp3");
+        this.load.audio("gunAttack", "audio/player_attack_pistol.mp3");
         this.load.audio("gunReload", "audio/player_pistolReload.mp3");
         this.load.audio("playerHurt", "audio/player_hurt.mp3");
+        this.load.audio("playerHeal", "audio/player_heal.mp3");
         this.load.audio("exp", "audio/player_pickExp.mp3");
         this.load.audio("levelUp", "audio/player_levelUp.mp3");
         this.load.audio("playerDeath", "audio/player_death.mp3");
         this.load.audio("equip", "audio/player_equip.mp3");
         this.load.audio("spawnMiniboss", "audio/enemy_miniboss_spawn.mp3");
         this.load.audio("zombieDeath", "audio/enemy_zombie_death.mp3");
+        this.load.audio("zombieHurt", "audio/enemy_zombie_hurt.mp3");
         this.load.audio("attackUp", "audio/powerUp_attack.mp3");
         this.load.audio("speedUp", "audio/powerUp_speed.mp3");
         this.load.audio("timeStop", "audio/powerUp_timeStop.mp3");

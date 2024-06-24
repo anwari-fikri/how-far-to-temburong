@@ -25,7 +25,7 @@ const config: Phaser.Types.Core.GameConfig = {
         default: "arcade",
         arcade: {
             gravity: { y: 0, x: 0 },
-            debug: true,
+            // debug: true,
         },
     },
     pixelArt: true,
@@ -44,6 +44,7 @@ const config: Phaser.Types.Core.GameConfig = {
         BossScene,
         GameCredits,
         WeaponSkillUpgrade,
+       
     ],
 };
 

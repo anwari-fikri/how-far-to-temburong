@@ -103,6 +103,7 @@ export class Zombie extends Physics.Arcade.Sprite {
     zombieType: ZombieType;
 
     isInIFrame: boolean = false;
+    isPlaySoundHitbyMelee: boolean = false;
 
     // From weapon skill
     isSlowed: boolean = false;
@@ -110,6 +111,8 @@ export class Zombie extends Physics.Arcade.Sprite {
     isOnFire: boolean = false;
     fireBonusInterval: number | NodeJS.Timeout | null;
     isFrozen: boolean = false;
+
+    private zombieHurt: Phaser.Sound.BaseSound;
 
     constructor(scene: Scene) {
         super(scene, 0, 0, "zombie");
@@ -229,6 +232,12 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
 
         if (!this.isInIFrame) {
+            this.isPlaySoundHitbyMelee = true;
+            if (this.isPlaySoundHitbyMelee) {
+                this.zombieHurt = this.scene.sound.add("zombieHurt");
+                this.zombieHurt.play();
+                this.isPlaySoundHitbyMelee = false;
+            }
             const weaponSkillSlow = Game.player.weaponSkill.slow;
             if (!this.isSlowed) {
                 if (weaponSkillSlow.level > 0) {
@@ -552,7 +561,7 @@ export class Zombie extends Physics.Arcade.Sprite {
                 )
             ) {
                 Game.player.emit("weaponSkillLevelUp");
-
+                const zombieDeath = this.scene.sound.add("zombieDeath");
                 const randomValue = 0.95 + Math.random() * 0.05;
                 this.receiveDamage(
                     (Game.player.inventory.meleeWeapon.attackPower +
@@ -560,9 +569,11 @@ export class Zombie extends Physics.Arcade.Sprite {
                         randomValue,
                     Game.player.inventory.meleeWeapon,
                 );
+
                 if (this.currentHealth <= 0) {
                     this.die();
-                    const zombieDeath = this.scene.sound.add("zombieDeath");
+
+                    this.zombieHurt.stop();
                     zombieDeath.play();
                 }
             }

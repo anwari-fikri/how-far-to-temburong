@@ -49,6 +49,7 @@ export class Game extends Scene {
 
     private zombieDeathSound!: Phaser.Sound.BaseSound;
     private playerDeathSound!: Phaser.Sound.BaseSound;
+    private zombieDamage!: Phaser.Sound.BaseSound;
 
     constructor() {
         super("Game");
@@ -116,10 +117,12 @@ export class Game extends Scene {
 
         this.zombieDeathSound = this.sound.add("zombieDeath");
         this.playerDeathSound = this.sound.add("playerDeath");
+        this.zombieDamage = this.sound.add("zombieHurt");
     }
 
     bulletHitZombie(zombie: Zombie, bullet: Bullet) {
         bullet.die();
+        this.zombieDamage.play();
         const randomValue = 0.9 + Math.random() * 0.05;
         zombie.receiveDamage(
             (Game.player.inventory.rangedWeapon.attackPower +
@@ -129,7 +132,7 @@ export class Game extends Scene {
         );
         if (zombie.currentHealth <= 0) {
             zombie.die();
-
+            this.zombieDamage.stop();
             this.zombieDeathSound.play();
         }
     }

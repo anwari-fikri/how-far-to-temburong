@@ -141,6 +141,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     heal(amount: number) {
+        const playerHeal = this.scene.sound.add("playerHeal");
+        playerHeal.play();
         this.currentHealth = Math.min(100, this.currentHealth + amount);
         this.setIFrame(500);
         this.emit("health-changed");

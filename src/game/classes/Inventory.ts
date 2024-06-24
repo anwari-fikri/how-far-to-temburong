@@ -30,11 +30,15 @@ export default class Inventory {
         }
 
         if (event.key === "1") {
+            const swordSelect = Game.player.scene.sound.add("swordSheath");
+            swordSelect.play();
             this.selectedHandSlot = 1;
             Game.player.emit("handslot-changed");
         }
 
         if (event.key === "2") {
+            const gunSelect = Game.player.scene.sound.add("gunReload");
+            gunSelect.play();
             this.selectedHandSlot = 2;
             Game.player.emit("handslot-changed");
         }

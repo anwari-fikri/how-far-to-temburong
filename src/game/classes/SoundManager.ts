@@ -12,6 +12,7 @@ export class SoundManager {
     playerDeathSound: Phaser.Sound.BaseSound;
     playerHealSound: Phaser.Sound.BaseSound;
     attackSound: Phaser.Sound.BaseSound;
+    gunSound: Phaser.Sound.BaseSound;
     swordSelect: Phaser.Sound.BaseSound;
     gunSelect: Phaser.Sound.BaseSound;
     levelUpSound: Phaser.Sound.BaseSound;
@@ -19,26 +20,12 @@ export class SoundManager {
 
     zombieDeathSound: Phaser.Sound.BaseSound;
 
-    waveStageSound: Phaser.Sound.BaseSound;
-    treeStageSound: Phaser.Sound.BaseSound;
     slimeSound: Phaser.Sound.BaseSound;
     dialougeSound: Phaser.Sound.BaseSound;
     encounterSound: Phaser.Sound.BaseSound;
-    campfireSound: Phaser.Sound.BaseSound;
-
-    newspaperSound: Phaser.Sound.BaseSound;
-    introSong: Phaser.Sound.BaseSound;
-    menuButtonSound: Phaser.Sound.BaseSound;
-    selectAudio: Phaser.Sound.BaseSound;
 
     constructor(scene: Scene) {
         this.scene = scene;
-
-        // Intro sounds
-        // this.newspaperSound = this.scene.sound.add("newspaper");
-        this.introSong = this.scene.sound.add("mainMenu");
-        this.menuButtonSound = this.scene.sound.add("menuButton");
-        this.selectAudio = this.scene.sound.add("select");
 
         //  PowerUp sounds
         this.speedBoostSound = this.scene.sound.add("speedUp");
@@ -52,6 +39,7 @@ export class SoundManager {
         this.playerDeathSound = this.scene.sound.add("playerDeath");
         this.playerHealSound = this.scene.sound.add("playerHeal");
         this.attackSound = this.scene.sound.add("mediumAttack");
+        this.gunSound = this.scene.sound.add("gunAttack");
         this.swordSelect = this.scene.sound.add("swordSheath");
         this.gunSelect = this.scene.sound.add("gunReload");
         this.levelUpSound = this.scene.sound.add("levelUp");
@@ -61,11 +49,7 @@ export class SoundManager {
         this.zombieDeathSound = this.scene.sound.add("zombieDeath");
 
         //Stage sounds
-        this.waveStageSound = this.scene.sound.add("waves");
-        this.treeStageSound = this.scene.sound.add("trees");
         this.slimeSound = this.scene.sound.add("slimeStep");
-        this.dialougeSound = this.scene.sound.add("dialouge");
         this.encounterSound = this.scene.sound.add("encounter");
-        // this.campfireSound = this.scene.sound.add("campfire");
     }
 }

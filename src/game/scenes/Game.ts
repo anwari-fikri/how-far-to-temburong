@@ -18,6 +18,7 @@ import { Zombie } from "../classes/Zombie";
 import RandomEncounterTrigger from "../classes/RandomEncounterTrigger";
 import HealthDrop from "../classes/HealthDrop";
 import { Objectives } from "./Objectives";
+import { SoundManager } from "../classes/SoundManager";
 
 function loadGoogleFont() {
     const link = document.createElement("link");
@@ -34,6 +35,7 @@ export class Game extends Scene {
     static powerUps: PowerUpManager;
     static randomEncounters: RandomEncounterTrigger;
     static HealthDrop: Phaser.GameObjects.Group;
+    static soundManager: SoundManager;
     private wallLayer!: any;
     private wallLayer2!: any;
     private objectLayer!: any;
@@ -41,15 +43,11 @@ export class Game extends Scene {
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;
 
-    static gameStage = 3;
+    static gameStage = 2;
     static bossStage = false;
     static totalKill = 0;
     static totalDistance = 0;
     static totalTime = 0;
-
-    private zombieDeathSound!: Phaser.Sound.BaseSound;
-    private playerDeathSound!: Phaser.Sound.BaseSound;
-    private zombieDamage!: Phaser.Sound.BaseSound;
 
     constructor() {
         super("Game");
@@ -70,6 +68,8 @@ export class Game extends Scene {
             this.map.widthInPixels,
             this.map.heightInPixels,
         );
+
+        Game.soundManager = new SoundManager(this);
 
         // Player
         Game.player = new Player(this, 40, 450, "soldier");
@@ -114,15 +114,10 @@ export class Game extends Scene {
         );
 
         EventBus.emit("current-scene-ready", this);
-
-        this.zombieDeathSound = this.sound.add("zombieDeath");
-        this.playerDeathSound = this.sound.add("playerDeath");
-        this.zombieDamage = this.sound.add("zombieHurt");
     }
 
     bulletHitZombie(zombie: Zombie, bullet: Bullet) {
         bullet.die();
-        this.zombieDamage.play();
         const randomValue = 0.9 + Math.random() * 0.05;
         zombie.receiveDamage(
             (Game.player.inventory.rangedWeapon.attackPower +
@@ -132,8 +127,7 @@ export class Game extends Scene {
         );
         if (zombie.currentHealth <= 0) {
             zombie.die();
-            this.zombieDamage.stop();
-            this.zombieDeathSound.play();
+            Game.soundManager.zombieDeathSound.play();
         }
     }
 
@@ -149,7 +143,7 @@ export class Game extends Scene {
 
         if (Game.player.currentHealth <= 0) {
             this.sound.stopAll();
-            this.playerDeathSound.play();
+            Game.soundManager.playerDeathSound.play();
             this.scene.start("GameOver");
             Game.zombies.getNuked();
         }

@@ -193,6 +193,6 @@ export class Preloader extends Scene {
         // this.scene.start("GameUIOverlay");
         // this.scene.start("CheckpointAndChapters");
         // this.scene.start("GameOver");
-        this.scene.start("Intro");
+        this.scene.start("Game");
     }
 }

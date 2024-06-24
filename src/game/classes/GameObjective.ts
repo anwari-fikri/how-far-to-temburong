@@ -136,3 +136,4 @@ export function stageObjective(scene: any) {
         playerDeathSound.play();
     }
 }
+

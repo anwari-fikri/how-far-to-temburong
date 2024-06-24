@@ -12,14 +12,14 @@ export function loadGoogleFont() {
 }
     
 const objectives = [
-    "Complete the objectives to finish this level! Kill 10 zombies and walk 500m.",
-    "Complete the objectives to finish this level! Kill 20 zombies and walk 700m.",
-    "Complete the objectives to finish this level! Kill 50 zombies and walk 800m.",
-    "Complete the objectives to finish this level! Kill 40 zombies and walk 800m."
+    `Complete the objectives to finish this level! Kill 10 zombies and travel 500m.`,
+    "Complete the objectives to finish this level! Kill 20 zombies and travel 700m.",
+    "Complete the objectives to finish this level! Kill 50 zombies and travel 800m.",
+    "Complete the objectives to finish this level! Kill 40 zombies and travel 800m."
 ];
 
 const bossObj = [
-    "Complete the objectives to finish this level! Kill the boss.",
+    "Complete the objectives to finish this level! Kill the Boss.",
 ]
 
 
@@ -44,8 +44,8 @@ export function Objectives(scene: any) {
     const ObjectivesDiv = document.createElement("div");
     ObjectivesDiv.id = "ObjectivesDiv";
     ObjectivesDiv.style.position = "absolute";
-    ObjectivesDiv.style.left = "240px";
-    ObjectivesDiv.style.top = "65px";
+    ObjectivesDiv.style.right = "18%";
+    ObjectivesDiv.style.top = "72%";
     ObjectivesDiv.style.fontFamily = '"Press Start 2P", sans-serif';
     ObjectivesDiv.style.fontSize = "15px";
     ObjectivesDiv.style.color = "black";
@@ -125,8 +125,8 @@ export function objectiveComplete(scene:any) {
     const objectiveComplete = document.createElement("div");
     objectiveComplete.id = "objectiveComplete";
     objectiveComplete.style.position = "absolute";
-    objectiveComplete.style.left = "240px";
-    objectiveComplete.style.top = "65px";
+    objectiveComplete.style.right = "18%";
+    objectiveComplete.style.top = "72%";
     objectiveComplete.style.fontFamily = '"Press Start 2P", sans-serif';
     objectiveComplete.style.fontSize = "15px";
     objectiveComplete.style.color = "black";

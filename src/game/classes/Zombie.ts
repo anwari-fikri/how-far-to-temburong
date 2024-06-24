@@ -85,7 +85,7 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         tint: 0xffffff,
         animsKey: "monke-boss",
         hitboxRadius: 16,
-        customSize: 1.5,
+        customSize: 1,
     },
 } as const;
 
@@ -311,7 +311,12 @@ export class Zombie extends Physics.Arcade.Sprite {
             }
 
             if (weapon && !Game.player.isTimeStopped) {
-                this.applyKnockback(weapon);
+                if (
+                    this.zombieType !== ZOMBIE_TYPE.MONKE_BOSS &&
+                    this.zombieType !== ZOMBIE_TYPE.SLIME_BOSS
+                ) {
+                    this.applyKnockback(weapon);
+                }
             }
 
             this.currentHealth -= amount;

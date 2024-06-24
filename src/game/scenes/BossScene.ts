@@ -95,12 +95,18 @@ export class BossScene extends Scene {
         EventBus.emit("current-scene-ready", this);
 
         setTimeout(() => {
-            this.bossOneScene();
+            switch (Game.gameStage) {
+                case 2:
+                    this.bossOneScene();
+                    break;
+                case 4:
+                    this.bossTwoScene();
+                    break;
+            }
         }, 1000);
     }
 
     bossOneScene() {
-        Game.gameStage++;
         this.cleanup();
 
         const screenDiv = document.createElement("div");
@@ -191,7 +197,7 @@ export class BossScene extends Scene {
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
                     this.cleanup();
-                    this.bossTwoScene();
+                    this.startMainGame();
                 });
                 buttonContainer.appendChild(continueButton);
             },
@@ -199,7 +205,6 @@ export class BossScene extends Scene {
     }
 
     bossTwoScene() {
-        Game.gameStage++;
         this.cleanup();
 
         const screenDiv = document.createElement("div");
@@ -317,4 +322,3 @@ export class BossScene extends Scene {
         });
     }
 }
-

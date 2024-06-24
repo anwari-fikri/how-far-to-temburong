@@ -57,6 +57,22 @@ export class Preloader extends Scene {
             frameWidth: 96,
             frameHeight: 64,
         });
+        this.load.spritesheet("slime_boss", "characters/slime_boss.png", {
+            frameWidth: 96,
+            frameHeight: 64,
+        });
+        this.load.spritesheet("monke_boss", "characters/monke_boss.png", {
+            frameWidth: 96,
+            frameHeight: 96,
+        });
+        this.load.spritesheet("slime_minion", "characters/slime_minion.png", {
+            frameWidth: 96,
+            frameHeight: 64,
+        });
+        this.load.spritesheet("monke_minion", "characters/monke_minion.png", {
+            frameWidth: 96,
+            frameHeight: 64,
+        });
 
         // Weapons
         this.load.image("sword_icon", "weapons/icons/sword_icon.png");
@@ -152,7 +168,7 @@ export class Preloader extends Scene {
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         // this.scene.start("CheckpointAndChapters");
-        this.scene.start("Game");
+        this.scene.start("TestGame");
         // this.scene.start("GameUIOverlay");
     }
 }

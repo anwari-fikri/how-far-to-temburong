@@ -32,7 +32,8 @@ export class Game extends Scene {
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;
 
-    static gameStage = 4;
+    static gameStage = 2;
+    static bossStage = false;
     static totalKill = 0;
     static totalDistance = 0;
     static totalTime = 0;
@@ -50,8 +51,6 @@ export class Game extends Scene {
         this.camera.followOffset.set(0, 100);
         this.camera.setBounds(0, 0, 10000, 700);
 
-        // Game.gameStage = 3;
-        // console.log(Game.gameStage);
         bridgeMap(this);
 
         this.physics.world.setBounds(
@@ -90,11 +89,6 @@ export class Game extends Scene {
         // AttackWeapon(this, this.player, this.inventory);
 
         objectiveUI(this);
-        this.fallingObject(70, 70, 250, 432, 4000);
-
-        // const graphics = this.add.graphics().setDepth(100);
-        // graphics.lineStyle(2, 0xff0000);
-        // graphics.strokeRect(0, 550, this.map.widthInPixels, 90);
 
         createPause(this);
 
@@ -174,34 +168,5 @@ export class Game extends Scene {
         this.physics.add.collider(Game.zombies, Game.zombies);
         // uncomment to check collider
         // debugGraphic(this);
-    }
-
-    fallingObject(
-        startX: number,
-        startY: number,
-        targetX: number,
-        targetY: number,
-        duration: number,
-    ) {
-        this.falling = this.physics.add.sprite(
-            startX,
-            startY,
-            "objectImageS",
-            2,
-        );
-        this.falling.body.setImmovable(true);
-        this.falling.setDepth(20);
-
-        this.tweens.add({
-            targets: this.falling,
-            y: targetY,
-            x: targetX,
-            duration: duration,
-            ease: "Linear",
-            onComplete: () => {
-                this.falling.setTexture("objectImageS", 1);
-            },
-        });
-        this.physics.add.collider(Game.player, this.falling);
     }
 }

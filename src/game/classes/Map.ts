@@ -154,6 +154,7 @@ export function bridgeMap(scene: any) {
             { index: carRed_l, weight: 0.2 },
             { index: carGreen_l, weight: 0.2 },
             { index: carPurple_l, weight: 0.2 },
+            { index: pothole, weight: 0.2 },
             { index: -1, weight: 50 },
         ],
         0,
@@ -189,9 +190,9 @@ export function bridgeMap(scene: any) {
     scene.slimeLayer.setDepth(2);
     scene.wallLayer2.setDepth(1);
     scene.lightLayer1.setDepth(3);
+    scene.objectLayer.setDepth(4);
 
     scene.wallLayer.setDepth(23);
-    scene.objectLayer.setDepth(21);
     scene.lightLayer2.setDepth(22);
 
     scene.wallLayer.setCollisionByExclusion([-1]);
@@ -356,6 +357,7 @@ export function generateMapContinuation(scene: any) {
             { index: carRed_l, weight: 0.25 },
             { index: carGreen_l, weight: 0.25 },
             { index: carPurple_l, weight: 0.25 },
+            { index: pothole, weight: 0.2 },
             { index: -1, weight: 50 },
         ],
         startX,
@@ -391,9 +393,9 @@ export function generateMapContinuation(scene: any) {
     scene.slimeLayer.setDepth(2);
     scene.wallLayer2.setDepth(1);
     scene.lightLayer1.setDepth(3);
+    scene.objectLayer.setDepth(4);
 
     scene.wallLayer.setDepth(23);
-    scene.objectLayer.setDepth(21);
     scene.lightLayer2.setDepth(22);
 
     scene.wallLayer.setCollisionByExclusion([-1]);

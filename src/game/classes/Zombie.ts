@@ -47,6 +47,46 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         hitboxRadius: 12,
         customSize: 1.2,
     },
+    SLIME_MINION: {
+        texture: "slime_minion",
+        baseHealth: 10,
+        attackPower: 2,
+        chaseSpeed: 35,
+        tint: 0xffffff,
+        animsKey: "slime-minion",
+        hitboxRadius: 16,
+        customSize: 0.5,
+    },
+    SLIME_BOSS: {
+        texture: "slime_boss",
+        baseHealth: 2500,
+        attackPower: 30,
+        chaseSpeed: 20,
+        tint: 0xffffff,
+        animsKey: "slime-boss",
+        hitboxRadius: 16,
+        customSize: 1.5,
+    },
+    MONKE_MINION: {
+        texture: "monke_minion",
+        baseHealth: 10,
+        attackPower: 3,
+        chaseSpeed: 45,
+        tint: 0xffffff,
+        animsKey: "monke-minion",
+        hitboxRadius: 8,
+        customSize: 1,
+    },
+    MONKE_BOSS: {
+        texture: "monke_boss",
+        baseHealth: 3000,
+        attackPower: 35,
+        chaseSpeed: 35,
+        tint: 0xffffff,
+        animsKey: "monke-boss",
+        hitboxRadius: 16,
+        customSize: 1.5,
+    },
 } as const;
 
 type ZombieType = (typeof ZOMBIE_TYPE)[keyof typeof ZOMBIE_TYPE];
@@ -133,11 +173,26 @@ export class Zombie extends Physics.Arcade.Sprite {
 
         this.setOrigin(0.5, 0.5);
         var radius = this.hitboxRadius;
-        this.setCircle(
-            radius,
-            -radius + 0.5 * this.width,
-            -radius + 0.5 * this.height,
-        );
+        if (this.zombieType === ZOMBIE_TYPE.SLIME_BOSS) {
+            this.setBodySize(70, 35);
+            this.setOffset(15, 30);
+        } else if (this.zombieType === ZOMBIE_TYPE.MONKE_BOSS) {
+            this.setBodySize(55, 65);
+            this.setOffset(20, 15);
+        } else if (this.zombieType === ZOMBIE_TYPE.SLIME_MINION) {
+            this.setCircle(
+                radius,
+                -radius + 0.5 * this.width,
+                -radius + 0.8 * this.height,
+            );
+        } else {
+            this.setCircle(
+                radius,
+                -radius + 0.5 * this.width,
+                -radius + 0.5 * this.height,
+            );
+        }
+
         this.setScale(this.customSize, this.customSize);
         this.setTint(this.originalTint);
 
@@ -337,7 +392,12 @@ export class Zombie extends Physics.Arcade.Sprite {
     die(isDeSpawn: boolean = false) {
         this.clearFireBonusInterval();
         if (!isDeSpawn) {
-            Game.player.killCount += 1;
+            if (
+                this.zombieType !== ZOMBIE_TYPE.SLIME_MINION &&
+                this.zombieType !== ZOMBIE_TYPE.MONKE_MINION
+            ) {
+                Game.player.killCount += 1;
+            }
         }
 
         this.zombieType === ZOMBIE_TYPE.MINI_BOSS
@@ -418,6 +478,36 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
     }
 
+    fallingSlime(
+        this: any,
+        startX: number,
+        startY: number,
+        targetX: number,
+        targetY: number,
+        duration: number,
+    ) {
+        this.falling = this.physics.add.sprite(
+            startX,
+            startY,
+            "objectImageS",
+            2,
+        );
+        this.falling.body.setImmovable(true);
+        this.falling.setDepth(20);
+
+        this.tweens.add({
+            targets: this.falling,
+            y: targetY,
+            x: targetX,
+            duration: duration,
+            ease: "Linear",
+            onComplete: () => {
+                this.falling.setTexture("objectImageS", 1);
+            },
+        });
+        this.physics.add.collider(Game.player, this.falling);
+    }
+
     update(player: Player) {
         if (this.active) {
             if (this.isSlowed && !Game.player.isTimeStopped) {
@@ -479,4 +569,3 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
     }
 }
-

@@ -41,7 +41,7 @@ export class Game extends Scene {
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;
 
-    static gameStage = 4;
+    static gameStage = 1;
     static totalKill = 0;
     static totalDistance = 0;
     static totalTime = 0;
@@ -101,7 +101,6 @@ export class Game extends Scene {
         // AttackWeapon(this, this.player, this.inventory);
 
         objectiveUI(this);
-        Objectives(this);
         this.fallingObject(70, 70, 250, 432, 4000);
 
         // const graphics = this.add.graphics().setDepth(100);

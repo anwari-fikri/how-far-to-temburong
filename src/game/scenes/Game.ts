@@ -17,6 +17,15 @@ import Bullet from "../classes/Bullet";
 import { Zombie } from "../classes/Zombie";
 import RandomEncounterTrigger from "../classes/RandomEncounterTrigger";
 import HealthDrop from "../classes/HealthDrop";
+import { Objectives } from "./Objectives";
+
+function loadGoogleFont() {
+    const link = document.createElement("link");
+    link.href =
+        "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+}
 
 export class Game extends Scene {
     static player: Player;
@@ -46,6 +55,7 @@ export class Game extends Scene {
     }
 
     create() {
+        loadGoogleFont();
         this.camera = this.cameras.main;
         this.camera.setZoom(1);
         this.camera.followOffset.set(0, 100);
@@ -89,6 +99,7 @@ export class Game extends Scene {
         // AttackWeapon(this, this.player, this.inventory);
 
         objectiveUI(this);
+        Objectives(this);
 
         createPause(this);
 

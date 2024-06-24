@@ -12,12 +12,15 @@ export function loadGoogleFont() {
 }
     
 const objectives = [
-    "Complete the objectives to finish this level! Kill 10 zombies and walk 50m.",
-    "Complete the objectives to finish this level! Kill 20 zombies and walk 70m.",
-    "Complete the objectives to finish this level! Kill 50 zombies and walk 80m.",
-    "Complete the objectives to finish this level! Kill 40 zombies and walk 80m."
+    "Complete the objectives to finish this level! Kill 10 zombies and walk 500m.",
+    "Complete the objectives to finish this level! Kill 20 zombies and walk 700m.",
+    "Complete the objectives to finish this level! Kill 50 zombies and walk 800m.",
+    "Complete the objectives to finish this level! Kill 40 zombies and walk 800m."
 ];
 
+const bossObj = [
+    "Complete the objectives to finish this level! Kill the boss.",
+]
 
 
 export function Objectives(scene: any) {
@@ -67,7 +70,13 @@ export function Objectives(scene: any) {
     document.body.appendChild(ObjectivesDiv);
 
     const currentStage = Game.gameStage;
-    const objectiveString = objectives[currentStage -1 % objectives.length];
+    let objectiveString = '';
+
+if (Game.bossStage) {
+    objectiveString = bossObj[0];
+} else {
+    objectiveString = objectives[(currentStage - 1) % objectives.length];
+}
 
     new Typed("#objectiveText", {
         strings: [objectiveString],

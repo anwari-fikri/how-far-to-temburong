@@ -135,7 +135,7 @@ export class RandomEncounterTest extends Scene {
         blackBg.style.height = "100%";
         blackBg.style.backgroundColor = "black";
         document.body.appendChild(blackBg);
-
+    
         const answerDiv = document.createElement("div");
         answerDiv.id = "answer";
         answerDiv.style.position = "fixed";
@@ -152,7 +152,7 @@ export class RandomEncounterTest extends Scene {
         answerDiv.style.boxShadow = "8px 8px 0 white";
         answerDiv.style.imageRendering = "pixelated";
         document.body.appendChild(answerDiv);
-
+    
         dialougeSound.play();
         new Typed("#answer", {
             strings: [`${answer}`, `Reward: ${reward}`],
@@ -161,12 +161,14 @@ export class RandomEncounterTest extends Scene {
             onComplete: () => {
                 this.encounterEffect();
                 dialougeSound.stop();
-                this.scene.resume("Game");
-                this.scene.stop();
-                this.sound.resumeAll();
+                setTimeout(() => {
+                    this.scene.resume("Game");
+                    this.scene.stop();
+                    this.sound.resumeAll();
+                }, 2000); 
             },
         });
-    }
+    }    
 
     encounterEffect() {
         console.log(Game.player.currentHealth);

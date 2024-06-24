@@ -175,7 +175,9 @@ export class Game extends Scene {
         this.physics.add.collider(Game.player, this.falling);
         this.physics.add.collider(Game.zombies, this.wallLayer);
         this.physics.add.collider(Game.zombies, this.wallLayer2);
-        this.physics.add.collider(Game.zombies, this.objectLayer);
+        if (!Game.bossStage) {
+            this.physics.add.collider(Game.zombies, this.objectLayer);
+        }
         this.physics.add.collider(Game.zombies, Game.zombies);
         // uncomment to check collider
         // debugGraphic(this);

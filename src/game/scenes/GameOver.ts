@@ -210,6 +210,17 @@ export class GameOver extends Scene {
 
         this.currentSelection = "yes";
         this.updateArrowPosition();
+
+        // Add hover event listeners to buttons
+        yesButton.addEventListener("mouseover", () => {
+            this.currentSelection = "yes";
+            this.updateArrowPosition();
+        });
+
+        noButton.addEventListener("mouseover", () => {
+            this.currentSelection = "no";
+            this.updateArrowPosition();
+        });
     }
 
     updateArrowPosition() {

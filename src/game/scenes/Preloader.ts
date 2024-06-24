@@ -57,6 +57,22 @@ export class Preloader extends Scene {
             frameWidth: 96,
             frameHeight: 64,
         });
+        this.load.spritesheet("slime_boss", "characters/slime_boss.png", {
+            frameWidth: 96,
+            frameHeight: 64,
+        });
+        this.load.spritesheet("monke_boss", "characters/monke_boss.png", {
+            frameWidth: 96,
+            frameHeight: 96,
+        });
+        this.load.spritesheet("slime_minion", "characters/slime_minion.png", {
+            frameWidth: 96,
+            frameHeight: 64,
+        });
+        this.load.spritesheet("monke_minion", "characters/monke_minion.png", {
+            frameWidth: 96,
+            frameHeight: 64,
+        });
 
         // Weapons
         this.load.image("sword_icon", "weapons/icons/sword_icon.png");
@@ -112,6 +128,17 @@ export class Preloader extends Scene {
         this.load.image("start", "tiles/Texture/start.png");
         this.load.image("end", "tiles/Texture/end.png");
 
+        //weapon skill upgrade
+        this.load.image("attackUp", "assets/Intro/attackUpSkill.png");
+        this.load.image("slow", "assets/Intro/slowSkill.png");
+        this.load.image("confuse", "assets/Intro/confuseSkill.png");
+        this.load.image(
+            "criticalChance",
+            "assets/Intro/criticalChanceSkill.png",
+        );
+        this.load.image("fire", "assets/Intro/fireSkill.png");
+        this.load.image("freeze", "assets/Intro/freezeSkill.png");
+
         // Random Encounter
         this.load.image("trigger", "randomEncounter/trigger.png");
         this.load.image("random1", "randomEncounter/random1.png");
@@ -156,8 +183,9 @@ export class Preloader extends Scene {
         //  For example, you can define global animations here, so we can use them in other scenes.
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        // this.scene.start("CheckpointAndChapters");
-        this.scene.start("Game");
         // this.scene.start("GameUIOverlay");
+        // this.scene.start("CheckpointAndChapters");
+        // this.scene.start("GameOver");
+        this.scene.start("Game");
     }
 }

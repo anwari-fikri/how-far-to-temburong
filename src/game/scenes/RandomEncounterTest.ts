@@ -160,11 +160,13 @@ export class RandomEncounterTest extends Scene {
             typeSpeed: 15,
             showCursor: false,
             onComplete: () => {
-                this.encounterEffect(); // health ui not updating
+                this.encounterEffect();
                 dialougeSound.stop();
-                this.scene.resume("Game");
-                this.scene.stop();
-                this.sound.resumeAll();
+                setTimeout(() => {
+                    this.scene.resume("Game");
+                    this.scene.stop();
+                    this.sound.resumeAll();
+                }, 2000);
             },
         });
     }
@@ -191,11 +193,6 @@ export class RandomEncounterTest extends Scene {
             case "spawn":
                 // malas usai spawn... nanti sja
                 console.log("spawn debuff");
-                if (this.effectCondition) {
-                    Game.player.heal(this.effectRate);
-                } else {
-                    Game.player.receiveDamage(this.effectRate * 100);
-                }
                 break;
         }
     }

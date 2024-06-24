@@ -32,8 +32,8 @@ export class Game extends Scene {
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;
 
-    static gameStage = 2;
-    static bossStage = false;
+    static gameStage = 4;
+    static bossStage = true;
     static totalKill = 0;
     static totalDistance = 0;
     static totalTime = 0;

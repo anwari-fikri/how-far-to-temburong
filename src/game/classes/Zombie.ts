@@ -131,8 +131,15 @@ export class Zombie extends Physics.Arcade.Sprite {
 
         let spawnX: number = 0;
         let spawnY: number = 0;
+        let spawnSide = Phaser.Math.Between(2, 3);
 
-        const spawnSide = Phaser.Math.Between(0, 3);
+        if (
+            zombieType !== ZOMBIE_TYPE.MONKE_BOSS &&
+            zombieType !== ZOMBIE_TYPE.SLIME_BOSS
+        ) {
+            spawnSide = Phaser.Math.Between(0, 3);
+        }
+
         switch (spawnSide) {
             case 0: // Left top side
                 spawnX = playerX - camera.width - spawnMargin;

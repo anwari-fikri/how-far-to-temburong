@@ -110,7 +110,6 @@ export class ZombieGroup extends Phaser.GameObjects.Group {
         }
 
         // Adjust spawn rate and enemies per spawn based on elapsed minutes
-        const test = this.elapsedMinutes;
         this.enemiesPerSpawn = spawnNum; // Increase enemies per spawn each minute
         this.spawnRate = spawnInterval; // Decrease spawn interval
     }

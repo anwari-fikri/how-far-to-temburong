@@ -90,10 +90,6 @@ export class Game extends Scene {
 
         objectiveUI(this);
 
-        // const graphics = this.add.graphics().setDepth(100);
-        // graphics.lineStyle(2, 0xff0000);
-        // graphics.strokeRect(0, 550, this.map.widthInPixels, 90);
-
         createPause(this);
 
         this.physics.add.overlap(

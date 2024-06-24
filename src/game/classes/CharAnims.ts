@@ -74,4 +74,104 @@ export function playerAnims(scene: Phaser.Scene) {
             repeat: 1,
         });
     }
+
+    // SLIME BOSS
+    if (!scene.anims.exists("slime-boss-walk-right")) {
+        scene.anims.create({
+            key: "slime-boss-walk-right",
+            frames: scene.anims.generateFrameNumbers("slime_boss", {
+                start: 11,
+                end: 7,
+            }),
+            frameRate: 7,
+            repeat: 1,
+        });
+    }
+
+    if (!scene.anims.exists("slime-boss-walk-left")) {
+        scene.anims.create({
+            key: "slime-boss-walk-left",
+            frames: scene.anims.generateFrameNumbers("slime_boss", {
+                start: 6,
+                end: 0,
+            }),
+            frameRate: 7,
+            repeat: 1,
+        });
+    }
+
+    // MONKE BOSS
+    if (!scene.anims.exists("monke-boss-walk-right")) {
+        scene.anims.create({
+            key: "monke-boss-walk-right",
+            frames: scene.anims.generateFrameNumbers("monke_boss", {
+                start: 4,
+                end: 7,
+            }),
+            frameRate: 4,
+            repeat: 1,
+        });
+    }
+
+    if (!scene.anims.exists("monke-boss-walk-left")) {
+        scene.anims.create({
+            key: "monke-boss-walk-left",
+            frames: scene.anims.generateFrameNumbers("monke_boss", {
+                start: 3,
+                end: 0,
+            }),
+            frameRate: 4,
+            repeat: 1,
+        });
+    }
+
+    // SLIME MINION
+    if (!scene.anims.exists("slime-minion-walk-right")) {
+        scene.anims.create({
+            key: "slime-minion-walk-right",
+            frames: scene.anims.generateFrameNumbers("slime_minion", {
+                start: 11,
+                end: 7,
+            }),
+            frameRate: 7,
+            repeat: 1,
+        });
+    }
+
+    if (!scene.anims.exists("slime-minion-walk-left")) {
+        scene.anims.create({
+            key: "slime-minion-walk-left",
+            frames: scene.anims.generateFrameNumbers("slime_minion", {
+                start: 6,
+                end: 0,
+            }),
+            frameRate: 7,
+            repeat: 1,
+        });
+    }
+
+    // MONKE MINION
+    if (!scene.anims.exists("monke-minion-walk-right")) {
+        scene.anims.create({
+            key: "monke-minion-walk-right",
+            frames: scene.anims.generateFrameNumbers("monke_minion", {
+                start: 0,
+                end: 7,
+            }),
+            frameRate: 8,
+            repeat: 1,
+        });
+    }
+
+    if (!scene.anims.exists("monke-minion-walk-left")) {
+        scene.anims.create({
+            key: "monke-minion-walk-left",
+            frames: scene.anims.generateFrameNumbers("monke_minion", {
+                start: 8,
+                end: 16,
+            }),
+            frameRate: 8,
+            repeat: 1,
+        });
+    }
 }

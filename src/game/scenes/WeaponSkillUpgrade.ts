@@ -186,7 +186,7 @@ export class WeaponSkillUpgrade extends Scene {
 
     create() {
         addGlobalStyles();
-        this.cameras.main.setBackgroundColor("rgba(0, 0, 0, 0)"); // Make the camera background transparent
+        this.cameras.main.setBackgroundColor("rgba(0, 0, 0, 0)");
         EventBus.emit("current-scene-ready", this);
 
         this.weaponSkillUpgradeScreen();
@@ -360,3 +360,4 @@ export class WeaponSkillUpgrade extends Scene {
         this.scene.resume("Game");
     }
 }
+

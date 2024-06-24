@@ -27,6 +27,7 @@ function addGlobalStyles() {
         display: flex;
         align-items: center;
         z-index: 1000;
+        color: white;
     }
     .volume-icon {
         font-size: 35px;
@@ -117,7 +118,7 @@ export class PauseMenu extends Scene {
         screenDiv.style.width = "100%";
         screenDiv.style.height = "100%";
         screenDiv.style.backdropFilter = "blur(5px)";
-        screenDiv.style.backgroundColor = "rgba(0, 0, 0, 0.4)"; 
+        screenDiv.style.backgroundColor = "rgba(0, 0, 0, 0.7)"; 
         screenDiv.style.zIndex = "9999";
         document.body.appendChild(screenDiv);
 
@@ -156,6 +157,7 @@ export class PauseMenu extends Scene {
         this.volumeSlider.max = "1";
         this.volumeSlider.step = "0.01";
         this.volumeSlider.value = this.sound.volume.toString();
+        this.volumeSlider.style.color = "white";
         volumeContainer.appendChild(this.volumeSlider);
 
         screenDiv.appendChild(volumeContainer);

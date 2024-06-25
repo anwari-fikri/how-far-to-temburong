@@ -532,6 +532,7 @@ export function slimeDebuff(scene: any) {
 
     if (playerTile && !Game.player.isSpeedBoosted) {
         if (!Game.player.isOnSlimeTile) {
+            Game.soundManager.slimeSound.play();
             Game.player.isOnSlimeTile = true;
             Game.player.originalMovementSpeed =
                 Game.player.currentMovementSpeed;

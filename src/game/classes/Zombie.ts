@@ -491,8 +491,7 @@ export class Zombie extends Physics.Arcade.Sprite {
             this.isOnFire = false;
             this.clearFireBonusInterval();
             this.die();
-            const zombieDeath = this.scene.sound.add("zombieDeath");
-            zombieDeath.play();
+            Game.soundManager.zombieDeathSound.play();
         }
     }
 
@@ -577,7 +576,6 @@ export class Zombie extends Physics.Arcade.Sprite {
                 )
             ) {
                 Game.player.emit("weaponSkillLevelUp");
-
                 const randomValue = 0.95 + Math.random() * 0.05;
                 this.receiveDamage(
                     (Game.player.inventory.meleeWeapon.attackPower +
@@ -585,10 +583,11 @@ export class Zombie extends Physics.Arcade.Sprite {
                         randomValue,
                     Game.player.inventory.meleeWeapon,
                 );
+
                 if (this.currentHealth <= 0) {
                     this.die();
-                    const zombieDeath = this.scene.sound.add("zombieDeath");
-                    zombieDeath.play();
+
+                    Game.soundManager.zombieDeathSound.play();
                 }
             }
         }

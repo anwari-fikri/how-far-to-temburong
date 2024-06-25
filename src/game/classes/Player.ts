@@ -134,13 +134,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 this.setIFrame(500);
                 this.emit("health-changed");
 
-                const playerDamage = this.scene.sound.add("playerHurt");
-                playerDamage.play();
+                Game.soundManager.playerDamageSound.play();
             }
         }
     }
 
     heal(amount: number) {
+        Game.soundManager.playerHealSound.play();
         this.currentHealth = Math.min(100, this.currentHealth + amount);
         this.setIFrame(500);
         this.emit("health-changed");
@@ -195,28 +195,23 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         switch (powerUpType) {
             case PowerUpType.SPEED_BOOST:
                 this.applySpeedBoost(PLAYER_CONST.BASE_MOVEMENT_SPEED / 2);
-                let speedBoostSound = this.scene.sound.add("speedUp");
-                speedBoostSound.play();
+                Game.soundManager.speedBoostSound.play();
                 break;
             case PowerUpType.ATTACK_BOOST:
                 this.applyAttackBoost(50);
-                let attackBoostSound = this.scene.sound.add("attackUp");
-                attackBoostSound.play();
+                Game.soundManager.attackBoostSound.play();
                 break;
             case PowerUpType.NUKE:
                 this.applyNuke(enemies);
-                let nukeSound = this.scene.sound.add("nuke");
-                nukeSound.play();
+                Game.soundManager.nukeSound.play();
                 break;
             case PowerUpType.TIME_STOP:
                 this.applyTimeStop(enemies);
-                let timeStopSound = this.scene.sound.add("timeStop");
-                timeStopSound.play();
+                Game.soundManager.timeStopSound.play();
                 break;
             case PowerUpType.INVINCIBILITY:
                 this.applyInvincibility();
-                let invincibilitySound = this.scene.sound.add("invincibility");
-                invincibilitySound.play();
+                Game.soundManager.invincibilitySound.play();
                 break;
         }
     }

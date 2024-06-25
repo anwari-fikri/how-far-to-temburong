@@ -1,4 +1,5 @@
 import { Physics, Scene } from "phaser";
+import { Game } from "../scenes/Game";
 import Player from "./Player";
 
 interface WeaponProperties {
@@ -81,8 +82,7 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
                     this.lastAttackTime = currentTime;
                     this.player.isAttacking = true;
                     this.playAttackAnimation();
-                    const attackSound = scene.sound.add("mediumAttack");
-                    attackSound.play();
+                    Game.soundManager.attackSound.play();
                 }
             }
         });

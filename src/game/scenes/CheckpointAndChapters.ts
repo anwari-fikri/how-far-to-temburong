@@ -1264,8 +1264,8 @@ export class CheckpointAndChapters extends Scene {
 
     startMainGame() {
         this.cleanup();
-        Game.player.weaponSkill.loadWeaponSkillState();
-        Game.player.experience.loadExperienceState();
+        // Game.player.weaponSkill.loadWeaponSkillState();
+        // Game.player.experience.loadExperienceState();
         this.scene.start("Game");
     }
 

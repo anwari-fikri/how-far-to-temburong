@@ -24,8 +24,8 @@ export function objectiveUI(scene: any) {
             }
             break;
         case 3:
-            scene.distanceObjective = 1;
-            scene.killObjective = 1;
+            scene.distanceObjective = 800;
+            scene.killObjective = 35;
             break;
         case 4:
             if (Game.bossStage) {
@@ -137,4 +137,3 @@ export function stageObjective(scene: any) {
         playerDeathSound.play();
     }
 }
-

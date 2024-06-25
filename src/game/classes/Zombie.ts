@@ -85,7 +85,7 @@ export const ZOMBIE_TYPE: Readonly<{ [key: string]: ZombieProperties }> = {
         tint: 0xffffff,
         animsKey: "monke-boss",
         hitboxRadius: 16,
-        customSize: 1.5,
+        customSize: 1,
     },
 } as const;
 
@@ -131,8 +131,15 @@ export class Zombie extends Physics.Arcade.Sprite {
 
         let spawnX: number = 0;
         let spawnY: number = 0;
+        let spawnSide = Phaser.Math.Between(2, 3);
 
-        const spawnSide = Phaser.Math.Between(0, 3);
+        if (
+            zombieType !== ZOMBIE_TYPE.MONKE_BOSS &&
+            zombieType !== ZOMBIE_TYPE.SLIME_BOSS
+        ) {
+            spawnSide = Phaser.Math.Between(0, 3);
+        }
+
         switch (spawnSide) {
             case 0: // Left top side
                 spawnX = playerX - camera.width - spawnMargin;
@@ -304,7 +311,12 @@ export class Zombie extends Physics.Arcade.Sprite {
             }
 
             if (weapon && !Game.player.isTimeStopped) {
-                this.applyKnockback(weapon);
+                if (
+                    this.zombieType !== ZOMBIE_TYPE.MONKE_BOSS &&
+                    this.zombieType !== ZOMBIE_TYPE.SLIME_BOSS
+                ) {
+                    this.applyKnockback(weapon);
+                }
             }
 
             this.currentHealth -= amount;

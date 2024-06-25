@@ -1,5 +1,4 @@
 import { Game } from "../scenes/Game";
-import { CheckpointAndChapters } from "../scenes/CheckpointAndChapters";
 import { objectiveComplete } from "../scenes/Objectives";
 
 export function objectiveUI(scene: any) {
@@ -25,8 +24,8 @@ export function objectiveUI(scene: any) {
             }
             break;
         case 3:
-            scene.distanceObjective = 800;
-            scene.killObjective = 50;
+            scene.distanceObjective = 1;
+            scene.killObjective = 1;
             break;
         case 4:
             if (Game.bossStage) {

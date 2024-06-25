@@ -91,6 +91,8 @@ export class GameOver extends Scene {
     }
 
     gameOverScreen() {
+        Game.player.experience.loadExperienceState();
+        Game.player.weaponSkill.loadWeaponSkillState();
         this.cleanup();
 
         const screenDiv = document.createElement("div");

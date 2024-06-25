@@ -12,7 +12,7 @@ import { ExperienceManager } from "./ExperienceManager";
 
 export enum PLAYER_CONST {
     BASE_HEALTH = 100,
-    BASE_MOVEMENT_SPEED = 150,
+    BASE_MOVEMENT_SPEED = 160,
     BONUS_ATTACK = 0,
 }
 

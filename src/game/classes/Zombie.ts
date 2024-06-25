@@ -131,13 +131,26 @@ export class Zombie extends Physics.Arcade.Sprite {
 
         let spawnX: number = 0;
         let spawnY: number = 0;
-        let spawnSide = Phaser.Math.Between(2, 3);
+        let spawnSide: number;
 
         if (
             zombieType !== ZOMBIE_TYPE.MONKE_BOSS &&
             zombieType !== ZOMBIE_TYPE.SLIME_BOSS
         ) {
-            spawnSide = Phaser.Math.Between(0, 3);
+            const weightedRandom = Phaser.Math.Between(0, 99);
+
+            if (weightedRandom < 10) {
+                spawnSide = 0; // 10% chance
+            } else if (weightedRandom < 20) {
+                spawnSide = 1; // 10% chance
+            } else if (weightedRandom < 60) {
+                spawnSide = 2; // 40% chance
+            } else {
+                spawnSide = 3; // 40% chance
+            }
+        } else {
+            // Default spawn side if zombieType is a boss (can be adjusted as needed)
+            spawnSide = 2; // Example default, spawning on the right top side
         }
 
         switch (spawnSide) {
@@ -581,3 +594,4 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
     }
 }
+

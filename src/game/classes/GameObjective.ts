@@ -47,7 +47,7 @@ export function objectiveUI(scene: any) {
         scene.distanceText = scene.add
             .text(10, 60, "Distance: 0m / " + scene.distanceObjective + "m", {
                 fontSize: "12px",
-                color: "#000000",
+                color: "#ffffff",
                 fontFamily: "Press Start 2P",
             })
             .setOrigin(0, 0)
@@ -56,7 +56,7 @@ export function objectiveUI(scene: any) {
         scene.killText = scene.add
             .text(10, 74, "Kills: 0 / " + scene.killObjective, {
                 fontSize: "12px",
-                color: "#000000",
+                color: "#ffffff",
                 fontFamily: "Press Start 2P",
             })
             .setOrigin(0, 0)
@@ -66,7 +66,7 @@ export function objectiveUI(scene: any) {
         scene.killText = scene.add
             .text(10, 74, "Kill the boss", {
                 fontSize: "12px",
-                color: "#000000",
+                color: "#ffffff",
                 fontFamily: "Press Start 2P",
             })
             .setOrigin(0, 0)
@@ -100,11 +100,13 @@ export function stageObjective(scene: any) {
     }
     if (scene.highestX >= scene.distanceObjective) {
         scene.distanceComplete = true;
+        scene.distanceText.setStyle({ color: "#98fb98" });
     }
 
     // kill count
     if (Game.player.killCount >= scene.killObjective) {
         scene.killComplete = true;
+        scene.killText.setStyle({ color: "#98fb98" });
     }
 
     Game.totalKill = Game.player.killCount;

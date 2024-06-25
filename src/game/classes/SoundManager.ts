@@ -51,5 +51,6 @@ export class SoundManager {
         //Stage sounds
         this.slimeSound = this.scene.sound.add("slimeStep");
         this.encounterSound = this.scene.sound.add("encounter");
+        this.dialougeSound = this.scene.sound.add("dialouge");
     }
 }

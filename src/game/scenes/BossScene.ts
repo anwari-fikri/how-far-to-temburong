@@ -84,7 +84,10 @@ export class BossScene extends Scene {
         super("BossScene");
     }
 
-    preload() {}
+    preload() {
+        this.load.audio("bossOne", "assets/audio/stage_boss_scene1.mp3");
+        this.load.audio("bossTwo", "assets/audio/stage_boss_scene2.mp3");
+    }
 
     create() {
         loadGoogleFont();
@@ -108,6 +111,9 @@ export class BossScene extends Scene {
 
     bossOneScene() {
         this.cleanup();
+        const bossOneMusic = this.sound.add("bossOne", { loop: true });
+        bossOneMusic.play();
+        Game.soundManager.dialougeSound.play();
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "bossOneScene";
@@ -183,6 +189,8 @@ export class BossScene extends Scene {
             typeSpeed: 15,
             showCursor: false,
             onComplete: () => {
+                Game.soundManager.dialougeSound.stop();
+
                 const continueButton = document.createElement("button");
                 continueButton.textContent = "continue!";
                 continueButton.style.padding = "8px 15px";
@@ -196,6 +204,7 @@ export class BossScene extends Scene {
                 continueButton.classList.add("glow"); // Add the glow class for pulsating effect
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
+                    bossOneMusic.stop();
                     this.cleanup();
                     this.startMainGame();
                 });
@@ -324,4 +333,3 @@ export class BossScene extends Scene {
         });
     }
 }
-

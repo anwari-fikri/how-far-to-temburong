@@ -26,7 +26,7 @@ export default class GameUI {
         this.createExpBar();
         // this.createLevelUpSelection();
         this.createLevelCount();
-        // this.createIndicator();
+        this.createIndicator();
     }
 
     createLevelUpSelection() {
@@ -327,16 +327,55 @@ export default class GameUI {
     }
 
     updateIndicator() {
-        // todo
-        // if (
-        //     Zombie.zombieType === ZOMBIE_TYPE.MONKE_BOSS &&
-        //     Zombie.zombieType === ZOMBIE_TYPE.SLIME_BOSS
-        // ) {
-        //     //aa
-        // }
-        if ("not in view") {
+        const worldView = this.scene.cameras.main.worldView;
+        const playerX = Game.player.x;
+        const playerY = Game.player.y;
+
+        let indicatorVisible = false;
+        let indicatorX;
+        let indicatorY;
+        let flipX = false;
+
+        Game.zombies.children.iterate(
+            (zombie: Phaser.GameObjects.GameObject) => {
+                if (zombie instanceof Zombie) {
+                    if (
+                        zombie.zombieType === ZOMBIE_TYPE.MONKE_BOSS ||
+                        zombie.zombieType === ZOMBIE_TYPE.SLIME_BOSS
+                    ) {
+                        const isOnScreen =
+                            this.scene.cameras.main.worldView.contains(
+                                zombie.x,
+                                zombie.y,
+                            );
+
+                        if (!isOnScreen) {
+                            indicatorVisible = true;
+
+                            if (zombie.x < playerX) {
+                                indicatorX = worldView.x + 25;
+                                flipX = true;
+                            } else {
+                                indicatorX = worldView.x + worldView.width - 25;
+                                flipX = false;
+                            }
+
+                            indicatorY = Phaser.Math.Clamp(
+                                zombie.y,
+                                worldView.y,
+                                worldView.y + worldView.height,
+                            );
+                        }
+                    }
+                }
+                return true;
+            },
+        );
+
+        if (indicatorVisible) {
             this.indicator.setVisible(true);
-            this.indicator.setPosition(0, 0); // x stay at the edge of screen, y boss coord
+            this.indicator.setPosition(indicatorX, indicatorY);
+            this.indicator.setScale(flipX ? -1 : 1, 1);
         } else {
             this.indicator.setVisible(false);
         }
@@ -345,6 +384,6 @@ export default class GameUI {
     update() {
         this.activePowerUps.clear(true, true);
         this.createPowerUpStatus();
-        // this.updateIndicator();
+        this.updateIndicator();
     }
 }

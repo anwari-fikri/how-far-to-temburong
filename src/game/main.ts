@@ -44,7 +44,6 @@ const config: Phaser.Types.Core.GameConfig = {
         BossScene,
         GameCredits,
         WeaponSkillUpgrade,
-       
     ],
 };
 

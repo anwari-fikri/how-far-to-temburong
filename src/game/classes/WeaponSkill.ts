@@ -86,22 +86,25 @@ export class WeaponSkill {
 
     loadWeaponSkillState() {
         const savedState = sessionStorage.getItem("weaponSkillState");
-        if (savedState !== null) {
-            const {
-                atkLevel,
-                slowLevel,
-                confuseLevel,
-                fireLevel,
-                freezeLevel,
-                critChanceLevel,
-            } = JSON.parse(savedState);
-            this.atk.level = atkLevel;
-            this.slow.level = slowLevel;
-            this.confuse.level = confuseLevel;
-            this.fire.level = fireLevel;
-            this.freeze.level = freezeLevel;
-            this.critChance.level = critChanceLevel;
+        if (!savedState) {
+            return;
         }
+
+        const {
+            atkLevel,
+            slowLevel,
+            confuseLevel,
+            fireLevel,
+            freezeLevel,
+            critChanceLevel,
+        } = JSON.parse(savedState);
+
+        this.atk.level = atkLevel;
+        this.slow.level = slowLevel;
+        this.confuse.level = confuseLevel;
+        this.fire.level = fireLevel;
+        this.freeze.level = freezeLevel;
+        this.critChance.level = critChanceLevel;
     }
 
     showLevels(): void {
@@ -185,13 +188,13 @@ export class WeaponSkill {
             case 0:
                 return 0;
             case 1:
-                return 5;
-            case 2:
                 return 10;
+            case 2:
+                return 20;
             case 3:
-                return 20;
+                return 50;
             default:
-                return 20;
+                return 50;
         }
     };
 
@@ -208,13 +211,13 @@ export class WeaponSkill {
             case 0:
                 return 0;
             case 1:
-                return 5;
+                return 25;
             case 2:
-                return 10;
+                return 50;
             case 3:
-                return 20;
+                return 100;
             default:
-                return 20;
+                return 100;
         }
     };
 
@@ -254,13 +257,13 @@ export class WeaponSkill {
             case 0:
                 return 0;
             case 1:
-                return 5;
+                return 25;
             case 2:
-                return 10;
+                return 50;
             case 3:
-                return 20;
+                return 100;
             default:
-                return 20;
+                return 100;
         }
     };
 
@@ -281,9 +284,9 @@ export class WeaponSkill {
             case 2:
                 return 20;
             case 3:
-                return 40;
+                return 50;
             default:
-                return 40;
+                return 50;
         }
     };
 

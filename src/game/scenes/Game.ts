@@ -43,7 +43,7 @@ export class Game extends Scene {
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;
 
-    static gameStage = 0;
+    static gameStage = 3;
     static bossStage = false;
     static totalKill = 0;
     static totalDistance = 0;
@@ -82,7 +82,7 @@ export class Game extends Scene {
 
         // PowerUps
         Game.powerUps = new PowerUpManager(this);
-        Game.powerUps.exampleSpawnPowerUps();
+        // Game.powerUps.exampleSpawnPowerUps();
 
         Game.gameUI = new GameUI(this);
         Game.HealthDrop = this.add.group({

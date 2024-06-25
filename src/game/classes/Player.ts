@@ -60,6 +60,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.controls = new PlayerControls(scene);
         playerAnims(scene);
+        this.anims.play("right", true);
         this.inventory = new Inventory();
         this.inventory.replaceMeleeWeapon(
             new MeleeWeapon(scene, this, WEAPON_TYPE.SWORD),

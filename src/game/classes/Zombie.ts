@@ -587,10 +587,21 @@ export class Zombie extends Physics.Arcade.Sprite {
                 if (this.currentHealth <= 0) {
                     this.die();
 
+                    // Play the general zombie death sound
                     Game.soundManager.zombieDeathSound.play();
+
+                    // Play the specific death sound based on zombie type
+                    if (this.zombieType === ZOMBIE_TYPE.SLIME_BOSS) {
+                        Game.soundManager.slimebossDeathSound.play();
+                    } else if (this.zombieType === ZOMBIE_TYPE.SLIME_MINION) {
+                        Game.soundManager.minislimeDeathSound.play();
+                    } else if (this.zombieType === ZOMBIE_TYPE.MONKE_BOSS) {
+                        Game.soundManager.monkeybossDeathSound.play();
+                    } else if (this.zombieType === ZOMBIE_TYPE.MONKE_MINION) {
+                        Game.soundManager.minimonkeyDeathSound.play();
+                    }
                 }
             }
         }
     }
 }
-

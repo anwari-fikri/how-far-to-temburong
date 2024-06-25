@@ -1,6 +1,7 @@
 import { Scene } from "phaser";
 import { EventBus } from "../EventBus";
 import Typed from "typed.js";
+import { Game } from "./Game";
 
 function loadGoogleFont() {
     const link = document.createElement("link");
@@ -65,7 +66,7 @@ export class MainMenu extends Scene {
     }
 
     preload() {
-        this.load.image("background", "assets/Intro/Company.png"); 
+        this.load.image("background", "assets/Intro/Company.png");
         this.load.audio("mainMenu", "assets/audio/intro_mainMenu.mp3");
         this.load.audio("newspaper", "assets/audio/intro_newspaper.mp3");
         this.load.audio("menuButton", "assets/audio/intro_menuButton.mp3");
@@ -98,10 +99,10 @@ export class MainMenu extends Scene {
         screenDiv.style.transform = "translate(-50%, -50%)";
         screenDiv.style.backgroundImage = 'url("assets/Intro/mainMenu2.gif")';
         screenDiv.style.backgroundSize = "100% 100%";
-        screenDiv.style.backgroundRepeat = "no-repeat"; 
-        screenDiv.style.backgroundPosition = "center"; 
-        screenDiv.style.width = "75%"; 
-        screenDiv.style.height = "100%"; 
+        screenDiv.style.backgroundRepeat = "no-repeat";
+        screenDiv.style.backgroundPosition = "center";
+        screenDiv.style.width = "75%";
+        screenDiv.style.height = "100%";
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
@@ -114,19 +115,19 @@ export class MainMenu extends Scene {
         vignetteOverlay.style.width = "100%";
         vignetteOverlay.style.height = "100%";
         vignetteOverlay.style.pointerEvents = "none";
-        vignetteOverlay.style.zIndex = "10"; 
+        vignetteOverlay.style.zIndex = "10";
         vignetteOverlay.style.background =
             "radial-gradient(circle, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 0.8) 100%)";
         screenDiv.appendChild(vignetteOverlay);
 
         const topImage = document.createElement("img");
-        topImage.src = "assets/Intro/gameTitle2.png"; 
+        topImage.src = "assets/Intro/gameTitle2.png";
         topImage.style.position = "absolute";
-        topImage.style.top = "5%"; 
+        topImage.style.top = "5%";
         topImage.style.left = "50%";
         topImage.style.transform = "translateX(-50%)";
-        topImage.style.zIndex = "15"; 
-        topImage.style.width = "50%"; 
+        topImage.style.zIndex = "15";
+        topImage.style.width = "50%";
         screenDiv.appendChild(topImage);
 
         const createButton = (
@@ -198,7 +199,7 @@ export class MainMenu extends Scene {
 
     characterSelectionScreen() {
         this.cleanup();
-    
+
         const screenDiv = document.createElement("div");
         screenDiv.id = "characterSelectionScreen";
         screenDiv.style.position = "fixed";
@@ -215,7 +216,7 @@ export class MainMenu extends Scene {
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
         document.body.appendChild(screenDiv);
-    
+
         const vignetteOverlay = document.createElement("div");
         vignetteOverlay.style.position = "absolute";
         vignetteOverlay.style.top = "0";
@@ -227,7 +228,7 @@ export class MainMenu extends Scene {
         vignetteOverlay.style.background =
             "radial-gradient(circle, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 0.8) 100%)";
         screenDiv.appendChild(vignetteOverlay);
-    
+
         const weaponContainer = document.createElement("div");
         weaponContainer.style.display = "flex";
         weaponContainer.style.flexDirection = "column";
@@ -242,24 +243,24 @@ export class MainMenu extends Scene {
         weaponContainer.style.fontSize = "14px";
         weaponContainer.style.zIndex = "6";
         weaponContainer.style.backgroundColor = "none";
-    
+
         const meleeWeapons = [
             { url: "assets/Intro/weapon1.png", name: "knife" },
             { url: "assets/Intro/weapon2.png", name: "sword" },
             { url: "assets/Intro/weapon3.png", name: "spear" },
         ];
-    
+
         const rangedWeapons = [
             { url: "assets/Intro/weapon4.png", name: "pistol" },
             { url: "assets/Intro/weapon5.png", name: "sniper" },
         ];
-    
+
         MainMenu.selectedMeleeWeapon = null;
         MainMenu.selectedRangedWeapon = null;
         MainMenu.selectedCharacter = null;
-        let selectedMeleeElement:any = null;
-        let selectedRangedElement:any = null;
-    
+        let selectedMeleeElement: any = null;
+        let selectedRangedElement: any = null;
+
         const buttonElement = document.createElement("button");
         buttonElement.textContent = "OK";
         buttonElement.style.position = "absolute";
@@ -280,9 +281,9 @@ export class MainMenu extends Scene {
             this.sound.stopAll();
             this.scene.start("CheckpointAndChapters");
         });
-    
+
         screenDiv.appendChild(buttonElement);
-    
+
         const checkSelectionsAndUpdateText = () => {
             if (
                 MainMenu.selectedMeleeWeapon &&
@@ -296,8 +297,8 @@ export class MainMenu extends Scene {
                 buttonElement.style.display = "none";
             }
         };
-    
-        const createWeaponRow = (weapons:any, label:any) => {
+
+        const createWeaponRow = (weapons: any, label: any) => {
             const rowContainer = document.createElement("div");
             rowContainer.style.display = "flex";
             rowContainer.style.alignItems = "center";
@@ -305,7 +306,7 @@ export class MainMenu extends Scene {
             rowContainer.style.marginBottom = "10px";
             rowContainer.style.width = "100%";
             rowContainer.style.paddingLeft = "20px";
-    
+
             const labelDiv = document.createElement("div");
             labelDiv.textContent = label;
             labelDiv.style.color = "white";
@@ -313,12 +314,12 @@ export class MainMenu extends Scene {
             labelDiv.style.marginRight = "10px";
             labelDiv.style.width = "150px";
             rowContainer.appendChild(labelDiv);
-    
+
             const weaponRow = document.createElement("div");
             weaponRow.style.display = "flex";
             weaponRow.style.justifyContent = "flex-start";
-    
-            weapons.forEach((weapon:any) => {
+
+            weapons.forEach((weapon: any) => {
                 const wrapper = document.createElement("div");
                 const wrapperContainer = document.createElement("div");
                 wrapperContainer.style.display = "flex";
@@ -334,16 +335,16 @@ export class MainMenu extends Scene {
                 wrapper.style.border = "none";
                 wrapper.style.boxShadow = "4px 4px 0 black, 8px 8px 0 black";
                 wrapper.style.cursor = "pointer";
-    
+
                 const img = document.createElement("img");
                 img.src = weapon.url;
                 img.style.width = "60px";
-    
+
                 const weaponName = document.createElement("div");
                 weaponName.textContent = weapon.name;
                 weaponName.style.color = "white";
                 weaponName.style.marginTop = "10px";
-    
+
                 if (weapon.name !== "knife" && weapon.name !== "pistol") {
                     wrapper.style.backgroundColor = "grey";
                     wrapper.style.cursor = "not-allowed";
@@ -370,30 +371,30 @@ export class MainMenu extends Scene {
                         checkSelectionsAndUpdateText();
                     });
                 }
-    
+
                 wrapper.appendChild(img);
                 wrapper.classList.add("weapon-wrapper");
-    
+
                 wrapperContainer.appendChild(wrapper);
                 wrapperContainer.appendChild(weaponName);
-    
+
                 weaponRow.appendChild(wrapperContainer);
             });
-    
+
             rowContainer.appendChild(weaponRow);
             return rowContainer;
         };
-    
+
         const meleeRow = createWeaponRow(meleeWeapons, "Melee");
         const rangedRow = createWeaponRow(rangedWeapons, "Ranged");
-    
+
         weaponContainer.appendChild(meleeRow);
         weaponContainer.appendChild(rangedRow);
-    
+
         screenDiv.appendChild(weaponContainer);
-    
+
         screenDiv.style.animation = "fade-in 2s forwards";
-    
+
         const imageContainer = document.createElement("div");
         imageContainer.style.display = "flex";
         imageContainer.style.justifyContent = "center";
@@ -404,7 +405,7 @@ export class MainMenu extends Scene {
         imageContainer.style.transform = "translate(-50%, -50%)";
         imageContainer.style.width = "90px";
         imageContainer.style.height = "auto";
-    
+
         const imageUrls = [
             "assets/Intro/char2.png",
             "assets/Intro/char2.png",
@@ -423,7 +424,7 @@ export class MainMenu extends Scene {
             img.addEventListener("click", () => {
                 const selectAudio = this.sound.add("select");
                 selectAudio.play();
-                this.characterDetailsScreen(img, url); 
+                this.characterDetailsScreen(img, url);
                 if (url === "assets/Intro/char1.5.png") {
                     MainMenu.selectedCharacter = "char1.5";
                 } else {
@@ -433,10 +434,9 @@ export class MainMenu extends Scene {
             });
             imageContainer.appendChild(img);
         });
-        
-    
+
         screenDiv.appendChild(imageContainer);
-    
+
         const textElement = document.createElement("div");
         textElement.style.position = "absolute";
         textElement.style.top = "10%";
@@ -449,7 +449,7 @@ export class MainMenu extends Scene {
         textElement.style.textAlign = "center";
         textElement.textContent = "SELECT YOUR WEAPONS & CHARACTER";
         screenDiv.appendChild(textElement);
-    }    
+    }
 
     characterDetailsScreen(img: any, imageUrl: any) {
         const allChars = document.querySelectorAll(".char-image");
@@ -465,19 +465,19 @@ export class MainMenu extends Scene {
         const detailsDiv = document.createElement("div");
         detailsDiv.id = "characterDetails";
         detailsDiv.style.position = "absolute";
-        detailsDiv.style.top = "87%"; 
+        detailsDiv.style.top = "87%";
         detailsDiv.style.left = "50%";
         detailsDiv.style.transform = "translate(-50%, -50%)";
         detailsDiv.style.display = "flex";
         detailsDiv.style.justifyContent = "space-between";
         detailsDiv.style.alignItems = "center";
-        detailsDiv.style.width = "100%"; 
+        detailsDiv.style.width = "100%";
         detailsDiv.style.height = "auto";
         detailsDiv.style.paddingLeft = "100px";
         detailsDiv.style.paddingRight = "100px";
         detailsDiv.style.paddingBottom = "10px";
-        detailsDiv.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; 
-        detailsDiv.style.zIndex = "5"; 
+        detailsDiv.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+        detailsDiv.style.zIndex = "5";
 
         const textElement = document.createElement("div");
         textElement.style.display = "flex";
@@ -495,7 +495,7 @@ export class MainMenu extends Scene {
         const secondLine = document.createElement("div");
         secondLine.style.color = "white";
         secondLine.style.fontFamily = '"Press Start 2P", sans-serif';
-        secondLine.style.fontSize = "16px"; 
+        secondLine.style.fontSize = "16px";
         secondLine.style.marginTop = "10px";
         secondLine.textContent =
             imageUrl === "assets/Intro/char2.png"
@@ -507,15 +507,15 @@ export class MainMenu extends Scene {
 
         let detailsImageUrl = "";
         if (imageUrl === "assets/Intro/char2.png") {
-            detailsImageUrl = "assets/Intro/char2Displayed.png"; 
+            detailsImageUrl = "assets/Intro/char2Displayed.png";
         } else if (imageUrl === "assets/Intro/char1.5.png") {
-            detailsImageUrl = "assets/Intro/char1.5Display.png"; 
+            detailsImageUrl = "assets/Intro/char1.5Display.png";
         }
 
         const imgElement = document.createElement("img");
-        imgElement.src = detailsImageUrl; 
-        imgElement.style.width = "200px"; 
-        imgElement.style.height = "auto"; 
+        imgElement.src = detailsImageUrl;
+        imgElement.style.width = "200px";
+        imgElement.style.height = "auto";
 
         detailsDiv.appendChild(textElement);
         detailsDiv.appendChild(imgElement);

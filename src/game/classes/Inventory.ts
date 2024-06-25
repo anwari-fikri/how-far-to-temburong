@@ -30,11 +30,13 @@ export default class Inventory {
         }
 
         if (event.key === "1") {
+            Game.soundManager.swordSelect.play();
             this.selectedHandSlot = 1;
             Game.player.emit("handslot-changed");
         }
 
         if (event.key === "2") {
+            Game.soundManager.gunSelect.play();
             this.selectedHandSlot = 2;
             Game.player.emit("handslot-changed");
         }

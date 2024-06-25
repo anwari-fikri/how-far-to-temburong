@@ -1,4 +1,5 @@
 import { Physics, Scene } from "phaser";
+import { Game } from "../scenes/Game";
 import Player from "./Player";
 
 interface WeaponProperties {
@@ -19,7 +20,7 @@ export const WEAPON_TYPE: Readonly<{ [key: string]: WeaponProperties }> = {
         attackPower: 50,
         attackRange: "medium",
         attackCooldown: 400,
-        hitbox: { width: 20, height: 25 },
+        hitbox: { width: 28, height: 44 },
     },
 } as const;
 
@@ -81,8 +82,7 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
                     this.lastAttackTime = currentTime;
                     this.player.isAttacking = true;
                     this.playAttackAnimation();
-                    const attackSound = scene.sound.add("mediumAttack");
-                    attackSound.play();
+                    Game.soundManager.attackSound.play();
                 }
             }
         });
@@ -122,7 +122,7 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
 
                     this.setOffset(
                         centerX + offsetX,
-                        centerY - this.hitbox.height + 5,
+                        centerY - this.hitbox.height + 15,
                     );
                     this.setPosition(this.player.x + 0, this.player.y);
                     this.flipX = this.player.controls.facing === "right";
@@ -138,3 +138,4 @@ export default class MeleeWeapon extends Physics.Arcade.Sprite {
         }
     }
 }
+

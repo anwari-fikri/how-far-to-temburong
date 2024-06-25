@@ -91,6 +91,8 @@ export class GameOver extends Scene {
     }
 
     gameOverScreen() {
+        Game.player.experience.loadExperienceState();
+        Game.player.weaponSkill.loadWeaponSkillState();
         this.cleanup();
 
         const screenDiv = document.createElement("div");
@@ -179,24 +181,13 @@ export class GameOver extends Scene {
 
         const distanceElement = document.createElement("div");
         distanceElement.textContent = "Distance: ";
-        distanceElement.className = "top-center text-shadow";
+        distanceElement.className = "top-right text-shadow";
         distanceElement.style.color = "#f29e00";
 
         const distanceValueSpan: any = document.createElement("span");
-        distanceValueSpan.textContent = Game.totalDistance;
+        distanceValueSpan.textContent = Game.totalDistance + "m";
         distanceValueSpan.style.color = "white";
         distanceElement.appendChild(distanceValueSpan);
-
-        // Create top-right element for time
-        const timeElement = document.createElement("div");
-        timeElement.textContent = "Time: ";
-        timeElement.className = "top-right text-shadow";
-        timeElement.style.color = "#f29e00";
-
-        const timeValueSpan: any = document.createElement("span");
-        timeValueSpan.textContent = Game.totalTime;
-        timeValueSpan.style.color = "white";
-        timeElement.appendChild(timeValueSpan);
 
         screenDiv.appendChild(textElement);
         screenDiv.appendChild(imageElement);
@@ -205,7 +196,6 @@ export class GameOver extends Scene {
         screenDiv.appendChild(arrowElement);
         screenDiv.appendChild(killsElement);
         screenDiv.appendChild(distanceElement);
-        screenDiv.appendChild(timeElement);
         screenDiv.style.animation = "fade-in 1s forwards";
 
         this.currentSelection = "yes";
@@ -248,6 +238,8 @@ export class GameOver extends Scene {
 
     startMainGame() {
         this.cleanup();
+        Game.player.weaponSkill.loadWeaponSkillState();
+        Game.player.experience.loadExperienceState();
         this.scene.start("Game");
     }
 

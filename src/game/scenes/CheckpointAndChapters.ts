@@ -102,7 +102,7 @@ export class CheckpointAndChapters extends Scene {
 
     chapterOneScreen() {
         this.cleanup();
-    
+
         const screenDiv = document.createElement("div");
         screenDiv.id = "chapterOne";
         screenDiv.style.position = "fixed";
@@ -119,15 +119,16 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
         document.body.appendChild(screenDiv);
-    
+
         screenDiv.style.animation = "fade-in 3s forwards";
-    
+
         const secondImage = document.createElement("div");
         secondImage.style.position = "fixed";
         secondImage.style.top = "55%";
         secondImage.style.left = "50%";
         secondImage.style.transform = "translate(-50%, -50%)";
-        secondImage.style.backgroundImage = 'url("assets/Intro/chapter1Title.png")';
+        secondImage.style.backgroundImage =
+            'url("assets/Intro/chapter1Title.png")';
         secondImage.style.backgroundSize = "cover";
         secondImage.style.backgroundRepeat = "no-repeat";
         secondImage.style.backgroundPosition = "center";
@@ -137,42 +138,41 @@ export class CheckpointAndChapters extends Scene {
         secondImage.style.boxShadow = "none";
         secondImage.style.opacity = "0";
         document.body.appendChild(secondImage);
-    
+
         setTimeout(() => {
-            secondImage.style.animation = "fade-in 3s forwards"; 
+            secondImage.style.animation = "fade-in 3s forwards";
         }, 2000);
-    
+
         setTimeout(() => {
             screenDiv.style.animation = "fade-out 1s forwards";
-            secondImage.style.animation = "fade-out 1s forwards"; 
-        }, 5000); 
-    
+            secondImage.style.animation = "fade-out 1s forwards";
+        }, 5000);
+
         const removeElements = () => {
             screenDiv.remove();
             secondImage.remove();
         };
-    
+
         screenDiv.addEventListener("animationend", (event) => {
             if (event.animationName === "fade-out") {
                 removeElements();
             }
         });
-    
+
         secondImage.addEventListener("animationend", (event) => {
             if (event.animationName === "fade-out") {
                 removeElements();
             }
         });
-    
+
         setTimeout(() => {
             this.chapterOneContinuation();
-        }, 6000); 
+        }, 6000);
     }
-    
 
     chapterTwoScreen() {
         this.cleanup();
-    
+
         const screenDiv = document.createElement("div");
         screenDiv.id = "chapterTwo";
         screenDiv.style.position = "fixed";
@@ -189,15 +189,16 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
         document.body.appendChild(screenDiv);
-    
+
         screenDiv.style.animation = "fade-in 3s forwards";
-    
+
         const secondImage = document.createElement("div");
         secondImage.style.position = "fixed";
         secondImage.style.top = "55%";
         secondImage.style.left = "50%";
         secondImage.style.transform = "translate(-50%, -50%)";
-        secondImage.style.backgroundImage = 'url("assets/Intro/chapter2Title.png")';
+        secondImage.style.backgroundImage =
+            'url("assets/Intro/chapter2Title.png")';
         secondImage.style.backgroundSize = "cover";
         secondImage.style.backgroundRepeat = "no-repeat";
         secondImage.style.backgroundPosition = "center";
@@ -207,42 +208,41 @@ export class CheckpointAndChapters extends Scene {
         secondImage.style.boxShadow = "none";
         secondImage.style.opacity = "0";
         document.body.appendChild(secondImage);
-    
+
         setTimeout(() => {
-            secondImage.style.animation = "fade-in 3s forwards"; 
+            secondImage.style.animation = "fade-in 3s forwards";
         }, 2000);
-    
+
         setTimeout(() => {
             screenDiv.style.animation = "fade-out 1s forwards";
-            secondImage.style.animation = "fade-out 1s forwards"; 
-        }, 5000); 
-    
+            secondImage.style.animation = "fade-out 1s forwards";
+        }, 5000);
+
         const removeElements = () => {
             screenDiv.remove();
             secondImage.remove();
         };
-    
+
         screenDiv.addEventListener("animationend", (event) => {
             if (event.animationName === "fade-out") {
                 removeElements();
             }
         });
-    
+
         secondImage.addEventListener("animationend", (event) => {
             if (event.animationName === "fade-out") {
                 removeElements();
             }
         });
-    
+
         setTimeout(() => {
             this.chapterTwoContinuation();
-        }, 6000); 
+        }, 6000);
     }
-    
 
     chapterThreeScreen() {
         this.cleanup();
-    
+
         const screenDiv = document.createElement("div");
         screenDiv.id = "chapterThree";
         screenDiv.style.position = "fixed";
@@ -259,15 +259,16 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
         document.body.appendChild(screenDiv);
-    
+
         screenDiv.style.animation = "fade-in 3s forwards";
-    
+
         const secondImage = document.createElement("div");
         secondImage.style.position = "fixed";
         secondImage.style.top = "55%";
         secondImage.style.left = "50%";
         secondImage.style.transform = "translate(-50%, -50%)";
-        secondImage.style.backgroundImage = 'url("assets/Intro/chapter3Title.png")';
+        secondImage.style.backgroundImage =
+            'url("assets/Intro/chapter3Title.png")';
         secondImage.style.backgroundSize = "cover";
         secondImage.style.backgroundRepeat = "no-repeat";
         secondImage.style.backgroundPosition = "center";
@@ -277,42 +278,41 @@ export class CheckpointAndChapters extends Scene {
         secondImage.style.boxShadow = "none";
         secondImage.style.opacity = "0";
         document.body.appendChild(secondImage);
-    
+
         setTimeout(() => {
-            secondImage.style.animation = "fade-in 3s forwards"; 
+            secondImage.style.animation = "fade-in 3s forwards";
         }, 2000);
-    
+
         setTimeout(() => {
             screenDiv.style.animation = "fade-out 1s forwards";
-            secondImage.style.animation = "fade-out 1s forwards"; 
-        }, 5000); 
-    
+            secondImage.style.animation = "fade-out 1s forwards";
+        }, 5000);
+
         const removeElements = () => {
             screenDiv.remove();
             secondImage.remove();
         };
-    
+
         screenDiv.addEventListener("animationend", (event) => {
             if (event.animationName === "fade-out") {
                 removeElements();
             }
         });
-    
+
         secondImage.addEventListener("animationend", (event) => {
             if (event.animationName === "fade-out") {
                 removeElements();
             }
         });
-    
+
         setTimeout(() => {
             this.chapterThreeContinuation();
-        }, 6000); 
+        }, 6000);
     }
-    
 
     chapterFourScreen() {
         this.cleanup();
-    
+
         const screenDiv = document.createElement("div");
         screenDiv.id = "chapterFour";
         screenDiv.style.position = "fixed";
@@ -329,15 +329,16 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
         document.body.appendChild(screenDiv);
-    
+
         screenDiv.style.animation = "fade-in 3s forwards";
-    
+
         const secondImage = document.createElement("div");
         secondImage.style.position = "fixed";
         secondImage.style.top = "55%";
         secondImage.style.left = "50%";
         secondImage.style.transform = "translate(-50%, -50%)";
-        secondImage.style.backgroundImage = 'url("assets/Intro/chapter4Title.png")';
+        secondImage.style.backgroundImage =
+            'url("assets/Intro/chapter4Title.png")';
         secondImage.style.backgroundSize = "cover";
         secondImage.style.backgroundRepeat = "no-repeat";
         secondImage.style.backgroundPosition = "center";
@@ -347,49 +348,49 @@ export class CheckpointAndChapters extends Scene {
         secondImage.style.boxShadow = "none";
         secondImage.style.opacity = "0";
         document.body.appendChild(secondImage);
-    
+
         setTimeout(() => {
-            secondImage.style.animation = "fade-in 3s forwards"; 
+            secondImage.style.animation = "fade-in 3s forwards";
         }, 2000);
-    
+
         setTimeout(() => {
             screenDiv.style.animation = "fade-out 1s forwards";
-            secondImage.style.animation = "fade-out 1s forwards"; 
-        }, 5000); 
-    
+            secondImage.style.animation = "fade-out 1s forwards";
+        }, 5000);
+
         const removeElements = () => {
             screenDiv.remove();
             secondImage.remove();
         };
-    
+
         screenDiv.addEventListener("animationend", (event) => {
             if (event.animationName === "fade-out") {
                 removeElements();
             }
         });
-    
+
         secondImage.addEventListener("animationend", (event) => {
             if (event.animationName === "fade-out") {
                 removeElements();
             }
         });
-    
+
         setTimeout(() => {
             this.chapterFourContinuation();
-        }, 6000); 
+        }, 6000);
     }
-    
 
     chapterFinaleScreen() {
         this.cleanup();
-    
+
         const screenDiv = document.createElement("div");
         screenDiv.id = "chapterFinale";
         screenDiv.style.position = "fixed";
         screenDiv.style.top = "45%";
         screenDiv.style.left = "50%";
         screenDiv.style.transform = "translate(-50%, -50%)";
-        screenDiv.style.backgroundImage = 'url("assets/Intro/chapterFinale.png")';
+        screenDiv.style.backgroundImage =
+            'url("assets/Intro/chapterFinale.png")';
         screenDiv.style.backgroundSize = "cover";
         screenDiv.style.backgroundRepeat = "no-repeat";
         screenDiv.style.backgroundPosition = "center";
@@ -399,15 +400,16 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
         document.body.appendChild(screenDiv);
-    
+
         screenDiv.style.animation = "fade-in 3s forwards";
-    
+
         const secondImage = document.createElement("div");
         secondImage.style.position = "fixed";
         secondImage.style.top = "55%";
         secondImage.style.left = "50%";
         secondImage.style.transform = "translate(-50%, -50%)";
-        secondImage.style.backgroundImage = 'url("assets/Intro/chapterFinaleTitle.png")';
+        secondImage.style.backgroundImage =
+            'url("assets/Intro/chapterFinaleTitle.png")';
         secondImage.style.backgroundSize = "cover";
         secondImage.style.backgroundRepeat = "no-repeat";
         secondImage.style.backgroundPosition = "center";
@@ -417,38 +419,38 @@ export class CheckpointAndChapters extends Scene {
         secondImage.style.boxShadow = "none";
         secondImage.style.opacity = "0";
         document.body.appendChild(secondImage);
-    
+
         setTimeout(() => {
-            secondImage.style.animation = "fade-in 3s forwards"; 
+            secondImage.style.animation = "fade-in 3s forwards";
         }, 2000);
-    
+
         setTimeout(() => {
             screenDiv.style.animation = "fade-out 1s forwards";
-            secondImage.style.animation = "fade-out 1s forwards"; 
-        }, 5000); 
-    
+            secondImage.style.animation = "fade-out 1s forwards";
+        }, 5000);
+
         const removeElements = () => {
             screenDiv.remove();
             secondImage.remove();
         };
-    
+
         screenDiv.addEventListener("animationend", (event) => {
             if (event.animationName === "fade-out") {
                 removeElements();
             }
         });
-    
+
         secondImage.addEventListener("animationend", (event) => {
             if (event.animationName === "fade-out") {
                 removeElements();
             }
         });
-    
+
         setTimeout(() => {
             this.chapterFinaleContinuation();
-        }, 6000); 
+        }, 6000);
     }
-    
+
     // -------------------------------------------------------------- CHAPTERS CONTINUATION ---------------------------------------------------------------------------
 
     chapterOneContinuation() {
@@ -474,7 +476,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; 
+        screenDiv.style.zIndex = "1";
         document.body.appendChild(screenDiv);
 
         const dialogueDiv = document.createElement("div");
@@ -491,7 +493,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid black";
         dialogueDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; 
+        dialogueDiv.style.zIndex = "5";
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -560,7 +562,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; 
+        screenDiv.style.zIndex = "1";
         document.body.appendChild(screenDiv);
 
         const dialogueDiv = document.createElement("div");
@@ -577,7 +579,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid black";
         dialogueDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; 
+        dialogueDiv.style.zIndex = "5";
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -646,7 +648,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; 
+        screenDiv.style.zIndex = "1";
         document.body.appendChild(screenDiv);
 
         const dialogueDiv = document.createElement("div");
@@ -663,7 +665,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid black";
         dialogueDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; 
+        dialogueDiv.style.zIndex = "5";
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -732,7 +734,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; 
+        screenDiv.style.zIndex = "1";
         document.body.appendChild(screenDiv);
 
         const dialogueDiv = document.createElement("div");
@@ -749,7 +751,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid black";
         dialogueDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; 
+        dialogueDiv.style.zIndex = "5";
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -834,7 +836,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; 
+        screenDiv.style.zIndex = "1";
         document.body.appendChild(screenDiv);
 
         const dialogueDiv = document.createElement("div");
@@ -851,7 +853,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid black";
         dialogueDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; 
+        dialogueDiv.style.zIndex = "5";
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -967,7 +969,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; 
+        screenDiv.style.zIndex = "1";
         document.body.appendChild(screenDiv);
 
         const checkpointTextDiv = document.createElement("div");
@@ -1001,7 +1003,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid #17434b";
         dialogueDiv.style.boxShadow = "6px 6px 0 #17434b, 12px 12px 0 #17434b";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; 
+        dialogueDiv.style.zIndex = "5";
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -1072,7 +1074,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; 
+        screenDiv.style.zIndex = "1";
         document.body.appendChild(screenDiv);
 
         const checkpointTextDiv = document.createElement("div");
@@ -1106,7 +1108,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid #17434b";
         dialogueDiv.style.boxShadow = "6px 6px 0 #17434b, 12px 12px 0 #17434b";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; 
+        dialogueDiv.style.zIndex = "5";
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -1177,7 +1179,7 @@ export class CheckpointAndChapters extends Scene {
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
         screenDiv.style.opacity = "0";
-        screenDiv.style.zIndex = "1"; 
+        screenDiv.style.zIndex = "1";
         document.body.appendChild(screenDiv);
 
         const checkpointTextDiv = document.createElement("div");
@@ -1211,7 +1213,7 @@ export class CheckpointAndChapters extends Scene {
         dialogueDiv.style.border = "4px solid #17434b";
         dialogueDiv.style.boxShadow = "6px 6px 0 #17434b, 12px 12px 0 #17434b";
         dialogueDiv.style.imageRendering = "pixelated";
-        dialogueDiv.style.zIndex = "5"; 
+        dialogueDiv.style.zIndex = "5";
 
         const dialogueText = document.createElement("div");
         dialogueText.id = "dialogueText";
@@ -1262,6 +1264,8 @@ export class CheckpointAndChapters extends Scene {
 
     startMainGame() {
         this.cleanup();
+        Game.player.weaponSkill.loadWeaponSkillState();
+        Game.player.experience.loadExperienceState();
         this.scene.start("Game");
     }
 
@@ -1303,3 +1307,4 @@ export class CheckpointAndChapters extends Scene {
         });
     }
 }
+

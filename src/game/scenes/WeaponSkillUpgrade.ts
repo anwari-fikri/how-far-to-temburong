@@ -194,7 +194,7 @@ export class WeaponSkillUpgrade extends Scene {
 
     weaponSkillUpgradeScreen() {
         this.cleanup();
-    
+
         const screenDiv = document.createElement("div");
         screenDiv.id = "weaponSkillUpgrade";
         screenDiv.style.position = "fixed";
@@ -207,15 +207,15 @@ export class WeaponSkillUpgrade extends Scene {
         screenDiv.style.justifyContent = "center";
         screenDiv.style.alignItems = "center";
         screenDiv.style.zIndex = "100";
-    
+
         const bigText = document.createElement("div");
         bigText.className = "big-text";
         bigText.textContent = "CHOOSE A SKILL!";
         screenDiv.appendChild(bigText);
-    
+
         document.body.appendChild(screenDiv);
         screenDiv.style.animation = "fade-in 1s forwards";
-    
+
         setTimeout(() => {
             const container = document.createElement("div");
             container.id = "container";
@@ -223,10 +223,10 @@ export class WeaponSkillUpgrade extends Scene {
             container.style.flexDirection = "row";
             container.style.alignItems = "center";
             screenDiv.appendChild(container);
-    
+
             const weaponSkill = Game.player.weaponSkill;
             const displayedSkills: SkillLevel[] = weaponSkill.choose3Random();
-    
+
             if (displayedSkills.length === 0) {
                 const maxLevelText = document.createElement("div");
                 maxLevelText.className = "skill-text";
@@ -245,40 +245,42 @@ export class WeaponSkillUpgrade extends Scene {
                     skillDiv.style.background = "#98444c";
                     skillDiv.style.padding = "10px";
                     skillDiv.style.border = "4px solid black";
-                    skillDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
+                    skillDiv.style.boxShadow =
+                        "6px 6px 0 black, 12px 12px 0 black";
                     skillDiv.style.imageRendering = "pixelated";
-                    skillDiv.style.animation = 'fade-in 2s forwards';
-    
+                    skillDiv.style.animation = "fade-in 2s forwards";
+
                     const text = document.createElement("div");
                     text.className = "skill-text";
                     text.textContent = `${skill.displayName} lvl.${skill.level + 1}`;
                     skillDiv.appendChild(text);
-    
+
                     const img = document.createElement("img");
                     img.src = skill.imageUrl;
                     skillDiv.appendChild(img);
-    
+
                     const description = document.createElement("div");
                     description.className = "skill-description";
                     description.textContent = skill.description;
                     skillDiv.appendChild(description);
-    
+
                     skillDiv.addEventListener("click", () => {
                         this.selectedSkill = skill;
                         Game.player.weaponSkill.applyLevelUp(skill.displayName);
+                        const selectSkill = this.sound.add("select");
+                        selectSkill.play();
                         this.showResultScreen();
                     });
-    
+
                     container.appendChild(skillDiv);
                 });
             }
-        }, 2000); 
+        }, 2000);
     }
-
 
     showResultScreen() {
         this.cleanup();
-    
+
         const resultScreenDiv = document.createElement("div");
         resultScreenDiv.id = "resultScreen";
         resultScreenDiv.style.position = "fixed";
@@ -288,8 +290,8 @@ export class WeaponSkillUpgrade extends Scene {
         resultScreenDiv.style.display = "flex";
         resultScreenDiv.style.alignItems = "center";
         resultScreenDiv.style.background = "transparent";
-        resultScreenDiv.style.flexDirection = "column"; 
-    
+        resultScreenDiv.style.flexDirection = "column";
+
         const skillDiv = document.createElement("div");
         skillDiv.className = "skill-div";
         skillDiv.style.fontFamily = '"Press Start 2P", sans-serif';
@@ -299,12 +301,12 @@ export class WeaponSkillUpgrade extends Scene {
         skillDiv.style.border = "4px solid black";
         skillDiv.style.boxShadow = "6px 6px 0 black, 12px 12px 0 black";
         skillDiv.style.imageRendering = "pixelated";
-    
+
         const text = document.createElement("div");
         text.className = "skill-text";
         text.textContent = `${this.selectedSkill!.displayName} lvl.${this.selectedSkill!.level - 1}`;
         skillDiv.appendChild(text);
-    
+
         const img = document.createElement("img");
         img.src = this.selectedSkill!.imageUrl;
         skillDiv.appendChild(img);
@@ -313,35 +315,33 @@ export class WeaponSkillUpgrade extends Scene {
         description.className = "skill-description";
         description.textContent = this.selectedSkill!.description;
         skillDiv.appendChild(description);
-    
+
         resultScreenDiv.appendChild(skillDiv);
         document.body.appendChild(resultScreenDiv);
 
         const upgradeMessage = document.createElement("div");
         upgradeMessage.className = "upgrade-text";
-        upgradeMessage.style.marginTop = "80px"; 
+        upgradeMessage.style.marginTop = "80px";
         if (this.selectedSkill!.level === 1) {
             upgradeMessage.textContent = "NEW SKILL UNLOCKED!";
         } else {
             upgradeMessage.textContent = "SKILL LEVEL UP!";
         }
         resultScreenDiv.appendChild(upgradeMessage);
-    
+
         document.body.appendChild(resultScreenDiv);
 
-        skillDiv.style.animation = "shake 1s, fade-out 2s"; 
-    
+        skillDiv.style.animation = "shake 1.5s, fade-out 3s";
+
         setTimeout(() => {
             text.textContent = `${this.selectedSkill!.displayName} lvl.${this.selectedSkill!.level}`;
             skillDiv.style.animation = "fade-in 1s"; 
-        }, 1500); 
+        }, 1000); 
     
         setTimeout(() => {
             this.goToGame();
-        }, 2000);
-    
+        }, 3000);
     }
-    
 
     cleanup() {
         const existingDiv = document.getElementById("weaponSkillUpgrade");
@@ -360,3 +360,4 @@ export class WeaponSkillUpgrade extends Scene {
         this.scene.resume("Game");
     }
 }
+

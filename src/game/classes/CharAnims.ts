@@ -168,7 +168,7 @@ export function playerAnims(scene: Phaser.Scene) {
             key: "monke-minion-walk-left",
             frames: scene.anims.generateFrameNumbers("monke_minion", {
                 start: 8,
-                end: 16,
+                end: 15,
             }),
             frameRate: 8,
             repeat: 1,

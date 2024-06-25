@@ -82,7 +82,7 @@ export class Game extends Scene {
 
         // PowerUps
         Game.powerUps = new PowerUpManager(this);
-        Game.powerUps.exampleSpawnPowerUps();
+        // Game.powerUps.exampleSpawnPowerUps();
 
         Game.gameUI = new GameUI(this);
         Game.HealthDrop = this.add.group({

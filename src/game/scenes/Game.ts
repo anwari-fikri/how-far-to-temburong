@@ -43,8 +43,8 @@ export class Game extends Scene {
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;
 
-    static gameStage = 4;
-    static bossStage = true;
+    static gameStage = 3;
+    static bossStage = false;
     static totalKill = 0;
     static totalDistance = 0;
     static totalTime = 0;
@@ -59,6 +59,7 @@ export class Game extends Scene {
         this.camera.setZoom(1);
         this.camera.followOffset.set(0, 100);
         this.camera.setBounds(0, 0, 10000, 700);
+        this.camera.roundPixels = true;
 
         bridgeMap(this);
 

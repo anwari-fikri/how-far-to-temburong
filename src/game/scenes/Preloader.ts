@@ -152,6 +152,13 @@ export class Preloader extends Scene {
         this.load.audio("spawnMiniboss", "audio/enemy_miniboss_spawn.mp3");
         this.load.audio("zombieDeath", "audio/enemy_zombie_death.mp3");
         this.load.audio("zombieHurt", "audio/enemy_zombie_hurt.mp3");
+        this.load.audio("slimebossDeath", "audio/enemy_boss_slime.mp3");
+        this.load.audio("minislimeDeath", "audio/enemy_boss_slime_minion.mp3");
+        this.load.audio("monkeybossDeath", "audio/enemy_boss_monkey.mp3");
+        this.load.audio(
+            "minimonkeyDeath",
+            "audio/enemy_boss_monkey_minion.mp3",
+        );
         this.load.audio("attackUp", "audio/powerUp_attack.mp3");
         this.load.audio("speedUp", "audio/powerUp_speed.mp3");
         this.load.audio("timeStop", "audio/powerUp_timeStop.mp3");
@@ -171,6 +178,6 @@ export class Preloader extends Scene {
     }
 
     create() {
-        this.scene.start("Game");
+        this.scene.start("Intro");
     }
 }

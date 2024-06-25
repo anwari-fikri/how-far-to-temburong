@@ -313,8 +313,10 @@ export class BossScene extends Scene {
 
     startMainGame() {
         this.cleanup();
-        Game.player.weaponSkill.loadWeaponSkillState();
-        Game.player.experience.loadExperienceState();
+        if (Game.isSceneLoaded) {
+            Game.player.weaponSkill.loadWeaponSkillState();
+            Game.player.experience.loadExperienceState();
+        }
         this.scene.start("Game");
     }
 
@@ -333,3 +335,4 @@ export class BossScene extends Scene {
         });
     }
 }
+

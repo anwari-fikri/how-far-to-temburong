@@ -63,6 +63,7 @@ export function objectiveUI(scene: any) {
             .setScrollFactor(0)
             .setDepth(100);
     } else {
+        scene.distanceText = scene.add.text();
         scene.killText = scene.add
             .text(10, 74, "Kill the boss", {
                 fontSize: "12px",
@@ -137,4 +138,3 @@ export function stageObjective(scene: any) {
         playerDeathSound.play();
     }
 }
-

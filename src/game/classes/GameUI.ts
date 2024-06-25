@@ -324,6 +324,7 @@ export default class GameUI {
         this.indicator.fillTriangle(0, 0, 20, 10, 0, 20);
         this.indicator.setDepth(10);
         this.indicator.setVisible(false);
+        this.indicator.setDepth(99);
     }
 
     updateIndicator() {
@@ -341,7 +342,8 @@ export default class GameUI {
                 if (zombie instanceof Zombie) {
                     if (
                         zombie.zombieType === ZOMBIE_TYPE.MONKE_BOSS ||
-                        zombie.zombieType === ZOMBIE_TYPE.SLIME_BOSS
+                        zombie.zombieType === ZOMBIE_TYPE.SLIME_BOSS ||
+                        zombie.zombieType === ZOMBIE_TYPE.MINI_BOSS
                     ) {
                         const isOnScreen =
                             this.scene.cameras.main.worldView.contains(

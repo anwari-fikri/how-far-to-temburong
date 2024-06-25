@@ -1,5 +1,4 @@
 import { Game } from "../scenes/Game";
-import Player from "./Player";
 
 export default class PlayerControls {
     keyA!: Phaser.Input.Keyboard.Key;
@@ -24,7 +23,7 @@ export default class PlayerControls {
             );
         }
 
-        this.facing = "left";
+        this.facing = "right";
     }
 
     update() {

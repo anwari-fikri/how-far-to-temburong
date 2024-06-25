@@ -136,6 +136,7 @@ export class RandomEncounterTest extends Scene {
         blackBg.style.backgroundColor = "black";
         document.body.appendChild(blackBg);
 
+
         const answerDiv = document.createElement("div");
         answerDiv.id = "answer";
         answerDiv.style.position = "fixed";
@@ -153,6 +154,7 @@ export class RandomEncounterTest extends Scene {
         answerDiv.style.imageRendering = "pixelated";
         document.body.appendChild(answerDiv);
 
+        dialougeSound.stop();
         dialougeSound.play();
         new Typed("#answer", {
             strings: [`${answer}`, `Outcome: ${reward}`],

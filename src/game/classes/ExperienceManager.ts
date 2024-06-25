@@ -13,10 +13,12 @@ export class ExperienceManager extends Phaser.GameObjects.Group {
                 maxSize: 100,
             };
 
-        this.levelCount = 0;
-        this.experiencePoint = 0;
-        this.nextLevel = 5;
-        this.loadExperienceState();
+        const savedState = this.loadExperienceState();
+
+        // Initialize experience manager state, using saved state if available
+        this.levelCount = savedState?.levelCount ?? 0;
+        this.experiencePoint = savedState?.experiencePoint ?? 0;
+        this.nextLevel = savedState?.nextLevel ?? 5;
     }
 
     addExperience(x: number, y: number) {
@@ -52,13 +54,15 @@ export class ExperienceManager extends Phaser.GameObjects.Group {
 
     loadExperienceState() {
         const savedState = sessionStorage.getItem("experienceState");
-        if (savedState !== null) {
-            const { levelCount, experiencePoint, nextLevel } =
-                JSON.parse(savedState);
-            this.levelCount = levelCount;
-            this.experiencePoint = experiencePoint;
-            this.nextLevel = nextLevel;
+        if (!savedState) {
+            return null;
         }
+
+        return JSON.parse(savedState) as {
+            levelCount: number;
+            experiencePoint: number;
+            nextLevel: number;
+        };
     }
 }
 

@@ -24,49 +24,52 @@ export class WeaponSkill {
         freezeLevel: number = 0,
         critChanceLevel: number = 0,
     ) {
+        // Load saved state if it exists
+        const savedState = this.loadWeaponSkillState();
+
+        // Initialize skill levels, using saved state if available
         this.atk = this.createSkillLevel(
             "Attack Up",
             "Increases weapon attack",
             "assets/Intro/attackUpSkill.png",
-            atkLevel,
+            savedState?.atkLevel ?? atkLevel,
             this.calculateAtkBonus,
         );
         this.slow = this.createSkillLevel(
             "Slow",
             "Apply slow to zombies",
             "assets/Intro/slowSkill.png",
-            slowLevel,
+            savedState?.slowLevel ?? slowLevel,
             this.calculateSlowBonus,
         );
         this.confuse = this.createSkillLevel(
             "Confuse",
             "Make enemy move opposite direction",
             "assets/Intro/confuseSkill.png",
-            confuseLevel,
+            savedState?.confuseLevel ?? confuseLevel,
             this.calculateConfuseBonus,
         );
         this.fire = this.createSkillLevel(
             "Burn",
             "Damage over time",
             "assets/Intro/fireSkill.png",
-            fireLevel,
+            savedState?.fireLevel ?? fireLevel,
             this.calculateFireBonus,
         );
         this.freeze = this.createSkillLevel(
             "Freeze",
             "Stops enemy from moving and attacking",
             "assets/Intro/freezeSkill.png",
-            freezeLevel,
+            savedState?.freezeLevel ?? freezeLevel,
             this.calculateFreezeBonus,
         );
         this.critChance = this.createSkillLevel(
             "Critical Chance",
             "Chance to double damage",
             "assets/Intro/criticalChanceSkill.png",
-            critChanceLevel,
+            savedState?.critChanceLevel ?? critChanceLevel,
             this.calculateCritBonus,
         );
-        this.loadWeaponSkillState();
     }
 
     saveWeaponSkillState() {
@@ -86,22 +89,18 @@ export class WeaponSkill {
 
     loadWeaponSkillState() {
         const savedState = sessionStorage.getItem("weaponSkillState");
-        if (savedState !== null) {
-            const {
-                atkLevel,
-                slowLevel,
-                confuseLevel,
-                fireLevel,
-                freezeLevel,
-                critChanceLevel,
-            } = JSON.parse(savedState);
-            this.atk.level = atkLevel;
-            this.slow.level = slowLevel;
-            this.confuse.level = confuseLevel;
-            this.fire.level = fireLevel;
-            this.freeze.level = freezeLevel;
-            this.critChance.level = critChanceLevel;
+        if (!savedState) {
+            return null;
         }
+
+        return JSON.parse(savedState) as {
+            atkLevel: number;
+            slowLevel: number;
+            confuseLevel: number;
+            fireLevel: number;
+            freezeLevel: number;
+            critChanceLevel: number;
+        };
     }
 
     showLevels(): void {
@@ -176,7 +175,6 @@ export class WeaponSkill {
         this.atk.level++;
         this.atk.bonus = this.calculateAtkBonus(this.atk.level);
         Game.player.emit("weaponSkillLevelUp");
-        this.saveWeaponSkillState();
     }
 
     calculateSlowBonus = (level: number): number => {
@@ -185,13 +183,13 @@ export class WeaponSkill {
             case 0:
                 return 0;
             case 1:
-                return 5;
-            case 2:
                 return 10;
+            case 2:
+                return 20;
             case 3:
-                return 20;
+                return 50;
             default:
-                return 20;
+                return 50;
         }
     };
 
@@ -199,7 +197,6 @@ export class WeaponSkill {
         this.slow.level++;
         this.slow.bonus = this.calculateSlowBonus(this.slow.level);
         Game.player.emit("weaponSkillLevelUp");
-        this.saveWeaponSkillState();
     }
 
     calculateConfuseBonus = (level: number): number => {
@@ -208,13 +205,13 @@ export class WeaponSkill {
             case 0:
                 return 0;
             case 1:
-                return 5;
+                return 25;
             case 2:
-                return 10;
+                return 50;
             case 3:
-                return 20;
+                return 100;
             default:
-                return 20;
+                return 100;
         }
     };
 
@@ -222,7 +219,6 @@ export class WeaponSkill {
         this.confuse.level++;
         this.confuse.bonus = this.calculateConfuseBonus(this.confuse.level);
         Game.player.emit("weaponSkillLevelUp");
-        this.saveWeaponSkillState();
     }
 
     calculateFireBonus = (level: number): number => {
@@ -245,7 +241,6 @@ export class WeaponSkill {
         this.fire.level++;
         this.fire.bonus = this.calculateFireBonus(this.fire.level);
         Game.player.emit("weaponSkillLevelUp");
-        this.saveWeaponSkillState();
     }
 
     calculateFreezeBonus = (level: number): number => {
@@ -254,13 +249,13 @@ export class WeaponSkill {
             case 0:
                 return 0;
             case 1:
-                return 5;
+                return 25;
             case 2:
-                return 10;
+                return 50;
             case 3:
-                return 20;
+                return 100;
             default:
-                return 20;
+                return 100;
         }
     };
 
@@ -268,7 +263,6 @@ export class WeaponSkill {
         this.freeze.level++;
         this.freeze.bonus = this.calculateFireBonus(this.freeze.level);
         Game.player.emit("weaponSkillLevelUp");
-        this.saveWeaponSkillState();
     }
 
     calculateCritBonus = (level: number): number => {
@@ -281,9 +275,9 @@ export class WeaponSkill {
             case 2:
                 return 20;
             case 3:
-                return 40;
+                return 50;
             default:
-                return 40;
+                return 50;
         }
     };
 
@@ -291,7 +285,6 @@ export class WeaponSkill {
         this.critChance.level++;
         this.critChance.bonus = this.calculateCritBonus(this.critChance.level);
         Game.player.emit("weaponSkillLevelUp");
-        this.saveWeaponSkillState();
     }
 
     choose3Random(): SkillLevel[] {

@@ -5,22 +5,7 @@ export class Preloader extends Scene {
         super("Preloader");
     }
 
-    init() {
-        //  We loaded this image in our Boot Scene, so we can display it here
-        this.add.image(512, 384, "background");
-
-        //  A simple progress bar. This is the outline of the bar.
-        this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
-
-        //  This is the progress bar itself. It will increase in size from the left based on the % of progress.
-        const bar = this.add.rectangle(512 - 230, 384, 4, 28, 0xffffff);
-
-        //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
-        this.load.on("progress", (progress: number) => {
-            //  Update the progress bar (our bar is 464px wide, so 100% = 464px)
-            bar.width = 4 + 460 * progress;
-        });
-    }
+    init() {}
 
     preload() {
         //  Load the assets for the game - Replace with your own assets
@@ -154,15 +139,19 @@ export class Preloader extends Scene {
         this.load.image("char1", "assets/Intro/char1.png");
 
         // Audio
-        this.load.audio("mediumAttack", "audio/attack_medium.mp3");
-        this.load.audio("shortAttack", "audio/attack_short.mp3");
-        // this.load.audio("longAttack", "audio/attack_long.mp3");
-        this.load.audio("gunAttack", "audio/attack_pistol.mp3");
+        this.load.audio("mediumAttack", "audio/player_attack_medium.mp3");
+        this.load.audio("swordSheath", "audio/player_swordSheath.mp3");
+        this.load.audio("gunAttack", "audio/player_attack_pistol.mp3");
+        this.load.audio("gunReload", "audio/player_pistolReload.mp3");
         this.load.audio("playerHurt", "audio/player_hurt.mp3");
+        this.load.audio("playerHeal", "audio/player_heal.mp3");
+        this.load.audio("exp", "audio/player_pickExp.mp3");
+        this.load.audio("levelUp", "audio/player_levelUp.mp3");
         this.load.audio("playerDeath", "audio/player_death.mp3");
         this.load.audio("equip", "audio/player_equip.mp3");
         this.load.audio("spawnMiniboss", "audio/enemy_miniboss_spawn.mp3");
         this.load.audio("zombieDeath", "audio/enemy_zombie_death.mp3");
+        this.load.audio("zombieHurt", "audio/enemy_zombie_hurt.mp3");
         this.load.audio("attackUp", "audio/powerUp_attack.mp3");
         this.load.audio("speedUp", "audio/powerUp_speed.mp3");
         this.load.audio("timeStop", "audio/powerUp_timeStop.mp3");
@@ -170,17 +159,18 @@ export class Preloader extends Scene {
         this.load.audio("invincibility", "audio/powerUp_invincibility.mp3");
         this.load.audio("waves", "audio/stage_waves.mp3");
         this.load.audio("trees", "audio/stage_trees.mp3");
+        this.load.audio("encounter", "audio/stage_encounter.mp3");
+        this.load.audio("slimeStep", "audio/stage_slimeStep.mp3");
         this.load.audio("dialouge", "audio/dialouge_keyboard.mp3");
+        this.load.audio("select", "audio/intro_select.mp3");
+        this.load.audio("mainMenu", "assets/audio/intro_mainMenu.mp3");
+        this.load.audio("newspaper", "assets/audio/intro_newspaper.mp3");
+        this.load.audio("menuButton", "assets/audio/intro_menuButton.mp3");
+        this.load.audio("select", "assets/audio/intro_select.mp3");
+        this.load.audio("campfire", "assets/audio/checkpoint_campfire.mp3");
     }
 
     create() {
-        //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
-        //  For example, you can define global animations here, so we can use them in other scenes.
-
-        //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        // this.scene.start("GameUIOverlay");
-        // this.scene.start("CheckpointAndChapters");
-        // this.scene.start("GameOver");
         this.scene.start("Game");
     }
 }

@@ -182,7 +182,9 @@ export class Game extends Scene {
             this.lowHealth();
             this.vignetteSprite.setVisible(true);
         } else {
-            this.vignetteSprite.setVisible(false);
+            if (this.vignetteSprite) {
+                this.vignetteSprite.setVisible(false);
+            }
         }
 
         slimeDebuff(this);

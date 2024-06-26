@@ -232,10 +232,10 @@ export class WeaponSkillUpgrade extends Scene {
                 maxLevelText.className = "skill-text";
                 maxLevelText.textContent = "All skills are at max level.";
                 container.appendChild(maxLevelText);
-
-                container.addEventListener("click", () => {
+    
+                setTimeout(() => {
                     this.goToGame();
-                });
+                }, 2000);
             } else {
                 displayedSkills.forEach((skill: SkillLevel, index: any) => {
                     const skillDiv = document.createElement("div");
@@ -335,9 +335,9 @@ export class WeaponSkillUpgrade extends Scene {
 
         setTimeout(() => {
             text.textContent = `${this.selectedSkill!.displayName} lvl.${this.selectedSkill!.level}`;
-            skillDiv.style.animation = "fade-in 1.5s";
-        }, 1500);
-
+            skillDiv.style.animation = "fade-in 1s"; 
+        }, 1000); 
+    
         setTimeout(() => {
             this.goToGame();
         }, 3000);

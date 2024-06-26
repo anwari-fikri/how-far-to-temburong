@@ -12,7 +12,7 @@ export function loadGoogleFont() {
 }
 
 const objectives = [
-    `Complete the objectives to finish this level! Kill 10 zombies and travel 500m.`,
+    "Complete the objectives to finish this level! Kill 10 zombies and travel 500m.",
     "Complete the objectives to finish this level! Kill 20 zombies and travel 700m.",
     "Complete the objectives to finish this level! Kill 35 zombies and travel 800m.",
     "Complete the objectives to finish this level! Kill 40 zombies and travel 800m.",

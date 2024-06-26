@@ -23,7 +23,7 @@ function addGlobalStyles() {
     .volume-container {
         position: absolute;
         bottom: 7%;
-        right: 15%;
+        right: 10%;
         display: flex;
         align-items: center;
         z-index: 1000;
@@ -37,7 +37,7 @@ function addGlobalStyles() {
     .controls-container {
         position: absolute;
         bottom: 2%;
-        left: 15%;
+        left: 7%;
         display: flex;
         justify-content: flex-start;
         z-index: 1000;
@@ -113,14 +113,16 @@ export class PauseMenu extends Scene {
         const screenDiv = document.createElement("div");
         screenDiv.id = "pauseMenu";
         screenDiv.style.position = "fixed";
-        screenDiv.style.top = "0";
-        screenDiv.style.left = "0";
-        screenDiv.style.width = "100%";
+        screenDiv.style.top = "50%";
+        screenDiv.style.left = "50%";
+        screenDiv.style.transform = "translate(-50%, -50%)";
+        screenDiv.style.width = "79%";
         screenDiv.style.height = "100%";
         screenDiv.style.backdropFilter = "blur(5px)";
-        screenDiv.style.backgroundColor = "rgba(0, 0, 0, 0.7)"; 
+        screenDiv.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
         screenDiv.style.zIndex = "9999";
         document.body.appendChild(screenDiv);
+        
 
         const imageElement = document.createElement("img");
         imageElement.src = "assets/Intro/pause.png";

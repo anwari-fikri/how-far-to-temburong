@@ -129,7 +129,7 @@ export class BossScene extends Scene {
         screenDiv.style.height = "100%";
         screenDiv.style.border = "none";
         screenDiv.style.boxShadow = "none";
-        screenDiv.style.zIndex = "1"; // Ensure the screenDiv is in the background
+        screenDiv.style.zIndex = "1"; 
         screenDiv.style.animation = "fade-in-out 2s infinite";
         document.body.appendChild(screenDiv);
 

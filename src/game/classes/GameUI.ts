@@ -40,25 +40,33 @@ export default class GameUI {
     createExpBar() {
         this.expBar = this.scene.add.graphics();
         this.expBar.setScrollFactor(0);
-
+    
         const updateExpBar = () => {
-            const expPercentage =
-                Game.player.experience.experiencePoint /
-                Game.player.experience.nextLevel;
+            const expPercentage = Game.player.experience.experiencePoint / Game.player.experience.nextLevel;
+            const barWidth = 480;
+            const barHeight = 5;
+            const x = 0;
+            const y = 0;
+    
             this.expBar.clear();
-            this.expBar.fillStyle(0x98fb98);
-            this.expBar.fillRect(0, 0, 480 * expPercentage, 5);
-
-            this.expBar.lineStyle(1, 0xffffff);
-            this.expBar.strokeRect(-1, -1, 482, 5);
+    
+            // Draw the black border first
+            this.expBar.lineStyle(2, 0x000000);
+            this.expBar.strokeRect(x - 1, y - 1, barWidth + 2, barHeight + 2);
+    
+            // Draw the filled experience bar
+            this.expBar.fillStyle(0x39ac45);
+            this.expBar.fillRect(x, y, Math.max(1, barWidth * expPercentage), barHeight);  // Ensure minimum width is 1
+    
             this.expBar.setDepth(40);
         };
-
+    
         updateExpBar();
-
+    
         Game.player.on("experience-changed", updateExpBar);
     }
-
+    
+    
     createFloatingText(
         x: number,
         y: number,
@@ -211,7 +219,7 @@ export default class GameUI {
         // Add active power-up icons
         activePowerUps.forEach((powerUp, index) => {
             const icon = this.scene.add
-                .sprite(60 + index * 20, 30, powerUp.icon)
+                .sprite(60 + index * 20, 43, powerUp.icon)
                 .setOrigin(0, 0)
                 .setScrollFactor(0)
                 .setScale(0.5)
@@ -237,87 +245,97 @@ export default class GameUI {
     createLevelCount() {
         this.levelCount = this.scene.add.text(
             220,
-            11,
-            `Level ${String(Game.player.experience.levelCount)}`,
+            26,
+            `LVL ${String(Game.player.experience.levelCount)}`,
+            {
+                fontSize: '8px',  
+                fontFamily: '"Press Start 2P", sans-serif',  
+            }
         );
         this.levelCount.setScrollFactor(0).setDepth(40);
-
+    
         const updateLevel = () => {
             this.levelCount.setText(
-                `Level ${String(Game.player.experience.levelCount)}`,
+                `LVL ${String(Game.player.experience.levelCount)}`
             );
         };
-
+    
         // Register the update function to the "experience-changed" event
         Game.player.on("experience-changed", updateLevel);
     }
+    
 
     createAndUpdateHealthBar() {
         this.healthBar = this.scene.add.graphics();
         this.healthBar.setScrollFactor(0);
-
+    
+        const healthIcon = this.scene.add.image(70, 29, 'heart');
+        healthIcon.setScrollFactor(0);
+        healthIcon.setDepth(41);
+        
+        healthIcon.setScale(0.06); 
+    
         const updateHealthBar = () => {
-            const healthPercentage =
-                Game.player.currentHealth / PLAYER_CONST.BASE_HEALTH;
+            const healthPercentage = Game.player.currentHealth / PLAYER_CONST.BASE_HEALTH;
+            const barWidth = 150;
+            const barHeight = 13;
+            const x = 65;
+            const y = 23;
+            const radius = 5;
+    
             this.healthBar.clear();
+    
+            this.healthBar.fillStyle(0x000000);
+            this.healthBar.fillRoundedRect(x, y, barWidth, barHeight, radius);
+    
             this.healthBar.fillStyle(0xd0312d);
-            this.healthBar.fillRect(60, 11, 150 * healthPercentage, 15);
-            this.healthBar.lineStyle(1, 0xffffff);
-            this.healthBar.strokeRect(60, 11, 150, 15);
+            this.healthBar.fillRoundedRect(x, y, barWidth * healthPercentage, barHeight, radius);
+    
+            this.healthBar.lineStyle(2, 0x000000);
+            this.healthBar.strokeRoundedRect(x, y, barWidth, barHeight, radius);
+    
             this.healthBar.setDepth(40);
         };
-
+    
         updateHealthBar();
-
+    
         Game.player.on("health-changed", updateHealthBar);
     }
-
+     
     createCalendar(day: number) {
-        const calendarX: number = 10;
-        const calendarY: number = 10;
-        const scale: number = 2;
+        const calendarX: number = 0;
+        const calendarY: number = 0;
+        const scale: number = 0.13; 
         const textFontSize = 12;
-
+        const fontFamily = '"Press Start 2P", sans-serif'; 
+    
         this.calendar = this.scene.add.group();
-
+    
         const calendarImage = this.scene.add
             .image(calendarX, calendarY, "calendar")
             .setOrigin(0, 0)
-            .setScale(scale, scale)
+            .setScale(scale) 
             .setScrollFactor(0);
-
-        const dayText = this.scene.add
-            .text(
-                calendarX + (calendarImage.width / 2) * scale,
-                calendarY + (calendarImage.height / 2) * scale,
-                "Day",
-                {
-                    fontSize: `${textFontSize}px`,
-                    color: "#000000",
-                },
-            )
-            .setOrigin(0.5, 0.5)
-            .setScrollFactor(0);
-
+    
         const dayNumberText = this.scene.add
             .text(
                 calendarX + (calendarImage.width / 2) * scale,
-                calendarY + (calendarImage.height / 2) * scale + textFontSize,
+                calendarY + (calendarImage.height / 2) * scale + textFontSize / 2,
                 String(day),
                 {
                     fontSize: `${textFontSize}px`,
+                    fontFamily: fontFamily,
                     color: "#000000",
                 },
             )
-            .setOrigin(0.5, 0.5)
+            .setOrigin(0.6, 0.6)
             .setScrollFactor(0);
-
+    
         this.calendar.add(calendarImage);
-        this.calendar.add(dayText);
         this.calendar.add(dayNumberText);
         this.calendar.setDepth(40);
     }
-
+    
     createIndicator() {
         this.indicator = this.scene.add.graphics();
         this.indicator.fillStyle(0xff0000, 1);

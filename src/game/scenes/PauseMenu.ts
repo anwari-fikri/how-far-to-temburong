@@ -12,7 +12,8 @@ function loadGoogleFont() {
 
 function loadFontAwesome() {
     const link = document.createElement("link");
-    link.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css";
+    link.href =
+        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css";
     link.rel = "stylesheet";
     document.head.appendChild(link);
 }
@@ -116,13 +117,12 @@ export class PauseMenu extends Scene {
         screenDiv.style.top = "50%";
         screenDiv.style.left = "50%";
         screenDiv.style.transform = "translate(-50%, -50%)";
-        screenDiv.style.width = "79%";
+        screenDiv.style.width = "100%";
         screenDiv.style.height = "100%";
         screenDiv.style.backdropFilter = "blur(5px)";
         screenDiv.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
         screenDiv.style.zIndex = "9999";
         document.body.appendChild(screenDiv);
-        
 
         const imageElement = document.createElement("img");
         imageElement.src = "assets/Intro/pause.png";
@@ -136,15 +136,15 @@ export class PauseMenu extends Scene {
         screenDiv.appendChild(imageElement);
 
         const canvas = document.createElement("canvas");
-        canvas.width = 400; 
-        canvas.height = 400; 
+        canvas.width = 400;
+        canvas.height = 400;
         canvas.style.position = "absolute";
         canvas.style.top = "55%";
         canvas.style.left = "50%";
         canvas.style.transform = "translate(-50%, -50%)";
         screenDiv.appendChild(canvas);
 
-        this.drawFrameOnCanvas(canvas, Game.gameStage - 1); 
+        this.drawFrameOnCanvas(canvas, Game.gameStage - 1);
 
         const volumeContainer = document.createElement("div");
         volumeContainer.className = "volume-container";
@@ -217,7 +217,7 @@ export class PauseMenu extends Scene {
         const context = canvas.getContext("2d");
         if (!context) return;
 
-        const frameWidth = this.spriteSheet.width / 5; 
+        const frameWidth = this.spriteSheet.width / 5;
         const frameHeight = this.spriteSheet.height;
 
         const sx = frameIndex * frameWidth;
@@ -239,7 +239,7 @@ export class PauseMenu extends Scene {
                 dx,
                 dy,
                 dWidth,
-                dHeight
+                dHeight,
             );
         };
     }

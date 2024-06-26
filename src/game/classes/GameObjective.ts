@@ -1,14 +1,6 @@
 import { Game } from "../scenes/Game";
 import { objectiveComplete } from "../scenes/Objectives";
 
-function loadGoogleFont() {
-    const link = document.createElement("link");
-    link.href = "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-}
-
-
 export function objectiveUI(scene: any) {
     scene.distanceComplete = false;
     scene.killComplete = false;
@@ -32,8 +24,8 @@ export function objectiveUI(scene: any) {
             }
             break;
         case 3:
-            scene.distanceObjective = 1;
-            scene.killObjective = 1;
+            scene.distanceObjective = 800;
+            scene.killObjective = 35;
             break;
         case 4:
             if (Game.bossStage) {
@@ -52,52 +44,36 @@ export function objectiveUI(scene: any) {
     }
 
     if (!Game.bossStage) {
-
-        const background = scene.add.graphics();
-        background.fillStyle(0x000000, 0.5);
-        background.fillRect(350, 55, 120, 60);
-        background.setScrollFactor(0).setDepth(99);
-
-        const textStyle = {
-            fontSize: "8px",
-            color: "#ffffff",
-            fontFamily: 'Press Start 2P',
-        };
-
-        scene.add
-            .text(410, 60, "OBJECTIVES", {
-                ...textStyle,
-                align: 'center',
-            })
-            .setOrigin(0.5, 0)
-            .setScrollFactor(0)
-            .setDepth(100);
-
-        const distanceCheckbox = scene.add.dom(355, 80).createFromHTML(
-            `<input type="checkbox" id="distanceCheckbox">` +
-            `<label for="distanceCheckbox">Distance Objective</label>`
-        );
-        const killCheckbox = scene.add.dom(355, 98).createFromHTML(
-            `<input type="checkbox" id="killCheckbox">` +
-            `<label for="killCheckbox">Kill Objective</label>`
-        );
-
-        distanceCheckbox.node.checked = scene.distanceComplete;
-        killCheckbox.node.checked = scene.killComplete;
-
         scene.distanceText = scene.add
-            .text(360, 75, "Distance: 0m / " + scene.distanceObjective + "m", textStyle)
+            .text(10, 60, "Distance: 0m / " + scene.distanceObjective + "m", {
+                fontSize: "12px",
+                color: "#ffffff",
+                fontFamily: "Press Start 2P",
+            })
             .setOrigin(0, 0)
             .setScrollFactor(0)
             .setDepth(100);
-
         scene.killText = scene.add
-            .text(360, 93, "Kills: 0 / " + scene.killObjective, textStyle)
+            .text(10, 74, "Kills: 0 / " + scene.killObjective, {
+                fontSize: "12px",
+                color: "#ffffff",
+                fontFamily: "Press Start 2P",
+            })
+            .setOrigin(0, 0)
+            .setScrollFactor(0)
+            .setDepth(100);
+    } else {
+        scene.distanceText = scene.add.text();
+        scene.killText = scene.add
+            .text(10, 74, "Kill the boss", {
+                fontSize: "12px",
+                color: "#ffffff",
+                fontFamily: "Press Start 2P",
+            })
             .setOrigin(0, 0)
             .setScrollFactor(0)
             .setDepth(100);
     }
-
 }
 
 export function stageObjective(scene: any) {
@@ -120,7 +96,6 @@ export function stageObjective(scene: any) {
     // distance count
     const playerX = Game.player.x / 10;
 
-    
     if (playerX > scene.highestX) {
         scene.highestX = Math.round(playerX);
     }
@@ -162,7 +137,4 @@ export function stageObjective(scene: any) {
         const playerDeathSound = scene.sound.add("playerDeath");
         playerDeathSound.play();
     }
-
-    loadGoogleFont();
 }
-

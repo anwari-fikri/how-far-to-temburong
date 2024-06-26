@@ -45,7 +45,7 @@ export class Game extends Scene {
     private falling: any;
     private vignetteSprite: Phaser.GameObjects.Sprite;
 
-    static gameStage = 3;
+    static gameStage = 0;
     static bossStage = false;
     static totalKill = 0;
     static totalDistance = 0;

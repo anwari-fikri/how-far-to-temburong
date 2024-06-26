@@ -159,13 +159,6 @@ export class Game extends Scene {
         Game.player.setDepth(11);
         Game.zombies.setDepth(11);
 
-        if (Game.player.currentHealth <= 0) {
-            this.sound.stopAll();
-            Game.soundManager.playerDeathSound.play();
-            this.scene.start("GameOver");
-            Game.zombies.getNuked();
-        }
-
         if (Game.player.x > this.map.widthInPixels - 800) {
             generateMapContinuation(this);
             this.collider();
@@ -180,13 +173,28 @@ export class Game extends Scene {
 
         if (Game.player.currentHealth <= 20) {
             this.lowHealth();
+            if (!Game.soundManager.playerlowHealthSound.isPlaying) {
+                Game.soundManager.playerlowHealthSound.play({ loop: true });
+            }
             this.vignetteSprite.setVisible(true);
-            Game.soundManager.playerlowHealthSound.play({ loop: true });
         } else {
-            if (this.vignetteSprite) {
-                this.vignetteSprite.setVisible(false);
+            if (Game.soundManager.playerlowHealthSound.isPlaying) {
                 Game.soundManager.playerlowHealthSound.stop();
             }
+            if (this.vignetteSprite) {
+                this.vignetteSprite.setVisible(false);
+            }
+        }
+
+        if (Game.player.currentHealth <= 0) {
+            if (Game.soundManager.playerlowHealthSound.isPlaying) {
+                Game.soundManager.playerlowHealthSound.stop();
+            }
+
+            this.sound.stopAll();
+            Game.soundManager.playerDeathSound.play();
+            this.scene.start("GameOver");
+            Game.zombies.getNuked();
         }
 
         slimeDebuff(this);

@@ -24,8 +24,8 @@ export function objectiveUI(scene: any) {
             }
             break;
         case 3:
-            scene.distanceObjective = 800;
-            scene.killObjective = 35;
+            scene.distanceObjective = 1;
+            scene.killObjective = 1;
             break;
         case 4:
             if (Game.bossStage) {
@@ -122,10 +122,6 @@ export function stageObjective(scene: any) {
                 (!Game.bossStage && Game.gameStage == 4)
             ) {
                 Game.bossStage = true;
-                if (Game.isSceneLoaded) {
-                    Game.player.experience.saveExperienceState();
-                    Game.player.weaponSkill.saveWeaponSkillState();
-                }
                 scene.scene.start("BossScene");
                 scene.sound.stopAll();
             } else {

@@ -76,31 +76,50 @@ export function objectiveUI(scene: any) {
             .setOrigin(0, 0)
             .setScrollFactor(0)
             .setDepth(100);
+
+        // Initialize killText if it hasn't been initialized yet
+        if (!scene.killText) {
+            scene.killText = scene.add.text(360, 93, "Kills: 0 / " + scene.killObjective, textStyle)
+                .setOrigin(0, 0)
+                .setScrollFactor(0)
+                .setDepth(100);
+        }
     } else {
-        scene.distanceText = scene.add.text(); // Ensure proper initialization if needed
-        scene.killText = scene.add
-            .text(360, 93, "Kills: 0 / " + scene.killObjective, textStyle)
-            .setOrigin(0, 0)
-            .setScrollFactor(0)
-            .setDepth(100);
+        // Initialize distanceText if it hasn't been initialized yet
+        if (!scene.distanceText) {
+            scene.distanceText = scene.add.text(); // Ensure proper initialization if needed
+        }
+        
+        // Initialize killText
+        if (!scene.killText) {
+            scene.killText = scene.add
+                .text(360, 93, "Kills: 0 / " + scene.killObjective, textStyle)
+                .setOrigin(0, 0)
+                .setScrollFactor(0)
+                .setDepth(100);
+        }
     }
 }
 
 export function stageObjective(scene: any) {
     if (!Game.bossStage) {
         // distance count
-        scene.distanceText.setText(
-            "Distance: " +
-                scene.highestX +
-                "m / " +
-                scene.distanceObjective +
-                "m",
-        );
+        if (scene.distanceText) {
+            scene.distanceText.setText(
+                "Distance: " +
+                    scene.highestX +
+                    "m / " +
+                    scene.distanceObjective +
+                    "m",
+            );
+        }
 
         // kill count
-        scene.killText.setText(
-            "Kills: " + Game.player.killCount + " / " + scene.killObjective,
-        );
+        if (scene.killText) {
+            scene.killText.setText(
+                "Kills: " + Game.player.killCount + " / " + scene.killObjective,
+            );
+        }
     }
 
     // distance count
@@ -111,13 +130,17 @@ export function stageObjective(scene: any) {
     }
     if (scene.highestX >= scene.distanceObjective) {
         scene.distanceComplete = true;
-        scene.distanceText.setStyle({ color: "#98fb98" });
+        if (scene.distanceText) {
+            scene.distanceText.setStyle({ color: "#98fb98" });
+        }
     }
 
     // kill count
     if (Game.player.killCount >= scene.killObjective) {
         scene.killComplete = true;
-        scene.killText.setStyle({ color: "#98fb98" });
+        if (scene.killText) {
+            scene.killText.setStyle({ color: "#98fb98" });
+        }
     }
 
     Game.totalKill = Game.player.killCount;
@@ -148,7 +171,7 @@ export function stageObjective(scene: any) {
         }
     }
 
-    if (Game.gameUI.elapsedTime == 60) {
+    if (Game.gameUI.elapsedTime === 60) {
         scene.scene.start("GameOver");
         const playerDeathSound = scene.sound.add("playerDeath");
         playerDeathSound.play();

@@ -19,6 +19,10 @@ export class SoundManager {
     expSound: Phaser.Sound.BaseSound;
 
     zombieDeathSound: Phaser.Sound.BaseSound;
+    slimebossDeathSound: Phaser.Sound.BaseSound;
+    minislimeDeathSound: Phaser.Sound.BaseSound;
+    monkeybossDeathSound: Phaser.Sound.BaseSound;
+    minimonkeyDeathSound: Phaser.Sound.BaseSound;
 
     slimeSound: Phaser.Sound.BaseSound;
     dialougeSound: Phaser.Sound.BaseSound;
@@ -47,6 +51,10 @@ export class SoundManager {
 
         // Zombie sounds
         this.zombieDeathSound = this.scene.sound.add("zombieDeath");
+        this.slimebossDeathSound = this.scene.sound.add("slimebossDeath");
+        this.minislimeDeathSound = this.scene.sound.add("minislimeDeath");
+        this.monkeybossDeathSound = this.scene.sound.add("monkeybossDeath");
+        this.minimonkeyDeathSound = this.scene.sound.add("minimonkeyDeath");
 
         //Stage sounds
         this.slimeSound = this.scene.sound.add("slimeStep");

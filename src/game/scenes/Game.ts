@@ -19,6 +19,7 @@ import RandomEncounterTrigger from "../classes/RandomEncounterTrigger";
 import HealthDrop from "../classes/HealthDrop";
 import { Objectives } from "./Objectives";
 import { SoundManager } from "../classes/SoundManager";
+import { ZOMBIE_TYPE } from "../classes/Zombie";
 
 function loadGoogleFont() {
     const link = document.createElement("link");
@@ -42,12 +43,14 @@ export class Game extends Scene {
     private map: Phaser.Tilemaps.Tilemap;
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;
+    private vignetteSprite: Phaser.GameObjects.Sprite;
 
-    static gameStage = 3;
+    static gameStage = 0;
     static bossStage = false;
     static totalKill = 0;
     static totalDistance = 0;
     static totalTime = 0;
+    static isSceneLoaded = false;
 
     constructor() {
         super("Game");
@@ -102,6 +105,7 @@ export class Game extends Scene {
 
         objectiveUI(this);
         Objectives(this);
+        this.bgMusic();
 
         createPause(this);
 
@@ -113,6 +117,8 @@ export class Game extends Scene {
             null,
             this,
         );
+
+        Game.isSceneLoaded = true;
 
         EventBus.emit("current-scene-ready", this);
     }
@@ -128,7 +134,18 @@ export class Game extends Scene {
         );
         if (zombie.currentHealth <= 0) {
             zombie.die();
-            Game.soundManager.zombieDeathSound.play();
+            // Check and play the specific death sound based on zombie type
+            if (zombie.zombieType === ZOMBIE_TYPE.SLIME_BOSS) {
+                Game.soundManager.slimebossDeathSound.play();
+            } else if (zombie.zombieType === ZOMBIE_TYPE.SLIME_MINION) {
+                Game.soundManager.minislimeDeathSound.play();
+            } else if (zombie.zombieType === ZOMBIE_TYPE.MONKE_BOSS) {
+                Game.soundManager.monkeybossDeathSound.play();
+            } else if (zombie.zombieType === ZOMBIE_TYPE.MONKE_MINION) {
+                Game.soundManager.minimonkeyDeathSound.play();
+            } else {
+                Game.soundManager.zombieDeathSound.play();
+            }
         }
     }
 
@@ -161,6 +178,15 @@ export class Game extends Scene {
             );
         }
 
+        if (Game.player.currentHealth <= 20) {
+            this.lowHealth();
+            this.vignetteSprite.setVisible(true);
+        } else {
+            if (this.vignetteSprite) {
+                this.vignetteSprite.setVisible(false);
+            }
+        }
+
         slimeDebuff(this);
         stageObjective(this);
     }
@@ -179,5 +205,55 @@ export class Game extends Scene {
         this.physics.add.collider(Game.zombies, Game.zombies);
         // uncomment to check collider
         // debugGraphic(this);
+    }
+
+    bgMusic() {
+        if (Game.gameStage == 1 || Game.gameStage == 2) {
+            const waveStage = this.sound.add("waves");
+            waveStage.play({ loop: true });
+        } else {
+            const treeStage = this.sound.add("trees");
+            treeStage.play({ loop: true });
+        }
+    }
+
+    lowHealth() {
+        this.cameras.main.shake(100, 0.0025);
+
+        const vignetteTexture = this.textures.createCanvas(
+            "vignette",
+            this.cameras.main.width,
+            this.cameras.main.height,
+        );
+        if (vignetteTexture) {
+            const ctx = vignetteTexture.getContext();
+            const width = vignetteTexture.width;
+            const height = vignetteTexture.height;
+
+            const gradient = ctx.createRadialGradient(
+                width / 2,
+                height / 2,
+                0,
+                width / 2,
+                height / 2,
+                Math.max(width, height) / 2,
+            );
+            gradient.addColorStop(0, "rgba(255, 0, 0, 0)");
+            gradient.addColorStop(1, "rgba(255, 0, 0, 0.7)");
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            vignetteTexture.refresh();
+
+            this.vignetteSprite = this.add
+                .sprite(0, 0, "vignette")
+                .setOrigin(0, 0);
+            this.vignetteSprite.setScrollFactor(0);
+            this.vignetteSprite.setDepth(1000);
+            this.vignetteSprite.setBlendMode(Phaser.BlendModes.MULTIPLY);
+
+            this.vignetteSprite.alpha = 0.5;
+        }
     }
 }

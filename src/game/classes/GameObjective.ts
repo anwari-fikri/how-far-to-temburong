@@ -33,7 +33,7 @@ export function objectiveUI(scene: any) {
             break;
         case 3:
             scene.distanceObjective = 800;
-            scene.killObjective = 50;
+            scene.killObjective = 35;
             break;
         case 4:
             if (Game.bossStage) {
@@ -78,7 +78,8 @@ export function objectiveUI(scene: any) {
             .setOrigin(0, 0)
             .setScrollFactor(0)
             .setDepth(100);
-
+    } else {
+        scene.distanceText = scene.add.text();
         scene.killText = scene.add
             .text(360, 93, "Kills: 0 / " + scene.killObjective, textStyle)
             .setOrigin(0, 0)
@@ -134,6 +135,10 @@ export function stageObjective(scene: any) {
                 (!Game.bossStage && Game.gameStage == 4)
             ) {
                 Game.bossStage = true;
+                if (Game.isSceneLoaded) {
+                    Game.player.experience.saveExperienceState();
+                    Game.player.weaponSkill.saveWeaponSkillState();
+                }
                 scene.scene.start("BossScene");
                 scene.sound.stopAll();
             } else {
@@ -154,4 +159,3 @@ export function stageObjective(scene: any) {
 
     loadGoogleFont();
 }
-

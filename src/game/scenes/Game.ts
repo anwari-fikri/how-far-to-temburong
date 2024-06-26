@@ -179,6 +179,9 @@ export class Game extends Scene {
 
         if (Game.player.currentHealth <= 20) {
             this.lowHealth();
+            Game.soundManager.playerlowHealthSound.play({ loop: true });
+        } else {
+            Game.soundManager.playerlowHealthSound.stop();
         }
 
         slimeDebuff(this);

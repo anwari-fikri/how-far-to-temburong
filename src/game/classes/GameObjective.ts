@@ -1,6 +1,20 @@
 import { Game } from "../scenes/Game";
 import { objectiveComplete } from "../scenes/Objectives";
 
+// Define textStyle globally for module accessibility
+const textStyle = {
+    fontSize: "8px",
+    color: "#ffffff",
+    fontFamily: 'Press Start 2P',
+};
+
+function loadGoogleFont() {
+    const link = document.createElement("link");
+    link.href = "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+}
+
 export function objectiveUI(scene: any) {
     scene.distanceComplete = false;
     scene.killComplete = false;
@@ -36,7 +50,6 @@ export function objectiveUI(scene: any) {
                 scene.killObjective = 40;
             }
             break;
-
         default:
             scene.distanceObjective = 1;
             scene.killObjective = 2;
@@ -44,32 +57,29 @@ export function objectiveUI(scene: any) {
     }
 
     if (!Game.bossStage) {
-        scene.distanceText = scene.add
-            .text(10, 60, "Distance: 0m / " + scene.distanceObjective + "m", {
-                fontSize: "12px",
-                color: "#ffffff",
-                fontFamily: "Press Start 2P",
+        const background = scene.add.graphics();
+        background.fillStyle(0x000000, 0.5);
+        background.fillRect(350, 55, 120, 60);
+        background.setScrollFactor(0).setDepth(99);
+
+        scene.add
+            .text(410, 60, "OBJECTIVES", {
+                ...textStyle,
+                align: 'center',
             })
-            .setOrigin(0, 0)
+            .setOrigin(0.5, 0)
             .setScrollFactor(0)
             .setDepth(100);
-        scene.killText = scene.add
-            .text(10, 74, "Kills: 0 / " + scene.killObjective, {
-                fontSize: "12px",
-                color: "#ffffff",
-                fontFamily: "Press Start 2P",
-            })
+
+        scene.distanceText = scene.add
+            .text(360, 75, "Distance: 0m / " + scene.distanceObjective + "m", textStyle)
             .setOrigin(0, 0)
             .setScrollFactor(0)
             .setDepth(100);
     } else {
-        scene.distanceText = scene.add.text();
+        scene.distanceText = scene.add.text(); // Ensure proper initialization if needed
         scene.killText = scene.add
-            .text(10, 74, "Kill the boss", {
-                fontSize: "12px",
-                color: "#ffffff",
-                fontFamily: "Press Start 2P",
-            })
+            .text(360, 93, "Kills: 0 / " + scene.killObjective, textStyle)
             .setOrigin(0, 0)
             .setScrollFactor(0)
             .setDepth(100);
@@ -129,9 +139,11 @@ export function stageObjective(scene: any) {
                 scene.scene.start("BossScene");
                 scene.sound.stopAll();
             } else {
-                Game.bossStage = false;
-                objectiveComplete(scene);
-                scene.sound.stopAll();
+                scene.time.delayedCall(1000, () => {
+                    Game.bossStage = false;
+                    objectiveComplete(scene);
+                    scene.sound.stopAll();
+                });
             }
         }
     }
@@ -141,4 +153,6 @@ export function stageObjective(scene: any) {
         const playerDeathSound = scene.sound.add("playerDeath");
         playerDeathSound.play();
     }
+
+    loadGoogleFont();
 }

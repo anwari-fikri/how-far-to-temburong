@@ -166,7 +166,7 @@ export class Game extends Scene {
             Game.zombies.getNuked();
         }
 
-        if (Game.player.x > this.map.widthInPixels - 800) {
+        if (Game.player.x > this.map.widthInPixels - 1000) {
             generateMapContinuation(this);
             this.collider();
             this.camera.setBounds(0, 0, this.map.widthInPixels, 700);

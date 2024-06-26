@@ -41,9 +41,15 @@ export function bridgeMap(scene: any) {
 
     if (Game.gameStage == 1 || Game.gameStage == 2) {
         const oceantile = scene.map.addTilesetImage("ocean");
-
         scene.bgOcean = scene.map.createBlankLayer("Ocean Layer", oceantile);
-        scene.bgOcean.fill(1, 0, 0, scene.map.width, scene.map.height);
+
+        for (let x = 0; x < scene.map.width; x++) {
+            for (let y = 0; y < scene.map.height; y++) {
+                const isEven = (x + y) % 2 === 0;
+                const tileIndex = isEven ? 2 : 1;
+                scene.bgOcean.putTileAt(tileIndex, x, y);
+            }
+        }
         scene.bgOcean.setScrollFactor(1.1, 1);
     } else {
         jungleBg(scene);
@@ -211,15 +217,14 @@ export function generateMapContinuation(scene: any) {
 
     if (Game.gameStage == 1 || Game.gameStage == 2) {
         const oceantile = scene.map.addTilesetImage("ocean");
-
         scene.bgOcean = scene.map.createBlankLayer("Ocean Layer", oceantile);
-        scene.bgOcean.fill(
-            1,
-            originalWidth,
-            0,
-            scene.map.width,
-            scene.map.height,
-        );
+        for (let x = originalWidth; x < scene.map.width; x++) {
+            for (let y = 0; y < scene.map.height; y++) {
+                const isEven = (x + y) % 2 === 0;
+                const tileIndex = isEven ? 2 : 1;
+                scene.bgOcean.putTileAt(tileIndex, x, y);
+            }
+        }
         scene.bgOcean.setScrollFactor(1.1, 1);
     } else {
         const jungle = scene.add

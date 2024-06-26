@@ -182,8 +182,10 @@ export function startMainGame(scene: any) {
 
 export function startCheckpoint(scene: any) {
     cleanup();
-    Game.player.experience.saveExperienceState();
-    Game.player.weaponSkill.saveWeaponSkillState();
+    if (Game.isSceneLoaded) {
+        Game.player.experience.saveExperienceState();
+        Game.player.weaponSkill.saveWeaponSkillState();
+    }
     scene.scene.start("CheckpointAndChapters");
 }
 

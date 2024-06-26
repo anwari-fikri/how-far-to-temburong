@@ -19,6 +19,7 @@ import RandomEncounterTrigger from "../classes/RandomEncounterTrigger";
 import HealthDrop from "../classes/HealthDrop";
 import { Objectives } from "./Objectives";
 import { SoundManager } from "../classes/SoundManager";
+import { ZOMBIE_TYPE } from "../classes/Zombie";
 
 function loadGoogleFont() {
     const link = document.createElement("link");
@@ -48,6 +49,7 @@ export class Game extends Scene {
     static totalKill = 0;
     static totalDistance = 0;
     static totalTime = 0;
+    static isSceneLoaded = false;
 
     constructor() {
         super("Game");
@@ -115,6 +117,8 @@ export class Game extends Scene {
             this,
         );
 
+        Game.isSceneLoaded = true;
+
         EventBus.emit("current-scene-ready", this);
     }
 
@@ -129,7 +133,18 @@ export class Game extends Scene {
         );
         if (zombie.currentHealth <= 0) {
             zombie.die();
-            Game.soundManager.zombieDeathSound.play();
+            // Check and play the specific death sound based on zombie type
+            if (zombie.zombieType === ZOMBIE_TYPE.SLIME_BOSS) {
+                Game.soundManager.slimebossDeathSound.play();
+            } else if (zombie.zombieType === ZOMBIE_TYPE.SLIME_MINION) {
+                Game.soundManager.minislimeDeathSound.play();
+            } else if (zombie.zombieType === ZOMBIE_TYPE.MONKE_BOSS) {
+                Game.soundManager.monkeybossDeathSound.play();
+            } else if (zombie.zombieType === ZOMBIE_TYPE.MONKE_MINION) {
+                Game.soundManager.minimonkeyDeathSound.play();
+            } else {
+                Game.soundManager.zombieDeathSound.play();
+            }
         }
     }
 

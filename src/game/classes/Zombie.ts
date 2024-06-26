@@ -235,20 +235,22 @@ export class Zombie extends Physics.Arcade.Sprite {
 
         const randomChance = Math.random();
 
-        if (randomChance <= Game.player.weaponSkill.critChance.bonus / 100) {
-            amount = amount * 2;
-
-            Game.gameUI.createFloatingText(
-                this.x,
-                this.y,
-                "CRIT",
-                "#d4af37",
-                "8px",
-                true,
-            );
-        }
-
         if (!this.isInIFrame) {
+            if (
+                randomChance <=
+                Game.player.weaponSkill.critChance.bonus / 100
+            ) {
+                amount = amount * 2;
+
+                Game.gameUI.createFloatingText(
+                    this.x,
+                    this.y,
+                    "CRIT",
+                    "#d4af37",
+                    "8px",
+                    true,
+                );
+            }
             const weaponSkillSlow = Game.player.weaponSkill.slow;
             if (!this.isSlowed) {
                 if (weaponSkillSlow.level > 0) {
@@ -603,3 +605,4 @@ export class Zombie extends Physics.Arcade.Sprite {
         }
     }
 }
+

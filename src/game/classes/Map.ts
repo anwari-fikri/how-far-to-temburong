@@ -41,8 +41,6 @@ export function bridgeMap(scene: any) {
 
     if (Game.gameStage == 1 || Game.gameStage == 2) {
         const oceantile = scene.map.addTilesetImage("ocean");
-        const waveStage = scene.sound.add("waves");
-        waveStage.play({ loop: true });
 
         scene.bgOcean = scene.map.createBlankLayer("Ocean Layer", oceantile);
         scene.bgOcean.fill(1, 0, 0, scene.map.width, scene.map.height);
@@ -157,7 +155,7 @@ export function bridgeMap(scene: any) {
             { index: pothole, weight: 0.2 },
             { index: -1, weight: 50 },
         ],
-        0,
+        5,
         roadY + 1,
         scene.map.width - 1,
         7,
@@ -197,7 +195,7 @@ export function bridgeMap(scene: any) {
 
     scene.wallLayer.setCollisionByExclusion([-1]);
     scene.wallLayer2.setCollisionByExclusion([-1]);
-    scene.objectLayer.setCollisionByExclusion([-1]);
+    scene.objectLayer.setCollisionByExclusion([-1, pothole]);
 }
 
 export function generateMapContinuation(scene: any) {
@@ -400,7 +398,7 @@ export function generateMapContinuation(scene: any) {
 
     scene.wallLayer.setCollisionByExclusion([-1]);
     scene.wallLayer2.setCollisionByExclusion([-1]);
-    scene.objectLayer.setCollisionByExclusion([-1]);
+    scene.objectLayer.setCollisionByExclusion([-1, pothole]);
 
     // scene.startLayer = scene.map.createBlankLayer(
     //     "Start Layer",
@@ -433,9 +431,6 @@ export function jungleBg(scene: any) {
 
         scene.jungleImages.push(jungle);
     }
-
-    const treeStage = scene.sound.add("trees");
-    treeStage.play({ loop: true });
 }
 
 export function clearPath(startX: any, scene: any, newIndex: any) {

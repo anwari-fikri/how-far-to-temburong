@@ -795,7 +795,6 @@ export class CheckpointAndChapters extends Scene {
         });
 
         screenDiv.style.animation = "fade-in 1s forwards";
-        screenDiv.style.animation = "fade-out 1s forwards";
     }
 
     chapterFinaleContinuation() {

@@ -345,7 +345,7 @@ export class MainMenu extends Scene {
                 weaponName.style.color = "white";
                 weaponName.style.marginTop = "10px";
 
-                if (weapon.name !== "knife" && weapon.name !== "pistol") {
+                if (weapon.name !== "sword" && weapon.name !== "pistol") {
                     wrapper.style.backgroundColor = "grey";
                     wrapper.style.cursor = "not-allowed";
                 } else {

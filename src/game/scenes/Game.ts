@@ -43,6 +43,7 @@ export class Game extends Scene {
     private map: Phaser.Tilemaps.Tilemap;
     private camera: Phaser.Cameras.Scene2D.Camera;
     private falling: any;
+    private vignetteSprite: Phaser.GameObjects.Sprite;
 
     static gameStage = 0;
     static bossStage = false;
@@ -179,9 +180,13 @@ export class Game extends Scene {
 
         if (Game.player.currentHealth <= 20) {
             this.lowHealth();
+            this.vignetteSprite.setVisible(true);
             Game.soundManager.playerlowHealthSound.play({ loop: true });
         } else {
-            Game.soundManager.playerlowHealthSound.stop();
+            if (this.vignetteSprite) {
+                this.vignetteSprite.setVisible(false);
+                Game.soundManager.playerlowHealthSound.stop();
+            }
         }
 
         slimeDebuff(this);
@@ -215,7 +220,42 @@ export class Game extends Scene {
     }
 
     lowHealth() {
-        this.cameras.main.shake(500, 0.002);
-        // add vignette
+        this.cameras.main.shake(100, 0.0025);
+
+        const vignetteTexture = this.textures.createCanvas(
+            "vignette",
+            this.cameras.main.width,
+            this.cameras.main.height,
+        );
+        if (vignetteTexture) {
+            const ctx = vignetteTexture.getContext();
+            const width = vignetteTexture.width;
+            const height = vignetteTexture.height;
+
+            const gradient = ctx.createRadialGradient(
+                width / 2,
+                height / 2,
+                0,
+                width / 2,
+                height / 2,
+                Math.max(width, height) / 2,
+            );
+            gradient.addColorStop(0, "rgba(255, 0, 0, 0)");
+            gradient.addColorStop(1, "rgba(255, 0, 0, 0.7)");
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            vignetteTexture.refresh();
+
+            this.vignetteSprite = this.add
+                .sprite(0, 0, "vignette")
+                .setOrigin(0, 0);
+            this.vignetteSprite.setScrollFactor(0);
+            this.vignetteSprite.setDepth(1000);
+            this.vignetteSprite.setBlendMode(Phaser.BlendModes.MULTIPLY);
+
+            this.vignetteSprite.alpha = 0.5;
+        }
     }
 }

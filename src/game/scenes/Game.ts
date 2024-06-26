@@ -49,6 +49,7 @@ export class Game extends Scene {
     static totalKill = 0;
     static totalDistance = 0;
     static totalTime = 0;
+    static isSceneLoaded = false;
 
     constructor() {
         super("Game");
@@ -114,6 +115,8 @@ export class Game extends Scene {
             null,
             this,
         );
+
+        Game.isSceneLoaded = true;
 
         EventBus.emit("current-scene-ready", this);
     }

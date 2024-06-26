@@ -178,6 +178,6 @@ export class Preloader extends Scene {
     }
 
     create() {
-        this.scene.start("Game");
+        this.scene.start("Intro");
     }
 }

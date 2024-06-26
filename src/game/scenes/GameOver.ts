@@ -91,8 +91,10 @@ export class GameOver extends Scene {
     }
 
     gameOverScreen() {
-        Game.player.experience.loadExperienceState();
-        Game.player.weaponSkill.loadWeaponSkillState();
+        if (Game.isSceneLoaded) {
+            Game.player.experience.loadExperienceState();
+            Game.player.weaponSkill.loadWeaponSkillState();
+        }
         this.cleanup();
 
         const screenDiv = document.createElement("div");
@@ -238,8 +240,10 @@ export class GameOver extends Scene {
 
     startMainGame() {
         this.cleanup();
-        Game.player.weaponSkill.loadWeaponSkillState();
-        Game.player.experience.loadExperienceState();
+        if (Game.isSceneLoaded) {
+            Game.player.weaponSkill.loadWeaponSkillState();
+            Game.player.experience.loadExperienceState();
+        }
         this.scene.start("Game");
     }
 

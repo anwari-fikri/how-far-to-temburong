@@ -17,6 +17,7 @@ export class SoundManager {
     gunSelect: Phaser.Sound.BaseSound;
     levelUpSound: Phaser.Sound.BaseSound;
     expSound: Phaser.Sound.BaseSound;
+    playerlowHealthSound: Phaser.Sound.BaseSound;
 
     zombieDeathSound: Phaser.Sound.BaseSound;
     slimebossDeathSound: Phaser.Sound.BaseSound;
@@ -48,6 +49,7 @@ export class SoundManager {
         this.gunSelect = this.scene.sound.add("gunReload");
         this.levelUpSound = this.scene.sound.add("levelUp");
         this.expSound = this.scene.sound.add("exp");
+        this.playerlowHealthSound = this.scene.sound.add("playerlowHealth");
 
         // Zombie sounds
         this.zombieDeathSound = this.scene.sound.add("zombieDeath");

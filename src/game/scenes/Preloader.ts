@@ -149,6 +149,7 @@ export class Preloader extends Scene {
         this.load.audio("exp", "audio/player_pickExp.mp3");
         this.load.audio("levelUp", "audio/player_levelUp.mp3");
         this.load.audio("playerDeath", "audio/player_death.mp3");
+        this.load.audio("playerlowHealth", "audio/player_low_health.mp3");
         this.load.audio("equip", "audio/player_equip.mp3");
         this.load.audio("spawnMiniboss", "audio/enemy_miniboss_spawn.mp3");
         this.load.audio("zombieDeath", "audio/enemy_zombie_death.mp3");
@@ -179,6 +180,6 @@ export class Preloader extends Scene {
     }
 
     create() {
-        this.scene.start("Game");
+        this.scene.start("Intro");
     }
 }

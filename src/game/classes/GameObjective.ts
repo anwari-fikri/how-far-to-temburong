@@ -96,6 +96,7 @@ export function stageObjective(scene: any) {
     // distance count
     const playerX = Game.player.x / 10;
 
+    
     if (playerX > scene.highestX) {
         scene.highestX = Math.round(playerX);
     }

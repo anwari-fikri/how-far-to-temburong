@@ -1,19 +1,13 @@
 import { Game } from "../scenes/Game";
 import { objectiveComplete } from "../scenes/Objectives";
 
-// Define textStyle globally for module accessibility
-const textStyle = {
-    fontSize: "8px",
-    color: "#ffffff",
-    fontFamily: 'Press Start 2P',
-};
-
 function loadGoogleFont() {
     const link = document.createElement("link");
     link.href = "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap";
     link.rel = "stylesheet";
     document.head.appendChild(link);
 }
+
 
 export function objectiveUI(scene: any) {
     scene.distanceComplete = false;
@@ -38,8 +32,8 @@ export function objectiveUI(scene: any) {
             }
             break;
         case 3:
-            scene.distanceObjective = 800;
-            scene.killObjective = 35;
+            scene.distanceObjective = 1;
+            scene.killObjective = 1;
             break;
         case 4:
             if (Game.bossStage) {
@@ -50,6 +44,7 @@ export function objectiveUI(scene: any) {
                 scene.killObjective = 40;
             }
             break;
+
         default:
             scene.distanceObjective = 1;
             scene.killObjective = 2;
@@ -57,10 +52,17 @@ export function objectiveUI(scene: any) {
     }
 
     if (!Game.bossStage) {
+
         const background = scene.add.graphics();
         background.fillStyle(0x000000, 0.5);
         background.fillRect(350, 55, 120, 60);
         background.setScrollFactor(0).setDepth(99);
+
+        const textStyle = {
+            fontSize: "8px",
+            color: "#ffffff",
+            fontFamily: 'Press Start 2P',
+        };
 
         scene.add
             .text(410, 60, "OBJECTIVES", {
@@ -71,19 +73,31 @@ export function objectiveUI(scene: any) {
             .setScrollFactor(0)
             .setDepth(100);
 
+        const distanceCheckbox = scene.add.dom(355, 80).createFromHTML(
+            `<input type="checkbox" id="distanceCheckbox">` +
+            `<label for="distanceCheckbox">Distance Objective</label>`
+        );
+        const killCheckbox = scene.add.dom(355, 98).createFromHTML(
+            `<input type="checkbox" id="killCheckbox">` +
+            `<label for="killCheckbox">Kill Objective</label>`
+        );
+
+        distanceCheckbox.node.checked = scene.distanceComplete;
+        killCheckbox.node.checked = scene.killComplete;
+
         scene.distanceText = scene.add
             .text(360, 75, "Distance: 0m / " + scene.distanceObjective + "m", textStyle)
             .setOrigin(0, 0)
             .setScrollFactor(0)
             .setDepth(100);
-    } else {
-        scene.distanceText = scene.add.text(); // Ensure proper initialization if needed
+
         scene.killText = scene.add
             .text(360, 93, "Kills: 0 / " + scene.killObjective, textStyle)
             .setOrigin(0, 0)
             .setScrollFactor(0)
             .setDepth(100);
     }
+
 }
 
 export function stageObjective(scene: any) {
@@ -132,18 +146,12 @@ export function stageObjective(scene: any) {
                 (!Game.bossStage && Game.gameStage == 4)
             ) {
                 Game.bossStage = true;
-                if (Game.isSceneLoaded) {
-                    Game.player.experience.saveExperienceState();
-                    Game.player.weaponSkill.saveWeaponSkillState();
-                }
                 scene.scene.start("BossScene");
                 scene.sound.stopAll();
             } else {
-                scene.time.delayedCall(1000, () => {
-                    Game.bossStage = false;
-                    objectiveComplete(scene);
-                    scene.sound.stopAll();
-                });
+                Game.bossStage = false;
+                objectiveComplete(scene);
+                scene.sound.stopAll();
             }
         }
     }
@@ -156,3 +164,4 @@ export function stageObjective(scene: any) {
 
     loadGoogleFont();
 }
+

@@ -102,6 +102,7 @@ export class Game extends Scene {
 
         objectiveUI(this);
         Objectives(this);
+        this.bgMusic();
 
         createPause(this);
 
@@ -161,6 +162,10 @@ export class Game extends Scene {
             );
         }
 
+        if (Game.player.currentHealth <= 20) {
+            this.lowHealth();
+        }
+
         slimeDebuff(this);
         stageObjective(this);
     }
@@ -179,5 +184,20 @@ export class Game extends Scene {
         this.physics.add.collider(Game.zombies, Game.zombies);
         // uncomment to check collider
         // debugGraphic(this);
+    }
+
+    bgMusic() {
+        if (Game.gameStage == 1 || Game.gameStage == 2) {
+            const waveStage = this.sound.add("waves");
+            waveStage.play({ loop: true });
+        } else {
+            const treeStage = this.sound.add("trees");
+            treeStage.play({ loop: true });
+        }
+    }
+
+    lowHealth() {
+        this.cameras.main.shake(500, 0.002);
+        // add vignette
     }
 }

@@ -85,8 +85,7 @@ export class BossScene extends Scene {
     }
 
     preload() {
-        this.load.audio("bossOne", "assets/audio/stage_boss_scene1.mp3");
-        this.load.audio("bossTwo", "assets/audio/stage_boss_scene2.mp3");
+        this.load.audio("bossScene", "assets/audio/stage_boss_scene1.mp3");
     }
 
     create() {
@@ -111,8 +110,8 @@ export class BossScene extends Scene {
 
     bossOneScene() {
         this.cleanup();
-        const bossOneMusic = this.sound.add("bossOne", { loop: true });
-        bossOneMusic.play();
+        const bossSceneSound = this.sound.add("bossScene", { loop: true });
+        bossSceneSound.play();
         Game.soundManager.dialougeSound.play();
 
         const screenDiv = document.createElement("div");
@@ -204,7 +203,8 @@ export class BossScene extends Scene {
                 continueButton.classList.add("glow"); // Add the glow class for pulsating effect
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
-                    bossOneMusic.stop();
+                    bossSceneSound.stop();
+                    Game.soundManager.dialougeSound.stop();
                     this.cleanup();
                     this.startMainGame();
                 });
@@ -215,6 +215,9 @@ export class BossScene extends Scene {
 
     bossTwoScene() {
         this.cleanup();
+        const bossSceneSound = this.sound.add("bossScene", { loop: true });
+        bossSceneSound.play();
+        Game.soundManager.dialougeSound.play();
 
         const screenDiv = document.createElement("div");
         screenDiv.id = "bossTwoScene";
@@ -303,6 +306,8 @@ export class BossScene extends Scene {
                 continueButton.classList.add("glow"); // Add the glow class for pulsating effect
                 continueButton.style.zIndex = "100";
                 continueButton.addEventListener("click", () => {
+                    bossSceneSound.stop();
+                    Game.soundManager.dialougeSound.stop();
                     this.cleanup();
                     this.startMainGame();
                 });
